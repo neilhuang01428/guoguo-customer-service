@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>iPad 巧控鍵盤上手指南 · Windows 用戶專用 · 果果國際</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  :root {
+    --bg: #f6f8fb; --panel: #ffffff; --panel2: #f0f3f8; --line: #e2e8f0; --grid: #edf1f6;
+    --ink: #16223a; --body: #45506a; --muted: #8590a6;
+    --navy: #17345f;   --navy-deep: #0f2547; --navy-bg: #eef2f8;
+    --green: #2f9e57;  --green-deep: #237a43; --green-bg: #eaf5ee;
+    --amber: #b47d1e;  --amber-bg: #f8f0dc;
+    --red: #c0492f;    --red-bg: #fbeae5;
+    --teal: #1c8a9a;   --teal-bg: #e3f3f4;
+    --purple: #7150c9; --purple-bg: #efeafb;
+    --mono: 'SF Mono','JetBrains Mono','Menlo','Consolas',monospace;
+    --sans: 'Noto Sans TC',-apple-system,BlinkMacSystemFont,'Segoe UI','Inter',sans-serif;
+  }
+  body { background: var(--bg); color: var(--body); font-family: var(--sans); display: flex; min-height: 100vh; line-height: 1.72; -webkit-font-smoothing: antialiased; }
+  #progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--green); z-index: 99; transition: width .1s; }
+
+  nav { width: 244px; min-width: 244px; background: #fff; border-right: 1px solid var(--line); padding: 30px 0 30px 22px; position: sticky; top: 0; height: 100vh; overflow-y: auto; font-family: var(--mono); }
+  nav .brand { display: flex; align-items: center; gap: 9px; margin-bottom: 26px; padding-right: 20px; }
+  nav .brand svg { width: 30px; height: 30px; flex: none; }
+  nav .brand b { font-family: var(--sans); font-size: .92rem; font-weight: 800; color: var(--ink); line-height: 1.1; }
+  nav .brand small { display: block; font-size: .5rem; letter-spacing: .1em; color: var(--muted); }
+  nav a { display: block; font-size: .77rem; color: var(--muted); text-decoration: none; padding: 5px 0; transition: .12s; }
+  nav a::before { content: '› '; color: var(--line); }
+  nav a:hover { color: var(--ink); }
+  nav a.active { color: var(--navy); font-weight: 700; } nav a.active::before { content: '› '; color: var(--green); }
+  nav .grp { font-size: .58rem; letter-spacing: .1em; color: var(--muted); margin: 18px 0 4px; }
+
+  main { flex: 1; max-width: 900px; padding: 0 0 120px; }
+  .inner { padding: 46px 52px 0; }
+
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+  .masthead .logo { display: flex; align-items: center; gap: 12px; }
+  .masthead .logo svg { width: 40px; height: 40px; flex: none; }
+  .masthead .logo .wm { font-weight: 800; font-size: 1.06rem; color: var(--ink); line-height: 1.15; }
+  .masthead .logo .wm-sub { font-family: var(--mono); font-size: .55rem; letter-spacing: .2em; color: var(--muted); }
+  .masthead .tagline { text-align: right; font-size: .82rem; color: var(--muted); line-height: 1.5; }
+  .masthead .tagline b { color: var(--navy); }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+  .masthead .pills span b { color: var(--green-deep); }
+
+  .kicker { font-family: var(--mono); font-size: .72rem; letter-spacing: .05em; color: var(--navy); margin-bottom: 14px; }
+  .kicker::before { content: '// '; color: var(--muted); }
+  h1 { font-weight: 800; font-size: 2.4rem; line-height: 1.16; letter-spacing: -.02em; color: var(--ink); margin-bottom: 14px; }
+  .subtitle { font-size: 1.12rem; color: var(--body); margin-bottom: 20px; line-height: 1.5; }
+  .lede { font-size: 1rem; margin-bottom: 14px; }
+
+  section { margin-top: 56px; scroll-margin-top: 20px; }
+  h2 { font-weight: 800; font-size: 1.42rem; color: var(--ink); margin-bottom: 4px; }
+  .sec-label { font-family: var(--mono); font-size: .68rem; letter-spacing: .05em; color: var(--c, var(--navy)); margin-bottom: 16px; }
+  .sec-label::before { content: '['; } .sec-label::after { content: ']'; }
+  h3 { font-size: 1.08rem; color: var(--ink); margin: 30px 0 10px; font-weight: 700; }
+  p { margin-bottom: 14px; }
+  strong { color: var(--ink); }
+  code { font-family: var(--mono); font-size: .85em; background: var(--panel2); color: var(--navy); padding: 1px 6px; border-radius: 4px; }
+  a.inline { color: var(--navy); text-decoration: none; border-bottom: 1px dotted var(--muted); }
+
+  .callout { border: 1px solid var(--line); border-left: 3px solid var(--c); background: var(--panel); border-radius: 8px; padding: 14px 17px; margin: 11px 0; font-size: .94rem; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .callout .ct { font-family: var(--mono); font-size: .68rem; color: var(--c); font-weight: 700; margin-bottom: 3px; }
+  .cgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; margin: 16px 0; }
+  .cgrid .callout { margin: 0; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .grid.g3 { grid-template-columns: 1fr 1fr 1fr; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .card .c-tag { font-family: var(--mono); font-size: .66rem; color: var(--c); margin-bottom: 7px; }
+  .card .c-tag::before { content: '▸ '; }
+  .card h4 { font-size: 1rem; color: var(--ink); font-weight: 700; margin-bottom: 4px; }
+  .card p { font-size: .87rem; color: var(--muted); margin: 0; }
+
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: .9rem; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  th { text-align: left; font-family: var(--mono); font-size: .68rem; color: #fff; background: var(--navy); padding: 10px 14px; }
+  td { padding: 11px 14px; border-bottom: 1px solid var(--grid); vertical-align: middle; }
+  tr:last-child td { border-bottom: 0; }
+  td.bad { color: var(--red); } td.good { color: var(--green-deep); }
+  td:first-child { color: var(--ink); font-weight: 600; }
+
+  .meter { margin: 0 0 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 11px 15px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .meter .mtop { display: flex; justify-content: space-between; font-size: .85rem; margin-bottom: 6px; }
+  .meter .mtop b { color: var(--ink); font-weight: 600; }
+  .meter .mtop span { font-family: var(--mono); font-size: .78rem; color: var(--c); }
+  .meter .track { height: 7px; background: var(--panel2); border-radius: 4px; overflow: hidden; }
+  .meter .fill { height: 100%; width: var(--w); background: var(--c); border-radius: 4px; }
+
+  .steps { display: grid; gap: 10px; margin: 20px 0; }
+  .step { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 13px 16px; display: flex; gap: 14px; align-items: flex-start; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .step .n { font-family: var(--mono); min-width: 30px; height: 28px; border-radius: 7px; background: var(--cbg,var(--navy-bg)); color: var(--c,var(--navy)); font-weight: 800; font-size: .8rem; display: grid; place-items: center; flex: none; padding: 0 4px; }
+  .step h4 { font-size: .96rem; color: var(--ink); font-weight: 700; margin-bottom: 1px; }
+  .step p { font-size: .87rem; color: var(--muted); margin: 0; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 7px; margin: 16px 0; }
+  .tag { font-family: var(--mono); font-size: .75rem; padding: 4px 11px; border-radius: 999px; color: var(--c); background: var(--cbg); border: 1px solid var(--c); }
+
+  /* 鍵帽 keycap（本檔情境專屬元件）*/
+  .k { font-family: var(--mono); font-size: .82em; min-width: 24px; text-align: center; background: #fff; border: 1px solid var(--line); border-bottom: 2px solid #ccd5e3; border-radius: 6px; padding: 2px 7px; color: var(--ink); display: inline-block; font-weight: 700; line-height: 1.5; }
+  .k.b { background: var(--navy); color: #fff; border-color: var(--navy-deep); border-bottom-color: #081a34; }  /* ⌘ 主角鍵 */
+  .k.g { background: var(--green); color: #fff; border-color: var(--green-deep); border-bottom-color: #1a5c32; }
+  .plus { color: var(--muted); font-size: .8em; margin: 0 2px; }
+  td .k, .krow .k { margin: 1px 0; }
+  .krow { white-space: nowrap; }
+
+  details { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; font-size: .92rem; margin: 10px 0; }
+  details summary { cursor: pointer; color: var(--ink); font-weight: 600; }
+  details p { margin-top: 10px; color: var(--muted); }
+
+  .bigquote { margin: 32px 40px; text-align: center; }
+  .bigquote .qm { font-size: 2.6rem; color: var(--navy); opacity: .2; font-weight: 800; line-height: .5; }
+  .bigquote p { font-size: 1.44rem; font-weight: 800; color: var(--ink); line-height: 1.5; margin: 10px 0 10px; }
+  .bigquote small { display: block; color: var(--muted); font-size: .9rem; }
+  .bigquote .rule { width: 42px; height: 3px; background: var(--green); border-radius: 3px; margin: 14px auto 0; }
+
+  ul.styled { list-style: none; margin: 12px 0; }
+  ul.styled li { padding: 7px 0 7px 20px; position: relative; font-size: .92rem; color: var(--body); border-bottom: 1px solid var(--grid); }
+  ul.styled li::before { content: '›'; position: absolute; left: 0; color: var(--navy); font-family: var(--mono); }
+  li b { color: var(--ink); }
+
+  .part-div { font-family: var(--mono); font-size: .66rem; letter-spacing: .1em; color: var(--muted); margin: 66px 0 24px; display: flex; align-items: center; gap: 14px; }
+  .part-div::before, .part-div::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+
+  @media (max-width: 860px) {
+    nav { display: none; }
+    .inner, .masthead { padding-left: 20px; padding-right: 20px; }
+    .grid, .cgrid { grid-template-columns: 1fr; }
+    .masthead .tagline { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>巧控鍵盤上手</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#core" class="active">00 · 一個核心心法</a>
+  <div class="grp">對照</div>
+  <a href="#mods">01 · 修飾鍵對照</a>
+  <div class="grp">快捷鍵</div>
+  <a href="#top">02 · 必背快捷鍵</a>
+  <a href="#text">03 · 打字與游標</a>
+  <div class="grp">APPLE 味</div>
+  <a href="#trackpad">04 · 觸控板手勢</a>
+  <a href="#features">05 · 好用功能</a>
+  <div class="grp">避坑 &amp; 練習</div>
+  <a href="#pitfalls">06 · Windows 老習慣的坑</a>
+  <a href="#path">07 · 小白 → 熟練</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>買機教你用</span><span>Windows 換 iPad 免緊張</span><span>終身售後諮詢</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">客戶指南 / iPad 巧控鍵盤 · 從 Windows 過來的你</div>
+    <h1>iPad 巧控鍵盤上手指南</h1>
+    <p class="subtitle">你剛拿到 iPad 的巧控鍵盤，過去只用過 Windows、沒碰過 Apple 筆電。別擔心——這份用 80/20 法則，只教最關鍵的 20%，讓你從小白快速變熟手。</p>
+    <p class="lede">整份只圍繞<strong>一個心法</strong>展開：把你熟悉的 <span class="k">Ctrl</span> 換成 <span class="k b">⌘</span>，八成快捷鍵你其實早就會了。剩下的是幾個 Apple 專屬的貼心習慣。花 10 分鐘讀完，今天就能上手。</p>
+
+    <section id="core">
+      <div class="sec-label" style="--c:var(--navy)">core_idea</div>
+      <h2>00 · 一個核心心法</h2>
+      <p>Windows 快捷鍵的靈魂是 <span class="k">Ctrl</span>：複製 <span class="k">Ctrl</span><span class="plus">+</span><span class="k">C</span>、貼上 <span class="k">Ctrl</span><span class="plus">+</span><span class="k">V</span>…。到了 iPad，這個角色換成 <span class="k b">⌘</span>（Command，指令鍵）。<strong>其他都一樣，只是把 Ctrl 改按 ⌘。</strong></p>
+
+      <div class="bigquote"><div class="qm">“</div><p>把 Ctrl 換成 ⌘，你已經會了八成。</p><small>剩下兩成，是 Apple 才有的貼心習慣——這份幫你補齊。</small><div class="rule"></div></div>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--navy)"><div class="ct">⌘ 在哪</div>就在<strong>空白鍵的左右兩側</strong>——差不多是你在 Windows 習慣按 Alt 的位置。左右各一顆，用哪顆都行。</div>
+        <div class="callout" style="--c:var(--green)"><div class="ct">神技 · 不用背</div>在任何 App 裡<strong>長按 <span class="k b">⌘</span> 不放</strong>，畫面會跳出「這個 App 的所有快捷鍵小抄」。忘了就長按它，比查 Google 快。</div>
+      </div>
+    </section>
+
+    <div class="part-div">先搞懂鍵位對照</div>
+
+    <section id="mods">
+      <div class="sec-label" style="--c:var(--teal)">modifiers</div>
+      <h2>01 · 修飾鍵對照（Windows → iPad）</h2>
+      <p>「修飾鍵」就是要搭配別的鍵一起按的那幾顆。先把這張對照記起來，後面全部通：</p>
+      <table>
+        <tr><th>你想做的</th><th>Windows 你按</th><th>iPad 巧控鍵盤按</th></tr>
+        <tr><td>大部分快捷鍵</td><td class="krow"><span class="k">Ctrl</span></td><td class="krow"><span class="k b">⌘</span> Command（主角）</td></tr>
+        <tr><td>次要選項 / 特殊符號</td><td class="krow"><span class="k">Alt</span></td><td class="krow"><span class="k">⌥</span> Option</td></tr>
+        <tr><td>大寫 / 加選</td><td class="krow"><span class="k">Shift</span></td><td class="krow"><span class="k">⇧</span> Shift（一樣）</td></tr>
+        <tr><td>少數系統操作</td><td class="krow"><span class="k">Ctrl</span></td><td class="krow"><span class="k">⌃</span> Control（少用）</td></tr>
+        <tr><td>切換中英 / 表情符號</td><td class="krow">—</td><td class="krow"><span class="k">🌐</span> 地球鍵</td></tr>
+      </table>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">最容易搞混的一點</div>Windows 的 <span class="k">Ctrl</span> 在 iPad <strong>不是</strong>那顆 <span class="k">⌃</span> Control，而是 <span class="k b">⌘</span>。iPad 上的 <span class="k">⌃</span> Control 很少用，別被名字騙了。</div>
+    </section>
+
+    <div class="part-div">80/20 快捷鍵</div>
+
+    <section id="top">
+      <div class="sec-label" style="--c:var(--green)">essentials</div>
+      <h2>02 · 必背快捷鍵（這排就夠九成場景）</h2>
+      <p>下面每一個，<strong>都和 Windows 一模一樣，只是 Ctrl 改按 ⌘</strong>。先把這排練熟，你就脫離小白了。</p>
+      <table>
+        <tr><th>動作</th><th>iPad 按鍵</th><th>Windows 對照</th></tr>
+        <tr><td>複製</td><td class="krow"><span class="k b">⌘</span><span class="plus">+</span><span class="k">C</span></td><td class="krow"><span class="k">Ctrl</span><span class="plus">+</span><span class="k">C</span></td></tr>
+        <tr><td>貼上</td><td class="krow"><span class="k b">⌘</span><span class="plus">+</span><span class="k">V</span></td><td class="krow"><span class="k">Ctrl</span><span class="plus">+</span><span class="k">V</span></td></tr>
+        <tr><td>剪下</td><td class="krow"><span class="k b">⌘</span><span class="plus">+</span><span class="k">X</span></td><td class="krow"><span class="k">Ctrl</span><span class="plus">+</span><span class="k">X</span></td></tr>
+        <tr><td>復原（做錯了救回來）</td><td class="krow"><span class="k b">⌘</span><span class="plus">+</span><span class="k">Z</span></td><td class="krow"><span class="k">Ctrl</span><span class="plus">+</span><span class="k">Z</span></td></tr>
+        <tr><td>重做</td><td class="krow"><span class="k b">⌘</span><span class="plus">+</span><span class="k">⇧</span><span class="plus">+</span><span class="k">Z</span></td><td class="krow"><span class="k">Ctrl</span><span class="plus">+</span><span class="k">Y</span></td></tr>
+        <tr><td>全選</td><td class="krow"><span class="k b">⌘</span><span class="plus">+</span><span class="k">A</span></td><td class="krow"><span class="k">Ctrl</span><span class="plus">+</span><span class="k">A</span></td></tr>
+        <tr><td>存檔</td><td class="krow"><span class="k b">⌘</span><span class="plus">+</span><span class="k">S</span></td><td class="krow"><span class="k">Ctrl</span><span class="plus">+</span><span class="k">S</span></td></tr>
+        <tr><td>在頁面內找字</td><td class="krow"><span class="k b">⌘</span><span class="plus">+</span><span class="k">F</span></td><td class="krow"><span class="k">Ctrl</span><span class="plus">+</span><span class="k">F</span></td></tr>
+      </table>
+
+      <h3>這三個是 iPad 專屬、但超好用</h3>
+      <table>
+        <tr><th>動作</th><th>iPad 按鍵</th><th>類似 Windows 的…</th></tr>
+        <tr><td>切換 App（跳到上一個）</td><td class="krow"><span class="k b">⌘</span><span class="plus">+</span><span class="k">Tab</span></td><td class="krow"><span class="k">Alt</span><span class="plus">+</span><span class="k">Tab</span></td></tr>
+        <tr><td>回主畫面（桌面）</td><td class="krow"><span class="k b">⌘</span><span class="plus">+</span><span class="k">H</span></td><td class="krow"><span class="k">⊞ Win</span><span class="plus">+</span><span class="k">D</span></td></tr>
+        <tr><td>萬用搜尋（開 App、找東西）</td><td class="krow"><span class="k b">⌘</span><span class="plus">+</span><span class="k">Space</span></td><td class="krow">開始功能表搜尋</td></tr>
+      </table>
+      <div class="callout" style="--c:var(--green)"><div class="ct">先練這個就好</div>把上面兩張表貼在螢幕邊、用個一兩天，其餘的想到再查（<span class="k b">⌘</span> 長按叫小抄）。<strong>不用一次背完</strong>——這就是 80/20。</div>
+    </section>
+
+    <section id="text">
+      <div class="sec-label" style="--c:var(--purple)">typing</div>
+      <h2>03 · 打字與游標移動（沒有 Home / End 的解法）</h2>
+      <p>Windows 用戶最容易卡在這：巧控鍵盤<strong>沒有 Home、End、PageUp/Down，也沒有向前刪除鍵</strong>。別找了，Apple 用組合鍵取代，其實更順：</p>
+      <table>
+        <tr><th>你想做的</th><th>iPad 按鍵</th><th>（Windows 舊習慣）</th></tr>
+        <tr><td>游標一次跳一個字（詞）</td><td class="krow"><span class="k">⌥</span><span class="plus">+</span><span class="k">←</span> / <span class="k">→</span></td><td class="krow"><span class="k">Ctrl</span><span class="plus">+</span><span class="k">←→</span></td></tr>
+        <tr><td>跳到行首 / 行尾</td><td class="krow"><span class="k b">⌘</span><span class="plus">+</span><span class="k">←</span> / <span class="k">→</span></td><td class="krow"><span class="k">Home</span> / <span class="k">End</span></td></tr>
+        <tr><td>跳到文件最上 / 最下</td><td class="krow"><span class="k b">⌘</span><span class="plus">+</span><span class="k">↑</span> / <span class="k">↓</span></td><td class="krow"><span class="k">Ctrl</span><span class="plus">+</span><span class="k">Home/End</span></td></tr>
+        <tr><td>一次刪一整個詞</td><td class="krow"><span class="k">⌥</span><span class="plus">+</span><span class="k">⌫</span></td><td class="krow"><span class="k">Ctrl</span><span class="plus">+</span><span class="k">Backspace</span></td></tr>
+        <tr><td>選取（配任何上面的移動）</td><td class="krow">加按 <span class="k">⇧</span></td><td class="krow"><span class="k">Shift</span><span class="plus">+</span>移動</td></tr>
+      </table>
+      <div class="callout" style="--c:var(--teal)"><div class="ct">規律，不是死背</div>移動的邏輯：<span class="k">⌥</span>＝<strong>跳一個詞</strong>、<span class="k b">⌘</span>＝<strong>跳到底（行首尾／文件頭尾）</strong>。想「選起來」就多壓一顆 <span class="k">⇧</span>。三顆排列組合，全部搞定。</div>
+    </section>
+
+    <div class="part-div">Apple 的貼心習慣</div>
+
+    <section id="trackpad">
+      <div class="sec-label" style="--c:var(--navy)">trackpad</div>
+      <h2>04 · 觸控板手勢（巧控鍵盤的隱藏武器）</h2>
+      <p>巧控鍵盤下方有一塊<strong>觸控板</strong>，不用一直伸手戳螢幕。手勢和 Mac 筆電一樣，記這幾個就順：</p>
+      <div class="steps">
+        <div class="step" style="--c:var(--navy);--cbg:var(--navy-bg)"><div class="n">1指</div><div><h4>移動 · 點按</h4><p>單指滑動移動游標；按一下＝點擊。游標是個小圓點。</p></div></div>
+        <div class="step" style="--c:var(--teal);--cbg:var(--teal-bg)"><div class="n">2指</div><div><h4>捲動 · 右鍵 · 縮放</h4><p>兩指上下滑＝捲動頁面；兩指點一下＝右鍵選單；兩指開合＝放大縮小。</p></div></div>
+        <div class="step" style="--c:var(--green);--cbg:var(--green-bg)"><div class="n">3指</div><div><h4>切 App · 回桌面</h4><p>三指往上滑＝回主畫面；三指左右滑＝切換前後開的 App。</p></div></div>
+      </div>
+      <div class="callout" style="--c:var(--green)"><div class="ct">你會愛上的小細節</div>游標移到按鈕或文字附近時，會<strong>自動「吸」上去</strong>變形——不用像滑鼠那樣精準對準。這是 iPad 游標的貼心設計。</div>
+    </section>
+
+    <section id="features">
+      <div class="sec-label" style="--c:var(--amber)">apple_habits</div>
+      <h2>05 · 蘋果用戶都在用的好功能</h2>
+      <p>這些不是快捷鍵，是「習慣」——學會了，你用起來就像老手：</p>
+      <div class="grid">
+        <div class="card" style="--c:var(--navy)"><div class="c-tag">萬用入口 · ⌘Space</div><h4>Spotlight 搜尋</h4><p>按 <span class="k b">⌘</span><span class="plus">+</span><span class="k">Space</span>，打幾個字就能開 App、找檔案、<strong>直接算數學</strong>（打 12*8）、查匯率、查單位。老手很少回桌面找 icon。</p></div>
+        <div class="card" style="--c:var(--teal)"><div class="c-tag">動口不動手</div><h4>語音聽寫</h4><p>按 <span class="k">🌐</span> 地球鍵（或鍵盤上的麥克風），直接說話就變文字。打長訊息超快。</p></div>
+        <div class="card" style="--c:var(--green)"><div class="c-tag">自動幫你</div><h4>自動修正 · 預測字</h4><p>打錯會自動修、還會猜你下個字。順著它按，速度更快。</p></div>
+        <div class="card" style="--c:var(--purple)"><div class="c-tag">⌘⇧3</div><h4>截圖即標註</h4><p>按 <span class="k b">⌘</span><span class="plus">+</span><span class="k">⇧</span><span class="plus">+</span><span class="k">3</span> 截圖，左下角縮圖點一下就能直接畫重點、傳給客服。</p></div>
+      </div>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">一個習慣抵十個快捷鍵</div>養成「想做什麼就先按 <span class="k b">⌘</span><span class="plus">+</span><span class="k">Space</span>」的反射——找 App、找設定、算東西都從這裡開始。這是 Apple 老手和新手最大的差別。</div>
+    </section>
+
+    <div class="part-div">避坑 &amp; 練習</div>
+
+    <section id="pitfalls">
+      <div class="sec-label" style="--c:var(--red)">gotchas</div>
+      <h2>06 · Windows 老習慣的坑</h2>
+      <p>這幾個是 Windows 肌肉記憶會踩到的雷，先知道就不會慌：</p>
+      <table>
+        <tr><th>你可能會找…</th><th>其實 iPad 這樣</th></tr>
+        <tr><td class="bad">Ctrl+Alt+Del 關當掉的 App</td><td class="good">三指往上滑叫出 App 卡片 → 把那張往上撥掉</td></tr>
+        <tr><td class="bad">Alt+Tab 切視窗</td><td class="good">改成 <span class="k b">⌘</span><span class="plus">+</span><span class="k">Tab</span>（Alt 換成 ⌘）</td></tr>
+        <tr><td class="bad">Delete 想往前刪字</td><td class="good"><span class="k">⌫</span> 是往<strong>左</strong>刪；沒有內建往前刪，用方向鍵移過去再刪</td></tr>
+        <tr><td class="bad">找 Esc 鍵（有些款式沒有）</td><td class="good">按 <span class="k b">⌘</span><span class="plus">+</span><span class="k">.</span>（句號）當 Esc</td></tr>
+        <tr><td class="bad">找關機 / 鎖定鍵</td><td class="good">鍵盤上沒有；用 iPad 機身頂端的電源鍵</td></tr>
+      </table>
+      <details>
+        <summary>進階：切換中英文輸入法怎麼按？</summary>
+        <p>按左下角 <span class="k">🌐</span> 地球鍵循環切換；若你的款式沒有地球鍵，用 <span class="k">⌃</span> Control<span class="plus">+</span><span class="k">Space</span>。長按地球鍵可挑特定輸入法。</p>
+      </details>
+    </section>
+
+    <section id="path">
+      <div class="sec-label" style="--c:var(--green)">practice</div>
+      <h2>07 · 小白 → 熟練 練習路徑</h2>
+      <p>照這三階段走，不用貪多。每個階段練順了再往下：</p>
+      <div class="steps">
+        <div class="step" style="--c:var(--navy);--cbg:var(--navy-bg)"><div class="n">D1</div><div><h4>第 1 天 · 脫離小白</h4><p>只練這排：<span class="k b">⌘</span> 的 C/V/X/Z、<span class="k b">⌘</span><span class="plus">+</span><span class="k">Tab</span> 切 App、<span class="k b">⌘</span><span class="plus">+</span><span class="k">H</span> 回桌面、<span class="k b">⌘</span><span class="plus">+</span><span class="k">Space</span> 搜尋。</p></div></div>
+        <div class="step" style="--c:var(--teal);--cbg:var(--teal-bg)"><div class="n">W1</div><div><h4>第 1 週 · 開始順手</h4><p>加上 <span class="k">⌥</span>/<span class="k b">⌘</span><span class="plus">+</span>方向鍵移動游標、觸控板三指手勢、忘記就長按 <span class="k b">⌘</span> 看小抄。</p></div></div>
+        <div class="step" style="--c:var(--green);--cbg:var(--green-bg)"><div class="n">PRO</div><div><h4>變熟手</h4><p>把 Spotlight 當萬用入口、用聽寫打字、<span class="k b">⌘</span><span class="plus">+</span><span class="k">⇧</span><span class="plus">+</span><span class="k">3</span> 截圖標註，各 App 再長按 <span class="k b">⌘</span> 學專屬快捷。</p></div></div>
+      </div>
+
+      <h3>你現在的熟練度（照上面練，會一路往上）</h3>
+      <div class="meter" style="--c:var(--navy);--w:40%"><div class="mtop"><b>第 1 天：必背快捷排</b><span>脫離小白 ~40%</span></div><div class="track"><div class="fill"></div></div></div>
+      <div class="meter" style="--c:var(--teal);--w:75%"><div class="mtop"><b>第 1 週：游標 + 手勢</b><span>順手 ~75%</span></div><div class="track"><div class="fill"></div></div></div>
+      <div class="meter" style="--c:var(--green);--w:95%"><div class="mtop"><b>熟手：Apple 習慣上身</b><span>~95%</span></div><div class="track"><div class="fill"></div></div></div>
+
+      <div class="bigquote"><div class="qm">”</div><p>忘記任何一個快捷鍵，就長按 ⌘。記不住整份，只要記住：Ctrl 換 ⌘。</p><small>有任何 iPad 使用問題，隨時找果果國際客服——買機教你用，終身售後諮詢。</small><div class="rule"></div></div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">下一步</div>現在就打開任何一個 App，長按 <span class="k b">⌘</span> 看看小抄跳出來——這一下，你就開始變熟手了。</div>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+</script>
+</body>
+</html>
