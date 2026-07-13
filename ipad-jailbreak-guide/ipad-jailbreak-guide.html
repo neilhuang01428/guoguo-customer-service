@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>iPad 越獄完整說明：是什麼、還能不能、要注意什麼 · 果果國際</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  :root {
+    --bg: #f6f8fb; --panel: #ffffff; --panel2: #f0f3f8; --line: #e2e8f0; --grid: #edf1f6;
+    --ink: #16223a; --body: #45506a; --muted: #8590a6;
+    --navy: #17345f;   --navy-deep: #0f2547; --navy-bg: #eef2f8;
+    --green: #2f9e57;  --green-deep: #237a43; --green-bg: #eaf5ee;
+    --amber: #b47d1e;  --amber-bg: #f8f0dc;
+    --red: #c0492f;    --red-bg: #fbeae5;
+    --teal: #1c8a9a;   --teal-bg: #e3f3f4;
+    --purple: #7150c9; --purple-bg: #efeafb;
+    --mono: 'SF Mono','JetBrains Mono','Menlo','Consolas',monospace;
+    --sans: 'Noto Sans TC',-apple-system,BlinkMacSystemFont,'Segoe UI','Inter',sans-serif;
+  }
+  body { background: var(--bg); color: var(--body); font-family: var(--sans); display: flex; min-height: 100vh; line-height: 1.72; -webkit-font-smoothing: antialiased; }
+  #progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--green); z-index: 99; transition: width .1s; }
+
+  nav { width: 244px; min-width: 244px; background: #fff; border-right: 1px solid var(--line); padding: 30px 0 30px 22px; position: sticky; top: 0; height: 100vh; overflow-y: auto; font-family: var(--mono); }
+  nav .brand { display: flex; align-items: center; gap: 9px; margin-bottom: 26px; padding-right: 20px; }
+  nav .brand svg { width: 30px; height: 30px; flex: none; }
+  nav .brand b { font-family: var(--sans); font-size: .92rem; font-weight: 800; color: var(--ink); line-height: 1.1; }
+  nav .brand small { display: block; font-size: .5rem; letter-spacing: .1em; color: var(--muted); }
+  nav a { display: block; font-size: .77rem; color: var(--muted); text-decoration: none; padding: 5px 0; transition: .12s; }
+  nav a::before { content: '› '; color: var(--line); }
+  nav a:hover { color: var(--ink); }
+  nav a.active { color: var(--navy); font-weight: 700; } nav a.active::before { content: '› '; color: var(--green); }
+  nav .grp { font-size: .58rem; letter-spacing: .1em; color: var(--muted); margin: 18px 0 4px; }
+
+  main { flex: 1; max-width: 900px; padding: 0 0 120px; }
+  .inner { padding: 46px 52px 0; }
+
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+  .masthead .logo { display: flex; align-items: center; gap: 12px; }
+  .masthead .logo svg { width: 40px; height: 40px; flex: none; }
+  .masthead .logo .wm { font-weight: 800; font-size: 1.06rem; color: var(--ink); line-height: 1.15; }
+  .masthead .logo .wm-sub { font-family: var(--mono); font-size: .55rem; letter-spacing: .2em; color: var(--muted); }
+  .masthead .tagline { text-align: right; font-size: .82rem; color: var(--muted); line-height: 1.5; }
+  .masthead .tagline b { color: var(--navy); }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+  .masthead .pills span b { color: var(--green-deep); }
+
+  .kicker { font-family: var(--mono); font-size: .72rem; letter-spacing: .05em; color: var(--navy); margin-bottom: 14px; }
+  .kicker::before { content: '// '; color: var(--muted); }
+  h1 { font-weight: 800; font-size: 2.4rem; line-height: 1.16; letter-spacing: -.02em; color: var(--ink); margin-bottom: 14px; }
+  .subtitle { font-size: 1.12rem; color: var(--body); margin-bottom: 20px; line-height: 1.5; }
+  .lede { font-size: 1rem; margin-bottom: 14px; }
+
+  section { margin-top: 56px; scroll-margin-top: 20px; }
+  h2 { font-weight: 800; font-size: 1.42rem; color: var(--ink); margin-bottom: 4px; }
+  .sec-label { font-family: var(--mono); font-size: .68rem; letter-spacing: .05em; color: var(--c, var(--navy)); margin-bottom: 16px; }
+  .sec-label::before { content: '['; } .sec-label::after { content: ']'; }
+  h3 { font-size: 1.08rem; color: var(--ink); margin: 30px 0 10px; font-weight: 700; }
+  p { margin-bottom: 14px; }
+  strong { color: var(--ink); }
+  code { font-family: var(--mono); font-size: .85em; background: var(--panel2); color: var(--navy); padding: 1px 6px; border-radius: 4px; }
+  a.inline { color: var(--navy); text-decoration: none; border-bottom: 1px dotted var(--muted); }
+
+  .callout { border: 1px solid var(--line); border-left: 3px solid var(--c); background: var(--panel); border-radius: 8px; padding: 14px 17px; margin: 11px 0; font-size: .94rem; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .callout .ct { font-family: var(--mono); font-size: .68rem; color: var(--c); font-weight: 700; margin-bottom: 3px; }
+  .cgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; margin: 16px 0; }
+  .cgrid .callout { margin: 0; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .grid.g3 { grid-template-columns: 1fr 1fr 1fr; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .card .c-tag { font-family: var(--mono); font-size: .66rem; color: var(--c); margin-bottom: 7px; }
+  .card .c-tag::before { content: '▸ '; }
+  .card h4 { font-size: 1rem; color: var(--ink); font-weight: 700; margin-bottom: 4px; }
+  .card p { font-size: .87rem; color: var(--muted); margin: 0; }
+
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: .9rem; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  th { text-align: left; font-family: var(--mono); font-size: .68rem; color: #fff; background: var(--navy); padding: 10px 14px; }
+  td { padding: 11px 14px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  td.bad { color: var(--red); } td.good { color: var(--green-deep); }
+  td:first-child { color: var(--ink); font-weight: 600; }
+
+  .meter { margin: 0 0 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 11px 15px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .meter .mtop { display: flex; justify-content: space-between; font-size: .85rem; margin-bottom: 6px; }
+  .meter .mtop b { color: var(--ink); font-weight: 600; }
+  .meter .mtop span { font-family: var(--mono); font-size: .78rem; color: var(--c); }
+  .meter .track { height: 7px; background: var(--panel2); border-radius: 4px; overflow: hidden; }
+  .meter .fill { height: 100%; width: var(--w); background: var(--c); border-radius: 4px; }
+
+  .steps { display: grid; gap: 10px; margin: 20px 0; }
+  .step { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 13px 16px; display: flex; gap: 14px; align-items: flex-start; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .step .n { font-family: var(--mono); min-width: 30px; height: 28px; border-radius: 7px; background: var(--cbg,var(--navy-bg)); color: var(--c,var(--navy)); font-weight: 800; font-size: .8rem; display: grid; place-items: center; flex: none; padding: 0 4px; }
+  .step h4 { font-size: .96rem; color: var(--ink); font-weight: 700; margin-bottom: 1px; }
+  .step p { font-size: .87rem; color: var(--muted); margin: 0; }
+
+  .stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin: 24px 0; }
+  .stat { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px 14px; text-align: center; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .stat .num { font-family: var(--mono); font-size: 1.6rem; font-weight: 800; color: var(--c); line-height: 1.05; }
+  .stat .lab { font-size: .72rem; color: var(--muted); margin-top: 7px; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 7px; margin: 16px 0; }
+  .tag { font-family: var(--mono); font-size: .75rem; padding: 4px 11px; border-radius: 999px; color: var(--c); background: var(--cbg); border: 1px solid var(--c); }
+
+  details { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; font-size: .92rem; margin: 10px 0; }
+  details summary { cursor: pointer; color: var(--ink); font-weight: 600; }
+  details p { margin-top: 10px; color: var(--muted); }
+
+  .bigquote { margin: 32px 40px; text-align: center; }
+  .bigquote .qm { font-size: 2.6rem; color: var(--navy); opacity: .2; font-weight: 800; line-height: .5; }
+  .bigquote p { font-size: 1.32rem; font-weight: 800; color: var(--ink); line-height: 1.5; margin: 10px 0 10px; }
+  .bigquote small { display: block; color: var(--muted); font-size: .9rem; }
+  .bigquote .rule { width: 42px; height: 3px; background: var(--green); border-radius: 3px; margin: 14px auto 0; }
+
+  ul.styled { list-style: none; margin: 12px 0; }
+  ul.styled li { padding: 7px 0 7px 20px; position: relative; font-size: .92rem; color: var(--body); border-bottom: 1px solid var(--grid); }
+  ul.styled li::before { content: '›'; position: absolute; left: 0; color: var(--navy); font-family: var(--mono); }
+  li b { color: var(--ink); }
+
+  /* 紅旗清單（本檔情境專屬：防詐騙）*/
+  ul.flags { list-style: none; margin: 14px 0; }
+  ul.flags li { padding: 10px 0 10px 32px; position: relative; font-size: .93rem; color: var(--body); border-bottom: 1px solid var(--grid); }
+  ul.flags li::before { content: '🚩'; position: absolute; left: 0; top: 8px; font-size: .95rem; }
+  ul.flags li b { color: var(--red); }
+
+  /* 影片參考卡（本檔情境專屬）*/
+  /* 影片預覽卡（縮圖 → 點擊就地播放 / 開 YouTube）*/
+  .vlite { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(20,39,68,.04); margin: 0 0 16px; }
+  .vlite .thumb { position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; background: #0f2547; text-decoration: none; }
+  .vlite .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; border: 0; }
+  .vlite .thumb .pbtn { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 66px; height: 46px; border-radius: 12px; background: rgba(193,73,47,.94); display: grid; place-items: center; box-shadow: 0 4px 14px rgba(0,0,0,.35); transition: .14s; }
+  .vlite .thumb:hover .pbtn { background: rgba(193,73,47,1); transform: translate(-50%,-50%) scale(1.06); }
+  .vlite .thumb .pbtn::before { content: ''; width: 0; height: 0; border-style: solid; border-width: 9px 0 9px 16px; border-color: transparent transparent transparent #fff; margin-left: 3px; }
+  .vlite .thumb .yt { position: absolute; right: 10px; bottom: 9px; font-family: var(--mono); font-size: .58rem; color: #fff; background: rgba(0,0,0,.55); padding: 2px 7px; border-radius: 4px; }
+  .vlite iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; }
+  .vlite .cap { padding: 12px 16px; }
+  .vlite .cap b { color: var(--ink); font-size: .92rem; font-weight: 700; display: block; line-height: 1.4; }
+  .vlite .cap small { color: var(--muted); font-size: .8rem; display: block; margin-top: 3px; }
+  .vlite .cap .ch { color: var(--navy); font-family: var(--mono); font-size: .68rem; }
+
+  /* CSS 圖示 figure */
+  figure.fig { margin: 22px 0; background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 20px 18px 14px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  figure.fig figcaption { font-size: .84rem; color: var(--body); text-align: center; margin-top: 14px; line-height: 1.6; }
+  figure.fig figcaption b { color: var(--ink); }
+
+  /* 晶片分水嶺光譜 */
+  .spectrum { display: flex; align-items: stretch; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); }
+  .spectrum .seg { flex: 1; padding: 13px 14px; text-align: center; }
+  .spectrum .seg small { display: block; font-size: .68rem; color: var(--muted); margin: 5px 0; line-height: 1.45; }
+  .spectrum .seg b { display: block; font-size: .95rem; margin-top: 4px; }
+  .spectrum .seg.old { background: var(--amber-bg); } .spectrum .seg.old b { color: var(--amber); }
+  .spectrum .seg.new { background: var(--red-bg); } .spectrum .seg.new b { color: var(--red); }
+  .spectrum .divider { flex: 0 0 auto; display: grid; place-items: center; padding: 0 14px; background: var(--navy); color: #fff; font-family: var(--mono); font-size: .58rem; text-align: center; line-height: 1.3; }
+
+  .sources { font-size: .82rem; color: var(--muted); line-height: 1.9; }
+  .sources a { color: var(--navy); text-decoration: none; border-bottom: 1px dotted var(--muted); word-break: break-all; }
+
+  .updated { font-family: var(--mono); font-size: .68rem; color: var(--muted); margin-top: 10px; }
+  .updated b { color: var(--amber); }
+
+  .part-div { font-family: var(--mono); font-size: .66rem; letter-spacing: .1em; color: var(--muted); margin: 66px 0 24px; display: flex; align-items: center; gap: 14px; }
+  .part-div::before, .part-div::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+
+  @media (max-width: 860px) {
+    nav { display: none; }
+    .inner, .masthead { padding-left: 20px; padding-right: 20px; }
+    .grid, .cgrid, .stats { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .masthead .tagline { display: none; }
+    .bigquote { margin: 28px 4px; }
+    .spectrum { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>認識 iPad 越獄</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#verdict" class="active">00 · 30 秒結論</a>
+  <div class="grp">先搞懂觀念</div>
+  <a href="#what">01 · 越獄是什麼</a>
+  <a href="#confuse">02 · 三個常搞混的詞</a>
+  <div class="grp">還做得到嗎</div>
+  <a href="#can">03 · 你的 iPad 還能越獄嗎</a>
+  <a href="#do">04 · 越獄能做什麼</a>
+  <div class="grp">代價與陷阱</div>
+  <a href="#risk">05 · 風險與代價</a>
+  <a href="#scam">06 · 假越獄、真詐騙</a>
+  <div class="grp">安全出路</div>
+  <a href="#safe">07 · 不越獄的安全做法</a>
+  <a href="#advice">08 · 給果果客戶的建議</a>
+  <a href="#sources">來源與更新日期</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>買機教你用，也告訴你什麼別做</div>
+      </div>
+      <div class="pills"><span>誠實揭露</span><span>不含糊、講清楚風險</span><span>終身售後諮詢</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">客戶指南 / iPad 越獄完整說明</div>
+    <h1>iPad 越獄，一次搞懂</h1>
+    <p class="subtitle">「越獄」聽起來很酷、很萬能，好像能解鎖 iPad 的隱藏功能。但先別急——這篇用最白話的方式，幫你把「越獄到底是什麼、你的機器還做不做得到、值不值得、以及網路上那些教學為什麼多半是詐騙」一次講清楚。</p>
+    <p class="lede">先給你一句實話：<strong>對今天絕大多數的一般使用者，答案是「不必越獄」</strong>。原因有三——新機根本做不到、舊機做了也不划算、而且網路上八成的「一鍵越獄」是詐騙。你真正想要的效果，多半用官方功能就能安全達成。這篇會逐一告訴你為什麼。</p>
+
+    <section id="verdict">
+      <div class="sec-label" style="--c:var(--navy)">verdict</div>
+      <h2>00 · 30 秒結論（趕時間看這段就好）</h2>
+      <div class="bigquote"><div class="qm">“</div><p>越獄以前能解決的痛點，Apple 這幾年幾乎都自己補上了。<br>你想要的九成，用官方功能＋合法側載就能做——而且不掉保固。</p><small>下面是四個數字，看完你大概就知道該不該碰。</small><div class="rule"></div></div>
+      <div class="stats">
+        <div class="stat" style="--c:var(--red)"><div class="num">A10X↓</div><div class="lab">可越獄 iPad 的晶片天花板——要這個或更舊（約 2017 年前）才有機會</div></div>
+        <div class="stat" style="--c:var(--red)"><div class="num">0</div><div class="lab">近幾年新機＋現行 iPadOS 的公開越獄工具數量</div></div>
+        <div class="stat" style="--c:var(--amber)"><div class="num">拒保</div><div class="lab">越獄違反授權，Apple「得拒絕維修服務」</div></div>
+        <div class="stat" style="--c:var(--green)"><div class="num">免越獄</div><div class="lab">換圖示、裝官方沒有的 App…多半有合法做法</div></div>
+      </div>
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">如果你是一般人</div>幾乎可以直接關掉這頁了——你想做的事，第 07、08 節有<strong>不用越獄、不掉保固</strong>的安全做法。</div>
+        <div class="callout" style="--c:var(--purple)"><div class="ct">如果你就是想搞懂 / 想玩</div>往下讀。重點在第 03 節（你的機器還做不做得到）和第 06 節（怎麼不被詐騙騙）。</div>
+      </div>
+    </section>
+
+    <div class="part-div">先搞懂觀念</div>
+
+    <section id="what">
+      <div class="sec-label" style="--c:var(--teal)">concept</div>
+      <h2>01 · 越獄（Jailbreak）到底是什麼</h2>
+      <p>用一句白話講：<strong>越獄就是把 Apple 原廠上的「安全鎖」撬開，拿到系統的最高權限</strong>，讓你能安裝官方 App Store 不准的東西——像是第三方軟體商店（Cydia／Sileo）、系統層外掛（tweak）、換整套主題字型、直接翻系統檔案等。Apple 官方把它定義為「對 iOS 未經授權的修改」，會繞過內建的安全防護。</p>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">一個好記的比喻</div>你的 iPad 出廠就像一間<strong>精裝套房</strong>：Apple 給你的鑰匙能開大門、用得很舒服，但很多櫃子、機房、電箱是<strong>鎖死</strong>的（為了安全）。越獄＝把所有鎖通通打開，你能改任何東西——但那套「保全系統」也被你一起拆掉了。方便，是用安全換來的。</div>
+      <details>
+        <summary>進階：現在的越獄和以前的「Cydia 時代」不太一樣</summary>
+        <p>2024–2026 的越獄多是「rootless（無根）」型：一樣拿到系統最高權限、逃出沙盒，但不會寫入唯讀的系統根目錄，能改的東西比早年 Cydia 全盛期更受限。簡單說——就算真的越獄成功，你能玩的花樣也不如網路老文章講得那麼神。</p>
+      </details>
+    </section>
+
+    <section id="confuse">
+      <div class="sec-label" style="--c:var(--teal)">clarify</div>
+      <h2>02 · 三個最常被搞混的詞</h2>
+      <p>很多人說「我要越獄」，其實想做的根本不是越獄。先把這三個分清楚，你可能會發現<strong>自己根本不用越獄</strong>：</p>
+      <table>
+        <tr><th>名詞</th><th>其實是在做什麼</th><th>合法嗎</th><th>一句話</th></tr>
+        <tr><td>越獄 Jailbreak</td><td>撬開系統限制，裝官方不准的軟體／外掛</td><td class="bad">違反授權、風險自負</td><td>這篇在講的東西</td></tr>
+        <tr><td>解鎖 SIM（解網路鎖）</td><td>讓「鎖定某電信商」的機器能插別家 SIM 卡</td><td>另一套程序、與越獄無關</td><td>常被誤叫成越獄，其實兩回事</td></tr>
+        <tr><td>改 App Store 地區</td><td>換 Apple 帳號的「國家設定」，去下別區 App</td><td class="good">官方設定就能做、完全合法</td><td>想下大陸剪映／抖音？只要這個！</td></tr>
+      </table>
+      <div class="callout" style="--c:var(--green)"><div class="ct">最常見的誤會</div>「我想越獄來裝大陸版抖音／剪映」——<strong>不用！</strong>那只需要在設定裡「改 App Store 地區」，是 Apple 官方就允許的功能，跟越獄完全無關。做法我們另有一篇專門的教學，安全又不掉保固。</div>
+    </section>
+
+    <div class="part-div">還做得到嗎</div>
+
+    <section id="can">
+      <div class="sec-label" style="--c:var(--red)">feasibility</div>
+      <h2>03 · 你的 iPad 現在還能越獄嗎？（先查這個再說）</h2>
+      <p>這是最關鍵、也最多人不知道的一點：<strong>能不能越獄，幾乎完全取決於你的 iPad「晶片型號 ＋ iPadOS 版本」</strong>，跟你願不願意、肯不肯花錢無關。近幾年的機型，是「想越也越不了」。</p>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">一句話抓重點</div>目前最可靠的越獄工具（palera1n）靠的是一個<strong>燒在晶片裡、Apple 無法用軟體修補的漏洞（checkm8）</strong>。這個漏洞只存在於 <strong>A11 世代及更舊的晶片</strong>；換算成 iPad，大約是 <strong>A10X（含）以前</strong>的老機型。A12 世代（2018 年起）之後，Apple 已經把這個洞補掉了。</div>
+
+      <figure class="fig">
+        <div class="spectrum">
+          <div class="seg old">A8 – A10X<small>iPad mini 4／Air 2／第 5–7 代／Pro 第 1–2 代（約 2017 前）</small><b>有機會越獄</b></div>
+          <div class="divider">A11 / A12<br>分水嶺</div>
+          <div class="seg new">A12 – M 系列<small>Air 3 起／第 8 代起／mini 5 起／所有 M 系列（近幾年主流機）</small><b>基本不行</b></div>
+        </div>
+        <figcaption>越獄靠的是燒在舊晶片裡、Apple 補不掉的漏洞——<b>晶片越新，越不可能</b>。你的 iPad 落在左邊，才有機會。</figcaption>
+      </figure>
+
+      <div class="grid">
+        <div class="card" style="--c:var(--amber)"><div class="c-tag">有機會（老／退役機）</div><h4>A10X 及更舊，才可能越獄</h4><p>iPad mini 4、iPad Air 2、iPad 第 5／6／7 代、iPad Pro 第 1／2 代（9.7"／10.5"／12.9"）。而且多半是「半越獄」，重開機就失效、要再接電腦。</p></div>
+        <div class="card" style="--c:var(--red)"><div class="c-tag">基本不行（近幾年主流機）</div><h4>A12 世代起＋所有 M 系列，沒有公開越獄</h4><p>iPad Air 3 起、iPad 第 8 代起、iPad mini 5 起、所有 2018 年後的 iPad Pro、iPad Air 4／5、以及全部 M 系列 iPad。現行 iPadOS 上目前無解。</p></div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">連「有機會」的舊機，代價也很大</div>就算你的是可越獄的 A11 以前老機，越獄後往往<strong>被迫關掉螢幕鎖定密碼</strong>——連帶失去 Face ID／Touch ID 和 Apple Pay。等於為了玩越獄，日常安全與便利先賠一半。</div>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">⚠️ 高度時效性警告（最容易被詐騙站利用）</div>2026 年 6 月有研究者揭露一個新的晶片漏洞「usbliter8」，把「無法軟體修補」的範圍延伸到 A12／A13。<strong>但它目前只是「概念驗證」</strong>——需要實體接觸、外接專用硬體，<strong>不是一般人能用的「一鍵越獄」</strong>。這塊變動非常快，詐騙站最愛拿它當噱頭喊「A12 也能輕鬆越獄了！」。看到這種話，直接當作警訊。真實狀況請以工具開發者的官方頁面為準（見文末來源）。</div>
+      <p class="updated">本節查證時間：<b>2026 年 7 月</b>。越獄可行性會隨每次 iPadOS 更新與新漏洞而變動，請以工具官方頁最新資訊為準。</p>
+    </section>
+
+    <section id="do">
+      <div class="sec-label" style="--c:var(--purple)">what_for</div>
+      <h2>04 · 越獄能做什麼？——而且官方其實早就能做</h2>
+      <p>越獄過去之所以吸引人，是因為它能做很多「原廠不給」的事。但關鍵在於：<strong>這些需求，Apple 這幾年幾乎都用官方功能補上了</strong>。來看對照：</p>
+      <table>
+        <tr><th>以前「要越獄」才能做的事</th><th>現在不越獄、合法就能做</th></tr>
+        <tr><td>換 App 圖示、換整套主題</td><td class="good">用官方「捷徑」App 自訂圖示，桌布主題直接內建</td></tr>
+        <tr><td>桌面放小工具、自由排版</td><td class="good">iPadOS 內建主畫面小工具、資料夾、App 資料庫</td></tr>
+        <tr><td>依情境自動切靜音／換桌布</td><td class="good">內建「專注模式」＋自動化就能做</td></tr>
+        <tr><td>裝 App Store 沒有的 App</td><td class="good">用 AltStore「合法側載」（見第 07 節），歐盟還有官方第三方商店</td></tr>
+        <tr><td>系統深層外掛、翻系統檔案</td><td class="bad">這才是越獄「還」能、官方不給的部分——但也是風險最大、最不建議一般人碰的部分</td></tr>
+      </table>
+      <div class="callout" style="--c:var(--purple)"><div class="ct">一句點破</div>你會想越獄，通常是為了「某個具體效果」。先問自己：<strong>那個效果，官方或 AltStore 是不是已經能做？</strong>九成的情況，答案是「能」——那就沒必要冒險。</div>
+    </section>
+
+    <div class="part-div">代價與陷阱</div>
+
+    <section id="risk">
+      <div class="sec-label" style="--c:var(--red)">risk</div>
+      <h2>05 · 代價與風險（越獄前一定要知道）</h2>
+      <p>越獄不是「多一個功能」這麼單純，它是<strong>拿掉一整層安全防護</strong>換來的。四個最實際的代價：</p>
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--red)"><div class="ct">🔓 安全性</div>拆掉防護後，惡意程式有機可乘，<strong>可能被偷密碼、照片</strong>。而且<strong>銀行、行動支付、部分 App 一偵測到越獄就拒絕開啟</strong>。（真實案例：KeyRaider 惡意程式曾從約 <strong>22.5 萬台</strong>越獄裝置竊取 Apple ID 帳密。）</div>
+        <div class="callout" style="--c:var(--red)"><div class="ct">🧱 變磚（brick）</div>操作失敗、或日後不小心更新系統，<strong>可能讓 iPad 永久開不了機</strong>。越獄後也無法正常線上（OTA）更新，等於被卡在舊版本。</div>
+        <div class="callout" style="--c:var(--amber)"><div class="ct">🛡 保固</div>越獄違反 iOS／iPadOS 軟體授權協議，Apple 官方明文「<strong>得拒絕</strong>為安裝未授權軟體的裝置提供服務」。就果果的保固而言，越獄視同人為改機、<strong>可能影響保固</strong>，實際仍以保固條款為準。</div>
+        <div class="callout" style="--c:var(--amber)"><div class="ct">🔋 穩定與耗電</div>系統容易變得<strong>不穩、當機、更快沒電</strong>，資料也可能遺失。日常使用體驗反而變差。</div>
+      </div>
+      <h3>對一般人來說，風險與效益長這樣</h3>
+      <div class="meter" style="--c:var(--red);--w:88%"><div class="mtop"><b>風險（安全／變磚／掉保固）</b><span>高</span></div><div class="track"><div class="fill"></div></div></div>
+      <div class="meter" style="--c:var(--amber);--w:22%"><div class="mtop"><b>效益（官方＋AltStore 沒能做的部分）</b><span>對一般人很低</span></div><div class="track"><div class="fill"></div></div></div>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">最有力的一句話</div>連<strong>越獄工具自己的官方文件</strong>都白紙黑字寫著：「<strong>對資料遺失或裝置變磚概不負責，使用者須自行承擔全部風險</strong>。」——做這工具的人都叫你自負後果了，值得你想一下。</div>
+    </section>
+
+    <section id="scam">
+      <div class="sec-label" style="--c:var(--red)">scam</div>
+      <h2>06 · ⚠️ 假越獄、真詐騙（保護你的荷包與帳號）</h2>
+      <p>你只要搜尋「iPad 越獄」，一定會跳出一堆「免電腦、一鍵越獄、支援所有機型」的教學和網站。<strong>這些絕大多數是詐騙或早就過時的內容。</strong>記住下面這張「紅旗檢查表」，看到就閃：</p>
+      <ul class="flags">
+        <li><b>宣稱「免電腦、開個網頁就能越獄」</b>——真越獄幾乎都要「接電腦、跑開源工具」。純網頁一鍵＝假。</li>
+        <li><b>宣稱「支援所有機型、所有 iOS 版本通用」</b>——根本沒有這種萬用漏洞。每個版本的越獄工具名字都不一樣。</li>
+        <li><b>要你「安裝描述檔（Profile）」或到瀏覽器狂裝一堆 App</b>——多半是幫對方衝下載量或植入惡意設定。</li>
+        <li><b>要你「線上輸入 Apple ID 帳號密碼」或「先付費解鎖」</b>——這是釣魚，帳號會被盜、錢會被騙。</li>
+        <li><b>還在叫你用「unc0ver」這種舊工具</b>——那只到 iOS 14，拿來對新機宣傳就是唬人。</li>
+      </ul>
+      <div class="callout" style="--c:var(--green)"><div class="ct">怎麼分辨真的？</div>真正的越獄工具（如 palera1n、Dopamine）都是在<strong>官方 GitHub 開源</strong>、在社群（如 Reddit 的 r/jailbreak）公開討論，<strong>絕不會叫你交出 Apple ID 密碼或先付錢</strong>。</div>
+      <div class="callout" style="--c:var(--red)"><div class="ct">收到「幫你越獄」的私訊？</div>不管是社群、賴群還是拍賣，只要有人主動說能「幫你遠端越獄／解鎖」，<strong>直接封鎖</strong>。這在二手 3C 圈是常見的騙術。有疑慮，先問果果客服。</div>
+    </section>
+
+    <div class="part-div">安全出路</div>
+
+    <section id="safe">
+      <div class="sec-label" style="--c:var(--green)">safe_way</div>
+      <h2>07 · 不越獄，也能達成的安全做法</h2>
+      <p>把大家「想越獄的理由」拆開來看，其實都有官方、不掉保固的替代方案：</p>
+      <div class="steps">
+        <div class="step" style="--c:var(--navy);--cbg:var(--navy-bg)"><div class="n">A</div><div><h4>想換 App 圖示、換風格 → 用「捷徑」App</h4><p>官方「捷徑」App 就能自訂 LINE、FB、IG 等圖示和名稱，完全免越獄。網路上一搜「捷徑 自訂圖示」有一堆繁中教學。</p></div></div>
+        <div class="step" style="--c:var(--teal);--cbg:var(--teal-bg)"><div class="n">B</div><div><h4>想要桌面更彈性 → 小工具＋專注模式</h4><p>主畫面放小工具、用「專注模式」依上班／睡覺自動切換通知與桌布，這些都是 iPadOS 內建功能。</p></div></div>
+        <div class="step" style="--c:var(--green);--cbg:var(--green-bg)"><div class="n">C</div><div><h4>想裝官方商店沒有的 App → AltStore「合法側載」</h4><p>AltStore 是專為「沒越獄」的 iPad 設計的替代商店，用<strong>你自己的 Apple ID</strong> 幫 App 重新簽章安裝，屬合法機制、不是越獄。</p></div></div>
+      </div>
+      <details>
+        <summary>AltStore 的實際眉角（先知道再決定要不要用）</summary>
+        <p>用免費 Apple ID 的話：每個 App 的憑證約<strong>每 7 天要重新簽一次</strong>、最多同時裝 3 個側載 App，且需要搭配電腦端的 AltServer。它的分支「SideStore」可免電腦；歐盟地區另有官方認證的「AltStore PAL」。對一般人來說，這些限制有點麻煩，但比起越獄的風險，安全太多了。</p>
+      </details>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">關於「描述檔（Profile）」</div>描述檔本身有正當用途（公司 MDM 管理、開發測試）。但如果是<strong>陌生教學叫你安裝來路不明的描述檔</strong>，請一律拒絕——這正是詐騙最常用的入口。</div>
+    </section>
+
+    <section id="advice">
+      <div class="sec-label" style="--c:var(--navy)">advice</div>
+      <h2>08 · 給果果客戶的誠實建議（分情境）</h2>
+      <p>不同人適不適合，差很多。對號入座就好：</p>
+      <table>
+        <tr><th>你是哪一種</th><th>建議</th><th>為什麼</th></tr>
+        <tr><td>一般使用者<br>（主力機、有存個資、綁行動支付）</td><td class="bad">不建議越獄</td><td>風險遠大於效益。你想要的效果，捷徑＋AltStore＋內建功能幾乎都能做，還不掉保固。</td></tr>
+        <tr><td>就是想玩、想搞懂的玩家</td><td class="good">只在「舊／退役機」上玩</td><td>拿一台 A11 以前、<strong>非主力、不放重要資料</strong>的舊 iPad 當實驗品，玩壞了也不心疼。</td></tr>
+        <tr><td>家裡有台舊 iPad 退役了</td><td class="good">可以拿來玩，但守規矩</td><td>當實驗機沒問題，但一樣<strong>別放個資、別綁行動支付</strong>，並先有「可能變磚」的心理準備。</td></tr>
+      </table>
+      <div class="bigquote"><div class="qm">”</div><p>越獄前先問自己一句：<br>「我想要的功能，是不是官方或 AltStore 就能做？」<br>九成的答案是——能。</p><small>有任何 iPad 使用問題，或不確定手上機器能不能／該不該動，隨時找果果國際客服。買機教你用，終身售後諮詢。保固期內我們也建議別越獄，以免影響保固權益。</small><div class="rule"></div></div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label" style="--c:var(--muted)">sources</div>
+      <h2>來源與更新日期</h2>
+      <p class="updated">本文查證與撰寫：<b>2026 年 7 月</b>。越獄領域變動極快、詐騙資訊極多，若你看到的網路資訊與本文不同，請以下方官方來源的最新版本為準，或直接問果果客服。</p>
+      <p class="sources">
+        主要查證來源（皆為官方或權威一手／資安來源）：<br>
+        · Apple 官方〈Unauthorized modification of iOS〉<a class="inline" href="https://support.apple.com/guide/iphone/unauthorized-modification-of-ios-iph9385bb26a/ios">support.apple.com</a>（越獄定義、風險、拒絕服務）<br>
+        · palera1n 官方文件與相容表 <a class="inline" href="https://docs.palera.in/docs/reference/compatibility-chart/">docs.palera.in</a> ／ <a class="inline" href="https://github.com/palera1n/palera1n">github.com/palera1n</a>（支援晶片範圍、免責聲明）<br>
+        · Dopamine 官方 <a class="inline" href="https://github.com/opa334/Dopamine">github.com/opa334/Dopamine</a>（軟體越獄支援版本上限）<br>
+        · iClarified 越獄現況 <a class="inline" href="https://www.iclarified.com/jailbreak">iclarified.com/jailbreak</a>（新機無公開越獄）<br>
+        · 9to5Mac：usbliter8 新漏洞（2026-06-18）<a class="inline" href="https://9to5mac.com/2026/06/18/new-unpatchable-exploit-targets-apple-devices-with-a12-and-a13-chips/">9to5mac.com</a><br>
+        · AltStore 官方 <a class="inline" href="https://altstore.io">altstore.io</a>（免越獄合法側載）<br>
+        · Ivon 的部落格〈假越獄，真詐騙〉<a class="inline" href="https://ivonblog.com/posts/scam-ios-jailbreak-tutorials/">ivonblog.com</a> ／ The Apple Wiki 詐騙列表 <a class="inline" href="https://theapplewiki.com/wiki/Scam_Jailbreaks_and_Unlocks">theapplewiki.com</a>（防詐重點）
+      </p>
+
+      <h3>延伸觀看（YouTube 參考）</h3>
+      <p style="font-size:.9rem;color:var(--muted)">提供作參考；越獄類影片<strong>特別容易過時或夾帶詐騙</strong>，看的時候請對照上面第 06 節的紅旗檢查表，別照著陌生影片交出帳密或裝描述檔。</p>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=ExKJhFtUEkc" target="_blank" rel="noopener" data-yt="ExKJhFtUEkc" aria-label="播放：iPad iPhone 無根越獄 palera1n 安裝 Sileo">
+          <img loading="lazy" src="https://i.ytimg.com/vi/ExKJhFtUEkc/hqdefault.jpg" alt="" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>iPad &amp; iPhone 無根越獄／完成 palera1n 安裝、使用 Sileo</b><small><span class="ch">頻道：卡門滑鼠</span> · 2023/12 · 繁中實作，示範現在的越獄長什麼樣</small><small>提醒：palera1n 只支援 A8–A11 舊機，你的新機大概不適用——先看第 03 節確認。</small></div>
+      </div>
+      <div class="callout" style="--c:var(--amber);margin-top:14px"><div class="ct">為什麼影片給得少</div>因為誠實——真正可靠、又適用近年機型的中文越獄教學其實非常少（因為新機根本越不了獄）。與其塞一堆可能有問題的影片給你，我們寧可把「怎麼不被騙」講清楚。</div>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>

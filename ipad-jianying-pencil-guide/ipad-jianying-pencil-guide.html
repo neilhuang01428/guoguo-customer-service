@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>iPad 剪映／CapCut 搭 Apple Pencil，真能提升剪片效率嗎？· 果果國際</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  :root {
+    --bg: #f6f8fb; --panel: #ffffff; --panel2: #f0f3f8; --line: #e2e8f0; --grid: #edf1f6;
+    --ink: #16223a; --body: #45506a; --muted: #8590a6;
+    --navy: #17345f;   --navy-deep: #0f2547; --navy-bg: #eef2f8;
+    --green: #2f9e57;  --green-deep: #237a43; --green-bg: #eaf5ee;
+    --amber: #b47d1e;  --amber-bg: #f8f0dc;
+    --red: #c0492f;    --red-bg: #fbeae5;
+    --teal: #1c8a9a;   --teal-bg: #e3f3f4;
+    --purple: #7150c9; --purple-bg: #efeafb;
+    --mono: 'SF Mono','JetBrains Mono','Menlo','Consolas',monospace;
+    --sans: 'Noto Sans TC',-apple-system,BlinkMacSystemFont,'Segoe UI','Inter',sans-serif;
+  }
+  body { background: var(--bg); color: var(--body); font-family: var(--sans); display: flex; min-height: 100vh; line-height: 1.72; -webkit-font-smoothing: antialiased; }
+  #progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--green); z-index: 99; transition: width .1s; }
+
+  nav { width: 244px; min-width: 244px; background: #fff; border-right: 1px solid var(--line); padding: 30px 0 30px 22px; position: sticky; top: 0; height: 100vh; overflow-y: auto; font-family: var(--mono); }
+  nav .brand { display: flex; align-items: center; gap: 9px; margin-bottom: 26px; padding-right: 20px; }
+  nav .brand svg { width: 30px; height: 30px; flex: none; }
+  nav .brand b { font-family: var(--sans); font-size: .92rem; font-weight: 800; color: var(--ink); line-height: 1.1; }
+  nav .brand small { display: block; font-size: .5rem; letter-spacing: .1em; color: var(--muted); }
+  nav a { display: block; font-size: .77rem; color: var(--muted); text-decoration: none; padding: 5px 0; transition: .12s; }
+  nav a::before { content: '› '; color: var(--line); }
+  nav a:hover { color: var(--ink); }
+  nav a.active { color: var(--navy); font-weight: 700; } nav a.active::before { content: '› '; color: var(--green); }
+  nav .grp { font-size: .58rem; letter-spacing: .1em; color: var(--muted); margin: 18px 0 4px; }
+
+  main { flex: 1; max-width: 900px; padding: 0 0 120px; }
+  .inner { padding: 46px 52px 0; }
+
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+  .masthead .logo { display: flex; align-items: center; gap: 12px; }
+  .masthead .logo svg { width: 40px; height: 40px; flex: none; }
+  .masthead .logo .wm { font-weight: 800; font-size: 1.06rem; color: var(--ink); line-height: 1.15; }
+  .masthead .logo .wm-sub { font-family: var(--mono); font-size: .55rem; letter-spacing: .2em; color: var(--muted); }
+  .masthead .tagline { text-align: right; font-size: .82rem; color: var(--muted); line-height: 1.5; }
+  .masthead .tagline b { color: var(--navy); }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+  .masthead .pills span b { color: var(--green-deep); }
+
+  .kicker { font-family: var(--mono); font-size: .72rem; letter-spacing: .05em; color: var(--navy); margin-bottom: 14px; }
+  .kicker::before { content: '// '; color: var(--muted); }
+  h1 { font-weight: 800; font-size: 2.28rem; line-height: 1.16; letter-spacing: -.02em; color: var(--ink); margin-bottom: 14px; }
+  .subtitle { font-size: 1.12rem; color: var(--body); margin-bottom: 20px; line-height: 1.5; }
+  .lede { font-size: 1rem; margin-bottom: 14px; }
+
+  section { margin-top: 56px; scroll-margin-top: 20px; }
+  h2 { font-weight: 800; font-size: 1.42rem; color: var(--ink); margin-bottom: 4px; }
+  .sec-label { font-family: var(--mono); font-size: .68rem; letter-spacing: .05em; color: var(--c, var(--navy)); margin-bottom: 16px; }
+  .sec-label::before { content: '['; } .sec-label::after { content: ']'; }
+  h3 { font-size: 1.08rem; color: var(--ink); margin: 30px 0 10px; font-weight: 700; }
+  p { margin-bottom: 14px; }
+  strong { color: var(--ink); }
+  code { font-family: var(--mono); font-size: .85em; background: var(--panel2); color: var(--navy); padding: 1px 6px; border-radius: 4px; }
+  a.inline { color: var(--navy); text-decoration: none; border-bottom: 1px dotted var(--muted); }
+
+  .callout { border: 1px solid var(--line); border-left: 3px solid var(--c); background: var(--panel); border-radius: 8px; padding: 14px 17px; margin: 11px 0; font-size: .94rem; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .callout .ct { font-family: var(--mono); font-size: .68rem; color: var(--c); font-weight: 700; margin-bottom: 3px; }
+  .cgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; margin: 16px 0; }
+  .cgrid .callout { margin: 0; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .grid.g3 { grid-template-columns: 1fr 1fr 1fr; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .card .c-tag { font-family: var(--mono); font-size: .66rem; color: var(--c); margin-bottom: 7px; }
+  .card .c-tag::before { content: '▸ '; }
+  .card h4 { font-size: 1rem; color: var(--ink); font-weight: 700; margin-bottom: 4px; }
+  .card p { font-size: .87rem; color: var(--muted); margin: 0; }
+
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: .9rem; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  th { text-align: left; font-family: var(--mono); font-size: .68rem; color: #fff; background: var(--navy); padding: 10px 14px; }
+  td { padding: 11px 14px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  td.bad { color: var(--red); } td.good { color: var(--green-deep); }
+  td:first-child { color: var(--ink); font-weight: 600; }
+  td .star { color: var(--amber); font-family: var(--mono); letter-spacing: 1px; }
+
+  .meter { margin: 0 0 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 11px 15px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .meter .mtop { display: flex; justify-content: space-between; font-size: .85rem; margin-bottom: 6px; }
+  .meter .mtop b { color: var(--ink); font-weight: 600; }
+  .meter .mtop span { font-family: var(--mono); font-size: .78rem; color: var(--c); }
+  .meter .track { height: 7px; background: var(--panel2); border-radius: 4px; overflow: hidden; }
+  .meter .fill { height: 100%; width: var(--w); background: var(--c); border-radius: 4px; }
+
+  .steps { display: grid; gap: 10px; margin: 20px 0; }
+  .step { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 13px 16px; display: flex; gap: 14px; align-items: flex-start; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .step .n { font-family: var(--mono); min-width: 30px; height: 28px; border-radius: 7px; background: var(--cbg,var(--navy-bg)); color: var(--c,var(--navy)); font-weight: 800; font-size: .8rem; display: grid; place-items: center; flex: none; padding: 0 4px; }
+  .step h4 { font-size: .96rem; color: var(--ink); font-weight: 700; margin-bottom: 1px; }
+  .step p { font-size: .87rem; color: var(--muted); margin: 0; }
+
+  .stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin: 24px 0; }
+  .stat { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px 14px; text-align: center; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .stat .num { font-family: var(--mono); font-size: 1.5rem; font-weight: 800; color: var(--c); line-height: 1.05; }
+  .stat .lab { font-size: .72rem; color: var(--muted); margin-top: 7px; }
+
+  details { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; font-size: .92rem; margin: 10px 0; }
+  details summary { cursor: pointer; color: var(--ink); font-weight: 600; }
+  details p { margin-top: 10px; color: var(--muted); }
+
+  .bigquote { margin: 32px 40px; text-align: center; }
+  .bigquote .qm { font-size: 2.6rem; color: var(--navy); opacity: .2; font-weight: 800; line-height: .5; }
+  .bigquote p { font-size: 1.28rem; font-weight: 800; color: var(--ink); line-height: 1.5; margin: 10px 0 10px; }
+  .bigquote small { display: block; color: var(--muted); font-size: .9rem; }
+  .bigquote .rule { width: 42px; height: 3px; background: var(--green); border-radius: 3px; margin: 14px auto 0; }
+
+  ul.styled { list-style: none; margin: 12px 0; }
+  ul.styled li { padding: 7px 0 7px 20px; position: relative; font-size: .92rem; color: var(--body); border-bottom: 1px solid var(--grid); }
+  ul.styled li::before { content: '›'; position: absolute; left: 0; color: var(--navy); font-family: var(--mono); }
+  li b { color: var(--ink); }
+
+  /* 影片預覽卡（縮圖 → 點擊就地播放 / 開 YouTube）*/
+  .vlite { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(20,39,68,.04); margin: 0 0 16px; }
+  .vlite .thumb { position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; background: #0f2547; text-decoration: none; }
+  .vlite .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; border: 0; }
+  .vlite .thumb .pbtn { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 66px; height: 46px; border-radius: 12px; background: rgba(193,73,47,.94); display: grid; place-items: center; box-shadow: 0 4px 14px rgba(0,0,0,.35); transition: .14s; }
+  .vlite .thumb:hover .pbtn { background: rgba(193,73,47,1); transform: translate(-50%,-50%) scale(1.06); }
+  .vlite .thumb .pbtn::before { content: ''; width: 0; height: 0; border-style: solid; border-width: 9px 0 9px 16px; border-color: transparent transparent transparent #fff; margin-left: 3px; }
+  .vlite .thumb .yt { position: absolute; right: 10px; bottom: 9px; font-family: var(--mono); font-size: .58rem; color: #fff; background: rgba(0,0,0,.55); padding: 2px 7px; border-radius: 4px; }
+  .vlite iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; }
+  .vlite .cap { padding: 12px 16px; }
+  .vlite .cap b { color: var(--ink); font-size: .92rem; font-weight: 700; display: block; line-height: 1.4; }
+  .vlite .cap small { color: var(--muted); font-size: .8rem; display: block; margin-top: 3px; }
+  .vlite .cap .ch { color: var(--navy); font-family: var(--mono); font-size: .68rem; }
+
+  /* CSS 圖示 figure */
+  figure.fig { margin: 22px 0; background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 20px 18px 14px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  figure.fig figcaption { font-size: .84rem; color: var(--body); text-align: center; margin-top: 14px; line-height: 1.6; }
+  figure.fig figcaption b { color: var(--ink); }
+  .flow { display: flex; align-items: stretch; justify-content: center; gap: 10px; flex-wrap: wrap; }
+  .flow .box { flex: 1; min-width: 128px; border: 1px solid var(--line); border-radius: 10px; padding: 14px 12px; text-align: center; background: var(--cbg, #fff); }
+  .flow .box .bi { font-size: 1.7rem; line-height: 1; }
+  .flow .box .bt { font-family: var(--mono); font-size: .6rem; color: var(--muted); margin-top: 8px; letter-spacing: .03em; }
+  .flow .box .bv { font-size: .92rem; color: var(--ink); font-weight: 700; margin-top: 3px; line-height: 1.4; }
+  .flow .box small { display: block; font-size: .76rem; margin-top: 5px; color: var(--muted); }
+  .flow .arr { display: grid; place-items: center; color: var(--muted); font-family: var(--mono); font-size: 1rem; flex: 0 0 auto; }
+
+  .sources { font-size: .82rem; color: var(--muted); line-height: 1.9; }
+  .sources a { color: var(--navy); text-decoration: none; border-bottom: 1px dotted var(--muted); word-break: break-all; }
+
+  .updated { font-family: var(--mono); font-size: .68rem; color: var(--muted); margin-top: 10px; }
+  .updated b { color: var(--amber); }
+
+  .part-div { font-family: var(--mono); font-size: .66rem; letter-spacing: .1em; color: var(--muted); margin: 66px 0 24px; display: flex; align-items: center; gap: 14px; }
+  .part-div::before, .part-div::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+
+  @media (max-width: 860px) {
+    nav { display: none; }
+    .inner, .masthead { padding-left: 20px; padding-right: 20px; }
+    .grid, .cgrid, .stats { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .masthead .tagline { display: none; }
+    .bigquote { margin: 28px 4px; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>剪片要買筆嗎</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#verdict" class="active">00 · 一句話結論</a>
+  <div class="grp">為什麼</div>
+  <a href="#why">01 · 筆為何不是「神器」</a>
+  <a href="#good">02 · 筆真正好用的地方</a>
+  <a href="#bad">03 · 筆幫不上、反而卡的地方</a>
+  <div class="grp">選購前提</div>
+  <a href="#compat">04 · 你的 iPad 配哪支筆</a>
+  <a href="#vs">05 · 原廠 vs 副廠</a>
+  <div class="grp">結論</div>
+  <a href="#who">06 · 你該買嗎（分眾）</a>
+  <a href="#sources">來源 / 影片 / 更新日期</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>該買什麼、不用買什麼，都跟你講實話</div>
+      </div>
+      <div class="pills"><span>誠實揭露</span><span>不推銷、幫你買對</span><span>終身售後諮詢</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">客戶指南 / iPad 剪映・CapCut 搭 Apple Pencil</div>
+    <h1>剪片要不要買 Apple Pencil？</h1>
+    <p class="subtitle">很多人買 iPad 是為了剪影片，順手就想「那要不要也買支 Apple Pencil，剪起來會不會更快？」這篇不推銷、講實話，幫你搞懂 Apple Pencil 在剪映／CapCut 裡到底幫不幫得上忙、以及你這台 iPad 該配哪支筆。</p>
+    <p class="lede">先給你誠實的一句：對「純剪片」來說，Apple Pencil 是<strong>錦上添花的精修小幫手，不是必需品</strong>。只想剪 vlog 的人，手指其實就很順；真正讓筆發光的，是「在畫面上手寫、畫重點、做手繪」。下面用具體例子跟圖表，幫你判斷值不值得。</p>
+
+    <section id="verdict">
+      <div class="sec-label" style="--c:var(--navy)">verdict</div>
+      <h2>00 · 一句話結論（看這段就懂）</h2>
+      <div class="bigquote"><div class="qm">"</div><p>只想剪 vlog，別為了剪片特地買筆——手指就很順。<br>會在畫面上手寫、畫重點、做手繪，筆才真的划算。<br>而且「剪片用途」買副廠就夠了。</p><small>下面四個重點，看完你大概就有答案。</small><div class="rule"></div></div>
+      <div class="stats">
+        <div class="stat" style="--c:var(--amber)"><div class="num">小幅 ↑</div><div class="lab">純剪 vlog，筆帶來的效率提升</div></div>
+        <div class="stat" style="--c:var(--green)"><div class="num">手繪 ★</div><div class="lab">手寫／畫重點／手繪動畫，才是筆的主場</div></div>
+        <div class="stat" style="--c:var(--teal)"><div class="num">副廠 OK</div><div class="lab">純剪片用途，副廠磁吸筆通常就夠、CP 值高</div></div>
+        <div class="stat" style="--c:var(--navy)"><div class="num">通常 1 款</div><div class="lab">你的 iPad 一般只相容其中「一款」筆，別買錯</div></div>
+      </div>
+    </section>
+
+    <div class="part-div">為什麼</div>
+
+    <section id="why">
+      <div class="sec-label" style="--c:var(--teal)">why_not_magic</div>
+      <h2>01 · 為什麼 Apple Pencil 不是「剪片神器」</h2>
+      <p>因為剪映／CapCut 這類 App，天生是<strong>「手指優先」設計的</strong>——修剪、分割、重新排列片段，都是用觸控手勢完成，用手指又快又直覺。CapCut 官方的 iPad 教學，講的也是觸控手勢。</p>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">最關鍵的一個卡點（一定要懂）</div>剪片時最常做的動作之一是「<strong>把時間軸放大縮小</strong>」（放大才能看清楚每一格、精準下刀）。而這個動作<strong>一定要用「兩根手指捏合」</strong>——但 Apple Pencil <strong>只有一個筆尖</strong>，物理上做不到雙指縮放。結果就是：純用一支筆剪片，你會一直「<strong>放下筆用手縮放 → 再拿起筆精修</strong>」來回切換，反而多一道工。</div>
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">🤏</div><div class="bt">縮放時間軸</div><div class="bv">要「兩指」捏合</div><small style="color:var(--green-deep)">手指做得到 ✓</small></div>
+          <div class="arr">vs</div>
+          <div class="box" style="--cbg:var(--red-bg)"><div class="bi">🖊️</div><div class="bt">Apple Pencil</div><div class="bv">只有「一個」筆尖</div><small style="color:var(--red)">捏合做不到 ✗</small></div>
+        </div>
+        <figcaption>這就是「純用一支筆剪片會卡」的根源：一遇到縮放，就得<b>放下筆、用手</b>，再拿起筆——多一道切換。</figcaption>
+      </figure>
+      <div class="callout" style="--c:var(--teal)"><div class="ct">連 CapCut 官方都這樣說</div>CapCut 官方把 Apple Pencil 列為「解決精準選取」的方法之一，理由是「<strong>像素級精準、減少手掌誤觸</strong>」——注意，是為了「<strong>點得更準</strong>」，不是為了壓感畫圖。而且官方把它跟「藍牙滑鼠／觸控板」<strong>並列</strong>，也就是說——用滑鼠一樣能達到同樣的精準，筆並不是唯一解。</div>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">⚠️ 時效性註記（2026）</div>2026 年 5 月起有了原生的「<strong>CapCut Pad</strong>」iPad App，重寫了觸控介面並支援 Apple Pencil。所以「CapCut 在 iPad 上按鈕太小、容易點錯」這種舊描述，主要指的是<strong>舊版（iPhone 相容模式）</strong>。用哪個版本，體驗會有差，可留意自己裝的是哪一版。</div>
+    </section>
+
+    <section id="good">
+      <div class="sec-label" style="--c:var(--green)">where_it_helps</div>
+      <h2>02 · Apple Pencil 真正好用的地方</h2>
+      <p>筆的價值在「<strong>需要筆尖精準的小動作</strong>」——手指指腹太粗容易點錯的地方，筆就派上用場。越往下，加分越多：</p>
+      <table>
+        <tr><th>場景</th><th>手指的痛點</th><th>筆的好處</th><th>加分</th></tr>
+        <tr><td>精準對齊剪輯點</td><td>放大到影格級時，指腹容易點錯半秒</td><td>筆尖細，抓「這一格切下去」比較準</td><td><span class="star">★★★</span></td></tr>
+        <tr><td>關鍵影格微調</td><td>拖動位置／縮放的微幅調整容易手抖</td><td>筆較穩，能做更小幅度的位移</td><td><span class="star">★★★★</span></td></tr>
+        <tr><td>畫面上移動／縮放物件</td><td>單點精準定位小控制點很費事</td><td>精準點選、微移對齊</td><td><span class="star">★★★</span></td></tr>
+        <tr><td>遮罩（蒙版）邊緣調整</td><td>圓形／線性遮罩的控制點很小</td><td>筆尖點控制點準很多</td><td><span class="star">★★★★</span></td></tr>
+        <tr><td>字幕、貼紙定位</td><td>小貼紙要精準對齊費事</td><td>拖到定位更俐落</td><td><span class="star">★★☆</span></td></tr>
+        <tr><td>塗鴉筆／手寫／畫箭頭畫重點</td><td>手指畫線會抖、畫不細</td><td>寫字畫線自然，可做手繪動畫</td><td><span class="star">★★★★★</span></td></tr>
+      </table>
+      <div class="callout" style="--c:var(--green)"><div class="ct">筆的「主場」在這裡</div>如果你想在影片上<strong>手寫字、畫箭頭圈重點、做逐格手繪動畫</strong>（像教學影片、開箱重點標註），這是 Apple Pencil 唯一「非它不可」的場景——用手指根本畫不出那種細緻。<strong>剪映的「塗鴉筆」藏在「貼紙」面板裡</strong>（很多人找不到），搭 Apple Pencil 最好用。</div>
+      <details>
+        <summary>小提醒：剪片幾乎用不到「壓感」</summary>
+        <p>Apple Pencil 有些型號有「壓力感應」（下筆重、線就粗），但那主要在 Procreate 這種畫圖 App 才有意義。<strong>剪映／CapCut 剪片的過程——拖時間軸、拉關鍵影格、移物件——都不看壓力</strong>。所以「有沒有壓感」對純剪片影響很小，買筆時不用為了剪片糾結這點。（這段屬一般使用觀察，非官方逐條保證。）</p>
+      </details>
+    </section>
+
+    <section id="bad">
+      <div class="sec-label" style="--c:var(--red)">where_it_doesnt</div>
+      <h2>03 · 筆幫不上、甚至反而更卡的地方</h2>
+      <p>誠實也要講反面。這些情況，筆沒有優勢、甚至更麻煩：</p>
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--red)"><div class="ct">雙指縮放時間軸</div>筆做不到（要兩個接觸點），一定得放下筆用手——這是最常見的「多一道切換」。</div>
+        <div class="callout" style="--c:var(--red)"><div class="ct">快速來回預覽、大量點播放</div>手指更快更直覺，筆沒優勢。</div>
+        <div class="callout" style="--c:var(--amber)"><div class="ct">雙指／三指手勢</div>復原、重做、快速選取這些手勢，筆無法取代。</div>
+        <div class="callout" style="--c:var(--amber)"><div class="ct">懸停、雙擊換工具、壓感</div>這些 Apple Pencil 特性在剪映／CapCut 剪片流程裡幾乎用不到，等於白買。</div>
+      </div>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">最順的姿勢：筆＋手一起用</div>不是「只用筆」，也不是「只用手」，而是<strong>慣用手拿筆做精修、另一手用手指負責縮放和播放</strong>——雙手並用，才是 iPad 剪片最順的方式。</div>
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">🤚</div><div class="bt">另一手 · 手指</div><div class="bv">縮放時間軸</div><small>播放預覽 · 手勢復原</small></div>
+          <div class="arr">＋</div>
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">✍️</div><div class="bt">慣用手 · 拿筆</div><div class="bv">精準對齊剪輯點</div><small>拉關鍵影格 · 手寫畫重點</small></div>
+        </div>
+        <figcaption>最順的不是「只用筆」，而是<b>筆＋手一起用</b>，各司其職。</figcaption>
+      </figure>
+      <div class="callout" style="--c:var(--purple)"><div class="ct">想真的「大幅提速」？其實是這個</div>對認真剪片的人，投資「<strong>外接鍵盤＋快捷鍵</strong>」的效益，往往比買一支筆更大。想更專業，Final Cut Pro for iPad 對 Apple Pencil 的整合（用筆掠過時間軸、Live Drawing 手繪）和鍵盤快捷鍵，都遠比剪映／CapCut 完整。</div>
+    </section>
+
+    <div class="part-div">選購前提</div>
+
+    <section id="compat">
+      <div class="sec-label" style="--c:var(--amber)">compatibility</div>
+      <h2>04 · 先確認：你的 iPad 配哪一支筆？</h2>
+      <p>Apple Pencil 目前有<strong>四款</strong>，而<strong>同一台 iPad 通常只相容其中一款</strong>，買錯就不能用。最快的判斷法是「看你的 iPad 長怎樣」：</p>
+      <table>
+        <tr><th>你的 iPad</th><th>該配這款筆</th><th>特色 / 價位</th></tr>
+        <tr><td>舊款、底部是 Lightning 孔<br><small style="color:var(--muted)">iPad 6～9 代、Air 3、mini 5、舊 iPad Pro…</small></td><td>Apple Pencil <b>一代</b></td><td>尾端拔蓋插孔充電・約 US$99</td></tr>
+        <tr><td>筆能「吸」在機身側邊<br><small style="color:var(--muted)">iPad Air 4／5、mini 6、2018–2022 iPad Pro…</small></td><td>Apple Pencil <b>二代</b></td><td>側邊磁吸無線充・約 US$129</td></tr>
+        <tr><td>入門 iPad 10（USB-C）</td><td>Apple Pencil <b>USB-C 版</b><br>（或一代＋轉接頭）</td><td class="bad">最便宜約 US$79，但<strong>無壓感、無雙擊</strong>、磁吸只收納不充電</td></tr>
+        <tr><td>2024 年後的新機<br><small style="color:var(--muted)">M4 iPad Pro、M2 起 iPad Air、A17 Pro iPad mini</small></td><td>Apple Pencil <b>Pro</b><br>（或 USB-C 版）</td><td>最強・約 US$129・含擠壓／觸覺回饋／Find My</td></tr>
+      </table>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">買前務必先對機型</div>四款筆的相容清單<strong>互不重疊</strong>，同一台通常只吃一款。特別注意：<strong>USB-C 版是四款裡最陽春的</strong>（沒壓感、沒雙擊）。不確定你的福利機該配哪支，<strong>問果果客服，我們幫你查</strong>，別買錯白花錢。</div>
+      <p class="updated">機型／相容清單查證於 <b>2026 年 7 月</b>，會隨 Apple 推出新 iPad 而增加，以 Apple 官方相容頁為準。</p>
+    </section>
+
+    <section id="vs">
+      <div class="sec-label" style="--c:var(--purple)">oem_vs_3rd</div>
+      <h2>05 · 原廠 vs 副廠——剪片其實副廠就夠</h2>
+      <p>果果客戶最常問的 CP 值問題。直接講結論：<strong>純剪片用途，副廠磁吸觸控筆通常就夠用</strong>，價格常只要原廠的三分之一。</p>
+      <div class="grid">
+        <div class="card" style="--c:var(--green)"><div class="c-tag">剪片這樣用 · 副廠就夠</div><h4>細筆尖＋低延遲＋防手掌誤觸</h4><p>剪片主要吃這三樣，副廠磁吸筆現在大多做得到。只是筆記、修圖、簡單剪片，副廠已相當好用。</p></div>
+        <div class="card" style="--c:var(--navy)"><div class="c-tag">這些原廠才有 · 但剪片用不到</div><h4>壓感／傾斜／雙擊／懸停／Find My</h4><p>副廠多半沒有這些。但如前面所說，這些在剪映／CapCut 剪片流程<strong>幾乎用不到</strong>，對「只想剪片」的人不痛。</p></div>
+      </div>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">什麼時候才值得加價上原廠？</div>如果你<strong>同時想認真畫畫</strong>（Procreate 手繪、逐格動畫要吃壓感／傾斜）、想要雙擊快速換工具、想吸在側邊自動充電＋Find My 防丟——這時原廠二代或 Pencil Pro 才值得。<strong>只想剪片，把錢省下來。</strong></div>
+      <p style="font-size:.85rem;color:var(--muted)">（原廠 vs 副廠、副廠夠不夠用，屬綜合多方評測與一般使用觀察的建議，非單一官方保證；購買前可再看下方影片對照。）</p>
+    </section>
+
+    <div class="part-div">結論</div>
+
+    <section id="who">
+      <div class="sec-label" style="--c:var(--green)">who_should_buy</div>
+      <h2>06 · 分眾建議：你到底該不該買？</h2>
+      <p>對號入座，最快找到答案：</p>
+      <table>
+        <tr><th>你是哪一種</th><th>要不要買 Apple Pencil</th><th>怎麼買</th></tr>
+        <tr><td>偶爾剪 vlog／生活紀錄的小白</td><td class="bad">不必為剪片買</td><td>手指就很順。除非你本來就想拿 iPad 寫筆記、畫畫，否則買了 8 成時間會放著。</td></tr>
+        <tr><td>認真做 YouTube／接案</td><td>可買，但買副廠就夠</td><td>加分在精修關鍵影格、遮罩、字幕定位。真要拚效率，優先投資<strong>鍵盤＋快捷鍵</strong>，效益比一支筆大。</td></tr>
+        <tr><td>會手繪動畫／想在影片手寫畫重點</td><td class="good">強烈建議，且買原廠</td><td>這是筆真正發光的情境。要畫得細緻、吃壓感，建議原廠<strong>二代或 Pencil Pro</strong>，別買無壓感的 USB-C 版或太陽春的副廠。</td></tr>
+      </table>
+      <div class="bigquote"><div class="qm">"</div><p>Apple Pencil 對剪片，是「精修小幫手」，不是「神器」。<br>先問自己：我是要「剪片」，還是要「在畫面上畫東西」？</p><small>不確定自己的 iPad 配哪支筆、或要不要買，隨時問果果國際客服。買機教你用，不亂推銷、只幫你買對。</small><div class="rule"></div></div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label" style="--c:var(--muted)">sources</div>
+      <h2>來源、延伸影片與更新日期</h2>
+      <p class="updated">本文查證與撰寫：<b>2026 年 7 月</b>。App 介面與 Apple Pencil 機型清單會更新，若畫面與本文不同，以官方最新為準。</p>
+      <p class="sources">
+        主要查證來源：<br>
+        · Apple 官方〈Apple Pencil 相容機型〉<a class="inline" href="https://support.apple.com/en-us/108937">support.apple.com/en-us/108937</a>（四款筆、相容清單、規格）<br>
+        · Apple 官方〈Apple Pencil（USB-C）技術規格〉<a class="inline" href="https://support.apple.com/en-us/121318">support.apple.com/en-us/121318</a>（無壓感、磁吸僅收納）<br>
+        · CapCut 官方 iPad 教學／說明頁 <a class="inline" href="https://www.capcut.com/resource/ipad-capcut-editing">capcut.com</a>（觸控優先、雙指縮放、Apple Pencil 定位為精準工具）<br>
+        · Apple 官方〈Final Cut Pro for iPad 使用 Apple Pencil〉<a class="inline" href="https://support.apple.com/guide/final-cut-pro-ipad/ways-to-use-apple-pencil-dev14d87f0a7/ipados">support.apple.com</a>（對照深度整合）
+      </p>
+      <h3>延伸觀看（YouTube 參考）</h3>
+      <p style="font-size:.9rem;color:var(--muted)">純粹「剪映＋Apple Pencil」的中文影片很少（因為筆在這類 App 本就不是主打），所以分成「剪片教學」與「Apple Pencil 選購」兩類：</p>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=nqI8bDa-lUA" target="_blank" rel="noopener" data-yt="nqI8bDa-lUA" aria-label="播放：四支 Apple Pencil 怎麼選">
+          <img loading="lazy" src="https://i.ytimg.com/vi/nqI8bDa-lUA/hqdefault.jpg" alt="" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>四支 Apple Pencil，功能、價錢、支援的 iPad 都不同，怎麼選？</b><small><span class="ch">頻道：APPLEFANS 蘋果迷</span> · 正好對應本文「別買錯代」· 可靠度高</small></div>
+      </div>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=z1vYGVn_IlI" target="_blank" rel="noopener" data-yt="z1vYGVn_IlI" aria-label="播放：iPad 剪片手寫字、動畫、去背示範">
+          <img loading="lazy" src="https://i.ytimg.com/vi/z1vYGVn_IlI/hqdefault.jpg" alt="" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>iPad 剪片超簡單：手寫字、動畫、AI 追蹤 &amp; 去背</b><small><span class="ch">YouTube</span> · iPad 本機示範，含「手寫字」段落，最貼近 Apple Pencil 用途</small></div>
+      </div>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=KAv7XsMaoPY" target="_blank" rel="noopener" data-yt="KAv7XsMaoPY" aria-label="播放：剪映完整教學，新手從 0 開始">
+          <img loading="lazy" src="https://i.ytimg.com/vi/KAv7XsMaoPY/hqdefault.jpg" alt="" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>剪映完整教學：新手從 0 開始快速剪片</b><small><span class="ch">YouTube</span> · 剪映零基礎入門，適合完全沒剪過的小白建立流程</small></div>
+      </div>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=aIGe77OLGJg" target="_blank" rel="noopener" data-yt="aIGe77OLGJg" aria-label="播放：Apple Pencil 五大必備技巧">
+          <img loading="lazy" src="https://i.ytimg.com/vi/aIGe77OLGJg/hqdefault.jpg" alt="" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>Apple Pencil 五大必備技巧！這樣用才有效率</b><small><span class="ch">YouTube</span> · 幫你判斷「買了除了剪片還能幹嘛」</small></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>iPad 切換 App Store 到大陸區、下載剪映＆抖音 · 果果國際</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  :root {
+    --bg: #f6f8fb; --panel: #ffffff; --panel2: #f0f3f8; --line: #e2e8f0; --grid: #edf1f6;
+    --ink: #16223a; --body: #45506a; --muted: #8590a6;
+    --navy: #17345f;   --navy-deep: #0f2547; --navy-bg: #eef2f8;
+    --green: #2f9e57;  --green-deep: #237a43; --green-bg: #eaf5ee;
+    --amber: #b47d1e;  --amber-bg: #f8f0dc;
+    --red: #c0492f;    --red-bg: #fbeae5;
+    --teal: #1c8a9a;   --teal-bg: #e3f3f4;
+    --purple: #7150c9; --purple-bg: #efeafb;
+    --mono: 'SF Mono','JetBrains Mono','Menlo','Consolas',monospace;
+    --sans: 'Noto Sans TC',-apple-system,BlinkMacSystemFont,'Segoe UI','Inter',sans-serif;
+  }
+  body { background: var(--bg); color: var(--body); font-family: var(--sans); display: flex; min-height: 100vh; line-height: 1.72; -webkit-font-smoothing: antialiased; }
+  #progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--green); z-index: 99; transition: width .1s; }
+
+  nav { width: 244px; min-width: 244px; background: #fff; border-right: 1px solid var(--line); padding: 30px 0 30px 22px; position: sticky; top: 0; height: 100vh; overflow-y: auto; font-family: var(--mono); }
+  nav .brand { display: flex; align-items: center; gap: 9px; margin-bottom: 26px; padding-right: 20px; }
+  nav .brand svg { width: 30px; height: 30px; flex: none; }
+  nav .brand b { font-family: var(--sans); font-size: .92rem; font-weight: 800; color: var(--ink); line-height: 1.1; }
+  nav .brand small { display: block; font-size: .5rem; letter-spacing: .1em; color: var(--muted); }
+  nav a { display: block; font-size: .77rem; color: var(--muted); text-decoration: none; padding: 5px 0; transition: .12s; }
+  nav a::before { content: '› '; color: var(--line); }
+  nav a:hover { color: var(--ink); }
+  nav a.active { color: var(--navy); font-weight: 700; } nav a.active::before { content: '› '; color: var(--green); }
+  nav .grp { font-size: .58rem; letter-spacing: .1em; color: var(--muted); margin: 18px 0 4px; }
+
+  main { flex: 1; max-width: 900px; padding: 0 0 120px; }
+  .inner { padding: 46px 52px 0; }
+
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+  .masthead .logo { display: flex; align-items: center; gap: 12px; }
+  .masthead .logo svg { width: 40px; height: 40px; flex: none; }
+  .masthead .logo .wm { font-weight: 800; font-size: 1.06rem; color: var(--ink); line-height: 1.15; }
+  .masthead .logo .wm-sub { font-family: var(--mono); font-size: .55rem; letter-spacing: .2em; color: var(--muted); }
+  .masthead .tagline { text-align: right; font-size: .82rem; color: var(--muted); line-height: 1.5; }
+  .masthead .tagline b { color: var(--navy); }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+  .masthead .pills span b { color: var(--green-deep); }
+
+  .kicker { font-family: var(--mono); font-size: .72rem; letter-spacing: .05em; color: var(--navy); margin-bottom: 14px; }
+  .kicker::before { content: '// '; color: var(--muted); }
+  h1 { font-weight: 800; font-size: 2.4rem; line-height: 1.16; letter-spacing: -.02em; color: var(--ink); margin-bottom: 14px; }
+  .subtitle { font-size: 1.12rem; color: var(--body); margin-bottom: 20px; line-height: 1.5; }
+  .lede { font-size: 1rem; margin-bottom: 14px; }
+
+  section { margin-top: 56px; scroll-margin-top: 20px; }
+  h2 { font-weight: 800; font-size: 1.42rem; color: var(--ink); margin-bottom: 4px; }
+  .sec-label { font-family: var(--mono); font-size: .68rem; letter-spacing: .05em; color: var(--c, var(--navy)); margin-bottom: 16px; }
+  .sec-label::before { content: '['; } .sec-label::after { content: ']'; }
+  h3 { font-size: 1.08rem; color: var(--ink); margin: 30px 0 10px; font-weight: 700; }
+  p { margin-bottom: 14px; }
+  strong { color: var(--ink); }
+  code { font-family: var(--mono); font-size: .85em; background: var(--panel2); color: var(--navy); padding: 1px 6px; border-radius: 4px; }
+  a.inline { color: var(--navy); text-decoration: none; border-bottom: 1px dotted var(--muted); }
+
+  .callout { border: 1px solid var(--line); border-left: 3px solid var(--c); background: var(--panel); border-radius: 8px; padding: 14px 17px; margin: 11px 0; font-size: .94rem; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .callout .ct { font-family: var(--mono); font-size: .68rem; color: var(--c); font-weight: 700; margin-bottom: 3px; }
+  .cgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; margin: 16px 0; }
+  .cgrid .callout { margin: 0; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .grid.g3 { grid-template-columns: 1fr 1fr 1fr; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .card .c-tag { font-family: var(--mono); font-size: .66rem; color: var(--c); margin-bottom: 7px; }
+  .card .c-tag::before { content: '▸ '; }
+  .card h4 { font-size: 1rem; color: var(--ink); font-weight: 700; margin-bottom: 4px; }
+  .card p { font-size: .87rem; color: var(--muted); margin: 0; }
+
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: .9rem; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  th { text-align: left; font-family: var(--mono); font-size: .68rem; color: #fff; background: var(--navy); padding: 10px 14px; }
+  td { padding: 11px 14px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  td.bad { color: var(--red); } td.good { color: var(--green-deep); }
+  td:first-child { color: var(--ink); font-weight: 600; }
+
+  .steps { display: grid; gap: 10px; margin: 20px 0; }
+  .step { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 13px 16px; display: flex; gap: 14px; align-items: flex-start; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .step .n { font-family: var(--mono); min-width: 30px; height: 28px; border-radius: 7px; background: var(--cbg,var(--navy-bg)); color: var(--c,var(--navy)); font-weight: 800; font-size: .8rem; display: grid; place-items: center; flex: none; padding: 0 4px; }
+  .step h4 { font-size: .96rem; color: var(--ink); font-weight: 700; margin-bottom: 1px; }
+  .step p { font-size: .87rem; color: var(--muted); margin: 0; }
+
+  details { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; font-size: .92rem; margin: 10px 0; }
+  details summary { cursor: pointer; color: var(--ink); font-weight: 600; }
+  details p { margin-top: 10px; color: var(--muted); }
+
+  .bigquote { margin: 32px 40px; text-align: center; }
+  .bigquote .qm { font-size: 2.6rem; color: var(--navy); opacity: .2; font-weight: 800; line-height: .5; }
+  .bigquote p { font-size: 1.3rem; font-weight: 800; color: var(--ink); line-height: 1.5; margin: 10px 0 10px; }
+  .bigquote small { display: block; color: var(--muted); font-size: .9rem; }
+  .bigquote .rule { width: 42px; height: 3px; background: var(--green); border-radius: 3px; margin: 14px auto 0; }
+
+  ul.styled { list-style: none; margin: 12px 0; }
+  ul.styled li { padding: 7px 0 7px 20px; position: relative; font-size: .92rem; color: var(--body); border-bottom: 1px solid var(--grid); }
+  ul.styled li::before { content: '›'; position: absolute; left: 0; color: var(--navy); font-family: var(--mono); }
+  li b { color: var(--ink); }
+
+  ul.flags { list-style: none; margin: 14px 0; }
+  ul.flags li { padding: 10px 0 10px 32px; position: relative; font-size: .93rem; color: var(--body); border-bottom: 1px solid var(--grid); }
+  ul.flags li::before { content: '🚩'; position: absolute; left: 0; top: 8px; font-size: .95rem; }
+  ul.flags li b { color: var(--red); }
+
+  /* 影片預覽卡（縮圖 → 點擊就地播放 / 開 YouTube）*/
+  .vlite { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(20,39,68,.04); margin: 0 0 16px; }
+  .vlite .thumb { position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; background: #0f2547; text-decoration: none; }
+  .vlite .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; border: 0; }
+  .vlite .thumb .pbtn { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 66px; height: 46px; border-radius: 12px; background: rgba(193,73,47,.94); display: grid; place-items: center; box-shadow: 0 4px 14px rgba(0,0,0,.35); transition: .14s; }
+  .vlite .thumb:hover .pbtn { background: rgba(193,73,47,1); transform: translate(-50%,-50%) scale(1.06); }
+  .vlite .thumb .pbtn::before { content: ''; width: 0; height: 0; border-style: solid; border-width: 9px 0 9px 16px; border-color: transparent transparent transparent #fff; margin-left: 3px; }
+  .vlite .thumb .yt { position: absolute; right: 10px; bottom: 9px; font-family: var(--mono); font-size: .58rem; color: #fff; background: rgba(0,0,0,.55); padding: 2px 7px; border-radius: 4px; }
+  .vlite iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; }
+  .vlite .cap { padding: 12px 16px; }
+  .vlite .cap b { color: var(--ink); font-size: .92rem; font-weight: 700; display: block; line-height: 1.4; }
+  .vlite .cap small { color: var(--muted); font-size: .8rem; display: block; margin-top: 3px; }
+  .vlite .cap .ch { color: var(--navy); font-family: var(--mono); font-size: .68rem; }
+
+  /* CSS 圖示 figure */
+  figure.fig { margin: 22px 0; background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 20px 18px 14px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  figure.fig figcaption { font-size: .84rem; color: var(--body); text-align: center; margin-top: 14px; line-height: 1.6; }
+  figure.fig figcaption b { color: var(--ink); }
+  .flow { display: flex; align-items: stretch; justify-content: center; gap: 10px; flex-wrap: wrap; }
+  .flow .box { flex: 1; min-width: 128px; border: 1px solid var(--line); border-radius: 10px; padding: 14px 12px; text-align: center; background: var(--cbg, #fff); }
+  .flow .box .bi { font-size: 1.7rem; line-height: 1; }
+  .flow .box .bt { font-family: var(--mono); font-size: .6rem; color: var(--muted); margin-top: 8px; letter-spacing: .03em; }
+  .flow .box .bv { font-size: .92rem; color: var(--ink); font-weight: 700; margin-top: 3px; line-height: 1.4; }
+  .flow .box small { display: block; font-size: .76rem; margin-top: 5px; color: var(--muted); }
+  .flow .arr { display: grid; place-items: center; color: var(--muted); font-family: var(--mono); font-size: 1rem; flex: 0 0 auto; }
+
+  .sources { font-size: .82rem; color: var(--muted); line-height: 1.9; }
+  .sources a { color: var(--navy); text-decoration: none; border-bottom: 1px dotted var(--muted); word-break: break-all; }
+
+  .updated { font-family: var(--mono); font-size: .68rem; color: var(--muted); margin-top: 10px; }
+  .updated b { color: var(--amber); }
+
+  .part-div { font-family: var(--mono); font-size: .66rem; letter-spacing: .1em; color: var(--muted); margin: 66px 0 24px; display: flex; align-items: center; gap: 14px; }
+  .part-div::before, .part-div::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+
+  @media (max-width: 860px) {
+    nav { display: none; }
+    .inner, .masthead { padding-left: 20px; padding-right: 20px; }
+    .grid, .cgrid { grid-template-columns: 1fr; }
+    .masthead .tagline { display: none; }
+    .bigquote { margin: 28px 4px; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>下載大陸區 App</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#decide" class="active">00 · 先別急，你需要切嗎</a>
+  <div class="grp">先搞懂觀念</div>
+  <a href="#concept">01 · 切區在改什麼</a>
+  <a href="#route">02 · 兩條路線 A vs B</a>
+  <div class="grp">實際動手</div>
+  <a href="#steps">03 · 操作步驟（路線 B）</a>
+  <a href="#payment">04 · 付款選「無」找不到</a>
+  <a href="#apps">05 · 下載後怎麼用</a>
+  <div class="grp">避坑</div>
+  <a href="#pitfalls">06 · 常見雷區 & 提醒</a>
+  <a href="#sources">來源 / 影片 / 更新日期</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>買機教你用</span><span>不用翻牆、不花冤枉錢</span><span>終身售後諮詢</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">客戶指南 / iPad 下載大陸限定 App（剪映・抖音）</div>
+    <h1>iPad 怎麼下載大陸區 App？</h1>
+    <p class="subtitle">想在 iPad 上裝大陸版的剪映、抖音，卻發現台灣 App Store 搜不到？這篇用最白話的方式，一步步帶你把 App Store「切換到中國大陸地區」，安全下載——但先別急，你可能連切都不用切。</p>
+    <p class="lede">先講最重要的一句：切區改的是「<strong>你 Apple 帳號登記的國家</strong>」，<strong>不是翻牆、不是 VPN、不用買任何定位軟體</strong>。而且很多人其實只是想剪片——那樣連切區都免了。這篇先幫你判斷「要不要切」，再教你「怎麼切最安全」。</p>
+
+    <section id="decide">
+      <div class="sec-label" style="--c:var(--navy)">decide_first</div>
+      <h2>00 · 先別急著切！你真的需要嗎？</h2>
+      <p>動手前先對號入座。切大陸區有點折騰，但<strong>八成的人其實不用切</strong>：</p>
+      <div class="grid">
+        <div class="card" style="--c:var(--green)"><div class="c-tag">多數人 · 只是想剪片</div><h4>→ 直接用「CapCut」，免切區</h4><p>只是想剪影片、要上傳 YouTube／IG／FB？台灣 App Store 直接搜「CapCut」就能下載，繁體中文、免切區、免折騰。<strong>剪映和 CapCut 是同一家公司（字節跳動）做的</strong>，核心功能高度相似。</p></div>
+        <div class="card" style="--c:var(--navy)"><div class="c-tag">少數人 · 一定要大陸限定</div><h4>→ 才需要切大陸區，往下看</h4><p>你要的是「大陸版抖音」（看大陸的抖音內容），或「剪映大陸版」特有的模板／字型／特效？這些台灣商店沒有，那就照下面步驟切區。</p></div>
+      </div>
+      <div class="callout" style="--c:var(--green)"><div class="ct">關鍵事實（幫你省時間）</div>在 iPhone／iPad 上，台灣 App Store <strong>只找得到 CapCut</strong>；手機版的「剪映」要切到大陸區才裝得到。所以如果你只是想剪片，<strong>用 CapCut 就好，別白忙一場</strong>。CapCut 的內建曲庫本來就是為國際平台設計，上傳 YouTube／IG 也比較安心。</div>
+    </section>
+
+    <div class="part-div">先搞懂觀念（3 分鐘，之後不踩雷）</div>
+
+    <section id="concept">
+      <div class="sec-label" style="--c:var(--teal)">concept</div>
+      <h2>01 · 「切換 App Store 地區」到底在改什麼？</h2>
+      <p>用一句白話：切 App Store 地區＝<strong>改「你 Apple 帳號登記的國家／地區」</strong>。你在 App Store 能看到、能下載哪些 App，是看<strong>帳號登記在哪一國</strong>——跟你人在台灣、用哪家 Wi-Fi、有沒有開 VPN，通通無關。</p>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">一個好懂的比喻</div>Apple 帳號的「地區」就像<strong>你在哪家分店辦的會員卡</strong>。辦在「台灣店」就只能買台灣店的貨；想買「中國店」限定商品，要嘛把卡改成中國店會籍、要嘛另辦一張中國店卡。<strong>人站在哪、走哪條路都不影響，關鍵是「卡登記在哪一店」。</strong></div>
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">🧍</div><div class="bt">你人在哪</div><div class="bv">台灣（不用動）</div></div>
+          <div class="arr">＋</div>
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">🪪</div><div class="bt">Apple 帳號地區</div><div class="bv">🇹🇼 → 🇨🇳</div><small>只改這一格</small></div>
+          <div class="arr">＝</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">📲</div><div class="bt">你能下載</div><div class="bv">大陸限定 App</div></div>
+        </div>
+        <figcaption>決定你能下載什麼的，是<b>「帳號登記在哪一國」</b>——不是你人在哪、也不是網路。所以<b>不用 VPN、不用改定位</b>。</figcaption>
+      </figure>
+      <div class="callout" style="--c:var(--red)"><div class="ct">破除最大迷思：不用買 VPN／定位工具！</div>網路上很多教學會叫你買「iAnyGo／一鍵改定位」這類付費軟體，說不改定位就下載不了——<strong>這是導購，別花冤枉錢</strong>。那類工具是用來竄改「遊戲、打卡的 GPS 定位」，跟「跨區下載」是兩回事。下載免費的剪映、抖音，<strong>只要改帳號地區就好，完全用不到它們</strong>。</div>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">記住這個限制</div>一個 Apple 帳號<strong>同一時間只能設定一個地區</strong>。設成中國，它就不是台灣；要換回來得再改一次。這也是我們接下來推薦「另辦一個帳號」的原因。</div>
+    </section>
+
+    <section id="route">
+      <div class="sec-label" style="--c:var(--purple)">two_routes</div>
+      <h2>02 · 兩條路線：改舊帳號 vs 另辦新帳號</h2>
+      <p>要下大陸 App，有兩條路。<strong>我們強烈推薦路線 B</strong>，因為它對你原本的一切「零影響」：</p>
+      <table>
+        <tr><th>比較</th><th>路線 A：改現有台灣帳號地區</th><th>路線 B：另辦中國區新帳號（推薦）</th></tr>
+        <tr><td>前置清理</td><td class="bad">很麻煩：要花光餘額、取消所有訂閱、退出家人共享</td><td class="good">幾乎不用（全新帳號本來就乾淨）</td></tr>
+        <tr><td>對你的影響</td><td class="bad">大：台灣的 Apple Music／iCloud+／訂閱會中斷</td><td class="good">零：iCloud、照片、LINE、原帳號通通不動</td></tr>
+        <tr><td>每次下載</td><td>切過去、下載完再切回來</td><td class="good">只在 App Store 登入中國帳號即可</td></tr>
+        <tr><td>適合誰</td><td class="bad">幾乎沒人真的適合</td><td class="good">絕大多數人</td></tr>
+      </table>
+      <div class="callout" style="--c:var(--green)"><div class="ct">一句話讓你安心</div>路線 B 只動「<strong>App Store 那一格</strong>」——你的 iCloud、照片、聯絡人、LINE、原本的 Apple 帳號<strong>通通不受影響</strong>。下載完登回原帳號就好。</div>
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--red-bg)"><div class="bi">⚠️</div><div class="bt">路線 A · 改主帳號</div><div class="bv" style="color:var(--red)">動到一整片</div><small>iCloud・照片・台灣訂閱・家人共享都受影響</small></div>
+          <div class="arr">vs</div>
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">🛡️</div><div class="bt">路線 B · 另辦新帳號</div><div class="bv" style="color:var(--green-deep)">只動一格</div><small>只有「App Store 登入」那格切換，其餘全不動</small></div>
+        </div>
+        <figcaption>推薦路線 B 的理由，一張圖說完：<b>你的資料通通不受影響</b>，只是多登一個帳號來下載而已。</figcaption>
+      </figure>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">破除心理障礙</div>「新辦中國帳號」<strong>不需要中國身分證，也不需要中國銀行卡</strong>！用你的台灣手機號就能辦。下一節教你怎麼做。</div>
+    </section>
+
+    <div class="part-div">實際動手</div>
+
+    <section id="steps">
+      <div class="sec-label" style="--c:var(--green)">how_to</div>
+      <h2>03 · 操作步驟（推薦的路線 B）</h2>
+      <p>照這個順序做最順、最不會卡。重點是「<strong>先在台灣區把帳號辦好，再切成中國區</strong>」：</p>
+      <div class="steps">
+        <div class="step" style="--c:var(--navy);--cbg:var(--navy-bg)"><div class="n">1</div><div><h4>先辦一個「新的 Apple 帳號」，國家先選台灣</h4><p>用你的<strong>台灣手機號（+886）</strong>收簡訊驗證完成建號。這步先用台灣區，通過率最高。</p></div></div>
+        <div class="step" style="--c:var(--teal);--cbg:var(--teal-bg)"><div class="n">2</div><div><h4>進設定改地區</h4><p>「設定」→ 點最上面你的名字 →「媒體與購買項目」→「查看帳號」→「國家或地區」→「更改國家或地區」→ 選「<strong>中國大陸</strong>」。</p></div></div>
+        <div class="step" style="--c:var(--teal);--cbg:var(--teal-bg)"><div class="n">3</div><div><h4>同意條款，付款方式選「無 / None」</h4><p>剪映、抖音都是免費 App，選「無」就不用填任何卡片。（找不到「無」？看下一節。）</p></div></div>
+        <div class="step" style="--c:var(--teal);--cbg:var(--teal-bg)"><div class="n">4</div><div><h4>地址、郵遞區號填一個合理的</h4><p>系統只驗「格式對不對」，不查真假。可以 Google 一個大陸飯店地址填進去即可。完成！</p></div></div>
+        <div class="step" style="--c:var(--green);--cbg:var(--green-bg)"><div class="n">5</div><div><h4>去 App Store 登入這個中國帳號</h4><p>先登出主帳號、登入剛辦的中國帳號 → 搜尋「<strong>剪映</strong>」「<strong>抖音</strong>」下載。</p></div></div>
+        <div class="step" style="--c:var(--green);--cbg:var(--green-bg)"><div class="n">6</div><div><h4>下載完，登回你的主帳號</h4><p>因為主帳號自始至終沒動過，連「改回台灣」都不用。日常照常用。</p></div></div>
+      </div>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">⚠️ 時效性提醒</div>「先辦台灣號、再切中國區」是因應 Apple 帳號審查的變通做法。<strong>2024 年底起 Apple 加強了中國區的風控</strong>，偶爾會遇到「目前無法建立帳號」，多半換個網路、隔一下再試就好；未來這個方法也可能被 Apple 調整。<strong>本文查證於 2026 年 7 月，實際以當下畫面為準。</strong></div>
+    </section>
+
+    <section id="payment">
+      <div class="sec-label" style="--c:var(--amber)">payment_none</div>
+      <h2>04 · 付款方式選不到「無」？先把帳號清乾淨</h2>
+      <p>這是實際操作最常卡的一步。「無 / None」不出現，<strong>幾乎都是因為帳號還沒清乾淨</strong>。Apple 官方規定：改地區前必須先處理這些——</p>
+      <ul class="styled">
+        <li><b>把帳號餘額花到 0</b>（有儲值金／禮品卡餘額就用掉）。</li>
+        <li><b>取消所有進行中的訂閱</b>（iCloud+、Apple Music、Apple TV+、Apple Arcade 等）。</li>
+        <li><b>退出「家人共享」群組</b>（在群組裡可能無法改地區）。</li>
+      </ul>
+      <div class="callout" style="--c:var(--green)"><div class="ct">這正是路線 B 更省事的原因</div>全新帳號<strong>沒有餘額、沒有訂閱、沒有家人共享</strong>，上面這些麻煩全部跳過，「無」自然就出現了。這就是我們不建議你亂改主帳號的原因。</div>
+      <div class="callout" style="--c:var(--teal)"><div class="ct">看到「帳戶不在此店面」怎麼辦？</div>出現「帳戶不在此店面／此帳戶目前無法在此商店使用」之類的錯誤，多半就是<strong>餘額或訂閱沒清乾淨</strong>。先照上面清一遍再試。</div>
+    </section>
+
+    <section id="apps">
+      <div class="sec-label" style="--c:var(--navy)">use_apps</div>
+      <h2>05 · 下載後：剪映 & 抖音怎麼用</h2>
+      <h3>抖音（注意：抖音 ≠ TikTok 國際版，是不同 App）</h3>
+      <p>切好區、下載安裝後，抖音大陸版的使用是<strong>分層的</strong>——你想做到哪一層，門檻不一樣：</p>
+      <div class="steps">
+        <div class="step" style="--c:var(--green);--cbg:var(--green-bg)"><div class="n">看</div><div><h4>只想看影片</h4><p>一般不用實名就能看公開影片。<strong>但要老實說</strong>：近期台港澳帳號常被風控，可能被限制觀看數或要求登入，不是 100% 保證暢通。</p></div></div>
+        <div class="step" style="--c:var(--amber);--cbg:var(--amber-bg)"><div class="n">讚</div><div><h4>想按讚、留言、發影片</h4><p>要「實名認證」。好消息：2026 年抖音官方已支援台灣人用<strong>台胞證</strong>完成（選「港澳台居民」＋人臉辨識）。</p></div></div>
+        <div class="step" style="--c:var(--red);--cbg:var(--red-bg)"><div class="n">播</div><div><h4>想開直播、賺收益</h4><p>門檻高很多。一般說法要中國實體 SIM 卡＋在陸銀行帳戶——但<strong>這點各方說法不一、我們無法完全確認</strong>，一般客戶通常也用不到。</p></div></div>
+      </div>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">註冊小技巧</div>抖音可用台灣門號 +886 註冊，輸入時<strong>把開頭的 0 去掉</strong>（例：0912345678 → 912345678）。抖音的簡訊驗證風控很嚴：<strong>三大電信（中華、台哥大、遠傳）通常收得到，亞太常收不到</strong>；若一直「系統繁忙」收不到驗證碼，多試幾次或切換網路。</div>
+      <h3>剪映（大陸版）</h3>
+      <p>切好區就能在 App Store 下載安裝。介面偏簡體中文，可用手機號等方式登入使用。若你只是要剪片上傳到 YouTube／IG／FB，<strong>還是建議回頭用 CapCut</strong>（第 00 節）——免切區、繁中、對國際平台更友善。</p>
+      <div class="callout" style="--c:var(--teal)"><div class="ct">誠實補充</div>網路上有一說是「剪映內建音樂上傳 YouTube 會被版權消音／下架」。這點我們查證時<strong>無法完全證實</strong>，就當作「多一個用 CapCut 的理由」參考即可，不必當成鐵則。</div>
+    </section>
+
+    <div class="part-div">避坑</div>
+
+    <section id="pitfalls">
+      <div class="sec-label" style="--c:var(--red)">pitfalls</div>
+      <h2>06 · 常見雷區 & 誠實提醒</h2>
+      <ul class="flags">
+        <li><b>別被「定位工具」導購</b>——下載免費 App 不用買任何 VPN／改定位軟體（見第 01 節）。</li>
+        <li><b>別一天到晚切來切去</b>——頻繁切換地區可能觸發帳號風控或要求額外驗證，切換之間隔久一點。</li>
+        <li><b>更新 App 要用「當初下載它的帳號」</b>——用中國帳號下載的剪映／抖音，之後更新也要登回那個中國帳號。</li>
+        <li><b>一個帳號同時只能一個地區</b>——所以才推薦「另辦一個」，不要動你的主帳號。</li>
+      </ul>
+      <div class="bigquote"><div class="qm">"</div><p>只想剪片 → 用 CapCut，免切區。<br>非要大陸限定 → 走路線 B，另辦一個帳號最省心。</p><small>不確定自己屬於哪種、或操作卡住了，隨時找果果國際客服。買機教你用，終身售後諮詢。</small><div class="rule"></div></div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label" style="--c:var(--muted)">sources</div>
+      <h2>來源、延伸影片與更新日期</h2>
+      <p class="updated">本文查證與撰寫：<b>2026 年 7 月</b>。Apple 帳號政策、抖音註冊與實名規則變動很快，若你看到的畫面與本文不同，請以當下實際畫面與下方官方來源為準，或直接問果果客服。</p>
+      <p class="sources">
+        主要查證來源：<br>
+        · Apple 官方〈更改 Apple 帳號的國家或地區〉<a class="inline" href="https://support.apple.com/en-us/118283">support.apple.com/en-us/118283</a>（改區前置條件與步驟）<br>
+        · Apple 官方〈中國區可用付款方式〉<a class="inline" href="https://support.apple.com/en-us/111741">support.apple.com/en-us/111741</a><br>
+        · CapCut · Apple 台灣 App Store 上架頁 <a class="inline" href="https://apps.apple.com/tw/app/capcut/id1500855883">apps.apple.com/tw</a>（證實台灣可直接下載、字節跳動開發）<br>
+        · 剪映 vs CapCut 同源說明 <a class="inline" href="https://2fish.tw/posts/capcut">2fish.tw</a> ／ 抖音下載與實名 <a class="inline" href="https://www.techmarks.com/douyin/">techmarks.com/douyin</a>
+      </p>
+      <h3>延伸觀看（YouTube 參考）</h3>
+      <p style="font-size:.9rem;color:var(--muted)">以下影片可作步驟參考。<strong>介面會隨 iPadOS 更新略有出入、部分影片較舊，觀念仍通用</strong>；遇到「叫你買定位軟體」的段落可直接略過。</p>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=fCCDxHklT7c" target="_blank" rel="noopener" data-yt="fCCDxHklT7c" aria-label="播放：App Store 跨區下載大陸 App 教學">
+          <img loading="lazy" src="https://i.ytimg.com/vi/fCCDxHklT7c/hqdefault.jpg" alt="" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>3 分鐘解決：App Store 跨區下載大陸 App、切換地區</b><small><span class="ch">YouTube</span> · 約 2024 · 最單純的改地區通用教學，含錯誤排解 · 推薦主參考</small></div>
+      </div>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=IRImK-A8YRM" target="_blank" rel="noopener" data-yt="IRImK-A8YRM" aria-label="播放：iOS 跨區下載剪映抖音、解決帳號不在此店面">
+          <img loading="lazy" src="https://i.ytimg.com/vi/IRImK-A8YRM/hqdefault.jpg" alt="" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>iOS 跨區教學：下載剪映、抖音｜解決「帳號不在此店面」</b><small><span class="ch">YouTube</span> · 2023 · 專講下載剪映／抖音並示範解錯誤，正好對到本篇主題</small></div>
+      </div>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=FX1vYLEZZXc" target="_blank" rel="noopener" data-yt="FX1vYLEZZXc" aria-label="播放：抖音 App 下載教學，TikTok 不等於抖音">
+          <img loading="lazy" src="https://i.ytimg.com/vi/FX1vYLEZZXc/hqdefault.jpg" alt="" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>抖音 App 下載教學：TikTok ≠ 抖音！iPhone 跨區下載</b><small><span class="ch">YouTube</span> · 釐清「抖音 ≠ TikTok」的觀念，適合破除混淆</small></div>
+      </div>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=TsjNSl4IwWM" target="_blank" rel="noopener" data-yt="TsjNSl4IwWM" aria-label="播放：剪映 vs CapCut 國際版與大陸版差異">
+          <img loading="lazy" src="https://i.ytimg.com/vi/TsjNSl4IwWM/hqdefault.jpg" alt="" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>剪映 vs CapCut：國際版跟大陸版的差異</b><small><span class="ch">頻道：joe是說</span> · 2021（功能細節稍舊，比較觀念仍實用）· 幫你判斷該用哪個</small></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
