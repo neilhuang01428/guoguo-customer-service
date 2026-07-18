@@ -4,3 +4,9 @@ content-quality-guidelines.html
 # 設計樣張草稿
 _style-samples/
 .DS_Store
+
+# 內部規劃文件（給自己看的，不對外公開，不上 GitHub）
+_planning/
+
+# 商品原始匯出檔（含 sku/庫存，內部 build 用，別上公開站）
+data/*-export.csv
