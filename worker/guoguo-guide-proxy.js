@@ -145,7 +145,7 @@ const FLOATING = `<div class="gg-fab" aria-label="快速聯絡">
   <a href="#gg-top" aria-label="回到頂端"><span class="gg-lbl">回到頂端</span>
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#17345f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V6"/><path d="M6 11l6-6 6 6"/></svg></a>
   <a href="${C.line}" target="_blank" rel="noopener" aria-label="官方 LINE"><span class="gg-lbl">官方 LINE ${C.lineId}</span>
-    <svg width="30" height="30" viewBox="0 0 32 32"><rect width="32" height="32" rx="9" fill="#06C755"/><text x="16" y="20.4" font-family="Arial,Helvetica,sans-serif" font-size="8.6" font-weight="800" fill="#fff" text-anchor="middle" letter-spacing=".4">LINE</text></svg></a>
+    <svg width="30" height="30" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#06C755"/><text x="16" y="20.4" font-family="Arial,Helvetica,sans-serif" font-size="8.6" font-weight="800" fill="#fff" text-anchor="middle" letter-spacing=".4">LINE</text></svg></a>
   <a href="${C.map}" target="_blank" rel="noopener" aria-label="門市地圖"><span class="gg-lbl">門市地圖</span>
     <svg width="24" height="26" viewBox="0 0 24 26"><path d="M12 1C6.9 1 3 5 3 9.9c0 1.8.6 3.4 1.4 4.8L12 25l7.6-10.3c.8-1.4 1.4-3 1.4-4.8C21 5 17.1 1 12 1z" fill="#EA4335"/><circle cx="12" cy="9.9" r="3.4" fill="#fff"/></svg></a>
   <a href="tel:${C.tel.replace(/-/g,'')}" aria-label="客服電話 ${C.tel}"><span class="gg-lbl">客服 ${C.tel}</span>
