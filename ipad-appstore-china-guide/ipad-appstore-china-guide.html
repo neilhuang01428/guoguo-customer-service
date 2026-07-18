@@ -4,153 +4,36 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>iPad 切換 App Store 到大陸區、下載剪映＆抖音 · 果果國際</title>
+<link rel="stylesheet" href="../assets/style.css">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  :root {
-    --bg: #f6f8fb; --panel: #ffffff; --panel2: #f0f3f8; --line: #e2e8f0; --grid: #edf1f6;
-    --ink: #16223a; --body: #45506a; --muted: #8590a6;
-    --navy: #17345f;   --navy-deep: #0f2547; --navy-bg: #eef2f8;
-    --green: #2f9e57;  --green-deep: #237a43; --green-bg: #eaf5ee;
-    --amber: #b47d1e;  --amber-bg: #f8f0dc;
-    --red: #c0492f;    --red-bg: #fbeae5;
-    --teal: #1c8a9a;   --teal-bg: #e3f3f4;
-    --purple: #7150c9; --purple-bg: #efeafb;
-    --mono: 'SF Mono','JetBrains Mono','Menlo','Consolas',monospace;
-    --sans: 'Noto Sans TC',-apple-system,BlinkMacSystemFont,'Segoe UI','Inter',sans-serif;
-  }
-  body { background: var(--bg); color: var(--body); font-family: var(--sans); display: flex; min-height: 100vh; line-height: 1.72; -webkit-font-smoothing: antialiased; }
-  #progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--green); z-index: 99; transition: width .1s; }
+  /* ── 本篇特有樣式（共用 style.css 沒有；其餘皆由共用檔提供）── */
 
-  nav { width: 244px; min-width: 244px; background: #fff; border-right: 1px solid var(--line); padding: 30px 0 30px 22px; position: sticky; top: 0; height: 100vh; overflow-y: auto; font-family: var(--mono); }
-  nav .brand { display: flex; align-items: center; gap: 9px; margin-bottom: 26px; padding-right: 20px; }
-  nav .brand svg { width: 30px; height: 30px; flex: none; }
-  nav .brand b { font-family: var(--sans); font-size: .92rem; font-weight: 800; color: var(--ink); line-height: 1.1; }
-  nav .brand small { display: block; font-size: .5rem; letter-spacing: .1em; color: var(--muted); }
-  nav a { display: block; font-size: .77rem; color: var(--muted); text-decoration: none; padding: 5px 0; transition: .12s; }
-  nav a::before { content: '› '; color: var(--line); }
-  nav a:hover { color: var(--ink); }
-  nav a.active { color: var(--navy); font-weight: 700; } nav a.active::before { content: '› '; color: var(--green); }
-  nav .grp { font-size: .58rem; letter-spacing: .1em; color: var(--muted); margin: 18px 0 4px; }
-
-  main { flex: 1; max-width: 900px; padding: 0 0 120px; }
-  .inner { padding: 46px 52px 0; }
-
+  /* masthead：本篇為「內斂卡片」版（共用檔為無卡片的 V1 masthead，需歸零其 .top padding） */
   .masthead { padding: 24px 52px 0; }
   .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
-  .masthead .top { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
-  .masthead .logo { display: flex; align-items: center; gap: 12px; }
-  .masthead .logo svg { width: 40px; height: 40px; flex: none; }
-  .masthead .logo .wm { font-weight: 800; font-size: 1.06rem; color: var(--ink); line-height: 1.15; }
-  .masthead .logo .wm-sub { font-family: var(--mono); font-size: .55rem; letter-spacing: .2em; color: var(--muted); }
-  .masthead .tagline { text-align: right; font-size: .82rem; color: var(--muted); line-height: 1.5; }
-  .masthead .tagline b { color: var(--navy); }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
   .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
   .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
   .masthead .pills span b { color: var(--green-deep); }
 
-  .kicker { font-family: var(--mono); font-size: .72rem; letter-spacing: .05em; color: var(--navy); margin-bottom: 14px; }
-  .kicker::before { content: '// '; color: var(--muted); }
-  h1 { font-weight: 800; font-size: 2.4rem; line-height: 1.16; letter-spacing: -.02em; color: var(--ink); margin-bottom: 14px; }
-  .subtitle { font-size: 1.12rem; color: var(--body); margin-bottom: 20px; line-height: 1.5; }
-  .lede { font-size: 1rem; margin-bottom: 14px; }
+  /* step 編號：本篇用「看 / 讚 / 播」等文字編號，需彩色（--c/--cbg）與較寬欄位 */
+  .step .n { min-width: 30px; font-size: .8rem; background: var(--cbg,var(--navy-bg)); color: var(--c,var(--navy)); padding: 0 4px; }
 
-  section { margin-top: 56px; scroll-margin-top: 20px; }
-  h2 { font-weight: 800; font-size: 1.42rem; color: var(--ink); margin-bottom: 4px; }
-  .sec-label { font-family: var(--mono); font-size: .68rem; letter-spacing: .05em; color: var(--c, var(--navy)); margin-bottom: 16px; }
-  .sec-label::before { content: '['; } .sec-label::after { content: ']'; }
-  h3 { font-size: 1.08rem; color: var(--ink); margin: 30px 0 10px; font-weight: 700; }
-  p { margin-bottom: 14px; }
-  strong { color: var(--ink); }
-  code { font-family: var(--mono); font-size: .85em; background: var(--panel2); color: var(--navy); padding: 1px 6px; border-radius: 4px; }
-  a.inline { color: var(--navy); text-decoration: none; border-bottom: 1px dotted var(--muted); }
+  /* flow 圖示方塊內的補充小字（共用檔沒有 .flow .box small） */
+  .flow .box small { display: block; font-size: .76rem; margin-top: 5px; color: var(--muted); }
 
-  .callout { border: 1px solid var(--line); border-left: 3px solid var(--c); background: var(--panel); border-radius: 8px; padding: 14px 17px; margin: 11px 0; font-size: .94rem; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
-  .callout .ct { font-family: var(--mono); font-size: .68rem; color: var(--c); font-weight: 700; margin-bottom: 3px; }
-  .cgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; margin: 16px 0; }
-  .cgrid .callout { margin: 0; }
-
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
-  .grid.g3 { grid-template-columns: 1fr 1fr 1fr; }
-  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
-  .card .c-tag { font-family: var(--mono); font-size: .66rem; color: var(--c); margin-bottom: 7px; }
-  .card .c-tag::before { content: '▸ '; }
-  .card h4 { font-size: 1rem; color: var(--ink); font-weight: 700; margin-bottom: 4px; }
-  .card p { font-size: .87rem; color: var(--muted); margin: 0; }
-
-  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: .9rem; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
-  th { text-align: left; font-family: var(--mono); font-size: .68rem; color: #fff; background: var(--navy); padding: 10px 14px; }
-  td { padding: 11px 14px; border-bottom: 1px solid var(--grid); vertical-align: top; }
-  tr:last-child td { border-bottom: 0; }
-  td.bad { color: var(--red); } td.good { color: var(--green-deep); }
-  td:first-child { color: var(--ink); font-weight: 600; }
-
-  .steps { display: grid; gap: 10px; margin: 20px 0; }
-  .step { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 13px 16px; display: flex; gap: 14px; align-items: flex-start; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
-  .step .n { font-family: var(--mono); min-width: 30px; height: 28px; border-radius: 7px; background: var(--cbg,var(--navy-bg)); color: var(--c,var(--navy)); font-weight: 800; font-size: .8rem; display: grid; place-items: center; flex: none; padding: 0 4px; }
-  .step h4 { font-size: .96rem; color: var(--ink); font-weight: 700; margin-bottom: 1px; }
-  .step p { font-size: .87rem; color: var(--muted); margin: 0; }
-
-  details { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; font-size: .92rem; margin: 10px 0; }
-  details summary { cursor: pointer; color: var(--ink); font-weight: 600; }
-  details p { margin-top: 10px; color: var(--muted); }
-
-  .bigquote { margin: 32px 40px; text-align: center; }
-  .bigquote .qm { font-size: 2.6rem; color: var(--navy); opacity: .2; font-weight: 800; line-height: .5; }
-  .bigquote p { font-size: 1.3rem; font-weight: 800; color: var(--ink); line-height: 1.5; margin: 10px 0 10px; }
-  .bigquote small { display: block; color: var(--muted); font-size: .9rem; }
-  .bigquote .rule { width: 42px; height: 3px; background: var(--green); border-radius: 3px; margin: 14px auto 0; }
-
-  ul.styled { list-style: none; margin: 12px 0; }
-  ul.styled li { padding: 7px 0 7px 20px; position: relative; font-size: .92rem; color: var(--body); border-bottom: 1px solid var(--grid); }
-  ul.styled li::before { content: '›'; position: absolute; left: 0; color: var(--navy); font-family: var(--mono); }
-  li b { color: var(--ink); }
-
-  ul.flags { list-style: none; margin: 14px 0; }
-  ul.flags li { padding: 10px 0 10px 32px; position: relative; font-size: .93rem; color: var(--body); border-bottom: 1px solid var(--grid); }
-  ul.flags li::before { content: '🚩'; position: absolute; left: 0; top: 8px; font-size: .95rem; }
-  ul.flags li b { color: var(--red); }
-
-  /* 影片預覽卡（縮圖 → 點擊就地播放 / 開 YouTube）*/
-  .vlite { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(20,39,68,.04); margin: 0 0 16px; }
-  .vlite .thumb { position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; background: #0f2547; text-decoration: none; }
-  .vlite .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; border: 0; }
-  .vlite .thumb .pbtn { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 66px; height: 46px; border-radius: 12px; background: rgba(193,73,47,.94); display: grid; place-items: center; box-shadow: 0 4px 14px rgba(0,0,0,.35); transition: .14s; }
-  .vlite .thumb:hover .pbtn { background: rgba(193,73,47,1); transform: translate(-50%,-50%) scale(1.06); }
-  .vlite .thumb .pbtn::before { content: ''; width: 0; height: 0; border-style: solid; border-width: 9px 0 9px 16px; border-color: transparent transparent transparent #fff; margin-left: 3px; }
-  .vlite .thumb .yt { position: absolute; right: 10px; bottom: 9px; font-family: var(--mono); font-size: .58rem; color: #fff; background: rgba(0,0,0,.55); padding: 2px 7px; border-radius: 4px; }
-  .vlite iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; }
-  .vlite .cap { padding: 12px 16px; }
-  .vlite .cap b { color: var(--ink); font-size: .92rem; font-weight: 700; display: block; line-height: 1.4; }
-  .vlite .cap small { color: var(--muted); font-size: .8rem; display: block; margin-top: 3px; }
+  /* 影片卡的頻道名（共用檔沒有 .vlite .cap .ch） */
   .vlite .cap .ch { color: var(--navy); font-family: var(--mono); font-size: .68rem; }
 
-  /* CSS 圖示 figure */
-  figure.fig { margin: 22px 0; background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 20px 18px 14px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
-  figure.fig figcaption { font-size: .84rem; color: var(--body); text-align: center; margin-top: 14px; line-height: 1.6; }
-  figure.fig figcaption b { color: var(--ink); }
-  .flow { display: flex; align-items: stretch; justify-content: center; gap: 10px; flex-wrap: wrap; }
-  .flow .box { flex: 1; min-width: 128px; border: 1px solid var(--line); border-radius: 10px; padding: 14px 12px; text-align: center; background: var(--cbg, #fff); }
-  .flow .box .bi { font-size: 1.7rem; line-height: 1; }
-  .flow .box .bt { font-family: var(--mono); font-size: .6rem; color: var(--muted); margin-top: 8px; letter-spacing: .03em; }
-  .flow .box .bv { font-size: .92rem; color: var(--ink); font-weight: 700; margin-top: 3px; line-height: 1.4; }
-  .flow .box small { display: block; font-size: .76rem; margin-top: 5px; color: var(--muted); }
-  .flow .arr { display: grid; place-items: center; color: var(--muted); font-family: var(--mono); font-size: 1rem; flex: 0 0 auto; }
-
-  .sources { font-size: .82rem; color: var(--muted); line-height: 1.9; }
-  .sources a { color: var(--navy); text-decoration: none; border-bottom: 1px dotted var(--muted); word-break: break-all; }
-
-  .updated { font-family: var(--mono); font-size: .68rem; color: var(--muted); margin-top: 10px; }
-  .updated b { color: var(--amber); }
-
-  .part-div { font-family: var(--mono); font-size: .66rem; letter-spacing: .1em; color: var(--muted); margin: 66px 0 24px; display: flex; align-items: center; gap: 14px; }
-  .part-div::before, .part-div::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+  /* bigquote：本篇為置中極簡版＋綠色短線（共用檔為 navy 底色卡，需歸零其底色/內距） */
+  .bigquote { background: none; padding: 0; margin: 32px 40px; text-align: center; }
+  .bigquote .qm { font-size: 2.6rem; opacity: .2; }
+  .bigquote p { font-size: 1.3rem; color: var(--ink); margin: 10px 0 10px; }
+  .bigquote small { color: var(--muted); margin-top: 0; }
+  .bigquote .rule { width: 42px; height: 3px; background: var(--green); border-radius: 3px; margin: 14px auto 0; }
 
   @media (max-width: 860px) {
-    nav { display: none; }
-    .inner, .masthead { padding-left: 20px; padding-right: 20px; }
-    .grid, .cgrid { grid-template-columns: 1fr; }
-    .masthead .tagline { display: none; }
+    .masthead { padding-left: 20px; padding-right: 20px; }
     .bigquote { margin: 28px 4px; }
   }
 </style>
