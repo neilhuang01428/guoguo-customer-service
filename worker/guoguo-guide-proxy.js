@@ -18,7 +18,7 @@ const ORIGIN = 'https://neilhuang01428.github.io/guoguo-customer-service'
 const GA4_ID = 'G-8R0EYJ91SJ'
 const ANALYTICS = `<script async src="https://www.googletagmanager.com/gtag/js?id=${GA4_ID}"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA4_ID}');
-document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(!a)return;var h=a.getAttribute('href')||'';if(a.classList.contains('gg-back')||a.classList.contains('gg-shop'))gtag('event','shop_click',{link_url:h});else if(h.indexOf('lin.ee')>-1)gtag('event','line_click',{link_url:h});else if(h.indexOf('tel:')===0)gtag('event','call_click',{link_url:h});else if(h.indexOf('mailto:')===0)gtag('event','mail_click',{link_url:h});else if(h.indexOf('maps.')>-1)gtag('event','map_click',{link_url:h})},true);</script>`
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(!a)return;var h=a.getAttribute('href')||'';if(a.classList.contains('gg-back')||a.classList.contains('gg-shop'))gtag('event','shop_click',{link_url:h});else if(a.classList.contains('gg-guidehome'))gtag('event','guide_home_click',{link_url:h});else if(h.indexOf('lin.ee')>-1)gtag('event','line_click',{link_url:h});else if(h.indexOf('tel:')===0)gtag('event','call_click',{link_url:h});else if(h.indexOf('mailto:')===0)gtag('event','mail_click',{link_url:h});else if(h.indexOf('maps.')>-1)gtag('event','map_click',{link_url:h})},true);</script>`
 
 /* ── 官方聯絡資料（只出現在導外版）────────────────────────────── */
 const C = {
@@ -99,13 +99,13 @@ const I = {
 }
 
 const CHROME_CSS = `<style>
-/* ── 頂部麵包屑：回賣場（用 div，避免吃到側欄 nav 樣式）── */
-.gg-crumb{display:flex;align-items:center;gap:9px;font-family:var(--sans);font-size:.82rem;color:var(--muted,#8590a6);padding:14px 0 15px;margin:0 0 2px;border-bottom:1px solid var(--line,#e2e8f0)}
-.gg-crumb a.gg-back{display:inline-flex;align-items:center;gap:7px;color:var(--navy,#17345f);text-decoration:none;font-weight:700;padding:5px 13px 5px 10px;border:1px solid #dbe4f0;border-radius:999px;background:#fff;box-shadow:0 1px 3px rgba(20,39,68,.05);transition:.15s}
-.gg-crumb a.gg-back:hover{border-color:var(--navy,#17345f);box-shadow:0 3px 10px rgba(20,39,68,.12);transform:translateY(-1px)}
-.gg-crumb a.gg-back svg{width:15px;height:15px}
-.gg-crumb .gg-here{color:var(--muted,#8590a6)}
-.gg-crumb .gg-here b{color:var(--body,#45506a);font-weight:600}
+/* ── 頂部麵包屑：果果賣場 › iPad 使用教學 › 本篇（用 div，避免吃到側欄 nav 樣式）── */
+.gg-crumb{display:flex;align-items:center;flex-wrap:wrap;gap:3px 5px;font-family:var(--sans);font-size:.82rem;color:var(--muted,#8590a6);padding:12px 0 13px;margin:0 0 2px;border-bottom:1px solid var(--line,#e2e8f0)}
+.gg-crumb a.gg-cr{display:inline-flex;align-items:center;gap:6px;color:var(--navy,#17345f);text-decoration:none;font-weight:700;padding:4px 10px;border-radius:8px;transition:.14s}
+.gg-crumb a.gg-cr:hover{background:#eef2f8;color:var(--navy-deep,#0f2547)}
+.gg-crumb a.gg-cr svg{width:15px;height:15px;flex:none;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.gg-crumb .gg-sep{color:#c3ccda;font-size:.92rem;line-height:1}
+.gg-crumb .gg-cur{color:var(--body,#45506a);font-weight:600;padding:0 4px}
 
 /* ── 右下浮動鈕 ── */
 .gg-fab{position:fixed;right:18px;bottom:22px;display:flex;flex-direction:column;gap:14px;z-index:60}
@@ -140,12 +140,17 @@ const CHROME_CSS = `<style>
 @media(max-width:860px){.gg-foot{padding:22px 18px}.gg-foot .gg-top{flex-direction:column;align-items:flex-start;gap:14px}.gg-fab a{width:46px;height:46px}}
 </style>`
 
-/* ── 頂部麵包屑（回賣場）── */
-const TOPBAR = `<div class="gg-crumb" aria-label="麵包屑">
-  <a class="gg-back" href="${C.shop}" target="_blank" rel="noopener">
-    <svg viewBox="0 0 24 24" fill="none" stroke="#17345f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>回果果賣場
+/* ── 頂部麵包屑：果果賣場 › iPad 使用教學 › 本篇（購物袋圖示=賣場、書本圖示=教學首頁，靠圖示與層級區分）── */
+const TOPBAR = `<div class="gg-crumb" aria-label="麵包屑導覽">
+  <a class="gg-cr gg-shop" href="${C.shop}" target="_blank" rel="noopener" aria-label="前往果果賣場">
+    <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>果果賣場
   </a>
-  <span class="gg-here">·&nbsp; <b>iPad 使用指南</b></span>
+  <span class="gg-sep" aria-hidden="true">›</span>
+  <a class="gg-cr gg-guidehome" href="/guide/" aria-label="回 iPad 使用教學總覽首頁">
+    <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>iPad 使用教學
+  </a>
+  <span class="gg-sep" aria-hidden="true">›</span>
+  <span class="gg-cur">本篇教學</span>
 </div>`
 
 /* ── 右下浮動鈕：回頂 / LINE / Map / 電話（正規 SVG，純連結、無 JS 也可點）── */
