@@ -1,11 +1,119 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>果果國際 · iPad 使用教學總覽</title>
-<meta name="description" content="果果國際客戶專屬的 iPad 使用教學：巧控鍵盤、下載大陸區 App、剪片要不要買 Apple Pencil、越獄該不該碰。買機教你用，終身售後諮詢。" />
-<style>
+#!/usr/bin/env python3
+# ─────────────────────────────────────────────────────────────
+# build-homepage.py — 讀 articles.json → 產生 index.html（首頁）
+#   首頁＝F 方案：左「教學內容」＋右「常駐商品側欄」雙欄版面
+#   來源：articles.json（文章清單，SSR 進原始碼＝SEO）
+#         products.json（105 商品，只在瀏覽器 fetch，首頁不預讀）
+#   產出：index.html（覆寫；此檔含導購側欄與商品連結，
+#         不進 build-neutral.sh 的無導外版 allowlist）
+#   用法：articles.json 有異動（新增/修改文章）後重跑一次：
+#         python3 build-homepage.py
+# ─────────────────────────────────────────────────────────────
+import json
+import os
+import html
+
+ROOT = os.path.dirname(os.path.abspath(__file__))
+ARTICLES_PATH = os.path.join(ROOT, "articles.json")
+OUT_PATH = os.path.join(ROOT, "index.html")
+
+SHOP_URL = "https://www.guoguo.tw/shop"          # 果果賣場（側欄 CTA 導外目的地）
+UTM = "utm_source=guide&utm_medium=home"          # 首頁導購一律帶這組 UTM
+
+# 文章卡配色：依 articles.json 陣列「第一次出現的分類」依序輪流上色。
+# 目前 4 篇剛好落在 上手→navy／技巧→green／選購→teal／觀念→red，
+# 之後新增分類會自動接續 amber、purple，再繞回 navy。
+HUES = ["navy", "green", "teal", "red", "amber", "purple"]
+
+
+def esc(s):
+    """HTML escape，供插入文字內容／屬性值使用（含雙引號，供 data-* 屬性安全）。"""
+    return html.escape(str(s if s is not None else ""), quote=True)
+
+
+def load_articles():
+    with open(ARTICLES_PATH, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def category_colors(articles):
+    colors = {}
+    for a in articles:
+        cat = a.get("category", "")
+        if cat not in colors:
+            colors[cat] = HUES[len(colors) % len(HUES)]
+    return colors
+
+
+def search_blob(a):
+    """title + summary + tags + category 全部小寫串起來，給前端搜尋框比對用。"""
+    parts = [a.get("title", ""), a.get("summary", ""), a.get("category", "")]
+    parts += list(a.get("tags", []) or [])
+    return esc(" ".join(str(p) for p in parts if p).lower())
+
+
+def render_card(a, colors):
+    hue = colors.get(a.get("category", ""), "navy")
+    tags = [t for t in (a.get("tags") or []) if t]
+    data_tags = esc(";".join(tags))
+    icon = esc(a.get("icon", "📄"))
+    category = esc(a.get("category", ""))
+    title = esc(a.get("title", ""))
+    summary = esc(a.get("summary", ""))
+    url = esc(a.get("url", "#"))
+    return (
+        '      <a class="g" style="--c:var(--{hue});--cbg:var(--{hue}-bg)" '
+        'href="{url}" data-tags="{tags}" data-search="{search}">\n'
+        '        <div class="ic">{icon}</div>\n'
+        '        <div class="tag">{cat}</div>\n'
+        '        <h3>{title}</h3>\n'
+        '        <p>{summary}</p>\n'
+        '        <div class="go">閱讀指南</div>\n'
+        '      </a>'
+    ).format(
+        hue=hue, url=url, tags=data_tags, search=search_blob(a),
+        icon=icon, cat=category, title=title, summary=summary,
+    )
+
+
+def render_jsonld(articles):
+    items = [
+        {
+            "@type": "ListItem",
+            "position": i + 1,
+            "name": a.get("title", ""),
+            "url": a.get("url", ""),
+        }
+        for i, a in enumerate(articles)
+    ]
+    payload = {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "果果國際 iPad 使用教學總覽",
+        "description": "果果國際客戶專屬的 iPad 使用教學指南集合。",
+        "inLanguage": "zh-TW",
+        "itemListOrder": "https://schema.org/ItemListOrderAscending",
+        "numberOfItems": len(articles),
+        "itemListElement": items,
+    }
+    raw = json.dumps(payload, ensure_ascii=False, indent=2)
+    return raw.replace("</script", "<\\/script")  # 防止內容意外提早關閉 script 標籤
+
+
+LOGO_SVG = (
+    '<svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/>'
+    '<circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/>'
+    '<path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/>'
+    '<rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>'
+)
+
+SEARCH_ICON = (
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">'
+    '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>'
+)
+
+# ── CSS（純字串，不做 Python 插值，避免跟 CSS 的 {} 打架）───────────────
+CSS = r"""
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 :root {
@@ -138,144 +246,14 @@ footer p { font-size: .9rem; color: var(--body); margin: 0; }
   .search-pill .sbtn { width: 100%; justify-content: center; }
   .grid2 { grid-template-columns: 1fr; }
 }
-</style>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": "果果國際 iPad 使用教學總覽",
-  "description": "果果國際客戶專屬的 iPad 使用教學指南集合。",
-  "inLanguage": "zh-TW",
-  "itemListOrder": "https://schema.org/ItemListOrderAscending",
-  "numberOfItems": 4,
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "iPad 巧控鍵盤上手指南",
-      "url": "ipad-magic-keyboard-guide/ipad-magic-keyboard-guide-card.html"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "下載大陸區 App（剪映・抖音）",
-      "url": "ipad-appstore-china-guide/ipad-appstore-china-guide.html"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "剪片要不要買 Apple Pencil？",
-      "url": "ipad-jianying-pencil-guide/ipad-jianying-pencil-guide.html"
-    },
-    {
-      "@type": "ListItem",
-      "position": 4,
-      "name": "iPad 越獄，一次搞懂",
-      "url": "ipad-jailbreak-guide/ipad-jailbreak-guide.html"
-    }
-  ]
-}
-</script>
-</head>
-<body>
-<div class="wrap">
-  <header class="mast">
-    <div class="card-head">
-      <div class="top">
-        <div class="logo">
-          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
-          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
-        </div>
-        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
-      </div>
-      <div class="trust"><span>40 道專業檢測</span><span>資訊透明・缺點揭露</span><span>買機<b>教你用</b></span><span>終身售後諮詢</span></div>
-    </div>
-  </header>
+"""
 
-  <div class="hero">
-    <div class="kicker">iPad 使用教學總覽</div>
-    <h1>果果 · iPad 使用教學</h1>
-    <p class="sub">跟果果買了 iPad，不只機況透明，還教你怎麼用得順。這裡收錄我們寫給客戶的實用指南——白話、舉例、當你是小白，一步步帶你上手。</p>
-    <div class="search-pill" role="search">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <input type="search" id="articleSearch" placeholder="搜尋教學，例如「剪映」「鍵盤」「越獄」…" aria-label="搜尋教學">
-      <button type="button" class="sbtn" id="articleSearchBtn">搜尋</button>
-    </div>
-  </div>
-
-  <div class="cols">
-    <div class="main">
-      <section class="guides" id="guides">
-        <h2 class="glabel">全部教學</h2>
-        <div class="filters" id="filterChips">
-          <button type="button" class="chip on" data-tag="__all__">全部<span class="cnt">(4)</span></button>
-        </div>
-        <div class="grid2" id="articleGrid">
-      <a class="g" style="--c:var(--navy);--cbg:var(--navy-bg)" href="ipad-magic-keyboard-guide/ipad-magic-keyboard-guide-card.html" data-tags="上手;Windows 用戶;鍵盤配件" data-search="ipad 巧控鍵盤上手指南 剛從 windows 換過來？一個心法：把 ctrl 換成 ⌘，八成快捷鍵你早就會了。10 分鐘從小白變熟手。 上手 上手 windows 用戶 鍵盤配件">
-        <div class="ic">⌨️</div>
-        <div class="tag">上手</div>
-        <h3>iPad 巧控鍵盤上手指南</h3>
-        <p>剛從 Windows 換過來？一個心法：把 Ctrl 換成 ⌘，八成快捷鍵你早就會了。10 分鐘從小白變熟手。</p>
-        <div class="go">閱讀指南</div>
-      </a>
-      <a class="g" style="--c:var(--green);--cbg:var(--green-bg)" href="ipad-appstore-china-guide/ipad-appstore-china-guide.html" data-tags="技巧;App 下載;剪映抖音" data-search="下載大陸區 app（剪映・抖音） 想裝大陸版剪映、抖音？教你安全切換 app store 地區——不用翻牆、不花冤枉錢。（其實很多人根本不用切！） 技巧 技巧 app 下載 剪映抖音">
-        <div class="ic">🌏</div>
-        <div class="tag">技巧</div>
-        <h3>下載大陸區 App（剪映・抖音）</h3>
-        <p>想裝大陸版剪映、抖音？教你安全切換 App Store 地區——不用翻牆、不花冤枉錢。（其實很多人根本不用切！）</p>
-        <div class="go">閱讀指南</div>
-      </a>
-      <a class="g" style="--c:var(--teal);--cbg:var(--teal-bg)" href="ipad-jianying-pencil-guide/ipad-jianying-pencil-guide.html" data-tags="選購;配件推薦;Apple Pencil" data-search="剪片要不要買 apple pencil？ 用剪映／capcut 剪片，搭 apple pencil 會更快嗎？誠實評估、附四款筆對照，幫你買對、不買貴。 選購 選購 配件推薦 apple pencil">
-        <div class="ic">✏️</div>
-        <div class="tag">選購</div>
-        <h3>剪片要不要買 Apple Pencil？</h3>
-        <p>用剪映／CapCut 剪片，搭 Apple Pencil 會更快嗎？誠實評估、附四款筆對照，幫你買對、不買貴。</p>
-        <div class="go">閱讀指南</div>
-      </a>
-      <a class="g" style="--c:var(--red);--cbg:var(--red-bg)" href="ipad-jailbreak-guide/ipad-jailbreak-guide.html" data-tags="觀念;防詐騙;越獄" data-search="ipad 越獄，一次搞懂 越獄是什麼、現在還做得到嗎、值不值得？以及——為什麼網路上八成的「一鍵越獄」是詐騙。看完不踩雷。 觀念 觀念 防詐騙 越獄">
-        <div class="ic">🔓</div>
-        <div class="tag">觀念</div>
-        <h3>iPad 越獄，一次搞懂</h3>
-        <p>越獄是什麼、現在還做得到嗎、值不值得？以及——為什麼網路上八成的「一鍵越獄」是詐騙。看完不踩雷。</p>
-        <div class="go">閱讀指南</div>
-      </a>
-        </div>
-        <p class="empty-note" id="articleEmpty" style="display:none" aria-live="polite"></p>
-      </section>
-    </div>
-
-    <aside class="side" aria-label="果果精選商品">
-      <div class="side-card">
-        <div class="stitle">
-          <h2 class="glabel small">果果精選商品</h2>
-        </div>
-        <div class="shop-search" role="search">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-          <input type="search" id="shopSearch" placeholder="搜尋商品，例如「鍵盤」「保護殼」…" aria-label="搜尋商品">
-        </div>
-        <div class="shop-cats" id="shopCats">
-          <button type="button" class="chip sm on" data-cat="__all__">全部<span class="cnt" id="shopAllCount"></span></button>
-        </div>
-        <div class="shop-list" id="shopList" aria-live="polite">
-          <div class="shop-status" id="shopStatus"><span class="spinner" aria-hidden="true"></span>商品載入中…</div>
-        </div>
-        <a class="shop-cta" id="shopCta" href="https://www.guoguo.tw/shop?utm_source=guide&amp;utm_medium=home" target="_blank" rel="noopener">回賣場看全部商品 →</a>
-      </div>
-    </aside>
-  </div>
-
-  <footer>
-    <div class="ft">有 iPad 使用問題？隨時找果果客服</div>
-    <p>買機教你用，終身售後諮詢。操作上有任何不確定，或想確認手上機型能不能做某件事，都歡迎先問我們的客服——我們很樂意幫你。</p>
-  </footer>
-
-  <div class="copy">© 果果國際 GUOGUO INTERNATIONAL</div>
-</div>
-<script>
+# ── JS（純字串，不做 Python 插值）─────────────────────────────────────
+JS = r"""
 (function () {
   "use strict";
 
-  var SHOP_CTA_URL = "https://www.guoguo.tw/shop?utm_source=guide&utm_medium=home";  // 由 build-homepage.py 注入（賣場網址 + UTM）
+  var SHOP_CTA_URL = "__SHOP_CTA_URL__";  // 由 build-homepage.py 注入（賣場網址 + UTM）
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
@@ -469,6 +447,119 @@ footer p { font-size: .9rem; color: var(--body); margin: 0; }
       });
   })();
 })();
+"""
+
+
+def build_html(articles):
+    colors = category_colors(articles)
+    cards_html = "\n".join(render_card(a, colors) for a in articles)
+    jsonld = render_jsonld(articles)
+    total = len(articles)
+    shop_cta_url = "{0}?{1}".format(SHOP_URL, UTM)
+
+    js_final = JS.replace('"__SHOP_CTA_URL__"', json.dumps(shop_cta_url))
+
+    return """<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>果果國際 · iPad 使用教學總覽</title>
+<meta name="description" content="果果國際客戶專屬的 iPad 使用教學：巧控鍵盤、下載大陸區 App、剪片要不要買 Apple Pencil、越獄該不該碰。買機教你用，終身售後諮詢。" />
+<style>{css}</style>
+<script type="application/ld+json">
+{jsonld}
 </script>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          {logo}
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="trust"><span>40 道專業檢測</span><span>資訊透明・缺點揭露</span><span>買機<b>教你用</b></span><span>終身售後諮詢</span></div>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="kicker">iPad 使用教學總覽</div>
+    <h1>果果 · iPad 使用教學</h1>
+    <p class="sub">跟果果買了 iPad，不只機況透明，還教你怎麼用得順。這裡收錄我們寫給客戶的實用指南——白話、舉例、當你是小白，一步步帶你上手。</p>
+    <div class="search-pill" role="search">
+      {search_icon}
+      <input type="search" id="articleSearch" placeholder="搜尋教學，例如「剪映」「鍵盤」「越獄」…" aria-label="搜尋教學">
+      <button type="button" class="sbtn" id="articleSearchBtn">搜尋</button>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="main">
+      <section class="guides" id="guides">
+        <h2 class="glabel">全部教學</h2>
+        <div class="filters" id="filterChips">
+          <button type="button" class="chip on" data-tag="__all__">全部<span class="cnt">({total})</span></button>
+        </div>
+        <div class="grid2" id="articleGrid">
+{cards}
+        </div>
+        <p class="empty-note" id="articleEmpty" style="display:none" aria-live="polite"></p>
+      </section>
+    </div>
+
+    <aside class="side" aria-label="果果精選商品">
+      <div class="side-card">
+        <div class="stitle">
+          <h2 class="glabel small">果果精選商品</h2>
+        </div>
+        <div class="shop-search" role="search">
+          {search_icon}
+          <input type="search" id="shopSearch" placeholder="搜尋商品，例如「鍵盤」「保護殼」…" aria-label="搜尋商品">
+        </div>
+        <div class="shop-cats" id="shopCats">
+          <button type="button" class="chip sm on" data-cat="__all__">全部<span class="cnt" id="shopAllCount"></span></button>
+        </div>
+        <div class="shop-list" id="shopList" aria-live="polite">
+          <div class="shop-status" id="shopStatus"><span class="spinner" aria-hidden="true"></span>商品載入中…</div>
+        </div>
+        <a class="shop-cta" id="shopCta" href="{shop_cta_url}" target="_blank" rel="noopener">回賣場看全部商品 →</a>
+      </div>
+    </aside>
+  </div>
+
+  <footer>
+    <div class="ft">有 iPad 使用問題？隨時找果果客服</div>
+    <p>買機教你用，終身售後諮詢。操作上有任何不確定，或想確認手上機型能不能做某件事，都歡迎先問我們的客服——我們很樂意幫你。</p>
+  </footer>
+
+  <div class="copy">© 果果國際 GUOGUO INTERNATIONAL</div>
+</div>
+<script>{js}</script>
 </body>
 </html>
+""".format(
+        css=CSS,
+        jsonld=jsonld,
+        logo=LOGO_SVG,
+        search_icon=SEARCH_ICON,
+        total=total,
+        cards=cards_html,
+        shop_cta_url=esc(shop_cta_url),
+        js=js_final,
+    )
+
+
+def main():
+    articles = load_articles()
+    doc = build_html(articles)
+    with open(OUT_PATH, "w", encoding="utf-8") as f:
+        f.write(doc)
+    print("✅ 產生 index.html：{0} 篇教學（來源 articles.json）；商品側欄於瀏覽器端 fetch products.json 動態載入。".format(len(articles)))
+
+
+if __name__ == "__main__":
+    main()
