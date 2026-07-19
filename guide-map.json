@@ -1,11 +1,17 @@
 {
-  "_readme": "每篇文章的導購商品對應表。key=文章資料夾名(slug)；heading=版位標題；products=商品 id 陣列(對應 products.json 的 id，順序=顯示順序，長度=數量)。之後可在 guide-dashboard 用點選方式維護。只被導外版 Worker 讀取。",
-  "ipad-jianying-pencil-guide": {
-    "heading": "果果也有賣 Apple Pencil ✏️ 原廠福利品＋高 CP 值副廠都有",
-    "products": ["apple-pencil-pro-new", "novaplus-a6-ipad-pencil"]
-  },
-  "ipad-magic-keyboard-guide": {
-    "heading": "在找 iPad 鍵盤？果果這幾款可以看看 ⌨️",
-    "products": ["apple-magic-keyboard-brand-new", "novaplus-konnecter-pro-keyboard-case"]
-  }
+ "_readme": "每篇文章的導購商品對應表。key=文章資料夾名(slug)；heading=版位標題；products=商品 id 陣列(對應 products.json 的 id，順序=顯示順序，長度=數量)。之後可在 guide-dashboard 用點選方式維護。只被導外版 Worker 讀取。",
+ "ipad-jianying-pencil-guide": {
+  "heading": "果果也有賣 Apple Pencil ✏️ 原廠福利品＋高 CP 值副廠都有",
+  "products": [
+   "apple-pencil-refurbished",
+   "novaplus-a6-ipad-pencil"
+  ]
+ },
+ "ipad-magic-keyboard-guide": {
+  "heading": "在找 iPad 鍵盤？果果這幾款可以看看 ⌨️",
+  "products": [
+   "apple-magic-keyboard-brand-new",
+   "novaplus-konnecter-pro-keyboard-case"
+  ]
+ }
 }
