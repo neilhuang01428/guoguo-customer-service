@@ -10,3 +10,6 @@ _planning/
 
 # 商品原始匯出檔（含 sku/庫存，內部 build 用，別上公開站）
 data/*-export.csv
+
+# 無導外版建置輸出（Cloudflare Pages 端產生，別追蹤）
+dist/
