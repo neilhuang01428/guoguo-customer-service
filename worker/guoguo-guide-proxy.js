@@ -50,16 +50,24 @@ async function handle(request) {
   const ct = res.headers.get('content-type') || ''
   if (!ct.includes('text/html')) return res                                   // 非 HTML 原樣回
 
-  return new HTMLRewriter()
+  const isHome = /(^|\/)index\.html$/.test(sub)                                 // 教學總覽首頁
+  const rw = new HTMLRewriter()
     .on('head', { element(el) { el.prepend(ANALYTICS, { html: true }); el.append(CHROME_CSS, { html: true }) } })
-    .on('main', {
+    .on('body', { element(el) { el.append(FLOATING, { html: true }) } })        // 右下浮動鈕（fixed）
+
+  if (isHome) {
+    // 首頁沒有 <main>、有自己的頁首頁尾 → 只在內容容器最前面補一條「回賣場」麵包屑
+    rw.on('.wrap', { element(el) { el.prepend('<span id="gg-top"></span>' + TOPBAR_HOME, { html: true }) } })
+  } else {
+    // 一般文章：注入完整麵包屑（賣場 › 教學 › 本篇）＋頁尾
+    rw.on('main', {
       element(el) {
-        el.prepend('<span id="gg-top"></span>' + TOPBAR, { html: true })       // 頂部回賣場麵包屑
-        el.append(FOOTER, { html: true })                                       // 頁尾
+        el.prepend('<span id="gg-top"></span>' + TOPBAR, { html: true })         // 頂部麵包屑
+        el.append(FOOTER, { html: true })                                        // 頁尾
       }
     })
-    .on('body', { element(el) { el.append(FLOATING, { html: true }) } })        // 右下浮動鈕（fixed）
-    .transform(res)
+  }
+  return rw.transform(res)
 }
 
 /* ── .html 容錯：依序試多種可能路徑 ──────────────────────────── */
@@ -99,13 +107,14 @@ const I = {
 }
 
 const CHROME_CSS = `<style>
-/* ── 頂部麵包屑：果果賣場 › iPad 使用教學 › 本篇（用 div，避免吃到側欄 nav 樣式）── */
-.gg-crumb{display:flex;align-items:center;flex-wrap:wrap;gap:3px 5px;font-family:var(--sans);font-size:.82rem;color:var(--muted,#8590a6);padding:12px 0 13px;margin:0 0 2px;border-bottom:1px solid var(--line,#e2e8f0)}
-.gg-crumb a.gg-cr{display:inline-flex;align-items:center;gap:6px;color:var(--navy,#17345f);text-decoration:none;font-weight:700;padding:4px 10px;border-radius:8px;transition:.14s}
-.gg-crumb a.gg-cr:hover{background:#eef2f8;color:var(--navy-deep,#0f2547)}
-.gg-crumb a.gg-cr svg{width:15px;height:15px;flex:none;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.gg-crumb .gg-sep{color:#c3ccda;font-size:.92rem;line-height:1}
-.gg-crumb .gg-cur{color:var(--body,#45506a);font-weight:600;padding:0 4px}
+/* ── 頂部麵包屑：果果賣場 › iPad 使用教學 › 本篇（做成可點膠囊，明顯可按、加大；用 div 避免吃到側欄 nav 樣式）── */
+.gg-crumb{display:flex;align-items:center;flex-wrap:wrap;gap:5px 7px;font-family:var(--sans);font-size:.9rem;color:var(--muted,#8590a6);padding:13px 0 15px;margin:0 0 2px;border-bottom:1px solid var(--line,#e2e8f0)}
+.gg-crumb a.gg-cr{display:inline-flex;align-items:center;gap:7px;color:var(--navy,#17345f);text-decoration:none;font-weight:700;padding:7px 15px;border:1px solid #cfdaec;border-radius:999px;background:#fff;box-shadow:0 1px 2px rgba(20,39,68,.05);transition:.14s;cursor:pointer}
+.gg-crumb a.gg-cr:hover{border-color:var(--navy,#17345f);background:#f2f7fd;box-shadow:0 4px 12px rgba(20,39,68,.13);transform:translateY(-1px)}
+.gg-crumb a.gg-cr:active{transform:translateY(0)}
+.gg-crumb a.gg-cr svg{width:17px;height:17px;flex:none;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.gg-crumb .gg-sep{color:#b8c3d4;font-size:1rem;line-height:1;margin:0 1px}
+.gg-crumb .gg-cur{color:var(--body,#45506a);font-weight:700;padding:0 6px;font-size:.9rem}
 
 /* ── 右下浮動鈕 ── */
 .gg-fab{position:fixed;right:18px;bottom:22px;display:flex;flex-direction:column;gap:14px;z-index:60}
@@ -151,6 +160,15 @@ const TOPBAR = `<div class="gg-crumb" aria-label="麵包屑導覽">
   </a>
   <span class="gg-sep" aria-hidden="true">›</span>
   <span class="gg-cur">本篇教學</span>
+</div>`
+
+/* ── 首頁專用麵包屑：果果賣場 › iPad 使用教學（教學＝目前位置，只給「回賣場」入口）── */
+const TOPBAR_HOME = `<div class="gg-crumb" aria-label="麵包屑導覽">
+  <a class="gg-cr gg-shop" href="${C.shop}" target="_blank" rel="noopener" aria-label="回果果賣場首頁">
+    <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>果果賣場
+  </a>
+  <span class="gg-sep" aria-hidden="true">›</span>
+  <span class="gg-cur">iPad 使用教學</span>
 </div>`
 
 /* ── 右下浮動鈕：回頂 / LINE / Map / 電話（正規 SVG，純連結、無 JS 也可點）── */
