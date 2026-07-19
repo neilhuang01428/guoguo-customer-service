@@ -3,6 +3,7 @@
    反向代理 GitHub Pages → www.guoguo.tw/guide/
    ＋ .html 容錯（有無 .html 都能開）
    ＋ 導外版共用 chrome 注入（頂部回賣場麵包屑 / 頁尾 / 浮動鈕）
+   ＋ GA4 流量分析注入（導外版；與賣場同一資源，含回賣場/LINE/電話等點擊事件）
 
    ▸ 部署：Cloudflare 後台 → Workers & Pages → 貼上此檔 → Deploy
    ▸ Route：*guoguo.tw/guide/*  和  guoguo.tw/guide/*
@@ -11,6 +12,13 @@
    ══════════════════════════════════════════════════════════════════ */
 
 const ORIGIN = 'https://neilhuang01428.github.io/guoguo-customer-service'
+
+/* ── GA4 流量分析（只注入導外版；與賣場同一個資源 → 可追「看教學→回賣場→下單」導購全貌）
+   含事件：shop_click / line_click / call_click / mail_click / map_click ── */
+const GA4_ID = 'G-8R0EYJ91SJ'
+const ANALYTICS = `<script async src="https://www.googletagmanager.com/gtag/js?id=${GA4_ID}"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA4_ID}');
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(!a)return;var h=a.getAttribute('href')||'';if(a.classList.contains('gg-back')||a.classList.contains('gg-shop'))gtag('event','shop_click',{link_url:h});else if(h.indexOf('lin.ee')>-1)gtag('event','line_click',{link_url:h});else if(h.indexOf('tel:')===0)gtag('event','call_click',{link_url:h});else if(h.indexOf('mailto:')===0)gtag('event','mail_click',{link_url:h});else if(h.indexOf('maps.')>-1)gtag('event','map_click',{link_url:h})},true);</script>`
 
 /* ── 官方聯絡資料（只出現在導外版）────────────────────────────── */
 const C = {
@@ -43,7 +51,7 @@ async function handle(request) {
   if (!ct.includes('text/html')) return res                                   // 非 HTML 原樣回
 
   return new HTMLRewriter()
-    .on('head', { element(el) { el.append(CHROME_CSS, { html: true }) } })
+    .on('head', { element(el) { el.prepend(ANALYTICS, { html: true }); el.append(CHROME_CSS, { html: true }) } })
     .on('main', {
       element(el) {
         el.prepend('<span id="gg-top"></span>' + TOPBAR, { html: true })       // 頂部回賣場麵包屑
