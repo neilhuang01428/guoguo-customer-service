@@ -51,6 +51,8 @@ async function handle(request) {
   if (!ct.includes('text/html')) return res                                   // 非 HTML 原樣回
 
   const isHome = /(^|\/)index\.html$/.test(sub)                                 // 教學總覽首頁
+  const slug = sub.split('/').filter(Boolean)[0] || ''      // 文章 slug（對應 guide-map.json）
+  const promo = isHome ? '' : await buildPromo(slug)         // 導購版位 HTML（無對應則空字串）
   const rw = new HTMLRewriter()
     .on('head', { element(el) { el.prepend(ANALYTICS, { html: true }); el.append(CHROME_CSS, { html: true }) } })
     .on('body', { element(el) { el.append(FLOATING, { html: true }) } })        // 右下浮動鈕（fixed）
@@ -63,12 +65,52 @@ async function handle(request) {
     rw.on('main', {
       element(el) {
         el.prepend('<span id="gg-top"></span>' + TOPBAR, { html: true })         // 頂部麵包屑
-        el.append(FOOTER, { html: true })                                        // 頁尾
+        el.append(promo + FOOTER, { html: true })                                        // 頁尾
       }
     })
   }
   return rw.transform(res)
 }
+
+/* ── 導購版位：讀 products.json + guide-map.json 組商品卡（只在導外版；
+   資料全在 JSON，破百篇 Worker 不用改；含 UTM 供 GA4 追蹤導購）── */
+let _shopCache = { at: 0, products: null, map: null }
+async function getShopData() {
+  if (_shopCache.products && Date.now() - _shopCache.at < 300000) return _shopCache   // 快取 5 分鐘
+  try {
+    const [products, map] = await Promise.all([
+      fetch(ORIGIN + '/products.json').then(r => r.ok ? r.json() : null),
+      fetch(ORIGIN + '/guide-map.json').then(r => r.ok ? r.json() : null),
+    ])
+    if (products && map) _shopCache = { at: Date.now(), products, map }
+  } catch (e) { /* 抓失敗沿用舊快取 */ }
+  return _shopCache
+}
+async function buildPromo(slug) {
+  const { products, map } = await getShopData()
+  if (!products || !map) return ''
+  const entry = map[slug]
+  if (!entry || !entry.products || !entry.products.length) return ''
+  const byId = {}; products.forEach(p => { byId[p.id] = p })
+  const cards = entry.products.map(id => byId[id]).filter(Boolean).map(cardHTML).join('')
+  if (!cards) return ''
+  return `<section class="gg-promo" aria-label="果果精選商品">
+  <div class="gg-promo-head"><span class="gg-promo-tag">果果嚴選</span><h3>${esc(entry.heading || '這篇的相關好物')}</h3></div>
+  <div class="gg-promo-grid">${cards}</div>
+  <a class="gg-promo-more gg-shop" href="${C.shop}?utm_source=guide&utm_medium=promo&utm_campaign=${encodeURIComponent(slug)}" target="_blank" rel="noopener">看更多果果好物 →</a>
+</section>`
+}
+function cardHTML(p) {
+  const nt = n => 'NT$' + Number(n).toLocaleString('en-US')
+  const price = p.price ? nt(p.price) : ''
+  const was = (p.compare_at_price && p.compare_at_price > p.price) ? ` <span class="gg-was"><s>${nt(p.compare_at_price)}</s></span>` : ''
+  const url = p.url + (p.url.includes('?') ? '&' : '?') + 'utm_source=guide&utm_medium=promo'
+  return `<a class="gg-pcard gg-shop" href="${url}" target="_blank" rel="noopener">
+  <span class="gg-pcard-img"><img src="${p.image}" alt="${esc(p.title)}" loading="lazy"></span>
+  <span class="gg-pcard-body"><span class="gg-pcard-title">${esc(p.title)}</span><span class="gg-pcard-price">${price}${was}</span><span class="gg-pcard-btn">進來逛逛</span></span>
+</a>`
+}
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])) }
 
 /* ── .html 容錯：依序試多種可能路徑 ──────────────────────────── */
 async function fetchWithFallback(sub) {
@@ -147,6 +189,26 @@ const CHROME_CSS = `<style>
 .gg-foot .gg-col a:hover .gg-i{opacity:1}
 .gg-foot .gg-copy{margin-top:22px;padding-top:15px;border-top:1px solid #e6ecf5;font-size:.76rem;color:var(--muted,#8590a6);display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
 @media(max-width:860px){.gg-foot{padding:22px 18px}.gg-foot .gg-top{flex-direction:column;align-items:flex-start;gap:14px}.gg-fab a{width:46px;height:46px}}
+
+/* ── 導購版位（商品卡）── */
+.gg-promo{margin:56px 0 0;padding:26px 28px 24px;background:linear-gradient(180deg,#ffffff,#f4f8fd);border:1px solid #e4ebf4;border-top:3px solid var(--green,#2f9e57);border-radius:18px;font-family:var(--sans);box-shadow:0 8px 30px rgba(20,39,68,.05)}
+.gg-promo-head{display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+.gg-promo-tag{font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;color:var(--green-deep,#237a43);background:var(--green-bg,#eaf5ee);border:1px solid #cbe6d5;padding:4px 10px;border-radius:999px;font-weight:700}
+.gg-promo-head h3{font-size:1.1rem;font-weight:800;color:var(--ink,#16223a);margin:0;line-height:1.35}
+.gg-promo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin:18px 0 4px}
+.gg-pcard{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line,#e2e8f0);border-radius:14px;overflow:hidden;text-decoration:none;box-shadow:0 2px 10px rgba(20,39,68,.04);transition:transform .16s,box-shadow .16s,border-color .16s}
+.gg-pcard:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(20,39,68,.13);border-color:#cfdaec}
+.gg-pcard-img{display:block;aspect-ratio:1/1;background:#f6f8fb;padding:12px}
+.gg-pcard-img img{width:100%;height:100%;object-fit:contain;display:block}
+.gg-pcard-body{display:flex;flex-direction:column;gap:8px;padding:13px 15px 15px;flex:1}
+.gg-pcard-title{font-size:.86rem;line-height:1.45;color:var(--body,#45506a);font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.5em}
+.gg-pcard-price{font-size:1.02rem;font-weight:800;color:var(--navy,#17345f);margin-top:auto}
+.gg-pcard-price .gg-was{font-size:.78rem;font-weight:500;color:var(--muted,#8590a6);margin-left:5px}
+.gg-pcard-btn{display:flex;align-items:center;justify-content:center;background:var(--navy,#17345f);color:#fff;font-size:.82rem;font-weight:700;padding:8px 0;border-radius:9px;margin-top:3px;transition:background .15s}
+.gg-pcard:hover .gg-pcard-btn{background:var(--navy-deep,#0f2547)}
+.gg-promo-more{display:inline-block;margin-top:14px;font-size:.85rem;font-weight:700;color:var(--navy,#17345f);text-decoration:none;font-family:var(--mono)}
+.gg-promo-more:hover{color:var(--navy-deep,#0f2547);text-decoration:underline}
+@media(max-width:560px){.gg-promo{padding:20px 16px}.gg-promo-grid{grid-template-columns:1fr 1fr;gap:11px}.gg-pcard-body{padding:10px 11px 12px}.gg-pcard-title{font-size:.8rem}}
 </style>`
 
 /* ── 頂部麵包屑：果果賣場 › iPad 使用教學 › 本篇（購物袋圖示=賣場、書本圖示=教學首頁，靠圖示與層級區分）── */
