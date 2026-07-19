@@ -56,8 +56,8 @@ async function handle(request) {
     .on('body', { element(el) { el.append(FLOATING, { html: true }) } })        // 右下浮動鈕（fixed）
 
   if (isHome) {
-    // 首頁沒有 <main>、有自己的頁首頁尾 → 只在內容容器最前面補一條「回賣場」麵包屑
-    rw.on('.wrap', { element(el) { el.prepend('<span id="gg-top"></span>' + TOPBAR_HOME, { html: true }) } })
+    // 首頁沒有 <main>、有自己的頁首頁尾 → 用 header tag（最穩）把「回賣場」麵包屑插在 masthead 之前
+    rw.on('header', { element(el) { el.before('<span id="gg-top"></span>' + TOPBAR_HOME, { html: true }) } })
   } else {
     // 一般文章：注入完整麵包屑（賣場 › 教學 › 本篇）＋頁尾
     rw.on('main', {
@@ -107,14 +107,14 @@ const I = {
 }
 
 const CHROME_CSS = `<style>
-/* ── 頂部麵包屑：果果賣場 › iPad 使用教學 › 本篇（做成可點膠囊，明顯可按、加大；用 div 避免吃到側欄 nav 樣式）── */
-.gg-crumb{display:flex;align-items:center;flex-wrap:wrap;gap:5px 7px;font-family:var(--sans);font-size:.9rem;color:var(--muted,#8590a6);padding:13px 0 15px;margin:0 0 2px;border-bottom:1px solid var(--line,#e2e8f0)}
-.gg-crumb a.gg-cr{display:inline-flex;align-items:center;gap:7px;color:var(--navy,#17345f);text-decoration:none;font-weight:700;padding:7px 15px;border:1px solid #cfdaec;border-radius:999px;background:#fff;box-shadow:0 1px 2px rgba(20,39,68,.05);transition:.14s;cursor:pointer}
+/* ── 頂部麵包屑：果果賣場 › iPad 使用教學 › 本篇（可點膠囊、明顯可按；sticky 置頂、捲動不消失）── */
+.gg-crumb{position:sticky;top:0;z-index:50;display:flex;align-items:center;flex-wrap:wrap;gap:5px 7px;font-family:var(--sans);font-size:.94rem;color:var(--muted,#8590a6);padding:11px 0 12px;margin:0;border-bottom:1px solid var(--line,#e2e8f0);background:var(--bg,#f6f8fb)}
+.gg-crumb a.gg-cr{display:inline-flex;align-items:center;gap:7px;color:var(--navy,#17345f);text-decoration:none;font-weight:700;padding:8px 16px;border:1px solid #cfdaec;border-radius:999px;background:#fff;box-shadow:0 1px 2px rgba(20,39,68,.05);transition:.14s;cursor:pointer}
 .gg-crumb a.gg-cr:hover{border-color:var(--navy,#17345f);background:#f2f7fd;box-shadow:0 4px 12px rgba(20,39,68,.13);transform:translateY(-1px)}
 .gg-crumb a.gg-cr:active{transform:translateY(0)}
-.gg-crumb a.gg-cr svg{width:17px;height:17px;flex:none;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.gg-crumb .gg-sep{color:#b8c3d4;font-size:1rem;line-height:1;margin:0 1px}
-.gg-crumb .gg-cur{color:var(--body,#45506a);font-weight:700;padding:0 6px;font-size:.9rem}
+.gg-crumb a.gg-cr svg{width:18px;height:18px;flex:none;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.gg-crumb .gg-sep{color:#b8c3d4;font-size:1.05rem;line-height:1;margin:0 1px}
+.gg-crumb .gg-cur{color:var(--body,#45506a);font-weight:700;padding:0 6px;font-size:.94rem}
 
 /* ── 右下浮動鈕 ── */
 .gg-fab{position:fixed;right:18px;bottom:22px;display:flex;flex-direction:column;gap:14px;z-index:60}
