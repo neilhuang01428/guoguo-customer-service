@@ -368,7 +368,15 @@ footer p { font-size: .9rem; color: var(--body); margin: 0; }
       }
     }
 
-    wireChips(chipsWrap, 'tag', function (v) { activeTag = v; apply(); });
+    wireChips(chipsWrap, 'tag', function (v) {
+      activeTag = v; apply();
+      // 把目前標籤寫進網址 hash，方便分享／重新整理保留篩選
+      try {
+        var u = (v && v !== '__all__') ? '#tag=' + encodeURIComponent(v)
+                                       : location.pathname + location.search;
+        history.replaceState(null, '', u);
+      } catch (e) {}
+    });
     if (searchInput) {
       searchInput.addEventListener('input', function () {
         query = searchInput.value.trim().toLowerCase();
@@ -382,6 +390,24 @@ footer p { font-size: .9rem; color: var(--body); margin: 0; }
       });
     }
     apply();
+
+    /* 深連結：從文章頁點「相關主題」標籤（/#tag=xxx 或 ?tag=xxx）進來
+       → 自動套用該標籤篩選、把該 chip 標記為選中、並捲到教學區。 */
+    (function () {
+      var raw = location.hash.replace(/^#/, '') + '&' + location.search.replace(/^\?/, '');
+      var m = /(?:^|&)tag=([^&]+)/.exec(raw);
+      if (!m) return;
+      var tag;
+      try { tag = decodeURIComponent(m[1].replace(/\+/g, ' ')); } catch (e) { tag = m[1]; }
+      var hit = Array.prototype.some.call(chipsWrap.children, function (b) { return b.dataset.tag === tag; });
+      if (!hit) return;
+      Array.prototype.forEach.call(chipsWrap.children, function (b) {
+        b.classList.toggle('on', b.dataset.tag === tag);
+      });
+      activeTag = tag; apply();
+      var g = document.getElementById('guides');
+      if (g && g.scrollIntoView) setTimeout(function () { g.scrollIntoView({ block: 'start' }); }, 40);
+    })();
   })();
 
 

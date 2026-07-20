@@ -55,6 +55,7 @@ async function handle(request) {
   const promo = isHome ? '' : await buildPromo(slug)         // 導購版位 HTML（無對應則空字串）
   // 首頁的 OG/canonical 已由 build-homepage.py 寫進 index.html；文章頁在這裡注入（無對應 slug 則空）
   const headMeta = isHome ? '' : await buildArticleHead(slug)
+  const tags = isHome ? '' : await buildTags(slug)           // 文章頁尾「相關主題」標籤（連回首頁篩選；取代手動延伸閱讀）
   const rw = new HTMLRewriter()
     .on('head', { element(el) { el.prepend(ANALYTICS, { html: true }); el.append(CHROME_CSS + headMeta, { html: true }) } })
     .on('body', { element(el) { el.append(FLOATING, { html: true }) } })        // 右下浮動鈕（fixed）
@@ -67,7 +68,7 @@ async function handle(request) {
     rw.on('main', {
       element(el) {
         el.prepend('<span id="gg-top"></span>' + TOPBAR, { html: true })         // 頂部麵包屑
-        el.append(promo + FOOTER, { html: true })                                        // 頁尾
+        el.append(tags + promo + FOOTER, { html: true })                                 // 相關主題標籤 › 導購 › 頁尾
       }
     })
   }
@@ -123,6 +124,25 @@ async function buildArticleHead(slug) {
 <meta name="twitter:description" content="${desc}">
 <meta name="twitter:image" content="${ogimg}">
 <script type="application/ld+json">${ld}</script>`
+}
+
+/* ── 文章頁尾「相關主題」標籤：讀 articles.json 的 tags，做成可點膠囊 →
+   連回教學總覽首頁並帶 #tag=，首頁會自動篩出同標籤文章（取代手動維護的「延伸閱讀」）。
+   找不到 slug 或沒 tags 就回空字串、不硬塞。── */
+async function buildTags(slug) {
+  const { articles } = await getShopData()
+  if (!articles) return ''
+  const a = articles.find(x => x && x.slug === slug)
+  if (!a || !a.tags || !a.tags.length) return ''
+  const chips = a.tags
+    .filter(Boolean)
+    .map(t => `<a class="gg-tag" href="/guide/#tag=${encodeURIComponent(t)}">${esc(t)}</a>`)
+    .join('')
+  if (!chips) return ''
+  return `<nav class="gg-tags" aria-label="相關主題標籤">
+  <div class="gg-tags-h">想看更多同主題的教學？點標籤逛逛 👇</div>
+  <div class="gg-tags-list">${chips}</div>
+</nav>`
 }
 async function buildPromo(slug) {
   const { products, map } = await getShopData()
@@ -227,6 +247,15 @@ const CHROME_CSS = `<style>
 .gg-foot .gg-col a:hover .gg-i{opacity:1}
 .gg-foot .gg-copy{margin-top:22px;padding-top:15px;border-top:1px solid #e6ecf5;font-size:.76rem;color:var(--muted,#8590a6);display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
 @media(max-width:860px){.gg-foot{padding:22px 18px}.gg-foot .gg-top{flex-direction:column;align-items:flex-start;gap:14px}.gg-fab a{width:46px;height:46px}}
+
+/* ── 文章頁尾「相關主題」標籤（連回首頁 #tag= 篩選）── */
+nav.gg-tags{display:block!important;width:auto!important;min-width:0!important;position:static!important;height:auto!important;overflow:visible;margin:52px 0 0;padding:22px 26px;background:linear-gradient(180deg,#ffffff,#f4f8fd);border:1px solid #e4ebf4;border-top:3px solid var(--teal,#1c8a9a);border-radius:18px;font-family:var(--sans);box-shadow:0 8px 30px rgba(20,39,68,.05)}
+nav.gg-tags .gg-tags-h{font-size:.98rem;font-weight:800;color:var(--ink,#16223a);margin:0 0 14px}
+nav.gg-tags .gg-tags-list{display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;align-items:center;gap:9px}
+nav.gg-tags a.gg-tag{display:inline-flex!important;width:auto!important;align-items:center;text-decoration:none;font-size:.9rem;font-weight:700;color:var(--navy,#17345f);background:#fff;border:1px solid #cfdaec;border-radius:999px;padding:8px 16px;transition:.14s}
+nav.gg-tags a.gg-tag::before{content:'#';color:var(--teal,#1c8a9a);margin-right:5px;font-weight:800}
+nav.gg-tags a.gg-tag:hover{border-color:var(--navy,#17345f);background:#f2f7fd;transform:translateY(-1px);box-shadow:0 4px 12px rgba(20,39,68,.13)}
+@media(max-width:520px){nav.gg-tags{padding:18px 16px}nav.gg-tags .gg-tags-list{gap:8px}nav.gg-tags a.gg-tag{padding:7px 13px;font-size:.86rem}}
 
 /* ── 導購版位（商品卡）── */
 .gg-promo{margin:56px 0 0;padding:26px 28px 24px;background:linear-gradient(180deg,#ffffff,#f4f8fd);border:1px solid #e4ebf4;border-top:3px solid var(--green,#2f9e57);border-radius:18px;font-family:var(--sans);box-shadow:0 8px 30px rgba(20,39,68,.05)}
