@@ -1,0 +1,48 @@
+name: build-guide
+
+# 自動化守門（T4）：改了 articles.json（或產生器）後 push，
+# 這支會自動重生導外版 index.html 與 sitemap.xml 並提交回 main，
+# 讓「新增文章記得重跑 build-homepage.py + commit」這個手動步驟不再會漏。
+# 產出的 commit 帶 [skip ci]，不會再觸發自己。
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'articles.json'
+      - 'build-homepage.py'
+      - 'build-sitemap.py'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-guide
+  cancel-in-progress: false
+
+jobs:
+  regen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: 重生 index.html 與 sitemap.xml
+        run: |
+          python3 build-homepage.py
+          python3 build-sitemap.py
+
+      - name: 若有變更就提交回 main
+        run: |
+          git config user.name  "guoguo-guide-bot"
+          git config user.email "guoguo-guide-bot@users.noreply.github.com"
+          git add index.html sitemap.xml
+          if git diff --cached --quiet; then
+            echo "index.html / sitemap.xml 已是最新，無需提交。"
+          else
+            git commit -m "chore: 自動重生 index.html + sitemap.xml [skip ci]"
+            git push
+          fi
