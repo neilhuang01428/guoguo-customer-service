@@ -18,6 +18,11 @@ rm -rf "$OUT"; mkdir -p "$OUT"
 #    不走這支腳本；在 Cloudflare 臨時建置機器上覆寫它無害，也不會被 commit 回去。
 python3 build-homepage.py
 
+# 0b) 靜態標籤頁即時重生：用「當下 commit 的 articles.json」現場產生 tag/<slug>/index.html。
+#     標籤頁是「一份檔雙版共用」（靠相對連結），原始檔天生零導外；下方會一起複製進 dist、
+#     並由洩漏檢查守門。必須在複製前先產出，否則 dist/tag/ 會是空的。
+python3 build-tags.py
+
 # 1) allowlist：只複製「乾淨內容」——絕不含 worker/(有全部聯絡資料)、sitemap.xml(有 guoguo 網址)、內部文件
 #    導外版首頁 index.html（含常駐商品側欄、CTA 連 www.guoguo.tw/shop）不進來；
 #    改放 build-homepage.py 另產的「中性版」index.neutral.html（無側欄、無任何 guoguo 連結、頁尾不涉聯繫，
@@ -37,6 +42,15 @@ for d in $ARTICLE_SLUGS; do
   fi
 done
 cp index.neutral.html "$OUT"/index.html   # 中性版首頁（step 0 剛重印的乾淨版；下方洩漏檢查會再守門一次）
+
+# 靜態標籤頁：step 0b 剛產出的 tag/（一份檔雙版共用、相對連結、零導外）整包搬進中性網域。
+# 不需注入麵包屑（它自帶相對麵包屑）；下方洩漏檢查會一併掃它。
+if [ -d tag ]; then
+  cp -R tag "$OUT"/
+else
+  echo "❌ 找不到 tag/ 資料夾（build-tags.py 應已在 step 0b 產出）→ 中止。"
+  exit 1
+fi
 
 # 2) 中性版麵包屑：導外版由 Worker 注入「果果賣場 › iPad 使用教學 › 本篇教學」；
 #    中性版不經 Worker，改在此把「iPad 使用教學 › 本篇教學」注入到 dist/ 的文章頁
@@ -93,7 +107,8 @@ TAGS_CSS = "<style>" + (
 
 # 麵包屑本體：iPad 使用教學（連回中性版首頁 /）› 本篇教學。無「果果賣場」、無任何聯絡/導購連結。
 CRUMB_HTML = (
-    '<div class="gg-crumb" aria-label="麵包屑導覽">'
+    # data-pagefind-ignore：麵包屑在 <main> 內、會被 Pagefind 掃到，標記排除 → 搜尋片段只留文章內文。
+    '<div class="gg-crumb" data-pagefind-ignore aria-label="麵包屑導覽">'
     '<a class="gg-cr" href="/" aria-label="回 iPad 使用教學總覽首頁">'
     '<svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>'
     '<path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>iPad 使用教學</a>'
@@ -102,16 +117,22 @@ CRUMB_HTML = (
     '</div>'
 )
 
+def tag_slug(t):
+    # 與 build-tags.py / worker 的 tag_slug 同規則：strip → 小寫 ASCII → 空白換 '-' → 中日文保留
+    return re.sub(r"\s+", "-", t.strip().lower())
+
 def tags_html(slug):
     a = BY_SLUG.get(slug) or {}
     tags = [t for t in (a.get("tags") or []) if t]
     if not tags:
         return ""
+    # 連到「靜態標籤頁」（相對 ../tag/<slug>/）：文章在中性版 /<art>/ → /tag/<slug>/。
+    # 用相對路徑，同一份注入邏輯在導外（Worker）與中性都對。
     chips = "".join(
-        '<a class="gg-tag" href="/#tag={q}">{t}</a>'.format(q=quote(t), t=html.escape(t))
+        '<a class="gg-tag" href="../tag/{q}/">{t}</a>'.format(q=quote(tag_slug(t)), t=html.escape(t))
         for t in tags
     )
-    return ('<nav class="gg-tags" aria-label="相關主題標籤">'
+    return ('<nav class="gg-tags" data-pagefind-ignore aria-label="相關主題標籤">'
             '<div class="gg-tags-h">想看更多同主題的教學？點標籤逛逛 👇</div>'
             '<div class="gg-tags-list">' + chips + '</div></nav>')
 
@@ -125,7 +146,25 @@ for d in DIRS:
             continue
         if not re.search(r"<main\b", s):         # 沒有 <main> 的頁面不硬塞
             continue
-        s = re.sub(r"(<main\b[^>]*>)", lambda m: m.group(1) + CRUMB_HTML, s, count=1)
+        # 把麵包屑塞進 <main> 開頭，並替 <main> 標記 data-pagefind-body：
+        #   → Pagefind 只索引 <main>（文章內文），排除上方 masthead／logo／信賴條等 chrome，
+        #     命中片段才乾淨（不會出現「果果國際 GUOGUO…」這類頁首雜訊）。
+        #   → 只要全站有任一頁帶 data-pagefind-body，沒帶的頁（首頁／標籤頁）就完全不進索引，
+        #     與它們的 data-pagefind-ignore 雙保險。
+        def _open_main(m):
+            tag = m.group(1)
+            if "data-pagefind-body" not in tag:
+                tag = tag[:-1] + " data-pagefind-body>"
+            return tag + CRUMB_HTML
+        s = re.sub(r"(<main\b[^>]*>)", _open_main, s, count=1)
+        # 文章自帶的 masthead（<header class="masthead">：logo／品牌／標語，在 <main> 內、<h1> 之前）
+        # 也標 data-pagefind-ignore，否則會被當成內文開頭 → 命中片段出現「果果國際 GUOGUO…台灣最專業…」頁首雜訊。
+        s = re.sub(
+            r'(<header\b[^>]*class="masthead"[^>]*>)',
+            lambda m: m.group(1) if "data-pagefind-ignore" in m.group(1)
+                      else m.group(1)[:-1] + " data-pagefind-ignore>",
+            s, count=1,
+        )
         # 頁尾「相關主題」標籤：插在 <main> 內容最後（最後一個 </main> 之前）
         if th:
             idx = s.rfind("</main>")
@@ -142,6 +181,15 @@ PY
 
 # 3) noindex 整個中性網域（與導外版 www.guoguo.tw/guide 同內容，避免 Google 重複內容懲罰）
 printf 'User-agent: *\nDisallow: /\n' > "$OUT"/robots.txt
+
+# 3b) Pagefind 全文搜尋索引：對「已組好的乾淨 dist/」建索引 → 產出 dist/pagefind/。
+#     ▸ 只掃 dist（不掃 repo 根）＝天生避開 _planning 等內部規劃文件，不會被索引進公開站。
+#     ▸ 首頁 index.html 與 tag/*/ 都帶 data-pagefind-ignore（不進索引）；上面注入的麵包屑/相關標籤
+#       也標了 data-pagefind-ignore → Pagefind 只索引 4 篇文章「內文」，命中片段乾淨。
+#     ▸ 產出的 dist/pagefind/ 會被下方洩漏檢查一併掃過守門（索引內容＝乾淨文章內文，零導外）。
+#     ▸ npx -y pagefind@1：本機/CI/Cloudflare 首次會自動下載 pagefind（需 node，見 build-guide.yml）。
+echo "▸ 建 Pagefind 全文搜尋索引（npx pagefind --site ${OUT}）"
+npx -y pagefind@1 --site "$OUT"
 
 # 4) 洩漏檢查守門：dist/ 內若出現任何「果果導流資訊」就中止部署
 #    （品牌名「果果國際」允許；只擋連結/聯絡方式。電話只擋果果真實號碼 0906-536-833，教學裡的範例號碼放行）

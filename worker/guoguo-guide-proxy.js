@@ -61,11 +61,13 @@ async function handle(request) {
   if (!ct.includes('text/html')) return res                                   // 非 HTML 原樣回
 
   const isHome = /(^|\/)index\.html$/.test(sub)                                 // 教學總覽首頁
+  const isTag  = sub.startsWith('/tag/')                                        // 靜態標籤頁 /guide/tag/<slug>/
   const slug = sub.split('/').filter(Boolean)[0] || ''      // 文章 slug（對應 guide-map.json）
-  const promo = isHome ? '' : await buildPromo(slug)         // 導購版位 HTML（無對應則空字串）
-  // 首頁的 OG/canonical 已由 build-homepage.py 寫進 index.html；文章頁在這裡注入（無對應 slug 則空）
-  const headMeta = isHome ? '' : await buildArticleHead(slug)
-  const tags = isHome ? '' : await buildTags(slug)           // 文章頁尾「相關主題」標籤（連回首頁篩選；取代手動延伸閱讀）
+  const promo = (isHome || isTag) ? '' : await buildPromo(slug)         // 導購版位 HTML（無對應則空字串）
+  // 首頁的 OG/canonical 已由 build-homepage.py 寫進 index.html；文章頁在這裡注入（無對應 slug 則空）；
+  // 標籤頁只補 canonical（指向導外正式網址），不做文章 OG/breadcrumb。
+  const headMeta = isTag ? buildTagHead(sub) : (isHome ? '' : await buildArticleHead(slug))
+  const tags = (isHome || isTag) ? '' : await buildTags(slug) // 文章頁尾「相關主題」標籤（連到標籤頁；取代手動延伸閱讀）
   const rw = new HTMLRewriter()
     .on('head', { element(el) { el.prepend(ANALYTICS, { html: true }); el.append(CHROME_CSS + headMeta, { html: true }) } })
     .on('body', { element(el) { el.append(FLOATING, { html: true }) } })        // 右下浮動鈕（fixed）
@@ -73,6 +75,10 @@ async function handle(request) {
   if (isHome) {
     // 首頁沒有 <main>、有自己的頁首頁尾 → 用 header tag（最穩）把「回賣場」麵包屑插在 masthead 之前
     rw.on('header', { element(el) { el.before('<span id="gg-top"></span>' + TOPBAR_HOME, { html: true }) } })
+  } else if (isTag) {
+    // 靜態標籤頁：已自帶麵包屑（相對連結，雙版共用），只在 <main> 尾端補上賣場頁尾。
+    // 不注入文章麵包屑 / 導購版位 / 文章延伸標籤 / 文章 OG。
+    rw.on('main', { element(el) { el.append(FOOTER, { html: true }) } })
   } else {
     // 一般文章：注入完整麵包屑（賣場 › 教學 › 本篇）＋頁尾
     rw.on('main', {
@@ -136,8 +142,24 @@ async function buildArticleHead(slug) {
 <script type="application/ld+json">${ld}</script>`
 }
 
+/* ── 標籤 → slug：與 build-tags.py 的 tag_slug() 同規則
+   （strip → 小寫 ASCII → 空白換 '-' → 中日文原樣保留）。
+   例：'防詐騙'→'防詐騙'、'App 下載'→'app-下載'、'Apple Pencil'→'apple-pencil'。── */
+function tagSlug(t) { return String(t).trim().toLowerCase().replace(/\s+/g, '-') }
+
+/* ── 標籤頁 <head>：只補 canonical，指向導外正式網址 /guide/tag/<slug>/。
+   sub 形如 /tag/<slug>/（可能已 percent-encoded）；去掉尾端 index.html、補斜線。
+   （OG title 需 slug→標籤名反查，靜態檔又已含 noindex，此處先只做 canonical。）── */
+function buildTagHead(sub) {
+  let path = sub.replace(/index\.html$/, '')
+  if (!path.endsWith('/')) path += '/'
+  const canonical = 'https://www.guoguo.tw/guide' + path
+  return `<link rel="canonical" href="${esc(canonical)}">`
+}
+
 /* ── 文章頁尾「相關主題」標籤：讀 articles.json 的 tags，做成可點膠囊 →
-   連回教學總覽首頁並帶 #tag=，首頁會自動篩出同標籤文章（取代手動維護的「延伸閱讀」）。
+   連到對應「靜態標籤頁」（相對 ../tag/<slug>/：文章在 /guide/<art>/ → /guide/tag/<slug>/；
+   中性版 /<art>/ → /tag/<slug>/，同一份注入雙版都對）。取代手動維護的「延伸閱讀」。
    找不到 slug 或沒 tags 就回空字串、不硬塞。── */
 async function buildTags(slug) {
   const { articles } = await getShopData()
@@ -146,7 +168,7 @@ async function buildTags(slug) {
   if (!a || !a.tags || !a.tags.length) return ''
   const chips = a.tags
     .filter(Boolean)
-    .map(t => `<a class="gg-tag" href="/guide/#tag=${encodeURIComponent(t)}">${esc(t)}</a>`)
+    .map(t => `<a class="gg-tag" href="../tag/${encodeURIComponent(tagSlug(t))}/">${esc(t)}</a>`)
     .join('')
   if (!chips) return ''
   return `<nav class="gg-tags" aria-label="相關主題標籤">

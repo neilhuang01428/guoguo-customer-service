@@ -1,9 +1,10 @@
 name: build-guide
 
-# 自動化守門（T4）：改了 articles.json（或產生器）後 push，
-# 這支會自動重生導外版 index.html 與 sitemap.xml 並提交回 main，
-# 讓「新增文章記得重跑 build-homepage.py + commit」這個手動步驟不再會漏。
-# 產出的 commit 帶 [skip ci]，不會再觸發自己。
+# 自動化守門（T4／T9）：改了 articles.json、文章內文（ipad-*-guide/）或產生器後 push，
+# 這支會用 build-all.sh 一步到位重生：導外版 index.html、標籤頁 tag/、sitemap.xml，
+# 並用 Pagefind 重建全文搜尋索引 pagefind/（對 dist 建、避開內部文件），最後提交回 main。
+# 讓「新增文章記得重跑 build-homepage/build-tags/pagefind + commit」這些手動步驟不再會漏。
+# build-all.sh 內含 build-neutral 的洩漏檢查守門；產出的 commit 帶 [skip ci]，不會再觸發自己。
 
 on:
   push:
@@ -11,7 +12,11 @@ on:
     paths:
       - 'articles.json'
       - 'build-homepage.py'
+      - 'build-tags.py'
       - 'build-sitemap.py'
+      - 'build-neutral.sh'
+      - 'build-all.sh'
+      - 'ipad-*-guide/**'   # 文章內文有改 → 全文搜尋索引也要跟著更新
 
 permissions:
   contents: write
@@ -30,19 +35,23 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: 重生 index.html 與 sitemap.xml
-        run: |
-          python3 build-homepage.py
-          python3 build-sitemap.py
+      # Pagefind（build-neutral.sh 內 npx -y pagefind@1）需要 node
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 一鍵重生（首頁＋標籤頁＋sitemap＋dist＋Pagefind 索引，含洩漏檢查守門）
+        run: bash build-all.sh
 
       - name: 若有變更就提交回 main
         run: |
           git config user.name  "guoguo-guide-bot"
           git config user.email "guoguo-guide-bot@users.noreply.github.com"
-          git add index.html sitemap.xml
+          # dist/ 與 index.neutral.html 皆 gitignored，不會被 add；只提交導外版要的產物。
+          git add -A index.html sitemap.xml tag pagefind
           if git diff --cached --quiet; then
-            echo "index.html / sitemap.xml 已是最新，無需提交。"
+            echo "index.html / sitemap.xml / tag / pagefind 已是最新，無需提交。"
           else
-            git commit -m "chore: 自動重生 index.html + sitemap.xml [skip ci]"
+            git commit -m "chore: 自動重生 index.html + sitemap.xml + tag/ + pagefind/ [skip ci]"
             git push
           fi

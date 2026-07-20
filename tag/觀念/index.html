@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>觀念｜iPad 使用教學 · 果果國際</title>
+<meta name="description" content="跟「觀念」有關的 iPad 使用教學，共 1 篇，果果整理好方便你一次看。" />
+<meta name="robots" content="noindex" />
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+:root {
+  --bg: #f6f8fb; --panel: #ffffff; --panel2: #f0f3f8; --line: #e2e8f0; --grid: #edf1f6;
+  --ink: #16223a; --body: #45506a; --muted: #8590a6;
+  --navy: #17345f;   --navy-deep: #0f2547; --navy-bg: #eef2f8;
+  --green: #2f9e57;  --green-deep: #237a43; --green-bg: #eaf5ee;
+  --amber: #b47d1e;  --amber-bg: #f8f0dc;
+  --red: #c0492f;    --red-bg: #fbeae5;
+  --teal: #1c8a9a;   --teal-bg: #e3f3f4;
+  --purple: #7150c9; --purple-bg: #efeafb;
+  --mono: 'SF Mono','JetBrains Mono','Menlo','Consolas',monospace;
+  --sans: 'Noto Sans TC',-apple-system,BlinkMacSystemFont,'Segoe UI','Inter',sans-serif;
+}
+body { background: var(--bg); color: var(--body); font-family: var(--sans); line-height: 1.72; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 22px 100px; }
+
+/* ── masthead（沿用既有 card-head 風格）── */
+header.mast { padding: 30px 0 0; }
+.card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 22px 26px; }
+.card-head .top { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+.logo { display: flex; align-items: center; gap: 12px; }
+.logo svg { width: 42px; height: 42px; flex: none; }
+.logo .wm { font-weight: 800; font-size: 1.1rem; color: var(--ink); line-height: 1.15; }
+.logo .wm-sub { font-family: var(--mono); font-size: .55rem; letter-spacing: .2em; color: var(--muted); }
+.tagline { text-align: right; font-size: .82rem; color: var(--muted); line-height: 1.5; }
+.tagline b { color: var(--navy); }
+.trust { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.trust span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+.trust span b { color: var(--green-deep); }
+
+/* ── hero + 搜尋（教學）── */
+.hero { padding: 44px 4px 6px; }
+.kicker { font-family: var(--mono); font-size: .72rem; letter-spacing: .05em; color: var(--navy); margin-bottom: 14px; }
+.kicker::before { content: '// '; color: var(--muted); }
+h1 { font-weight: 800; font-size: 2.5rem; line-height: 1.14; letter-spacing: -.02em; color: var(--ink); margin-bottom: 14px; }
+.sub { font-size: 1.12rem; color: var(--body); max-width: 680px; }
+.searchbox { max-width: 720px; margin-top: 24px; }
+.search-pill { display: flex; align-items: center; gap: 10px; background: #fff; border: 1.5px solid var(--line); border-radius: 16px; padding: 8px 8px 8px 18px; box-shadow: 0 6px 20px rgba(20,39,68,.06); }
+.search-pill svg { flex: none; width: 17px; height: 17px; color: var(--muted); }
+.search-pill input { flex: 1; min-width: 0; border: 0; outline: 0; font: inherit; font-size: .92rem; color: var(--ink); background: transparent; }
+.search-pill input::placeholder { color: var(--muted); }
+.search-pill .sbtn { flex: none; background: var(--navy); color: #fff; font-size: .82rem; font-weight: 700; padding: 10px 20px; border-radius: 11px; border: 0; cursor: pointer; transition: .15s; font-family: inherit; }
+.search-pill .sbtn:hover { background: var(--navy-deep); }
+
+/* ── Pagefind 全文搜尋結果面板（比照 T9 mockup B；沿用首頁色票/字體）── */
+.pf-panel { margin-top: 12px; background: #fff; border: 1.5px solid var(--line); border-radius: 16px; box-shadow: 0 10px 34px rgba(20,39,68,.10); overflow: hidden; }
+.pf-head { display: flex; align-items: center; justify-content: space-between; gap: 10px 14px; flex-wrap: wrap; padding: 13px 18px; background: var(--panel2); border-bottom: 1px solid var(--line); font-size: .82rem; color: var(--muted); }
+.pf-head .pf-summary b { color: var(--ink); font-weight: 800; }
+.pf-dot { color: #b8c3d4; margin: 0 5px; }
+.pf-badge { font-family: var(--mono); font-size: .66rem; font-weight: 700; color: var(--teal); background: var(--teal-bg); border: 1px solid #cfe8ea; padding: 4px 11px; border-radius: 999px; letter-spacing: .02em; white-space: nowrap; }
+.pf-results { max-height: min(560px, 66vh); overflow-y: auto; overscroll-behavior: contain; padding: 4px 6px; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+.pf-results::-webkit-scrollbar { width: 6px; }
+.pf-results::-webkit-scrollbar-thumb { background: var(--line); border-radius: 999px; }
+.pf-item { padding: 16px 14px; border-bottom: 1px solid var(--grid); }
+.pf-item:last-child { border-bottom: 0; }
+.pf-cat { font-family: var(--mono); font-size: .68rem; letter-spacing: .04em; color: var(--c); font-weight: 700; margin-bottom: 7px; }
+a.pf-title { display: block; font-size: 1.12rem; font-weight: 800; color: var(--ink); line-height: 1.32; text-decoration: none; margin-bottom: 5px; }
+a.pf-title:hover { color: var(--c); }
+.pf-path { font-family: var(--mono); font-size: .72rem; color: var(--muted); margin-bottom: 11px; word-break: break-all; }
+a.pf-ex { display: block; background: var(--panel2); border-left: 3px solid var(--c); border-radius: 0 9px 9px 0; padding: 11px 14px; margin: 8px 0; font-size: .9rem; color: var(--body); line-height: 1.66; text-decoration: none; transition: .14s; }
+a.pf-ex:hover { background: #e9eef6; }
+a.pf-ex mark, a.pf-title mark { background: #fdeec2; color: inherit; border-radius: 3px; padding: 0 2px; font-weight: 700; }
+.pf-more { display: inline-block; margin: 4px 0 2px; font-family: var(--mono); font-size: .76rem; font-weight: 700; color: var(--navy); cursor: pointer; background: none; border: 0; padding: 5px 0; }
+.pf-more:hover { text-decoration: underline; }
+.pf-more b { color: var(--red); }
+.pf-note { padding: 26px 18px; text-align: center; color: var(--muted); font-size: .9rem; }
+.pf-note .spin { display: inline-block; width: 14px; height: 14px; vertical-align: -2px; margin-right: 8px; border-radius: 50%; border: 2px solid var(--line); border-top-color: var(--navy); animation: spin .8s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .pf-note .spin { animation: none; } }
+
+/* ── 雙欄：左教學內容／右常駐商品側欄 ── */
+.cols { display: grid; grid-template-columns: minmax(0,1fr) 320px; gap: 26px; align-items: start; margin-top: 46px; }
+.main { min-width: 0; }
+.side { position: sticky; top: 20px; }
+.cols.cols-solo { grid-template-columns: 1fr; }   /* 中性版首頁：無商品側欄 → 單欄 */
+
+h2.glabel { font-family: var(--mono); font-weight: 700; font-size: .72rem; letter-spacing: .05em; color: var(--muted); margin: 0 0 4px; }
+h2.glabel::before { content: '['; } h2.glabel::after { content: ']'; }
+h2.glabel.small { font-size: .68rem; margin: 0; }
+
+/* 篩選晶片（教學標籤／商品分類共用） */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.chip { font-family: var(--mono); font-size: .78rem; font-weight: 600; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line); background: #fff; color: var(--body); cursor: pointer; transition: .15s; white-space: nowrap; }
+.chip:hover { border-color: var(--navy); color: var(--navy); }
+.chip.on { background: var(--navy); border-color: var(--navy); color: #fff; }
+.chip .cnt { margin-left: 4px; opacity: .72; font-size: .85em; }
+.chip.sm { font-size: .72rem; padding: 5px 11px; }
+
+/* 文章卡 grid（沿用既有 a.g 卡片語彙） */
+.grid2 { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap: 14px; margin-top: 18px; }
+a.g { display: flex; flex-direction: column; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 22px; text-decoration: none; box-shadow: 0 2px 10px rgba(20,39,68,.03); transition: .14s; border-top: 3px solid var(--c); }
+a.g:hover { transform: translateY(-3px); box-shadow: 0 10px 26px rgba(20,39,68,.10); border-color: var(--c); }
+a.g .ic { width: 46px; height: 46px; border-radius: 12px; background: var(--cbg); color: var(--c); display: grid; place-items: center; font-size: 1.4rem; margin-bottom: 14px; }
+a.g .thumb { aspect-ratio: 1.9/1; border-radius: 10px; overflow: hidden; background: var(--cbg); margin-bottom: 14px; }
+a.g .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+a.g .tag { font-family: var(--mono); font-size: .64rem; letter-spacing: .05em; color: var(--c); margin-bottom: 6px; }
+a.g h3 { font-size: 1.16rem; color: var(--ink); font-weight: 800; margin-bottom: 7px; line-height: 1.3; }
+a.g p { font-size: .9rem; color: var(--body); margin-bottom: 16px; flex: 1; }
+a.g .go { font-family: var(--mono); font-size: .74rem; color: var(--c); font-weight: 700; }
+a.g .go::after { content: ' →'; }
+
+.empty-note { padding: 28px 20px; text-align: center; color: var(--muted); font-size: .92rem; background: var(--panel2); border-radius: 14px; border: 1px dashed var(--line); margin-top: 18px; }
+
+
+
+/* ── footer ── */
+footer { margin-top: 54px; background: var(--navy-bg); border: 1px solid #dfe7f2; border-radius: 14px; padding: 22px 26px; }
+footer .ft { font-size: 1.02rem; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
+footer p { font-size: .9rem; color: var(--body); margin: 0; }
+.copy { text-align: center; font-family: var(--mono); font-size: .66rem; color: var(--muted); margin-top: 26px; }
+
+@media (max-width: 900px) {
+  .cols { grid-template-columns: 1fr; gap: 32px; }
+  .side { position: static; }
+}
+@media (max-width: 640px) {
+  .wrap { padding-left: 16px; padding-right: 16px; }
+  .tagline { display: none; }
+  h1 { font-size: 1.9rem; }
+  .search-pill { flex-wrap: wrap; padding: 10px; }
+  .search-pill .sbtn { width: 100%; justify-content: center; }
+  .grid2 { grid-template-columns: 1fr; }
+}
+
+/* ── 麵包屑（相對連結；沿用 mockup A 的簡潔樣式）── */
+.crumb { font-family: var(--mono); font-size: .74rem; color: var(--muted); margin: 30px 4px 0; }
+.crumb a { color: var(--navy); text-decoration: none; }
+.crumb a:hover { text-decoration: underline; }
+.crumb .sep { margin: 0 8px; color: var(--muted); }
+.crumb .here { color: var(--ink); font-weight: 700; }
+
+/* ── hero：標題 + 篇數 pill ── */
+.hero h1 { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.hero .cnt-pill { font-family: var(--mono); font-size: .78rem; font-weight: 700; color: var(--navy); background: var(--navy-bg); padding: 6px 14px; border-radius: 999px; letter-spacing: .03em; }
+
+/* ── 相關主題 chips（連 ../<slug>/；純連結，無 on 狀態）── */
+.filters { align-items: center; }
+.filters .flbl { font-family: var(--mono); font-size: .68rem; color: var(--muted); margin-right: 2px; }
+.filters a.chip { text-decoration: none; }
+
+/* ── 全部教學小標（沿用 h2.glabel，補一點上緣間距）── */
+main h2.glabel { margin: 34px 4px 4px; }
+
+/* ── 標籤頁卡片一律 emoji：把 .ic 放大成填滿卡頂的色塊（對齊 mockup A，取代 build-homepage 的 46px 小方塊）── */
+a.g .ic { width: auto; height: auto; aspect-ratio: 1.9/1; border-radius: 10px; background: var(--cbg); color: var(--c); display: grid; place-items: center; font-size: 3rem; margin-bottom: 14px; }
+</style>
+</head>
+<body data-pagefind-ignore>
+<div class="wrap">
+  <header class="mast">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="crumb"><a href="../../">iPad 使用教學</a><span class="sep">›</span><span>主題</span><span class="sep">›</span><span class="here">觀念</span></nav>
+
+  <main>
+    <div class="hero">
+      <div class="kicker">主題標籤</div>
+      <h1>觀念<span class="cnt-pill">共 1 篇</span></h1>
+      <p class="sub">跟「觀念」有關的教學都收在這裡，果果一篇篇整理好，你想看哪篇就點哪篇。</p>
+      <div class="filters">
+        <span class="flbl">相關主題：</span>
+      <a class="chip" href="../%E8%B6%8A%E7%8D%84/">越獄<span class="cnt">(1)</span></a>
+      <a class="chip" href="../%E9%98%B2%E8%A9%90%E9%A8%99/">防詐騙<span class="cnt">(1)</span></a>
+      </div>
+    </div>
+
+    <h2 class="glabel">觀念 · 全部教學</h2>
+    <div class="grid2">
+      <a class="g" style="--c:var(--red);--cbg:var(--red-bg)" href="../../ipad-jailbreak-guide/" data-tags="觀念;防詐騙;越獄" data-search="ipad 越獄，一次搞懂 越獄是什麼、現在還做得到嗎、值不值得？以及——為什麼網路上八成的「一鍵越獄」是詐騙。看完不踩雷。 觀念 觀念 防詐騙 越獄">
+        <div class="ic">🔓</div>
+        <div class="tag">觀念</div>
+        <h3>iPad 越獄，一次搞懂</h3>
+        <p>越獄是什麼、現在還做得到嗎、值不值得？以及——為什麼網路上八成的「一鍵越獄」是詐騙。看完不踩雷。</p>
+        <div class="go">閱讀指南</div>
+      </a>
+    </div>
+  </main>
+
+  <div class="copy">© 果果國際 GUOGUO INTERNATIONAL</div>
+</div>
+</body>
+</html>

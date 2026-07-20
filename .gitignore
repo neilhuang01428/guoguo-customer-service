@@ -16,3 +16,7 @@ dist/
 
 # 中性版首頁：由 build-neutral.sh 在部署時（step 0）即時重生，不再 commit（避免與 articles.json 不同步）
 index.neutral.html
+
+# Python 快取（build-tags.py／build-sitemap.py 用 importlib 載入 build-homepage 會產生）
+__pycache__/
+*.pyc
