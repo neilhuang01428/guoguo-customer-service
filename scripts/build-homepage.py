@@ -252,7 +252,12 @@ h2.glabel::before { content: '['; } h2.glabel::after { content: ']'; }
 h2.glabel.small { font-size: .68rem; margin: 0; }
 
 /* 篩選晶片（教學標籤／商品分類共用） */
-.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; position: relative; overflow: hidden; transition: max-height .28s ease; }
+.chip-toggle { margin-top: 10px; font-family: var(--mono); font-size: .74rem; font-weight: 600; color: var(--navy); background: none; border: 0; cursor: pointer; padding: 4px 2px; display: inline-flex; align-items: center; gap: 5px; }
+.chip-toggle[hidden] { display: none; }   /* 蓋回 UA 的 [hidden]，否則上面的 display:inline-flex 會讓它永遠顯示 */
+.chip-toggle:hover { color: var(--navy-deep); text-decoration: underline; }
+.chip-toggle .ct-caret { transition: transform .2s ease; font-size: .8em; line-height: 1; }
+.chip-toggle[aria-expanded="true"] .ct-caret { transform: rotate(180deg); }
 .chip { font-family: var(--mono); font-size: .78rem; font-weight: 600; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line); background: #fff; color: var(--body); cursor: pointer; transition: .15s; white-space: nowrap; }
 .chip:hover { border-color: var(--navy); color: var(--navy); }
 .chip.on { background: var(--navy); border-color: var(--navy); color: #fff; }
@@ -442,6 +447,34 @@ JS = r"""
       activeTag = tag; apply();
       var g = document.getElementById('guides');
       if (g && g.scrollIntoView) setTimeout(function () { g.scrollIntoView({ block: 'start' }); }, 40);
+    })();
+
+    /* 標籤最多兩行；超過用「展開/隱藏」控制（預設收合＝只顯示前兩行） */
+    (function () {
+      var toggle = document.getElementById('filterToggle');
+      if (!toggle) return;
+      var GAP = 8, expanded = false;
+      function refresh() {
+        chipsWrap.style.maxHeight = 'none';                 // 先放開，量自然高度
+        var kids = chipsWrap.children;
+        if (kids.length < 2) { toggle.hidden = true; return; }
+        var chipH = kids[0].offsetHeight;                   // 單顆 chip 高
+        var twoRows = chipH * 2 + GAP;                      // 兩行高度（含一個列距）
+        if (chipsWrap.scrollHeight <= twoRows + 4) {        // 自然高度沒超過兩行 → 免展開鈕
+          toggle.hidden = true; return;
+        }
+        toggle.hidden = false;
+        chipsWrap.style.maxHeight = expanded ? (chipsWrap.scrollHeight + 'px') : (twoRows + 'px');
+      }
+      toggle.addEventListener('click', function () {
+        expanded = !expanded;
+        toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        toggle.firstChild.nodeValue = expanded ? '隱藏' : '展開全部';
+        refresh();
+      });
+      if (window.requestAnimationFrame) requestAnimationFrame(refresh); else refresh();
+      var rt;
+      window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(refresh, 120); });
     })();
   })();
 
@@ -734,6 +767,7 @@ GUIDES_SECTION = """      <section class="guides" id="guides">
         <div class="filters" id="filterChips">
           <button type="button" class="chip on" data-tag="__all__">全部<span class="cnt">({total})</span></button>
         </div>
+        <button type="button" class="chip-toggle" id="filterToggle" aria-expanded="false" hidden>展開全部<span class="ct-caret" aria-hidden="true">▾</span></button>
         <div class="grid2" id="articleGrid">
 {cards}
         </div>
