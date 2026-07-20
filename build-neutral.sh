@@ -12,25 +12,40 @@ cd "$(dirname "$0")"
 OUT=dist
 rm -rf "$OUT"; mkdir -p "$OUT"
 
+# 0) 首頁即時重印：用「當下 commit 的 articles.json」現場重生 index.neutral.html
+#    → 中性版首頁永遠與 articles.json 同步，因此 index.neutral.html 不再 commit（見 .gitignore）。
+#    build-homepage.py 也會順手覆寫導外版 index.html，但那份靠 GitHub Pages 直吐 commit、
+#    不走這支腳本；在 Cloudflare 臨時建置機器上覆寫它無害，也不會被 commit 回去。
+python3 build-homepage.py
+
 # 1) allowlist：只複製「乾淨內容」——絕不含 worker/(有全部聯絡資料)、sitemap.xml(有 guoguo 網址)、內部文件
 #    導外版首頁 index.html（含常駐商品側欄、CTA 連 www.guoguo.tw/shop）不進來；
 #    改放 build-homepage.py 另產的「中性版」index.neutral.html（無側欄、無任何 guoguo 連結、頁尾不涉聯繫，
 #    僅保留 logo 與教學總覽）→ 搬成中性網域的 dist/index.html。products.json 一樣不進來（中性版不 fetch）。
+#    文章資料夾清單直接從 articles.json 的 slug 讀出（＝資料夾名），不再手動維護：
+#    新增文章只要進 articles.json（並重跑 build-homepage.py），這裡與麵包屑注入都會自動跟上。
+ARTICLE_SLUGS=$(python3 -c "import json;print(' '.join(a['slug'] for a in json.load(open('articles.json'))))")
+
 cp -R assets "$OUT"/
-for d in ipad-appstore-china-guide ipad-jailbreak-guide ipad-jianying-pencil-guide ipad-magic-keyboard-guide; do
-  cp -R "$d" "$OUT"/
+for d in $ARTICLE_SLUGS; do
+  if [ -d "$d" ]; then
+    cp -R "$d" "$OUT"/
+  else
+    echo "❌ articles.json 列了 slug「$d」，卻找不到對應資料夾 → 中止（首頁會連到 404，請先建好資料夾）。"
+    exit 1
+  fi
 done
-cp index.neutral.html "$OUT"/index.html   # 中性版首頁（乾淨；下方洩漏檢查會再守門一次）
+cp index.neutral.html "$OUT"/index.html   # 中性版首頁（step 0 剛重印的乾淨版；下方洩漏檢查會再守門一次）
 
 # 2) 中性版麵包屑：導外版由 Worker 注入「果果賣場 › iPad 使用教學 › 本篇教學」；
 #    中性版不經 Worker，改在此把「iPad 使用教學 › 本篇教學」注入到 dist/ 的文章頁
 #    （拿掉會導外的「果果賣場」；「iPad 使用教學」連回中性版首頁 "/"）。原始檔不動 → 導外版不受影響。
 python3 - "$OUT" <<'PY'
-import os, re, sys, glob
+import os, re, sys, glob, json
 
 OUT = sys.argv[1]
-DIRS = ["ipad-appstore-china-guide", "ipad-jailbreak-guide",
-        "ipad-jianying-pencil-guide", "ipad-magic-keyboard-guide"]
+# 文章資料夾清單同樣從 articles.json 讀（＝每篇 slug），與上面 cp 迴圈同一個真實來源。
+DIRS = [a["slug"] for a in json.load(open("articles.json", encoding="utf-8"))]
 
 # 麵包屑樣式（沿用導外版 .gg-crumb；補 --sans fallback，脫離 Worker 環境也能對）
 CRUMB_CSS = "<style>" + (

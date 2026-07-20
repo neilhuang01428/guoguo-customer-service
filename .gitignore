@@ -13,3 +13,6 @@ data/*-export.csv
 
 # 無導外版建置輸出（Cloudflare Pages 端產生，別追蹤）
 dist/
+
+# 中性版首頁：由 build-neutral.sh 在部署時（step 0）即時重生，不再 commit（避免與 articles.json 不同步）
+index.neutral.html
