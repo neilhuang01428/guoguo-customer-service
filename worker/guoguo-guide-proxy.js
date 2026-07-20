@@ -46,6 +46,16 @@ async function handle(request) {
   let sub = p.slice(6)                          // 去掉 '/guide'
   if (sub === '' || sub === '/') sub = '/index.html'
 
+  // T7：舊文章網址 /guide/<slug>/<檔>.html → 301 轉到乾淨網址 /guide/<slug>/
+  //     只命中「兩層、結尾 .html、且非 index.html」且 slug 是真文章；首頁(/index.html 單層)與其他資源不受影響
+  const oldUrl = sub.match(/^\/([^/]+)\/([^/]+)\.html$/)
+  if (oldUrl && oldUrl[2] !== 'index') {
+    const { articles } = await getShopData()
+    if (articles && articles.some(a => a && a.slug === oldUrl[1])) {
+      return Response.redirect(url.origin + '/guide/' + oldUrl[1] + '/', 301)
+    }
+  }
+
   const res = await fetchWithFallback(sub)
   const ct = res.headers.get('content-type') || ''
   if (!ct.includes('text/html')) return res                                   // 非 HTML 原樣回
