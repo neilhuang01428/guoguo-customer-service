@@ -162,6 +162,7 @@ h1 { font-weight: 800; font-size: 2.5rem; line-height: 1.14; letter-spacing: -.0
 .cols { display: grid; grid-template-columns: minmax(0,1fr) 320px; gap: 26px; align-items: start; margin-top: 46px; }
 .main { min-width: 0; }
 .side { position: sticky; top: 20px; }
+.cols.cols-solo { grid-template-columns: 1fr; }   /* 中性版首頁：無商品側欄 → 單欄 */
 
 h2.glabel { font-family: var(--mono); font-weight: 700; font-size: .72rem; letter-spacing: .05em; color: var(--muted); margin: 0 0 4px; }
 h2.glabel::before { content: '['; } h2.glabel::after { content: ']'; }
@@ -188,7 +189,30 @@ a.g .go::after { content: ' →'; }
 
 .empty-note { padding: 28px 20px; text-align: center; color: var(--muted); font-size: .92rem; background: var(--panel2); border-radius: 14px; border: 1px dashed var(--line); margin-top: 18px; }
 
-/* ── 側欄：果果精選商品 ── */
+__SHOP_CSS__
+
+/* ── footer ── */
+footer { margin-top: 54px; background: var(--navy-bg); border: 1px solid #dfe7f2; border-radius: 14px; padding: 22px 26px; }
+footer .ft { font-size: 1.02rem; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
+footer p { font-size: .9rem; color: var(--body); margin: 0; }
+.copy { text-align: center; font-family: var(--mono); font-size: .66rem; color: var(--muted); margin-top: 26px; }
+
+@media (max-width: 900px) {
+  .cols { grid-template-columns: 1fr; gap: 32px; }
+  .side { position: static; }
+}
+@media (max-width: 640px) {
+  .wrap { padding-left: 16px; padding-right: 16px; }
+  .tagline { display: none; }
+  h1 { font-size: 1.9rem; }
+  .search-pill { flex-wrap: wrap; padding: 10px; }
+  .search-pill .sbtn { width: 100%; justify-content: center; }
+  .grid2 { grid-template-columns: 1fr; }
+}
+"""
+
+# ── 商品側欄 CSS（只在導外版填入 __SHOP_CSS__；中性版以空字串取代，樣式表天生無側欄殘留）──
+CSS_SHOP = r"""/* ── 側欄：果果精選商品 ── */
 .side-card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 18px; box-shadow: 0 6px 20px rgba(20,39,68,.06); display: flex; flex-direction: column; gap: 13px; }
 .stitle { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .pin { font-family: var(--mono); font-size: .62rem; font-weight: 700; color: var(--teal); background: var(--teal-bg); padding: 3px 10px; border-radius: 999px; letter-spacing: .03em; flex: none; }
@@ -226,34 +250,12 @@ a.g .go::after { content: ' →'; }
 .shop-item .off { font-size: .64rem; font-weight: 700; color: var(--red); background: var(--red-bg); padding: 1px 7px; border-radius: 999px; }
 
 .shop-cta { display: flex; align-items: center; justify-content: center; gap: 6px; background: var(--navy); color: #fff; text-decoration: none; font-size: .86rem; font-weight: 700; padding: 12px 16px; border-radius: 11px; transition: .15s; }
-.shop-cta:hover { background: var(--navy-deep); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(23,52,95,.22); }
-
-/* ── footer ── */
-footer { margin-top: 54px; background: var(--navy-bg); border: 1px solid #dfe7f2; border-radius: 14px; padding: 22px 26px; }
-footer .ft { font-size: 1.02rem; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
-footer p { font-size: .9rem; color: var(--body); margin: 0; }
-.copy { text-align: center; font-family: var(--mono); font-size: .66rem; color: var(--muted); margin-top: 26px; }
-
-@media (max-width: 900px) {
-  .cols { grid-template-columns: 1fr; gap: 32px; }
-  .side { position: static; }
-}
-@media (max-width: 640px) {
-  .wrap { padding-left: 16px; padding-right: 16px; }
-  .tagline { display: none; }
-  h1 { font-size: 1.9rem; }
-  .search-pill { flex-wrap: wrap; padding: 10px; }
-  .search-pill .sbtn { width: 100%; justify-content: center; }
-  .grid2 { grid-template-columns: 1fr; }
-}
-"""
+.shop-cta:hover { background: var(--navy-deep); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(23,52,95,.22); }"""
 
 # ── JS（純字串，不做 Python 插值）─────────────────────────────────────
 JS = r"""
 (function () {
   "use strict";
-
-  var SHOP_CTA_URL = "__SHOP_CTA_URL__";  // 由 build-homepage.py 注入（賣場網址 + UTM）
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
@@ -350,8 +352,15 @@ JS = r"""
     apply();
   })();
 
+__SHOP_JS__
+})();
+"""
+
+# ── 商品側欄 JS（只在導外版注入到 __SHOP_JS__；中性版以空字串取代，天生無導購連結）──
+JS_SHOP = r"""
   /* ---------- 側欄：果果精選商品（fetch products.json，可搜尋／分類／捲動） ---------- */
   (function () {
+    var SHOP_CTA_URL = "__SHOP_CTA_URL__";  // 由 build-homepage.py 注入（賣場網址 + UTM）
     var listEl = document.getElementById('shopList');
     var catsWrap = document.getElementById('shopCats');
     var searchInput = document.getElementById('shopSearch');
@@ -446,20 +455,57 @@ JS = r"""
         }
       });
   })();
-})();
 """
 
 
-def build_html(articles):
-    colors = category_colors(articles)
-    cards_html = "\n".join(render_card(a, colors) for a in articles)
-    jsonld = render_jsonld(articles)
-    total = len(articles)
-    shop_cta_url = "{0}?{1}".format(SHOP_URL, UTM)
+# 中性版首頁輸出路徑（無導外版；供 build-neutral.sh 搬成中性網域的 index.html）
+NEUTRAL_OUT_PATH = os.path.join(ROOT, "index.neutral.html")
 
-    js_final = JS.replace('"__SHOP_CTA_URL__"', json.dumps(shop_cta_url))
+# ── 左欄「全部教學」區塊（導外／中性共用）──
+GUIDES_SECTION = """      <section class="guides" id="guides">
+        <h2 class="glabel">全部教學</h2>
+        <div class="filters" id="filterChips">
+          <button type="button" class="chip on" data-tag="__all__">全部<span class="cnt">({total})</span></button>
+        </div>
+        <div class="grid2" id="articleGrid">
+{cards}
+        </div>
+        <p class="empty-note" id="articleEmpty" style="display:none" aria-live="polite"></p>
+      </section>"""
 
-    return """<!DOCTYPE html>
+# ── 右欄「果果精選商品」側欄（只在導外版；中性版不輸出，天生無導購連結）──
+ASIDE = """    <aside class="side" aria-label="果果精選商品">
+      <div class="side-card">
+        <div class="stitle">
+          <h2 class="glabel small">果果精選商品</h2>
+        </div>
+        <div class="shop-search" role="search">
+          {search_icon}
+          <input type="search" id="shopSearch" placeholder="搜尋商品，例如「鍵盤」「保護殼」…" aria-label="搜尋商品">
+        </div>
+        <div class="shop-cats" id="shopCats">
+          <button type="button" class="chip sm on" data-cat="__all__">全部<span class="cnt" id="shopAllCount"></span></button>
+        </div>
+        <div class="shop-list" id="shopList" aria-live="polite">
+          <div class="shop-status" id="shopStatus"><span class="spinner" aria-hidden="true"></span>商品載入中…</div>
+        </div>
+        <a class="shop-cta" id="shopCta" href="{shop_cta_url}" target="_blank" rel="noopener">回賣場看全部商品 →</a>
+      </div>
+    </aside>"""
+
+# ── 頁尾：導外版（保留「找客服」）／中性版（不涉聯繫，只講買機教你用）──
+FOOTER_FULL = """  <footer>
+    <div class="ft">有 iPad 使用問題？隨時找果果客服</div>
+    <p>買機教你用，終身售後諮詢。操作上有任何不確定，或想確認手上機型能不能做某件事，都歡迎先問我們的客服——我們很樂意幫你。</p>
+  </footer>"""
+
+FOOTER_NEUTRAL = """  <footer>
+    <div class="ft">跟果果買 iPad，不只機況透明，還教你用得順</div>
+    <p>這裡收錄我們寫給客戶的 iPad 實用教學——白話、舉例、當你是小白，一步步帶你上手。內容會持續補充更新。</p>
+  </footer>"""
+
+# ── 頁面外殼（導外／中性共用；差異只在 {middle}／{footer}／{js} 三處）──
+PAGE = """<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8" />
@@ -497,68 +543,73 @@ def build_html(articles):
     </div>
   </div>
 
-  <div class="cols">
-    <div class="main">
-      <section class="guides" id="guides">
-        <h2 class="glabel">全部教學</h2>
-        <div class="filters" id="filterChips">
-          <button type="button" class="chip on" data-tag="__all__">全部<span class="cnt">({total})</span></button>
-        </div>
-        <div class="grid2" id="articleGrid">
-{cards}
-        </div>
-        <p class="empty-note" id="articleEmpty" style="display:none" aria-live="polite"></p>
-      </section>
-    </div>
+{middle}
 
-    <aside class="side" aria-label="果果精選商品">
-      <div class="side-card">
-        <div class="stitle">
-          <h2 class="glabel small">果果精選商品</h2>
-        </div>
-        <div class="shop-search" role="search">
-          {search_icon}
-          <input type="search" id="shopSearch" placeholder="搜尋商品，例如「鍵盤」「保護殼」…" aria-label="搜尋商品">
-        </div>
-        <div class="shop-cats" id="shopCats">
-          <button type="button" class="chip sm on" data-cat="__all__">全部<span class="cnt" id="shopAllCount"></span></button>
-        </div>
-        <div class="shop-list" id="shopList" aria-live="polite">
-          <div class="shop-status" id="shopStatus"><span class="spinner" aria-hidden="true"></span>商品載入中…</div>
-        </div>
-        <a class="shop-cta" id="shopCta" href="{shop_cta_url}" target="_blank" rel="noopener">回賣場看全部商品 →</a>
-      </div>
-    </aside>
-  </div>
-
-  <footer>
-    <div class="ft">有 iPad 使用問題？隨時找果果客服</div>
-    <p>買機教你用，終身售後諮詢。操作上有任何不確定，或想確認手上機型能不能做某件事，都歡迎先問我們的客服——我們很樂意幫你。</p>
-  </footer>
+{footer}
 
   <div class="copy">© 果果國際 GUOGUO INTERNATIONAL</div>
 </div>
 <script>{js}</script>
 </body>
 </html>
-""".format(
-        css=CSS,
+"""
+
+
+def build_html(articles, neutral=False):
+    """neutral=False → 導外版首頁（含商品側欄）；neutral=True → 中性版首頁（無側欄、無導購連結）。"""
+    colors = category_colors(articles)
+    cards_html = "\n".join(render_card(a, colors) for a in articles)
+    jsonld = render_jsonld(articles)
+    total = len(articles)
+
+    guides = GUIDES_SECTION.format(total=total, cards=cards_html)
+
+    if neutral:
+        # 單欄（cols-solo）、無 <aside>、頁尾不涉聯繫；JS 去掉整段商品側欄 → 無任何 guoguo 連結
+        middle = (
+            '  <div class="cols cols-solo">\n'
+            '    <div class="main">\n{0}\n    </div>\n'
+            '  </div>'
+        ).format(guides)
+        footer = FOOTER_NEUTRAL
+        css_final = CSS.replace("__SHOP_CSS__", "")
+        js_final = JS.replace("__SHOP_JS__", "")
+    else:
+        shop_cta_url = "{0}?{1}".format(SHOP_URL, UTM)
+        aside = ASIDE.format(search_icon=SEARCH_ICON, shop_cta_url=esc(shop_cta_url))
+        middle = (
+            '  <div class="cols">\n'
+            '    <div class="main">\n{0}\n    </div>\n\n'
+            '{1}\n'
+            '  </div>'
+        ).format(guides, aside)
+        footer = FOOTER_FULL
+        css_final = CSS.replace("__SHOP_CSS__", CSS_SHOP)
+        js_final = JS.replace("__SHOP_JS__", JS_SHOP).replace(
+            '"__SHOP_CTA_URL__"', json.dumps(shop_cta_url)
+        )
+
+    return PAGE.format(
+        css=css_final,
         jsonld=jsonld,
         logo=LOGO_SVG,
         search_icon=SEARCH_ICON,
-        total=total,
-        cards=cards_html,
-        shop_cta_url=esc(shop_cta_url),
+        middle=middle,
+        footer=footer,
         js=js_final,
     )
 
 
 def main():
     articles = load_articles()
-    doc = build_html(articles)
     with open(OUT_PATH, "w", encoding="utf-8") as f:
-        f.write(doc)
-    print("✅ 產生 index.html：{0} 篇教學（來源 articles.json）；商品側欄於瀏覽器端 fetch products.json 動態載入。".format(len(articles)))
+        f.write(build_html(articles, neutral=False))
+    with open(NEUTRAL_OUT_PATH, "w", encoding="utf-8") as f:
+        f.write(build_html(articles, neutral=True))
+    print(
+        "✅ 產生 index.html（導外版，含商品側欄）＋ index.neutral.html"
+        "（中性版，無側欄／無導購連結）：{0} 篇教學。".format(len(articles))
+    )
 
 
 if __name__ == "__main__":
