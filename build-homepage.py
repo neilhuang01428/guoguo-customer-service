@@ -23,8 +23,19 @@ UTM = "utm_source=guide&utm_medium=home"          # 首頁導購一律帶這組 
 # ── OG / 分享 / canonical：只加在「導外版」首頁；中性版 noindex 不加，
 #    也避免把 guoguo.tw 寫進中性版而觸發 build-neutral.sh 的洩漏檢查。──
 GUIDE_HOME_URL = "https://www.guoguo.tw/guide/"
-# 首頁分享圖（og:image）：1200×630，放在 assets/og/（GitHub Pages → 此網址）
-OG_IMAGE = "https://www.guoguo.tw/guide/assets/og/guoguo-ipad-tutorial-home-cover.png"
+# 首頁分享圖（og:image）：1200×630。實際檔名讀 site.json 的 ogImage
+# （由後台「首圖管理」發佈時維護）；沒有就用預設。組成 GitHub Pages 的絕對網址。
+def _home_og_image():
+    default_rel = "assets/og/guoguo-ipad-tutorial-home-cover.png"
+    try:
+        with open(os.path.join(ROOT, "site.json"), encoding="utf-8") as f:
+            rel = json.load(f).get("ogImage") or default_rel
+    except (OSError, ValueError):
+        rel = default_rel
+    return "https://www.guoguo.tw/guide/" + rel
+
+
+OG_IMAGE = _home_og_image()
 HOME_OG = """<link rel="canonical" href="{home}" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="果果國際" />
