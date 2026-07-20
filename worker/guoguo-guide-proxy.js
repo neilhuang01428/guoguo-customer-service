@@ -53,8 +53,10 @@ async function handle(request) {
   const isHome = /(^|\/)index\.html$/.test(sub)                                 // 教學總覽首頁
   const slug = sub.split('/').filter(Boolean)[0] || ''      // 文章 slug（對應 guide-map.json）
   const promo = isHome ? '' : await buildPromo(slug)         // 導購版位 HTML（無對應則空字串）
+  // 首頁的 OG/canonical 已由 build-homepage.py 寫進 index.html；文章頁在這裡注入（無對應 slug 則空）
+  const headMeta = isHome ? '' : await buildArticleHead(slug)
   const rw = new HTMLRewriter()
-    .on('head', { element(el) { el.prepend(ANALYTICS, { html: true }); el.append(CHROME_CSS, { html: true }) } })
+    .on('head', { element(el) { el.prepend(ANALYTICS, { html: true }); el.append(CHROME_CSS + headMeta, { html: true }) } })
     .on('body', { element(el) { el.append(FLOATING, { html: true }) } })        // 右下浮動鈕（fixed）
 
   if (isHome) {
@@ -74,17 +76,53 @@ async function handle(request) {
 
 /* ── 導購版位：讀 products.json + guide-map.json 組商品卡（只在導外版；
    資料全在 JSON，破百篇 Worker 不用改；含 UTM 供 GA4 追蹤導購）── */
-let _shopCache = { at: 0, products: null, map: null }
+let _shopCache = { at: 0, products: null, map: null, articles: null }
 async function getShopData() {
   if (_shopCache.products && Date.now() - _shopCache.at < 300000) return _shopCache   // 快取 5 分鐘
   try {
-    const [products, map] = await Promise.all([
+    const [products, map, articles] = await Promise.all([
       fetch(ORIGIN + '/products.json').then(r => r.ok ? r.json() : null),
       fetch(ORIGIN + '/guide-map.json').then(r => r.ok ? r.json() : null),
+      fetch(ORIGIN + '/articles.json').then(r => r.ok ? r.json() : null),
     ])
-    if (products && map) _shopCache = { at: Date.now(), products, map }
+    if (products && map) _shopCache = { at: Date.now(), products, map, articles }
   } catch (e) { /* 抓失敗沿用舊快取 */ }
   return _shopCache
+}
+
+/* ── 文章頁 <head> 注入：canonical + OG/Twitter + BreadcrumbList JSON-LD（只導外版，做 SEO / LINE 分享）
+   標題與描述取自 articles.json；canonical 一律指向該篇的正式 url（-navy/原版等替代檔也會收斂到正式版）。
+   找不到該 slug 就回空字串、不硬塞。── */
+const OG_IMAGE = 'https://www.guoguo.tw/guide/assets/og/guoguo-ipad-tutorial-home-cover.png'  // 文章沒設 ogImage 時的站台預設分享圖
+async function buildArticleHead(slug) {
+  const { articles } = await getShopData()
+  if (!articles) return ''
+  const a = articles.find(x => x && x.slug === slug)
+  if (!a) return ''
+  const canonical = 'https://www.guoguo.tw/guide/' + a.url
+  const ogimg = a.ogImage ? 'https://www.guoguo.tw/guide/' + a.ogImage : OG_IMAGE  // 逐篇首圖，沒有就用站台預設
+  const title = esc(a.title || '')
+  const desc = esc(a.summary || '')
+  const ld = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'iPad 使用教學', item: 'https://www.guoguo.tw/guide/' },
+      { '@type': 'ListItem', position: 2, name: a.title || '' },
+    ],
+  }).replace(/</g, '\\u003c')
+  return `<link rel="canonical" href="${esc(canonical)}">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="果果國際">
+<meta property="og:title" content="${title}">
+<meta property="og:description" content="${desc}">
+<meta property="og:url" content="${esc(canonical)}">
+<meta property="og:image" content="${ogimg}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${title}">
+<meta name="twitter:description" content="${desc}">
+<meta name="twitter:image" content="${ogimg}">
+<script type="application/ld+json">${ld}</script>`
 }
 async function buildPromo(slug) {
   const { products, map } = await getShopData()

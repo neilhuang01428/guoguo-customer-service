@@ -6,6 +6,7 @@
     "category": "上手",
     "icon": "⌨️",
     "url": "ipad-magic-keyboard-guide/ipad-magic-keyboard-guide-card.html",
+    "ogImage": "assets/og/ipad-magic-keyboard-ctrl-cmd-shortcuts.png",
     "date": "2026-07-15",
     "tags": ["上手", "Windows 用戶", "鍵盤配件"]
   },
@@ -16,6 +17,7 @@
     "category": "技巧",
     "icon": "🌏",
     "url": "ipad-appstore-china-guide/ipad-appstore-china-guide.html",
+    "ogImage": "assets/og/ipad-china-app-store-region-switch.png",
     "date": "2026-07-17",
     "tags": ["技巧", "App 下載", "剪映抖音"]
   },
@@ -26,6 +28,7 @@
     "category": "選購",
     "icon": "✏️",
     "url": "ipad-jianying-pencil-guide/ipad-jianying-pencil-guide.html",
+    "ogImage": "assets/og/ipad-apple-pencil-capcut-compare.png",
     "date": "2026-07-17",
     "tags": ["選購", "配件推薦", "Apple Pencil"]
   },
@@ -36,6 +39,7 @@
     "category": "觀念",
     "icon": "🔓",
     "url": "ipad-jailbreak-guide/ipad-jailbreak-guide.html",
+    "ogImage": "assets/og/ipad-jailbreak-scam-warning-cover.png",
     "date": "2026-07-17",
     "tags": ["觀念", "防詐騙", "越獄"]
   }

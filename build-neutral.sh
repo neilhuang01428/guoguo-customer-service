@@ -27,6 +27,7 @@ python3 build-homepage.py
 ARTICLE_SLUGS=$(python3 -c "import json;print(' '.join(a['slug'] for a in json.load(open('articles.json'))))")
 
 cp -R assets "$OUT"/
+rm -rf "$OUT"/assets/og   # 中性版一律 emoji 卡、不引用首圖；連圖檔都不上（圖內可能有 guide.guoguo.tw 字樣）
 for d in $ARTICLE_SLUGS; do
   if [ -d "$d" ]; then
     cp -R "$d" "$OUT"/

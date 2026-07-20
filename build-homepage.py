@@ -20,10 +20,31 @@ OUT_PATH = os.path.join(ROOT, "index.html")
 SHOP_URL = "https://www.guoguo.tw/shop"          # 果果賣場（側欄 CTA 導外目的地）
 UTM = "utm_source=guide&utm_medium=home"          # 首頁導購一律帶這組 UTM
 
+# ── OG / 分享 / canonical：只加在「導外版」首頁；中性版 noindex 不加，
+#    也避免把 guoguo.tw 寫進中性版而觸發 build-neutral.sh 的洩漏檢查。──
+GUIDE_HOME_URL = "https://www.guoguo.tw/guide/"
+# 首頁分享圖（og:image）：1200×630，放在 assets/og/（GitHub Pages → 此網址）
+OG_IMAGE = "https://www.guoguo.tw/guide/assets/og/guoguo-ipad-tutorial-home-cover.png"
+HOME_OG = """<link rel="canonical" href="{home}" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="果果國際" />
+<meta property="og:title" content="果果 · iPad 使用教學" />
+<meta property="og:description" content="跟果果買 iPad，不只機況透明，還教你用得順——巧控鍵盤、大陸區 App、Apple Pencil、越獄…實用教學一次收錄。" />
+<meta property="og:url" content="{home}" />
+<meta property="og:image" content="{img}" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="果果 · iPad 使用教學" />
+<meta name="twitter:description" content="跟果果買 iPad，不只機況透明，還教你用得順——實用教學一次收錄。" />
+<meta name="twitter:image" content="{img}" />""".format(home=GUIDE_HOME_URL, img=OG_IMAGE)
+
 # 文章卡配色：依 articles.json 陣列「第一次出現的分類」依序輪流上色。
 # 目前 4 篇剛好落在 上手→navy／技巧→green／選購→teal／觀念→red，
 # 之後新增分類會自動接續 amber、purple，再繞回 navy。
 HUES = ["navy", "green", "teal", "red", "amber", "purple"]
+
+# 首頁文章卡外觀：導外版預設 "image"（圖卡，用每篇 ogImage；沒有就 fallback emoji）；
+# 改成 "emoji" 可讓導外版全站切回 emoji 方塊。中性版一律 emoji（不引用任何圖，保持零導外）。
+CARD_MODE = "image"
 
 
 def esc(s):
@@ -52,7 +73,9 @@ def search_blob(a):
     return esc(" ".join(str(p) for p in parts if p).lower())
 
 
-def render_card(a, colors):
+def render_card(a, colors, card_mode="image"):
+    """card_mode="image"：有 ogImage 就用圖卡（首圖），否則 fallback emoji 方塊；
+       card_mode="emoji"：一律 emoji 方塊（中性版用，保持零導外、不引用任何圖）。"""
     hue = colors.get(a.get("category", ""), "navy")
     tags = [t for t in (a.get("tags") or []) if t]
     data_tags = esc(";".join(tags))
@@ -61,10 +84,16 @@ def render_card(a, colors):
     title = esc(a.get("title", ""))
     summary = esc(a.get("summary", ""))
     url = esc(a.get("url", "#"))
+    og = a.get("ogImage")
+    if card_mode == "image" and og:
+        top = ('<div class="thumb"><img src="{src}" alt="{alt}" '
+               'loading="lazy" decoding="async"></div>').format(src=esc(og), alt=title)
+    else:
+        top = '<div class="ic">{icon}</div>'.format(icon=icon)
     return (
         '      <a class="g" style="--c:var(--{hue});--cbg:var(--{hue}-bg)" '
         'href="{url}" data-tags="{tags}" data-search="{search}">\n'
-        '        <div class="ic">{icon}</div>\n'
+        '        {top}\n'
         '        <div class="tag">{cat}</div>\n'
         '        <h3>{title}</h3>\n'
         '        <p>{summary}</p>\n'
@@ -72,7 +101,7 @@ def render_card(a, colors):
         '      </a>'
     ).format(
         hue=hue, url=url, tags=data_tags, search=search_blob(a),
-        icon=icon, cat=category, title=title, summary=summary,
+        top=top, cat=category, title=title, summary=summary,
     )
 
 
@@ -181,6 +210,8 @@ h2.glabel.small { font-size: .68rem; margin: 0; }
 a.g { display: flex; flex-direction: column; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 22px; text-decoration: none; box-shadow: 0 2px 10px rgba(20,39,68,.03); transition: .14s; border-top: 3px solid var(--c); }
 a.g:hover { transform: translateY(-3px); box-shadow: 0 10px 26px rgba(20,39,68,.10); border-color: var(--c); }
 a.g .ic { width: 46px; height: 46px; border-radius: 12px; background: var(--cbg); color: var(--c); display: grid; place-items: center; font-size: 1.4rem; margin-bottom: 14px; }
+a.g .thumb { aspect-ratio: 1.9/1; border-radius: 10px; overflow: hidden; background: var(--cbg); margin-bottom: 14px; }
+a.g .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 a.g .tag { font-family: var(--mono); font-size: .64rem; letter-spacing: .05em; color: var(--c); margin-bottom: 6px; }
 a.g h3 { font-size: 1.16rem; color: var(--ink); font-weight: 800; margin-bottom: 7px; line-height: 1.3; }
 a.g p { font-size: .9rem; color: var(--body); margin-bottom: 16px; flex: 1; }
@@ -512,6 +543,7 @@ PAGE = """<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>果果國際 · iPad 使用教學總覽</title>
 <meta name="description" content="果果國際客戶專屬的 iPad 使用教學：巧控鍵盤、下載大陸區 App、剪片要不要買 Apple Pencil、越獄該不該碰。買機教你用，終身售後諮詢。" />
+{oghead}
 <style>{css}</style>
 <script type="application/ld+json">
 {jsonld}
@@ -558,7 +590,8 @@ PAGE = """<!DOCTYPE html>
 def build_html(articles, neutral=False):
     """neutral=False → 導外版首頁（含商品側欄）；neutral=True → 中性版首頁（無側欄、無導購連結）。"""
     colors = category_colors(articles)
-    cards_html = "\n".join(render_card(a, colors) for a in articles)
+    card_mode = "emoji" if neutral else CARD_MODE   # 中性版一律 emoji（零導外）
+    cards_html = "\n".join(render_card(a, colors, card_mode) for a in articles)
     jsonld = render_jsonld(articles)
     total = len(articles)
 
@@ -574,6 +607,7 @@ def build_html(articles, neutral=False):
         footer = FOOTER_NEUTRAL
         css_final = CSS.replace("__SHOP_CSS__", "")
         js_final = JS.replace("__SHOP_JS__", "")
+        oghead = ""  # 中性版不加 OG/canonical（noindex + 避免 guoguo.tw 洩漏）
     else:
         shop_cta_url = "{0}?{1}".format(SHOP_URL, UTM)
         aside = ASIDE.format(search_icon=SEARCH_ICON, shop_cta_url=esc(shop_cta_url))
@@ -588,10 +622,12 @@ def build_html(articles, neutral=False):
         js_final = JS.replace("__SHOP_JS__", JS_SHOP).replace(
             '"__SHOP_CTA_URL__"', json.dumps(shop_cta_url)
         )
+        oghead = HOME_OG  # 導外版首頁：加 OG/twitter/canonical
 
     return PAGE.format(
         css=css_final,
         jsonld=jsonld,
+        oghead=oghead,
         logo=LOGO_SVG,
         search_icon=SEARCH_ICON,
         middle=middle,
