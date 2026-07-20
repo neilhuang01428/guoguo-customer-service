@@ -11,7 +11,7 @@ import json
 import os
 from urllib.parse import quote
 
-ROOT = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # scripts/ 的上一層＝repo 根
 ARTICLES_PATH = os.path.join(ROOT, "articles.json")
 OUT_PATH = os.path.join(ROOT, "sitemap.xml")
 
@@ -20,7 +20,8 @@ BASE = "https://www.guoguo.tw/guide/"
 # 沿用 build-tags.py 的 tag_slug() 與 THRESHOLD，確保 sitemap 的標籤網址 slug 規則、
 # 收錄門檻與實際產出的標籤頁完全一致（檔名有連字號 → 用 importlib 載入）。
 _spec = importlib.util.spec_from_file_location(
-    "build_tags", os.path.join(ROOT, "build-tags.py")
+    "build_tags",
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "build-tags.py"),  # 同在 scripts/
 )
 _bt = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_bt)

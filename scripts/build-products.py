@@ -10,7 +10,7 @@
 # ─────────────────────────────────────────────────────────────
 import csv, json, os
 
-ROOT = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # scripts/ 的上一層＝repo 根
 SRC = os.path.join(ROOT, "data", "products-export.csv")
 OUT = os.path.join(ROOT, "products.json")
 

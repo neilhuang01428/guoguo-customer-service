@@ -19,30 +19,30 @@
 #   可重複執行（idempotent）：各腳本皆為覆寫/重生，dist/ 每次砍掉重建。
 # ─────────────────────────────────────────────────────────────
 set -euo pipefail
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/.."   # 腳本在 scripts/ → 回 repo 根操作 articles/、dist/、assets/、tag/、pagefind/
 
 echo "▸ [1/5] build-products"
 if [ -f data/products-export.csv ]; then
-  python3 build-products.py
+  python3 scripts/build-products.py
   echo "  ✅ products.json 已更新"
 else
   echo "  （略過：無 products-export.csv）"
 fi
 
 echo "▸ [2/5] build-homepage（index.html ＋ index.neutral.html）"
-python3 build-homepage.py
+python3 scripts/build-homepage.py
 echo "  ✅ 首頁已重生"
 
 echo "▸ [3/5] build-tags（tag/<slug>/index.html 靜態標籤頁）"
-python3 build-tags.py
+python3 scripts/build-tags.py
 echo "  ✅ 標籤頁已重生"
 
 echo "▸ [4/5] build-sitemap（sitemap.xml）"
-python3 build-sitemap.py
+python3 scripts/build-sitemap.py
 echo "  ✅ sitemap.xml 已更新"
 
 echo "▸ [5/5] build-neutral（dist/ ＋ Pagefind 索引 ＋ 洩漏檢查守門）"
-bash build-neutral.sh
+bash scripts/build-neutral.sh
 echo "  ✅ dist/ 已建置"
 
 # build-neutral 已在 dist/ 建好 Pagefind 索引（dist/ 本來就 gitignored）。

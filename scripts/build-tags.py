@@ -30,7 +30,7 @@ import re
 import shutil
 from urllib.parse import quote
 
-ROOT = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # scripts/ 的上一層＝repo 根
 TAG_DIR = os.path.join(ROOT, "tag")
 
 # 文章數 < THRESHOLD 的標籤頁：加 noindex（防薄內容）。
@@ -40,7 +40,8 @@ THRESHOLD = 2
 #    檔名有連字號不能直接 import，改用 importlib 從檔案路徑載入。
 #    build-homepage.py 的 main() 有 __main__ 守門，import 不會產生任何檔。
 _spec = importlib.util.spec_from_file_location(
-    "build_homepage", os.path.join(ROOT, "build-homepage.py")
+    "build_homepage",
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "build-homepage.py"),  # 同在 scripts/
 )
 bh = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(bh)
@@ -129,8 +130,9 @@ TAG_PAGE = """<!DOCTYPE html>
 
 
 def relink_article(a):
-    """回傳一份 article 副本，把 url 改成相對路徑 ../../<slug>/，
-       讓 render_card 產出的連結在 /guide/tag/X/ 與 /tag/X/ 兩處都對。"""
+    """回傳一份 article 副本，把 url 改成相對路徑 ../../articles/<slug>/
+       （a.url 已含 articles/ 前綴），讓 render_card 產出的連結在
+       /guide/tag/X/ 與 /tag/X/ 兩處都對（→ /guide/articles/Y/、/articles/Y/）。"""
     a2 = dict(a)
     a2["url"] = "../../" + (a.get("url", "") or "")
     return a2

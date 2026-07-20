@@ -46,13 +46,17 @@ async function handle(request) {
   let sub = p.slice(6)                          // 去掉 '/guide'
   if (sub === '' || sub === '/') sub = '/index.html'
 
-  // T7：舊文章網址 /guide/<slug>/<檔>.html → 301 轉到乾淨網址 /guide/<slug>/
-  //     只命中「兩層、結尾 .html、且非 index.html」且 slug 是真文章；首頁(/index.html 單層)與其他資源不受影響
-  const oldUrl = sub.match(/^\/([^/]+)\/([^/]+)\.html$/)
-  if (oldUrl && oldUrl[2] !== 'index') {
+  // 舊網址 301（改版後文章搬進 articles/，兩種舊網址都導到 /guide/articles/<slug>/）：
+  //   ① 舊 .html：/guide/<slug>/<檔>.html（兩層、結尾 .html、非 index.html；檔案已隨改版移走）
+  //   ② T7 舊 flat：/guide/<slug>/（單層、結尾 /、且 <slug> 是已知文章）
+  //   一律用 articles.some(slug 命中) 把關 → 天生排除 /guide/（首頁）、/tag/、/articles/（新網址本身，防迴圈）、/assets、/pagefind。
+  const oldHtml = sub.match(/^\/([^/]+)\/([^/]+)\.html$/)   // 兩層、結尾 .html
+  const flatOld = sub.match(/^\/([^/]+)\/$/)                // 單層、結尾 /（含 index.html 那種另有 .html 副檔名，不會命中）
+  if ((oldHtml && oldHtml[2] !== 'index') || flatOld) {
+    const targetSlug = oldHtml ? oldHtml[1] : flatOld[1]
     const { articles } = await getShopData()
-    if (articles && articles.some(a => a && a.slug === oldUrl[1])) {
-      return Response.redirect(url.origin + '/guide/' + oldUrl[1] + '/', 301)
+    if (articles && articles.some(a => a && a.slug === targetSlug)) {
+      return Response.redirect(url.origin + '/guide/articles/' + targetSlug + '/', 301)
     }
   }
 
@@ -62,7 +66,10 @@ async function handle(request) {
 
   const isHome = /(^|\/)index\.html$/.test(sub)                                 // 教學總覽首頁
   const isTag  = sub.startsWith('/tag/')                                        // 靜態標籤頁 /guide/tag/<slug>/
-  const slug = sub.split('/').filter(Boolean)[0] || ''      // 文章 slug（對應 guide-map.json）
+  // 文章網址現為 /guide/articles/<slug>/ → sub=/articles/<slug>/：第一段是 'articles' 就取第二段當 slug；
+  // 否則取第一段（相容其他情形）。slug 用來對應 guide-map.json／articles.json。
+  const _segs = sub.split('/').filter(Boolean)
+  const slug = (_segs[0] === 'articles' ? _segs[1] : _segs[0]) || ''
   const promo = (isHome || isTag) ? '' : await buildPromo(slug)         // 導購版位 HTML（無對應則空字串）
   // 首頁的 OG/canonical 已由 build-homepage.py 寫進 index.html；文章頁在這裡注入（無對應 slug 則空）；
   // 標籤頁只補 canonical（指向導外正式網址），不做文章 OG/breadcrumb。
@@ -158,8 +165,8 @@ function buildTagHead(sub) {
 }
 
 /* ── 文章頁尾「相關主題」標籤：讀 articles.json 的 tags，做成可點膠囊 →
-   連到對應「靜態標籤頁」（相對 ../tag/<slug>/：文章在 /guide/<art>/ → /guide/tag/<slug>/；
-   中性版 /<art>/ → /tag/<slug>/，同一份注入雙版都對）。取代手動維護的「延伸閱讀」。
+   連到對應「靜態標籤頁」（相對 ../../tag/<slug>/：文章在 /guide/articles/<art>/ → /guide/tag/<slug>/；
+   中性版 /articles/<art>/ → /tag/<slug>/，文章深一層故 ../../，同一份注入雙版都對）。取代手動維護的「延伸閱讀」。
    找不到 slug 或沒 tags 就回空字串、不硬塞。── */
 async function buildTags(slug) {
   const { articles } = await getShopData()
@@ -168,7 +175,7 @@ async function buildTags(slug) {
   if (!a || !a.tags || !a.tags.length) return ''
   const chips = a.tags
     .filter(Boolean)
-    .map(t => `<a class="gg-tag" href="../tag/${encodeURIComponent(tagSlug(t))}/">${esc(t)}</a>`)
+    .map(t => `<a class="gg-tag" href="../../tag/${encodeURIComponent(tagSlug(t))}/">${esc(t)}</a>`)
     .join('')
   if (!chips) return ''
   return `<nav class="gg-tags" aria-label="相關主題標籤">

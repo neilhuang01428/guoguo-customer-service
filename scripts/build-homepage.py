@@ -13,7 +13,7 @@ import json
 import os
 import html
 
-ROOT = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # scripts/ 的上一層＝repo 根
 ARTICLES_PATH = os.path.join(ROOT, "articles.json")
 OUT_PATH = os.path.join(ROOT, "index.html")
 

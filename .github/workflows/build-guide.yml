@@ -1,6 +1,6 @@
 name: build-guide
 
-# 自動化守門（T4／T9）：改了 articles.json、文章內文（ipad-*-guide/）或產生器後 push，
+# 自動化守門（T4／T9）：改了 articles.json、文章內文（articles/）或產生器（scripts/）後 push，
 # 這支會用 build-all.sh 一步到位重生：導外版 index.html、標籤頁 tag/、sitemap.xml，
 # 並用 Pagefind 重建全文搜尋索引 pagefind/（對 dist 建、避開內部文件），最後提交回 main。
 # 讓「新增文章記得重跑 build-homepage/build-tags/pagefind + commit」這些手動步驟不再會漏。
@@ -11,12 +11,12 @@ on:
     branches: [main]
     paths:
       - 'articles.json'
-      - 'build-homepage.py'
-      - 'build-tags.py'
-      - 'build-sitemap.py'
-      - 'build-neutral.sh'
-      - 'build-all.sh'
-      - 'ipad-*-guide/**'   # 文章內文有改 → 全文搜尋索引也要跟著更新
+      - 'scripts/build-homepage.py'
+      - 'scripts/build-tags.py'
+      - 'scripts/build-sitemap.py'
+      - 'scripts/build-neutral.sh'
+      - 'scripts/build-all.sh'
+      - 'articles/**'        # 文章內文有改 → 全文搜尋索引也要跟著更新
 
 permissions:
   contents: write
@@ -41,7 +41,7 @@ jobs:
           node-version: '20'
 
       - name: 一鍵重生（首頁＋標籤頁＋sitemap＋dist＋Pagefind 索引，含洩漏檢查守門）
-        run: bash build-all.sh
+        run: bash scripts/build-all.sh
 
       - name: 若有變更就提交回 main
         run: |
