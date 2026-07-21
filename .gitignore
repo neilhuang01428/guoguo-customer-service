@@ -20,3 +20,6 @@ index.neutral.html
 # Python 快取（build-tags.py／build-sitemap.py 用 importlib 載入 build-homepage 會產生）
 __pycache__/
 *.pyc
+
+# 題目發想素材（彙整自 Notion／Google Sheet／官網，含內部營運洞察，不對外公開、不上 GitHub）
+context/
