@@ -114,7 +114,7 @@ async function getShopData() {
   return _shopCache
 }
 
-/* ── 文章頁 <head> 注入：canonical + OG/Twitter + BreadcrumbList JSON-LD（只導外版，做 SEO / LINE 分享）
+/* ── 文章頁 <head> 注入：canonical + OG/Twitter + Article／BreadcrumbList JSON-LD（只導外版，做 SEO / LINE 分享）
    標題與描述取自 articles.json；canonical 一律指向該篇的正式 url（-navy/原版等替代檔也會收斂到正式版）。
    找不到該 slug 就回空字串、不硬塞。── */
 const OG_IMAGE = 'https://www.guoguo.tw/guide/assets/og/guoguo-ipad-tutorial-home-cover.png'  // 文章沒設 ogImage 時的站台預設分享圖
@@ -127,12 +127,32 @@ async function buildArticleHead(slug) {
   const ogimg = a.ogImage ? 'https://www.guoguo.tw/guide/' + a.ogImage : OG_IMAGE  // 逐篇首圖，沒有就用站台預設
   const title = esc(a.title || '')
   const desc = esc(a.summary || '')
+  const logo = 'https://www.guoguo.tw/guide/assets/og/guoguo-logo.png'
   const ld = JSON.stringify({
     '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'iPad 使用教學', item: 'https://www.guoguo.tw/guide/' },
-      { '@type': 'ListItem', position: 2, name: a.title || '' },
+    '@graph': [
+      {
+        '@type': 'Article',
+        '@id': canonical + '#article',
+        mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+        headline: a.title || '',
+        description: a.summary || '',
+        image: [ogimg],                                   // 逐篇首圖（首圖管理設定；沒設用站台預設）
+        inLanguage: 'zh-TW',
+        datePublished: a.date || undefined,               // JSON.stringify 會自動略過 undefined
+        dateModified: a.date || undefined,
+        articleSection: a.category || 'iPad 教學',
+        keywords: (a.tags || []).join(', '),
+        author: { '@type': 'Organization', name: '果果國際 GUOGUO INTERNATIONAL', url: 'https://www.guoguo.tw/guide/' },
+        publisher: { '@type': 'Organization', name: '果果國際 GUOGUO INTERNATIONAL', logo: { '@type': 'ImageObject', url: logo } },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'iPad 使用教學', item: 'https://www.guoguo.tw/guide/' },
+          { '@type': 'ListItem', position: 2, name: a.title || '' },
+        ],
+      },
     ],
   }).replace(/</g, '\\u003c')
   return `<link rel="canonical" href="${esc(canonical)}">
