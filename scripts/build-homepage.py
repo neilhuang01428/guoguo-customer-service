@@ -36,7 +36,14 @@ def _home_og_image():
 
 
 OG_IMAGE = _home_og_image()
-HOME_OG = """<link rel="canonical" href="{home}" />
+
+# 果果國際的知識圖譜 ID：必須與 worker/guoguo-guide-proxy.js 的 ORG_ID 一字不差，
+# 這樣「首頁的 Organization」與「每篇文章的 publisher」才會被併成同一個實體。改要一起改。
+ORG_ID = "https://www.guoguo.tw/#organization"
+ORG_LOGO = "https://www.guoguo.tw/guide/assets/og/guoguo-logo.png"
+
+HOME_OG = """<meta name="robots" content="max-image-preview:large" />
+<link rel="canonical" href="{home}" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="果果國際" />
 <meta property="og:title" content="果果 · iPad 使用教學" />
@@ -134,18 +141,24 @@ def render_card(a, colors, card_mode="image"):
     )
 
 
-def render_jsonld(articles):
+def render_jsonld(articles, neutral=False):
+    """首頁結構化資料。
+       導外版：@graph = Organization（品牌實體）＋ WebSite（站台）＋ ItemList（文章清單、絕對網址）。
+               Organization 的 @id 必須與 worker/guoguo-guide-proxy.js 的 ORG_ID 一致 →
+               文章頁與首頁在 Google／AI 的知識圖譜上收斂成同一間公司。
+       中性版：只留 ItemList，且 url 維持相對路徑（不可出現 guoguo.tw，否則 build-neutral.sh 洩漏檢查會擋）。"""
+    # schema.org 的 url 應為絕對網址；中性版例外，用相對路徑保持零導外。
+    base = "" if neutral else GUIDE_HOME_URL
     items = [
         {
             "@type": "ListItem",
             "position": i + 1,
             "name": a.get("title", ""),
-            "url": a.get("url", ""),
+            "url": base + a.get("url", ""),
         }
         for i, a in enumerate(articles)
     ]
-    payload = {
-        "@context": "https://schema.org",
+    item_list = {
         "@type": "ItemList",
         "name": "果果國際 iPad 使用教學總覽",
         "description": "果果國際客戶專屬的 iPad 使用教學指南集合。",
@@ -154,6 +167,52 @@ def render_jsonld(articles):
         "numberOfItems": len(articles),
         "itemListElement": items,
     }
+
+    if neutral:
+        payload = dict({"@context": "https://schema.org"}, **item_list)
+    else:
+        payload = {
+            "@context": "https://schema.org",
+            "@graph": [
+                {
+                    # 果果國際本體：地址／電話／社群一次給足，讓 AI 認得「這是真實存在的公司」。
+                    # @id 與 worker 的 ORG_ID 相同 → 改一邊要改兩邊。
+                    "@type": "Organization",
+                    "@id": ORG_ID,
+                    "name": "果果國際 GUOGUO INTERNATIONAL",
+                    "alternateName": "果果國際",
+                    "description": "台灣專業 Apple 福利機供應商：40 道專業檢測、資訊透明、缺點揭露、最長 1 年保固。",
+                    "url": "https://www.guoguo.tw/",
+                    "logo": {"@type": "ImageObject", "url": ORG_LOGO},
+                    "image": ORG_LOGO,
+                    "telephone": "+886-906-536-833",
+                    "email": "superior.ipad.tw@gmail.com",
+                    "address": {
+                        "@type": "PostalAddress",
+                        "streetAddress": "景興路23巷6弄11號4樓",
+                        "addressLocality": "文山區",
+                        "addressRegion": "臺北市",
+                        "postalCode": "11685",
+                        "addressCountry": "TW",
+                    },
+                    "sameAs": [
+                        "https://www.facebook.com/profile.php?id=100070652028382",
+                        "https://www.guoguostock.com/",
+                    ],
+                },
+                {
+                    # 教學站本體（/guide/），掛在 Organization 底下。
+                    "@type": "WebSite",
+                    "@id": GUIDE_HOME_URL + "#website",
+                    "url": GUIDE_HOME_URL,
+                    "name": "果果國際 · iPad 使用教學",
+                    "description": "果果國際客戶專屬的 iPad 使用教學：巧控鍵盤、大陸區 App、Apple Pencil、越獄觀念。",
+                    "inLanguage": "zh-TW",
+                    "publisher": {"@id": ORG_ID},
+                },
+                item_list,
+            ],
+        }
     raw = json.dumps(payload, ensure_ascii=False, indent=2)
     return raw.replace("</script", "<\\/script")  # 防止內容意外提早關閉 script 標籤
 
@@ -865,7 +924,7 @@ def build_html(articles, neutral=False):
     colors = category_colors(articles)
     card_mode = "emoji" if neutral else CARD_MODE   # 中性版一律 emoji（零導外）
     cards_html = "\n".join(render_card(a, colors, card_mode) for a in articles)
-    jsonld = render_jsonld(articles)
+    jsonld = render_jsonld(articles, neutral=neutral)
     total = len(articles)
 
     guides = GUIDES_SECTION.format(total=total, cards=cards_html)

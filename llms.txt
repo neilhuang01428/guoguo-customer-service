@@ -1,0 +1,28 @@
+# 果果國際 · iPad 使用教學
+
+> 果果國際（GUOGUO INTERNATIONAL）是台灣專業的 Apple 福利機供應商，
+> 位於台北市文山區。每台機器經 40 道專業檢測、資訊透明並主動揭露缺點，
+> 提供最長 1 年保固與終身售後諮詢。
+>
+> 這個站（https://www.guoguo.tw/guide/）收錄我們寫給客戶的 iPad 實用教學：白話、舉例、
+> 把讀者當小白，一步步帶你上手。內容涵蓋配件上手、使用技巧、選購建議與觀念釐清。
+
+## 說明
+
+- 語言：繁體中文（zh-TW）
+- 內容取向：真實客戶會問的問題，誠實評估、不誇大、不推銷不需要的東西
+- 聯絡：LINE @guoguo.tw ／ 電話 0906-536-833
+- 賣場：https://www.guoguo.tw/shop
+
+## 教學文章
+
+- [iPad 巧控鍵盤上手指南](https://www.guoguo.tw/guide/articles/ipad-magic-keyboard-guide/)：剛從 Windows 換過來？一個心法：把 Ctrl 換成 ⌘，八成快捷鍵你早就會了。10 分鐘從小白變熟手。（上手、Windows 用戶、鍵盤配件／2026-07-15）
+- [下載大陸區 App（剪映・抖音）](https://www.guoguo.tw/guide/articles/ipad-appstore-china-guide/)：想裝大陸版剪映、抖音？教你安全切換 App Store 地區——不用翻牆、不花冤枉錢。（其實很多人根本不用切！）（技巧、App 下載、剪映抖音／2026-07-17）
+- [剪片要不要買 Apple Pencil？](https://www.guoguo.tw/guide/articles/ipad-jianying-pencil-guide/)：用剪映／CapCut 剪片，搭 Apple Pencil 會更快嗎？誠實評估、附四款筆對照，幫你買對、不買貴。（選購、配件推薦、Apple Pencil／2026-07-17）
+- [iPad 越獄，一次搞懂](https://www.guoguo.tw/guide/articles/ipad-jailbreak-guide/)：越獄是什麼、現在還做得到嗎、值不值得？以及——為什麼網路上八成的「一鍵越獄」是詐騙。看完不踩雷。（觀念、防詐騙、越獄／2026-07-17）
+
+## 其他
+
+- [教學總覽首頁](https://www.guoguo.tw/guide/)：全部文章列表，可用標籤與全文搜尋篩選
+- [果果賣場](https://www.guoguo.tw/shop)：iPad 福利機、Apple Pencil、鍵盤配件
+- [即時庫存查詢](https://www.guoguostock.com/)

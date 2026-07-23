@@ -114,10 +114,13 @@ async function getShopData() {
   return _shopCache
 }
 
-/* ── 文章頁 <head> 注入：canonical + OG/Twitter + Article／BreadcrumbList JSON-LD（只導外版，做 SEO / LINE 分享）
+/* ── 文章頁 <head> 注入：meta description + canonical + OG/Twitter
+   + Article／Organization／BreadcrumbList JSON-LD（只導外版，做 SEO / AIO / LINE 分享）
    標題與描述取自 articles.json；canonical 一律指向該篇的正式 url（-navy/原版等替代檔也會收斂到正式版）。
    找不到該 slug 就回空字串、不硬塞。── */
 const OG_IMAGE = 'https://www.guoguo.tw/guide/assets/og/guoguo-ipad-tutorial-home-cover.png'  // 文章沒設 ogImage 時的站台預設分享圖
+// 果果國際的知識圖譜 ID：文章頁（此檔）與總覽首頁（build-homepage.py）必須用同一個字串，改要一起改。
+const ORG_ID = 'https://www.guoguo.tw/#organization'
 async function buildArticleHead(slug) {
   const { articles } = await getShopData()
   if (!articles) return ''
@@ -143,8 +146,28 @@ async function buildArticleHead(slug) {
         dateModified: a.date || undefined,
         articleSection: a.category || 'iPad 教學',
         keywords: (a.tags || []).join(', '),
-        author: { '@type': 'Organization', name: '果果國際 GUOGUO INTERNATIONAL', url: 'https://www.guoguo.tw/guide/' },
-        publisher: { '@type': 'Organization', name: '果果國際 GUOGUO INTERNATIONAL', logo: { '@type': 'ImageObject', url: logo } },
+        author: { '@id': ORG_ID },                        // 指向下方同一個 Organization（與首頁共用 @id → Google 併成同一實體）
+        publisher: { '@id': ORG_ID },
+      },
+      {
+        // 果果國際本體：與 build-homepage.py 首頁那份用同一個 @id，
+        // 讓「文章」「總覽首頁」「賣場」在知識圖譜上收斂成同一間公司（AI 才認得出品牌）。
+        '@type': 'Organization',
+        '@id': ORG_ID,
+        name: '果果國際 GUOGUO INTERNATIONAL',
+        url: 'https://www.guoguo.tw/',
+        logo: { '@type': 'ImageObject', url: logo },
+        telephone: '+886-906-536-833',
+        email: C.email,
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: '景興路23巷6弄11號4樓',
+          addressLocality: '文山區',
+          addressRegion: '臺北市',
+          postalCode: '11685',
+          addressCountry: 'TW',
+        },
+        sameAs: [C.fb, C.stock],
       },
       {
         '@type': 'BreadcrumbList',
@@ -155,7 +178,9 @@ async function buildArticleHead(slug) {
       },
     ],
   }).replace(/</g, '\\u003c')
-  return `<link rel="canonical" href="${esc(canonical)}">
+  return `<meta name="description" content="${desc}">
+<meta name="robots" content="max-image-preview:large">
+<link rel="canonical" href="${esc(canonical)}">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="果果國際">
 <meta property="og:title" content="${title}">

@@ -14,6 +14,7 @@ on:
       - 'scripts/build-homepage.py'
       - 'scripts/build-tags.py'
       - 'scripts/build-sitemap.py'
+      - 'scripts/build-llms.py'
       - 'scripts/build-neutral.sh'
       - 'scripts/build-all.sh'
       - 'articles/**'        # 文章內文有改 → 全文搜尋索引也要跟著更新
@@ -48,10 +49,10 @@ jobs:
           git config user.name  "guoguo-guide-bot"
           git config user.email "guoguo-guide-bot@users.noreply.github.com"
           # dist/ 與 index.neutral.html 皆 gitignored，不會被 add；只提交導外版要的產物。
-          git add -A index.html sitemap.xml tag pagefind
+          git add -A index.html sitemap.xml llms.txt tag pagefind
           if git diff --cached --quiet; then
-            echo "index.html / sitemap.xml / tag / pagefind 已是最新，無需提交。"
+            echo "index.html / sitemap.xml / llms.txt / tag / pagefind 已是最新，無需提交。"
           else
-            git commit -m "chore: 自動重生 index.html + sitemap.xml + tag/ + pagefind/ [skip ci]"
+            git commit -m "chore: 自動重生 index.html + sitemap.xml + llms.txt + tag/ + pagefind/ [skip ci]"
             git push
           fi

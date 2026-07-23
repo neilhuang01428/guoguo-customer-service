@@ -9,7 +9,8 @@
 #     2) build-homepage.py  — articles.json → index.html（導外版）＋ index.neutral.html（中性版）
 #     3) build-tags.py      — articles.json → tag/<slug>/index.html（靜態標籤頁，雙版共用）
 #     4) build-sitemap.py   — articles.json → sitemap.xml（導外版；含 ≥THRESHOLD 篇的標籤頁）
-#     5) build-neutral.sh   — 產 dist/（allowlist＋麵包屑/標籤注入＋noindex＋Pagefind 索引＋洩漏檢查守門）
+#     5) build-llms.py      — articles.json → llms.txt（AI 引擎用的站台導覽；導外版專屬，不進 dist/）
+#     6) build-neutral.sh   — 產 dist/（allowlist＋麵包屑/標籤注入＋noindex＋Pagefind 索引＋洩漏檢查守門）
 #        ＋ 把 dist/pagefind/ 同步成 repo 根 pagefind/（導外版靠 GitHub Pages 直吐，此份需 commit）
 #
 #   用法：
@@ -21,7 +22,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."   # 腳本在 scripts/ → 回 repo 根操作 articles/、dist/、assets/、tag/、pagefind/
 
-echo "▸ [1/5] build-products"
+echo "▸ [1/6] build-products"
 if [ -f data/products-export.csv ]; then
   python3 scripts/build-products.py
   echo "  ✅ products.json 已更新"
@@ -29,19 +30,22 @@ else
   echo "  （略過：無 products-export.csv）"
 fi
 
-echo "▸ [2/5] build-homepage（index.html ＋ index.neutral.html）"
+echo "▸ [2/6] build-homepage（index.html ＋ index.neutral.html）"
 python3 scripts/build-homepage.py
 echo "  ✅ 首頁已重生"
 
-echo "▸ [3/5] build-tags（tag/<slug>/index.html 靜態標籤頁）"
+echo "▸ [3/6] build-tags（tag/<slug>/index.html 靜態標籤頁）"
 python3 scripts/build-tags.py
 echo "  ✅ 標籤頁已重生"
 
-echo "▸ [4/5] build-sitemap（sitemap.xml）"
+echo "▸ [4/6] build-sitemap（sitemap.xml）"
 python3 scripts/build-sitemap.py
 echo "  ✅ sitemap.xml 已更新"
 
-echo "▸ [5/5] build-neutral（dist/ ＋ Pagefind 索引 ＋ 洩漏檢查守門）"
+echo "▸ [5/6] build-llms（llms.txt：給 AI 引擎讀的站台導覽；導外版專屬）"
+python3 scripts/build-llms.py
+
+echo "▸ [6/6] build-neutral（dist/ ＋ Pagefind 索引 ＋ 洩漏檢查守門）"
 bash scripts/build-neutral.sh
 echo "  ✅ dist/ 已建置"
 
