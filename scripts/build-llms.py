@@ -61,9 +61,13 @@ def render(articles):
             if t and t not in seen:
                 seen.add(t)
                 topics.append(t)
+        # 日期：發佈日固定標出；內容有修訂（updated 且與 date 不同）就一併標「更新 YYYY-MM-DD」，
+        # 讓 AI 判斷新舊時看得到「這篇有在維護」。
         date = a.get("date", "")
+        upd = a.get("updated", "")
+        when = date + ("，更新 " + upd if upd and upd != date else "")
         # 每篇一行 Markdown 連結 + 摘要；主題/日期用括號補在後面，方便 AI 判斷主題與新舊。
-        meta = "／".join(x for x in ["、".join(topics), date] if x)
+        meta = "／".join(x for x in ["、".join(topics), when] if x)
         lines.append("- [{t}]({u})：{s}{m}".format(
             t=title, u=url, s=summary,
             m="（{0}）".format(meta) if meta else "",

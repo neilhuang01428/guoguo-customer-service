@@ -2,12 +2,14 @@
   {
     "slug": "ipad-magic-keyboard-guide",
     "title": "iPad 巧控鍵盤上手指南",
+    "seoTitle": "iPad 巧控鍵盤上手指南 · Windows 用戶專用 · 果果國際",
     "summary": "剛從 Windows 換過來？一個心法：把 Ctrl 換成 ⌘，八成快捷鍵你早就會了。10 分鐘從小白變熟手。",
     "category": "上手",
     "icon": "⌨️",
     "url": "articles/ipad-magic-keyboard-guide/",
     "ogImage": "assets/og/ipad-magic-keyboard-ctrl-cmd-shortcuts.png",
     "date": "2026-07-15",
+    "updated": "2026-07-15",
     "tags": [
       "上手",
       "Windows 用戶",
@@ -47,12 +49,14 @@
   {
     "slug": "ipad-appstore-china-guide",
     "title": "下載大陸區 App（剪映・抖音）",
+    "seoTitle": "iPad 切換 App Store 到大陸區、下載剪映＆抖音 · 果果國際",
     "summary": "想裝大陸版剪映、抖音？教你安全切換 App Store 地區——不用翻牆、不花冤枉錢。（其實很多人根本不用切！）",
     "category": "技巧",
     "icon": "🌏",
     "url": "articles/ipad-appstore-china-guide/",
     "ogImage": "assets/og/ipad-china-app-store-region-switch.png",
     "date": "2026-07-17",
+    "updated": "2026-07-17",
     "tags": [
       "技巧",
       "App 下載",
@@ -96,12 +100,14 @@
   {
     "slug": "ipad-jianying-pencil-guide",
     "title": "剪片要不要買 Apple Pencil？",
+    "seoTitle": "iPad 剪映／CapCut 搭 Apple Pencil，真能提升剪片效率嗎？· 果果國際",
     "summary": "用剪映／CapCut 剪片，搭 Apple Pencil 會更快嗎？誠實評估、附四款筆對照，幫你買對、不買貴。",
     "category": "選購",
     "icon": "✏️",
     "url": "articles/ipad-jianying-pencil-guide/",
     "ogImage": "assets/og/ipad-apple-pencil-capcut-compare.png",
     "date": "2026-07-17",
+    "updated": "2026-07-17",
     "tags": [
       "選購",
       "配件推薦",
@@ -137,12 +143,14 @@
   {
     "slug": "ipad-jailbreak-guide",
     "title": "iPad 越獄，一次搞懂",
+    "seoTitle": "iPad 越獄完整說明：是什麼、還能不能、要注意什麼 · 果果國際",
     "summary": "越獄是什麼、現在還做得到嗎、值不值得？以及——為什麼網路上八成的「一鍵越獄」是詐騙。看完不踩雷。",
     "category": "觀念",
     "icon": "🔓",
     "url": "articles/ipad-jailbreak-guide/",
     "ogImage": "assets/og/ipad-jailbreak-scam-warning-cover.png",
     "date": "2026-07-17",
+    "updated": "2026-07-17",
     "tags": [
       "觀念",
       "防詐騙",

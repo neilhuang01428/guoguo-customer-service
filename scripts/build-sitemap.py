@@ -44,11 +44,17 @@ def url_entry(loc, lastmod, changefreq, priority):
     return "\n".join(lines)
 
 
+def lastmod_of(a):
+    """該篇的 lastmod：內容有修訂就用 updated（後台『文章 SEO』維護），否則用發佈日 date。
+    lastmod 的語意是「最後修改時間」，不是發佈時間——用 updated 才能讓 Google 知道文章有在維護。"""
+    return a.get("updated") or a.get("date", "")
+
+
 def main():
     with open(ARTICLES_PATH, encoding="utf-8") as f:
         articles = json.load(f)
 
-    dates = [a.get("date") for a in articles if a.get("date")]
+    dates = [lastmod_of(a) for a in articles if lastmod_of(a)]
     home_lastmod = max(dates) if dates else ""
 
     entries = [url_entry(BASE, home_lastmod, "weekly", "1.0")]
@@ -56,7 +62,7 @@ def main():
         url = a.get("url")
         if not url:
             continue
-        entries.append(url_entry(BASE + url, a.get("date", ""), "monthly", "0.8"))
+        entries.append(url_entry(BASE + url, lastmod_of(a), "monthly", "0.8"))
 
     # 標籤頁：只收「文章數 ≥ THRESHOLD」的標籤（防薄內容，與 build-tags.py 的 noindex 門檻一致）。
     # lastmod 取該標籤旗下文章的最新日期。網址對 slug 做 quote（中日文 → %XX）。
@@ -65,7 +71,7 @@ def main():
         for t in (a.get("tags") or []):
             if not t:
                 continue
-            tag_dates.setdefault(t, []).append(a.get("date", ""))
+            tag_dates.setdefault(t, []).append(lastmod_of(a))
     tag_count = 0
     for t in sorted(tag_dates.keys()):
         dates_t = [d for d in tag_dates[t] if d]

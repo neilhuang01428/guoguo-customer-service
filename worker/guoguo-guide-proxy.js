@@ -76,9 +76,15 @@ async function handle(request) {
   const headMeta = isTag ? buildTagHead(sub) : (isHome ? '' : await buildArticleHead(slug))
   const tags = (isHome || isTag) ? '' : await buildTags(slug) // 文章頁尾「相關主題」標籤（連到標籤頁；取代手動延伸閱讀）
   const faq = (isHome || isTag) ? '' : await buildFaq(slug)   // 文章頁尾「常見問題」（可見內容；schema 由 buildArticleHead 出）
+  // seoTitle：有設才改寫 <title>，讓 articles.json 成為標題的單一真實來源
+  //（＝與 JSON-LD headline 同一個字串，不會各寫各的）。沒設就完全不動 HTML 原本的 <title>。
+  const _art = (isHome || isTag) ? null : await articleBySlug(slug)
+  const newTitle = (_art && _art.seoTitle) ? _art.seoTitle : ''
   const rw = new HTMLRewriter()
     .on('head', { element(el) { el.prepend(ANALYTICS, { html: true }); el.append(CHROME_CSS + headMeta, { html: true }) } })
     .on('body', { element(el) { el.append(FLOATING, { html: true }) } })        // 右下浮動鈕（fixed）
+  // 選擇器限定 head 底下，避免誤中 <svg><title>（頁面與注入的 chrome 都有大量內嵌 SVG）
+  if (newTitle) rw.on('head title', { element(el) { el.setInnerContent(newTitle) } })
 
   if (isHome) {
     // 首頁沒有 <main>、有自己的頁首頁尾 → 用 header tag（最穩）把「回賣場」麵包屑插在 masthead 之前
@@ -122,6 +128,21 @@ async function getShopData() {
 const OG_IMAGE = 'https://www.guoguo.tw/guide/assets/og/guoguo-ipad-tutorial-home-cover.png'  // 文章沒設 ogImage 時的站台預設分享圖
 // 果果國際的知識圖譜 ID：文章頁（此檔）與總覽首頁（build-homepage.py）必須用同一個字串，改要一起改。
 const ORG_ID = 'https://www.guoguo.tw/#organization'
+
+/* ── 兩個 SEO 欄位（後台『文章 SEO』維護，皆選填）──────────────
+   seoTitle：搜尋結果用的完整標題（長、含關鍵字）。有設就同時用於頁面 <title> 與
+             JSON-LD headline，確保兩者一致；沒設就退回短標 title，且不改寫 <title>。
+   updated ：內容最後修訂日（YYYY-MM-DD）→ JSON-LD dateModified、sitemap lastmod。
+             沒設就退回 date（＝發佈日）。 */
+function seoTitle(a) { return (a && (a.seoTitle || a.title)) || '' }
+
+/* 依 slug 取 articles.json 那一筆（handle() 要用來決定改不改寫 <title>）。找不到回 null。 */
+async function articleBySlug(slug) {
+  const { articles } = await getShopData()
+  if (!articles) return null
+  return articles.find(x => x && x.slug === slug) || null
+}
+
 async function buildArticleHead(slug) {
   const { articles } = await getShopData()
   if (!articles) return ''
@@ -140,12 +161,14 @@ async function buildArticleHead(slug) {
         '@type': 'Article',
         '@id': canonical + '#article',
         mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
-        headline: a.title || '',
+        // headline 要與頁面上的 <title> 一致（Google 規範）→ 兩者同取 seoTitle；
+        // og:title／twitter:title 則刻意仍用短標 a.title（分享卡片要短而有勾子）。
+        headline: seoTitle(a),
         description: a.summary || '',
         image: [ogimg],                                   // 逐篇首圖（首圖管理設定；沒設用站台預設）
         inLanguage: 'zh-TW',
         datePublished: a.date || undefined,               // JSON.stringify 會自動略過 undefined
-        dateModified: a.date || undefined,
+        dateModified: a.updated || a.date || undefined,   // 內容有修訂就填 updated（後台『文章 SEO』維護）
         articleSection: a.category || 'iPad 教學',
         keywords: (a.tags || []).join(', '),
         author: { '@id': ORG_ID },                        // 指向下方同一個 Organization（與首頁共用 @id → Google 併成同一實體）
