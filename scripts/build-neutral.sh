@@ -122,6 +122,47 @@ CRUMB_HTML = (
     '</div>'
 )
 
+# 常見問題（FAQ）樣式：與導外版 worker 的 .gg-faq 同一份，補 var fallback，脫離 Worker 也能對。
+FAQ_CSS = "<style>" + (
+    ".gg-faq{margin:56px 0 0;padding:26px 30px 22px;background:#fff;border:1px solid #e4ebf4;"
+    "border-top:3px solid var(--navy,#17345f);border-radius:18px;"
+    "font-family:var(--sans,-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC',sans-serif);"
+    "box-shadow:0 8px 30px rgba(20,39,68,.05)}"
+    ".gg-faq h2.gg-faq-h{font-size:1.24rem;font-weight:800;color:var(--ink,#16223a);"
+    "margin:0 0 4px;padding:0;border:0;line-height:1.4}"
+    ".gg-faq h2.gg-faq-h::after{content:'';display:block;width:38px;height:3px;"
+    "background:var(--green,#2f9e57);border-radius:3px;margin-top:12px}"
+    ".gg-faq .gg-faq-item{padding:20px 0 0;margin:18px 0 0;border-top:1px solid #eef2f8}"
+    ".gg-faq .gg-faq-item:first-of-type{border-top:0;margin-top:14px;padding-top:0}"
+    ".gg-faq h3.gg-faq-q{display:flex;gap:10px;font-size:1.02rem;font-weight:800;"
+    "color:var(--navy,#17345f);margin:0 0 9px;padding:0;border:0;line-height:1.55}"
+    ".gg-faq h3.gg-faq-q::before{content:'Q';flex:none;"
+    "font-family:var(--mono,'SF Mono',Menlo,monospace);font-size:.76rem;font-weight:800;"
+    "color:var(--green-deep,#237a43);background:var(--green-bg,#eaf5ee);border:1px solid #cbe6d5;"
+    "border-radius:7px;width:24px;height:24px;display:grid;place-items:center;margin-top:2px}"
+    ".gg-faq .gg-faq-a{font-size:.97rem;line-height:1.85;color:var(--body,#45506a);padding-left:34px}"
+    "@media(max-width:560px){.gg-faq{padding:20px 17px 18px}.gg-faq .gg-faq-a{padding-left:0}}"
+) + "</style>"
+
+
+def faq_html(slug):
+    """文章的『常見問題』區塊（與導外版 worker 的 buildFaq() 同結構）。
+    FAQ 內容天生零導外（純教學問答），雙版共用同一份 articles.json 的 faq 欄位。
+    中性版是 noindex，不需要 FAQPage JSON-LD，只給可見內容。"""
+    a = BY_SLUG.get(slug) or {}
+    items = [x for x in (a.get("faq") or []) if isinstance(x, dict) and x.get("q") and x.get("a")]
+    if not items:
+        return ""
+    body = "".join(
+        '<div class="gg-faq-item"><h3 class="gg-faq-q">{q}</h3>'
+        '<div class="gg-faq-a">{a}</div></div>'.format(
+            q=html.escape(x["q"]), a=html.escape(x["a"]))
+        for x in items
+    )
+    return ('<section class="gg-faq" aria-labelledby="gg-faq-h">'
+            '<h2 class="gg-faq-h" id="gg-faq-h">常見問題</h2>' + body + '</section>')
+
+
 def tag_slug(t):
     # 與 build-tags.py / worker 的 tag_slug 同規則：strip → 小寫 ASCII → 空白換 '-' → 中日文保留
     return re.sub(r"\s+", "-", t.strip().lower())
@@ -144,6 +185,7 @@ def tags_html(slug):
 n = 0
 for d in DIRS:
     th = tags_html(d)   # d＝bare slug（供 BY_SLUG 反查 tags）；檔案在 dist/articles/<slug>/ 底下
+    fh_faq = faq_html(d)  # 常見問題（插在相關主題標籤之前，與導外版順序一致）
     for f in glob.glob(os.path.join(OUT, "articles", d, "**", "*.html"), recursive=True):
         with open(f, encoding="utf-8") as fh:
             s = fh.read()
@@ -170,18 +212,19 @@ for d in DIRS:
                       else m.group(1)[:-1] + " data-pagefind-ignore>",
             s, count=1,
         )
-        # 頁尾「相關主題」標籤：插在 <main> 內容最後（最後一個 </main> 之前）
-        if th:
+        # 頁尾「常見問題」＋「相關主題」標籤：插在 <main> 內容最後（最後一個 </main> 之前）。
+        # 順序與導外版 worker 一致：FAQ → 標籤（導外版後面還有導購與頁尾，中性版沒有）。
+        if fh_faq or th:
             idx = s.rfind("</main>")
             if idx != -1:
-                s = s[:idx] + th + s[idx:]
+                s = s[:idx] + fh_faq + th + s[idx:]
         if "</head>" in s:
-            s = s.replace("</head>", CRUMB_CSS + TAGS_CSS + "</head>", 1)
+            s = s.replace("</head>", CRUMB_CSS + FAQ_CSS + TAGS_CSS + "</head>", 1)
         with open(f, "w", encoding="utf-8") as fh:
             fh.write(s)
         n += 1
 
-print("  ↳ 已為 {} 個文章頁注入中性版麵包屑（→ /）＋頁尾相關主題標籤".format(n))
+print("  ↳ 已為 {} 個文章頁注入中性版麵包屑（→ /）＋常見問題＋頁尾相關主題標籤".format(n))
 PY
 
 # 3) noindex 整個中性網域（與導外版 www.guoguo.tw/guide 同內容，避免 Google 重複內容懲罰）

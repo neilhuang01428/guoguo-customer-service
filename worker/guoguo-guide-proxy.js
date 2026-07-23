@@ -75,6 +75,7 @@ async function handle(request) {
   // 標籤頁只補 canonical（指向導外正式網址），不做文章 OG/breadcrumb。
   const headMeta = isTag ? buildTagHead(sub) : (isHome ? '' : await buildArticleHead(slug))
   const tags = (isHome || isTag) ? '' : await buildTags(slug) // 文章頁尾「相關主題」標籤（連到標籤頁；取代手動延伸閱讀）
+  const faq = (isHome || isTag) ? '' : await buildFaq(slug)   // 文章頁尾「常見問題」（可見內容；schema 由 buildArticleHead 出）
   const rw = new HTMLRewriter()
     .on('head', { element(el) { el.prepend(ANALYTICS, { html: true }); el.append(CHROME_CSS + headMeta, { html: true }) } })
     .on('body', { element(el) { el.append(FLOATING, { html: true }) } })        // 右下浮動鈕（fixed）
@@ -91,7 +92,7 @@ async function handle(request) {
     rw.on('main', {
       element(el) {
         el.prepend('<span id="gg-top"></span>' + TOPBAR, { html: true })         // 頂部麵包屑
-        el.append(tags + promo + FOOTER, { html: true })                                 // 相關主題標籤 › 導購 › 頁尾
+        el.append(faq + tags + promo + FOOTER, { html: true })                   // 常見問題 › 相關主題標籤 › 導購 › 頁尾
       }
     })
   }
@@ -131,6 +132,7 @@ async function buildArticleHead(slug) {
   const title = esc(a.title || '')
   const desc = esc(a.summary || '')
   const logo = 'https://www.guoguo.tw/guide/assets/og/guoguo-logo.png'
+  const faqs = Array.isArray(a.faq) ? a.faq.filter(x => x && x.q && x.a) : []   // 與 buildFaq() 同一份來源、同一組過濾條件
   const ld = JSON.stringify({
     '@context': 'https://schema.org',
     '@graph': [
@@ -176,7 +178,18 @@ async function buildArticleHead(slug) {
           { '@type': 'ListItem', position: 2, name: a.title || '' },
         ],
       },
-    ],
+      // FAQPage：只有這篇真的有 faq 才加。內容必須與 buildFaq() 印在頁面上的一字不差
+      // （Google 規範：結構化資料不得包含頁面上看不到的內容）。沒 faq → undefined，JSON.stringify 會略過。
+      faqs.length ? {
+        '@type': 'FAQPage',
+        '@id': canonical + '#faq',
+        mainEntity: faqs.map(x => ({
+          '@type': 'Question',
+          name: x.q,
+          acceptedAnswer: { '@type': 'Answer', text: x.a },
+        })),
+      } : undefined,
+    ].filter(Boolean),
   }).replace(/</g, '\\u003c')
   return `<meta name="description" content="${desc}">
 <meta name="robots" content="max-image-preview:large">
@@ -228,6 +241,28 @@ async function buildTags(slug) {
   <div class="gg-tags-list">${chips}</div>
 </nav>`
 }
+/* ── 文章頁尾「常見問題」：讀 articles.json 的 faq（[{q,a}]，由後台『FAQ 管理』維護）。
+   ▸ 答案「全部展開、不用點」——AI 答案引擎是段落級擷取，收進 <details> 或 JS 展開會降低被引用機率。
+   ▸ 每則 q/a 自成一段、語意自足 → 一篇文章＝多個可被單獨引用的片段。
+   ▸ 對應的 FAQPage JSON-LD 由 buildArticleHead() 產出（可見內容與結構化資料必須一致，否則違反 Google 規範）。
+   ▸ 中性版由 build-neutral.sh 注入同樣內容（樣式相同、無導外資訊）。
+   沒設 faq 就回空字串、不硬塞。── */
+async function buildFaq(slug) {
+  const { articles } = await getShopData()
+  if (!articles) return ''
+  const a = articles.find(x => x && x.slug === slug)
+  const list = (a && Array.isArray(a.faq)) ? a.faq.filter(x => x && x.q && x.a) : []
+  if (!list.length) return ''
+  const items = list.map(x => `<div class="gg-faq-item">
+    <h3 class="gg-faq-q">${esc(x.q)}</h3>
+    <div class="gg-faq-a">${esc(x.a)}</div>
+  </div>`).join('')
+  return `<section class="gg-faq" aria-labelledby="gg-faq-h">
+  <h2 class="gg-faq-h" id="gg-faq-h">常見問題</h2>
+  ${items}
+</section>`
+}
+
 async function buildPromo(slug) {
   const { products, map } = await getShopData()
   if (!products || !map) return ''
@@ -340,6 +375,17 @@ nav.gg-tags a.gg-tag{display:inline-flex!important;width:auto!important;align-it
 nav.gg-tags a.gg-tag::before{content:'#';color:var(--teal,#1c8a9a);margin-right:5px;font-weight:800}
 nav.gg-tags a.gg-tag:hover{border-color:var(--navy,#17345f);background:#f2f7fd;transform:translateY(-1px);box-shadow:0 4px 12px rgba(20,39,68,.13)}
 @media(max-width:520px){nav.gg-tags{padding:18px 16px}nav.gg-tags .gg-tags-list{gap:8px}nav.gg-tags a.gg-tag{padding:7px 13px;font-size:.86rem}}
+
+/* ── 常見問題（FAQ；雙版共用，build-neutral.sh 有一份同樣的樣式）── */
+.gg-faq{margin:56px 0 0;padding:26px 30px 22px;background:#fff;border:1px solid #e4ebf4;border-top:3px solid var(--navy,#17345f);border-radius:18px;font-family:var(--sans);box-shadow:0 8px 30px rgba(20,39,68,.05)}
+.gg-faq h2.gg-faq-h{font-size:1.24rem;font-weight:800;color:var(--ink,#16223a);margin:0 0 4px;padding:0;border:0;line-height:1.4}
+.gg-faq h2.gg-faq-h::after{content:'';display:block;width:38px;height:3px;background:var(--green,#2f9e57);border-radius:3px;margin-top:12px}
+.gg-faq .gg-faq-item{padding:20px 0 0;margin:18px 0 0;border-top:1px solid #eef2f8}
+.gg-faq .gg-faq-item:first-of-type{border-top:0;margin-top:14px;padding-top:0}
+.gg-faq h3.gg-faq-q{display:flex;gap:10px;font-size:1.02rem;font-weight:800;color:var(--navy,#17345f);margin:0 0 9px;padding:0;border:0;line-height:1.55}
+.gg-faq h3.gg-faq-q::before{content:'Q';flex:none;font-family:var(--mono);font-size:.76rem;font-weight:800;color:var(--green-deep,#237a43);background:var(--green-bg,#eaf5ee);border:1px solid #cbe6d5;border-radius:7px;width:24px;height:24px;display:grid;place-items:center;margin-top:2px}
+.gg-faq .gg-faq-a{font-size:.97rem;line-height:1.85;color:var(--body,#45506a);padding-left:34px}
+@media(max-width:560px){.gg-faq{padding:20px 17px 18px}.gg-faq .gg-faq-a{padding-left:0}}
 
 /* ── 導購版位（商品卡）── */
 .gg-promo{margin:56px 0 0;padding:26px 28px 24px;background:linear-gradient(180deg,#ffffff,#f4f8fd);border:1px solid #e4ebf4;border-top:3px solid var(--green,#2f9e57);border-radius:18px;font-family:var(--sans);box-shadow:0 8px 30px rgba(20,39,68,.05)}

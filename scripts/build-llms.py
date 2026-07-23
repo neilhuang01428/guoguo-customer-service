@@ -68,6 +68,12 @@ def render(articles):
             t=title, u=url, s=summary,
             m="（{0}）".format(meta) if meta else "",
         ))
+        # 這篇回答了哪些具體問句（後台『FAQ 管理』維護）→ 讓 AI 知道什麼問題該引用這一篇。
+        # 只列問題不列答案：答案在文章頁本身，llms.txt 是目錄不是內容副本。
+        qs = [x.get("q", "").strip() for x in (a.get("faq") or [])
+              if isinstance(x, dict) and x.get("q") and x.get("a")]
+        for q in qs:
+            lines.append("  - 本篇回答：{0}".format(q))
     lines.append("")
     lines.append("## 其他")
     lines.append("")
