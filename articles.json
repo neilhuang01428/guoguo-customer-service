@@ -235,7 +235,8 @@
         "q": "鍵盤突然不能打字怎麼辦？",
         "a": "先別找藍牙設定，原廠鍵盤本來就不在那裡。照 Apple 官方的順序處理：把鍵盤從 iPad 取下，用柔軟不起毛絮的布擦乾淨鍵盤和 iPad 兩邊的聰穎接點，拿掉其他保護殼或護蓋，再重新吸上去。還是沒反應就重新啟動 iPad，並確認系統版本符合該款鍵盤的需求。"
       }
-    ]
+    ],
+    "ogImage": "assets/og/smart-vs-magic-keyboard-cover.png"
   },
   {
     "slug": "magic-keyboard-shortcuts",
