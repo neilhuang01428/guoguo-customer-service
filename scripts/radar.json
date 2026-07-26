@@ -1,0 +1,164 @@
+{
+  "_說明": "選題雷達（radar.py）設定檔。channels 的值為頻道網址（null＝尚未解析，由 sync 自動回填）；topics 是主題→檔名關鍵詞 regex；scope_topic 定義「戰場」——供給象限只算戰場內檔名（v2：全庫數會被 iPhone 等鄰近內容灌水，只當參考）；topic_seeds 是主題→種子詞；demand_rules 是需求「絕對證據分級」規則（v2：不用分位數排名，加種子不會把別的主題擠下去）；first_party 是第一方證據（流量／客服）——有列入的主題直接判「已驗證」，代理指標讓位；official_pages 留空代表改讀 official_pages_source 裡的表格。",
+  "scope_topic": "iPad",
+  "demand_rules": {
+    "problem_regex_tw": "嗎|怎麼|如何|為什麼|不能|不了|沒辦法|沒反應|失敗|問題|災情|正常|卡|壞|修|斷|充不|連不|無法|多久|幾年|值得|該|可以|推薦|哪|查詢|檢查|教學|設定|方法|步驟|登出|移除|解除|清除|恢復|還原|轉移|捷徑|更換",
+    "problem_regex_en": "\\b(not|can.?t|cannot|won.?t|how|why|fix|problem|issue|worth|should|best|vs|check|test|remove|reset|bypass|unlock|without|replace|transfer|sign.?out)\\b",
+    "verified_min_problem": 5,
+    "signal_min_expansions": 10
+  },
+  "first_party": {
+    "Pencil": "主站〈Apple Pencil 故障排除指南〉（guoguo.tw/apple-pencil-fault）流量表現佳——Neil 口證 2026-07-25"
+  },
+  "corpus_dir": "/Users/huangkunyi/claude/research/3c/youtube",
+  "official_pages_source": ".claude/skills/apple-topic-explorer/references/signals-and-sources.md",
+  "channels": {
+    "3ctim": "https://www.youtube.com/channel/UCmoOnxeTHUcUBWFNSUR8HvQ",
+    "ahui3c": "https://www.youtube.com/channel/UCRYqahgE21gr3N-TPXjXhLQ",
+    "aottergirls": "https://www.youtube.com/channel/UCAr4MVsPBKjhg5eLDDpbDFg",
+    "Applealmond": "https://www.youtube.com/channel/UC6oh3DgVxdgzsmD3ZWl06LQ",
+    "applefans520": "https://www.youtube.com/channel/UCCC_m0Lw7Z4IT6IjoPb0ZLg",
+    "goodskang": "https://www.youtube.com/channel/UCuQ7s6G50qzqgDbQB6qKDDw",
+    "isbonny": "https://www.youtube.com/channel/UC2Zn5hlv7_hPsLlh_xwcH6g",
+    "Petersunreview": "https://www.youtube.com/channel/UCl9BPXjyEmA0q6IrQvsEazA",
+    "tech-girlz": "https://www.youtube.com/channel/UCOiu59jL8MFIqq-HkIKCKFg",
+    "大耳朵TV": "https://www.youtube.com/channel/UCD_cg9Tak9SvlPHRsWxUIpA",
+    "陳寗-NingSelect": "https://www.youtube.com/channel/UCwxkPMOdYr6MxKjyUPWCOuQ"
+  },
+  "topics": {
+    "iPhone": "iPhone",
+    "iPad": "iPad|平板",
+    "Mac": "Mac(Book|\\b)|iMac",
+    "Watch": "Apple Watch|手錶",
+    "AirPods": "AirPods|耳機",
+    "Pencil": "Pencil|觸控筆",
+    "鍵盤配件": "鍵盤|保護殼|保護貼|類紙膜",
+    "二手福利": "二手|福利機|整新|中古|收購",
+    "電池續航": "電池|續航|充電|掉電",
+    "故障排除": "當機|沒反應|修|壞|異常|解決|排除|故障",
+    "選購比較": "該買|值得|比較|CP值|怎麼選|哪個好|開箱",
+    "iCloud帳號": "iCloud|Apple ID|帳號|備份",
+    "系統更新": "iOS ?\\d|iPadOS|更新|升級"
+  },
+  "topic_seeds": {
+    "iPad": [
+      "ipad air",
+      "ipad mini",
+      "ipad 容量",
+      "ipad 學生",
+      "ipad 筆記",
+      "ipad for students"
+    ],
+    "Pencil": [
+      "apple pencil",
+      "apple pencil 配對",
+      "apple pencil 沒反應",
+      "apple pencil 充電",
+      "apple pencil 筆尖",
+      "apple pencil not working",
+      "apple pencil not charging"
+    ],
+    "鍵盤配件": [
+      "ipad 保護貼",
+      "ipad 鍵盤",
+      "ipad 鍵盤 推薦",
+      "巧控鍵盤",
+      "類紙膜",
+      "ipad keyboard"
+    ],
+    "二手福利": [
+      "二手ipad",
+      "ipad 福利機",
+      "ipad 二手 哪裡買",
+      "ipad 驗機",
+      "ipad 保固",
+      "used ipad",
+      "refurbished ipad",
+      "buy used ipad",
+      "ipad trade in",
+      "refurbished ipad worth it"
+    ],
+    "電池續航": [
+      "ipad 電池健康度",
+      "ipad 充電",
+      "ipad battery health",
+      "ipad battery replacement"
+    ],
+    "故障排除": [
+      "ipad 當機",
+      "ipad 重置",
+      "ipad 螢幕 維修",
+      "apple pencil 沒反應",
+      "apple pencil not working",
+      "ipad reset"
+    ],
+    "選購比較": [
+      "ipad 二手 哪裡買",
+      "buy used ipad",
+      "refurbished ipad worth it",
+      "ipad 容量"
+    ],
+    "iCloud帳號": [
+      "ipad apple id 登出",
+      "二手ipad apple id",
+      "ipad icloud",
+      "ipad 啟用鎖定",
+      "icloud 備份",
+      "ipad activation lock",
+      "remove apple id from ipad"
+    ]
+  },
+  "seeds_tw": [
+    "二手ipad",
+    "ipad 福利機",
+    "apple pencil",
+    "ipad 電池健康度",
+    "ipad 充電",
+    "ipad 當機",
+    "ipad 重置",
+    "ipad 保護貼",
+    "ipad 鍵盤",
+    "ipad air",
+    "ipad mini",
+    "apple pencil 配對",
+    "apple pencil 沒反應",
+    "ipad 螢幕 維修",
+    "ipad 保固",
+    "ipad 容量",
+    "ipad 學生",
+    "ipad 筆記",
+    "ipad 二手 哪裡買",
+    "ipad 驗機",
+    "ipad apple id 登出",
+    "二手ipad apple id",
+    "ipad icloud",
+    "ipad 啟用鎖定",
+    "icloud 備份",
+    "apple pencil 充電",
+    "apple pencil 筆尖",
+    "ipad 鍵盤 推薦",
+    "巧控鍵盤",
+    "類紙膜"
+  ],
+  "seeds_us": [
+    "used ipad",
+    "refurbished ipad",
+    "ipad battery health",
+    "apple pencil not working",
+    "ipad reset",
+    "buy used ipad",
+    "ipad trade in",
+    "ipad for students",
+    "refurbished ipad worth it",
+    "ipad battery replacement",
+    "ipad activation lock",
+    "remove apple id from ipad",
+    "apple pencil not charging",
+    "ipad keyboard"
+  ],
+  "thresholds": {
+    "supply_quantile": 0.75,
+    "border_band": 0.1
+  },
+  "official_pages": []
+}
