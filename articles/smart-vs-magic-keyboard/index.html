@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>聰穎鍵盤、巧控鍵盤差在哪？一張總表看懂全部型號 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式 ── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 家族定位卡：三族系並排 */
+  .fam { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+  .fam .f { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 12px; padding: 16px 18px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .fam .f .nm { font-size: 1.02rem; font-weight: 800; color: var(--ink); }
+  .fam .f .en { font-family: var(--mono); font-size: .68rem; color: var(--muted); margin-bottom: 8px; }
+  .fam .f .one { font-size: .88rem; color: var(--body); }
+  .fam .f .st { display: inline-block; font-family: var(--mono); font-size: .6rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-top: 10px; }
+  .fam .f .st.on { color: var(--green-deep); background: var(--green-bg); border: 1px solid #c3e4cf; }
+  .fam .f .st.off { color: var(--muted); background: var(--panel2); border: 1px solid var(--line); }
+
+  /* 特性符號欄 */
+  td.y { color: var(--green-deep); font-weight: 700; }
+  td.n { color: var(--muted); }
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 640px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+
+  /* 反查表：機型分組 */
+  .lookup td:first-child { white-space: nowrap; }
+  .lookup .era { background: var(--navy-bg); }
+  .lookup .era td { font-family: var(--mono); font-size: .72rem; color: var(--navy); font-weight: 700; letter-spacing: .04em; }
+
+  /* 價格列 */
+  .price { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin: 18px 0; }
+  .price .p { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 13px 15px; }
+  .price .p b { display: block; font-size: .88rem; color: var(--ink); }
+  .price .p .amt { font-family: var(--mono); font-size: 1.12rem; font-weight: 800; color: var(--navy); margin-top: 4px; }
+  .price .p small { color: var(--muted); font-size: .76rem; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .fam { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>iPad 鍵盤全解析</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#family" class="active">00 · 三個家族</a>
+  <div class="grp">對照表</div>
+  <a href="#table">01 · 每款差在哪</a>
+  <a href="#lookup">02 · 你的 iPad 配哪款</a>
+  <div class="grp">原理</div>
+  <a href="#connector">03 · 為什麼不用充電</a>
+  <div class="grp">避坑</div>
+  <a href="#mistakes">04 · 三個常見買錯</a>
+  <a href="#check">05 · 下單前確認</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>2018–2026 全型號都經手</span><span>買前先確認相容</span><span>終身售後諮詢</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">iPad 配件 / 鍵盤選購</div>
+    <h1>聰穎鍵盤、巧控鍵盤差在哪？<br>一張總表看懂全部型號</h1>
+    <p class="subtitle">功能鍵列、背光、觸控板——哪款有哪款沒有，還有你的 iPad 到底配得上哪一款。</p>
+
+    <p class="lede"><strong>Apple 的 iPad 原廠鍵盤只有兩個家族：聰穎（Smart）與巧控（Magic）。</strong>聰穎系列輕薄、布面、<strong>沒有觸控板也沒有背光</strong>；巧控系列有觸控板，其中 iPad Pro 用的那款還有背光與 USB-C 充電埠。一句話分：<strong>聰穎是「保護殼順便給你鍵盤」，巧控是「把 iPad 變成半台筆電」。</strong>最多人買錯的原因不是分不出貴或便宜，而是以為「都長差不多」——實際上背光、觸控板、功能鍵列每款都不一樣，而且<strong>每一款只支援特定幾代 iPad</strong>。下面兩張表一次對齊：先看每款差在哪，再反查你手上那台能用哪一款。</p>
+
+    <p class="updated">本文查證：<b>2026 年 7 月</b>，規格與相容清單以 Apple 官方最新公告為準。<a class="inline" href="#sources">來源列在文末</a>。</p>
+
+    <section id="family">
+      <div class="sec-label" style="--c:var(--navy)">families</div>
+      <h2>00 · 先分清楚：其實只有四個名字</h2>
+      <p>賣場上看到的名字很多，但 Apple 官方的繁體中文正式名稱只有這四個。先把名字對上，後面的表才看得懂。</p>
+
+      <div class="fam">
+        <div class="f" style="--c:var(--navy)">
+          <div class="nm">巧控鍵盤</div>
+          <div class="en">Magic Keyboard</div>
+          <div class="one">懸臂式浮起設計，有觸控板、背光按鍵、USB-C 充電埠。給 iPad Pro 與 iPad Air。</div>
+          <span class="st on">現正販售</span>
+        </div>
+        <div class="f" style="--c:var(--teal)">
+          <div class="nm">巧控鍵盤雙面夾</div>
+          <div class="en">Magic Keyboard Folio</div>
+          <div class="one">兩件式（背板＋可拆鍵盤），有觸控板與 14 鍵功能鍵列，但<strong>沒有背光</strong>。給一般 iPad。</div>
+          <span class="st on">現正販售</span>
+        </div>
+        <div class="f" style="--c:var(--muted)">
+          <div class="nm">聰穎鍵盤 · 鍵盤式聰穎雙面夾</div>
+          <div class="en">Smart Keyboard · Smart Keyboard Folio</div>
+          <div class="one">布面材質，最輕薄，<strong>沒有觸控板、沒有背光</strong>。純粹就是「能打字的保護殼」。</div>
+          <span class="st off">官網已不販售</span>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">名字容易搞混的地方</div>
+        「<strong>巧控鍵盤雙面夾</strong>」和「<strong>鍵盤式聰穎雙面夾</strong>」只差兩個字，卻是完全不同的東西——前者有觸控板、現正販售；後者沒有觸控板、官網已下架。查資料時看到「雙面夾」三個字，一定要看清楚前面是「巧控」還是「聰穎」。
+      </div>
+
+      <h3>現在官網買得到的，只剩五款</h3>
+      <p>截至 2026 年 7 月，Apple 台灣官網 iPad 鍵盤分類頁上的 Apple 原廠鍵盤如下。聰穎系列<strong>整頁一個字都沒有出現</strong>——想要的話只能找二手或通路庫存。</p>
+      <div class="price">
+        <div class="p"><b>巧控鍵盤 · 11 吋 iPad Pro (M5)</b><div class="amt">NT$9,890</div><small>白／黑</small></div>
+        <div class="p"><b>巧控鍵盤 · 13 吋 iPad Pro (M5)</b><div class="amt">NT$11,690</div><small>白／黑</small></div>
+        <div class="p"><b>巧控鍵盤 · 11 吋 iPad Air (M4)</b><div class="amt">NT$9,490</div><small>—</small></div>
+        <div class="p"><b>巧控鍵盤 · 13 吋 iPad Air (M4)</b><div class="amt">NT$9,890</div><small>—</small></div>
+        <div class="p"><b>巧控鍵盤雙面夾 · iPad (A16)</b><div class="amt">NT$8,790</div><small>—</small></div>
+      </div>
+      <p style="font-size:.86rem;color:var(--muted)">價格為 Apple 台灣官網 2026 年 7 月 26 日標示之定價，會隨時間調整。</p>
+    </section>
+
+    <section id="table">
+      <div class="sec-label" style="--c:var(--green)">specs</div>
+      <h2>01 · 每一款到底差在哪</h2>
+      <p>這張表回答最常被問的三件事：<strong>有沒有功能鍵列、有沒有背光、有沒有觸控板</strong>。答案不是「越貴越多」——巧控鍵盤雙面夾比較便宜，卻是唯二有功能鍵列的款式之一。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr>
+            <th>款式</th><th>功能鍵列</th><th>背光</th><th>觸控板</th><th>USB-C 埠</th><th>材質／結構</th>
+          </tr>
+          <tr>
+            <td>巧控鍵盤<small>iPad Pro (M4／M5) 用</small></td>
+            <td class="y">有<small>14 鍵</small></td>
+            <td class="y">有</td>
+            <td class="y">有<small>玻璃材質、觸覺回饋</small></td>
+            <td class="y">有<small>可直通充電</small></td>
+            <td>鋁金屬手托＋懸臂</td>
+          </tr>
+          <tr>
+            <td>巧控鍵盤<small>iPad Air 用</small></td>
+            <td class="n">未載明</td>
+            <td class="y">有</td>
+            <td class="y">有</td>
+            <td class="y">有<small>可直通充電</small></td>
+            <td>懸臂式浮起</td>
+          </tr>
+          <tr>
+            <td>巧控鍵盤<small>舊版・11 吋／12.9 吋</small></td>
+            <td class="n">沒有</td>
+            <td class="y">有</td>
+            <td class="y">有</td>
+            <td class="y">有<small>可直通充電</small></td>
+            <td>懸臂式浮起</td>
+          </tr>
+          <tr>
+            <td>巧控鍵盤雙面夾<small>一般 iPad 用</small></td>
+            <td class="y">有<small>14 鍵</small></td>
+            <td class="n">沒有</td>
+            <td class="y">有</td>
+            <td class="n">沒有</td>
+            <td>兩件式・鍵盤可拆</td>
+          </tr>
+          <tr>
+            <td>鍵盤式聰穎雙面夾<small>已下架</small></td>
+            <td class="n">沒有</td>
+            <td class="n">沒有</td>
+            <td class="n">沒有</td>
+            <td class="n">沒有</td>
+            <td>布面・正反面包覆</td>
+          </tr>
+          <tr>
+            <td>聰穎鍵盤<small>已下架</small></td>
+            <td class="n">沒有</td>
+            <td class="n">沒有</td>
+            <td class="n">沒有</td>
+            <td class="n">沒有</td>
+            <td>布面・摺成三角形</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--purple)">
+          <div class="ct">最容易被忽略的一格</div>
+          <strong>巧控鍵盤雙面夾沒有背光。</strong>它有 14 鍵功能鍵列、有觸控板、打字手感也是 1 公釐鍵程剪刀式結構，唯獨暗處打字時鍵帽不會亮。常在床上、車上、昏暗會議室打字的人，這一格要看清楚。
+        </div>
+        <div class="callout" style="--c:var(--teal)">
+          <div class="ct">「未載明」是什麼意思</div>
+          Apple Air 版巧控鍵盤的官方特色清單裡沒有列出功能鍵列這一項。<strong>官方沒寫的我們就不寫死</strong>——在意這格的話，下單前直接看該款商品頁的產品照最準。
+        </div>
+      </div>
+
+      <h3>只有 Pro 版有的兩樣東西</h3>
+      <p>如果你在比較 iPad Pro 版與 iPad Air 版的巧控鍵盤，官方描述上的差別集中在兩點：Pro 版是<strong>鋁金屬手托</strong>，而且觸控板是<strong>加大的玻璃材質、具備觸覺回饋</strong>（按下去有回饋感，可以在「設定 → 一般 → 觸控式軌跡板 → 系統觸覺回饋」調整）。Air 版的官方描述沒有這兩項。</p>
+    </section>
+
+    <section id="lookup">
+      <div class="sec-label" style="--c:var(--navy)">compatibility</div>
+      <h2>02 · 反查：你的 iPad 能配哪一款</h2>
+      <p>這是本篇最實用的一段。<strong>鍵盤不是尺寸對就能裝</strong>——同樣是 11 吋，第 4 代 iPad Pro 和 M4 iPad Pro 用的是不同款。下表依你手上 iPad 的世代反查。</p>
+
+      <div class="tbl-wrap">
+        <table class="lookup">
+          <tr><th>你的 iPad</th><th>官方相容的原廠鍵盤</th><th>要注意的事</th></tr>
+
+          <tr class="era"><td colspan="3">iPad Pro</td></tr>
+          <tr>
+            <td>iPad Pro 11 吋<br>第 1／2／3／4 代</td>
+            <td>巧控鍵盤（11 吋舊版）</td>
+            <td>需 iPadOS 14.5 以上。這款沒有功能鍵列。</td>
+          </tr>
+          <tr>
+            <td>iPad Pro 12.9 吋<br>第 3／4 代</td>
+            <td>巧控鍵盤（12.9 吋舊版）</td>
+            <td>需 iPadOS 14.5 以上。</td>
+          </tr>
+          <tr>
+            <td>iPad Pro 12.9 吋<br>第 5 代（2021）</td>
+            <td>第一代巧控鍵盤（A1998）<span style="color:var(--amber)">△</span></td>
+            <td><strong>官方說法是「功能上相容」，不是不能用。</strong>但這代機身稍厚，闔上時可能無法精準密合，貼了螢幕保護貼會更明顯。</td>
+          </tr>
+          <tr>
+            <td>iPad Pro 11／13 吋<br>M4、M5</td>
+            <td>巧控鍵盤（iPad Pro 用・現售）</td>
+            <td>M4 與 M5 兩代共用同一款鍵盤。</td>
+          </tr>
+
+          <tr class="era"><td colspan="3">iPad Air</td></tr>
+          <tr>
+            <td>iPad Air 第 4／5 代<br>（2020／2022）</td>
+            <td>巧控鍵盤（11 吋舊版）<br><strong>也在現售 Air 版的相容清單內</strong></td>
+            <td>舊機主的好消息：Apple 現售的 Air 版巧控鍵盤，官方相容清單有回頭列出第 4、5 代 Air。</td>
+          </tr>
+          <tr>
+            <td>iPad Air 11／13 吋<br>M2、M3、M4</td>
+            <td>巧控鍵盤（iPad Air 用・現售）</td>
+            <td>需 iPadOS 18.3 以上。</td>
+          </tr>
+
+          <tr class="era"><td colspan="3">一般 iPad</td></tr>
+          <tr>
+            <td>iPad 第 10 代<br>iPad (A16)</td>
+            <td>巧控鍵盤雙面夾</td>
+            <td>需 iPadOS 18.3 以上。這是目前一般 iPad 唯一的原廠觸控板鍵盤。</td>
+          </tr>
+          <tr>
+            <td>iPad 第 7／8／9 代<br>iPad mini 全系列</td>
+            <td class="n">無現售原廠觸控板鍵盤</td>
+            <td>第 7～9 代 iPad 當年搭配的是聰穎鍵盤（已下架）；mini 系列從來沒有原廠實體鍵盤。要鍵盤只能走副廠藍牙款。</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">果果實務觀察</div>
+        我們同時經手 2018 到 2026 年的各代 iPad，最常遇到的狀況是：<strong>顧客手上的機器其實配得到鍵盤，只是名字對不上就以為沒得配。</strong>最典型的是 <strong>2020／2022 年的 iPad Air（第 4、5 代）</strong>——它在現售 Air 版巧控鍵盤的官方相容清單裡，也能用當年的 11 吋舊版巧控，等於<strong>新舊兩條路都通</strong>，二手市場的選擇比大家想的多。反過來，<strong>iPad mini 和第 7～9 代 iPad</strong> 就要有心理準備：原廠這條路走不通，得看副廠。
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">聰穎系列的完整相容清單，我們先不寫死</div>
+        聰穎鍵盤與鍵盤式聰穎雙面夾已從官網下架，Apple 也移除了對應的規格頁，<strong>我們沒有取得可引用的官方完整機型清單，所以這一格留白而不用推測填上</strong>。手上有這兩款、想確認能不能裝的話，最可靠的方式是看接點位置：鍵盤式聰穎雙面夾接 iPad <strong>背面</strong>的接點、聰穎鍵盤接 iPad <strong>側邊</strong>的接點——下一段說明怎麼看。
+      </div>
+    </section>
+
+    <section id="connector">
+      <div class="sec-label" style="--c:var(--purple)">how_it_works</div>
+      <h2>03 · 為什麼原廠鍵盤不用充電、也不用配對</h2>
+      <p>這是原廠鍵盤和市面上藍牙鍵盤最根本的差別，也是理解「鍵盤突然不能用」的關鍵。答案是三個小金屬點——<strong>聰穎接點（Smart Connector）</strong>。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">📱</div><div class="bt">iPad 這一側</div><div class="bv">三個磁性接點</div></div>
+          <div class="arr">＋</div>
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">⌨️</div><div class="bt">鍵盤這一側</div><div class="bv">對應的接點</div></div>
+          <div class="arr">＝</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">⚡</div><div class="bt">吸上去就好</div><div class="bv">供電＋傳資料</div></div>
+        </div>
+        <figcaption>Apple 官方說明：聰穎接點<b>能為鍵盤提供電力和資料，因此無需另外充電或配對</b>。</figcaption>
+      </figure>
+
+      <p>所以原廠鍵盤<strong>沒有電池、沒有開關、沒有配對按鈕</strong>。iPad 直接透過那三個金屬點供電給鍵盤，訊號也走同一條路。這帶來一個很實際的結論：</p>
+
+      <div class="callout" style="--c:var(--red)">
+        <div class="ct">原廠鍵盤沒有「配對失敗」這回事</div>
+        它只有<strong>「接觸不良」</strong>。如果鍵盤突然不能打字，不要去設定裡找藍牙——那裡本來就不會有它。該做的是：<strong>把鍵盤取下、用柔軟不起毛絮的布擦乾淨兩邊的接點、拿掉其他保護殼或護蓋、再重新吸上去</strong>；還是不行就重新啟動 iPad。這是 Apple 官方文件列出的處理順序。
+      </div>
+
+      <h3>接點的位置，各代不一樣</h3>
+      <ul class="styled">
+        <li><b>鍵盤式聰穎雙面夾</b>：聰穎接點在 iPad 的<strong>背面</strong>，三個小型磁性接點。</li>
+        <li><b>聰穎鍵盤</b>：接點在 iPad 的<strong>側邊</strong>，鍵盤這側則在上緣。</li>
+        <li><b>巧控鍵盤雙面夾</b>：鍵盤透過磁力接上 iPad <strong>一側</strong>的聰穎接點。</li>
+      </ul>
+      <p>買二手鍵盤或想確認自己那台能不能裝時，<strong>翻到背面看有沒有那三個小點、或是看側邊</strong>，比記型號名稱可靠得多。</p>
+
+      <h3>USB-C 埠只能充電，不能傳資料</h3>
+      <p>巧控鍵盤上那個 USB-C 埠是設計來「直通充電」的——線插鍵盤上，電會走到 iPad，這樣 iPad 本身的埠可以空出來接別的東西。但要知道兩件事：</p>
+      <ul class="flags">
+        <li><b>它不能傳資料。</b>接 USB-C 滑鼠、隨身碟這類輸入裝置在這個埠上是不會動的。</li>
+        <li><b>不要把線的兩端分別插 iPad 和鍵盤。</b>Apple 官方文件明確要求避免這種接法。</li>
+      </ul>
+    </section>
+
+    <section id="mistakes">
+      <div class="sec-label" style="--c:var(--red)">pitfalls</div>
+      <h2>04 · 三個最常買錯的情境</h2>
+      <p>這三種是我們在售後最常遇到的，共同點都是「以為看懂了」。每一種都附一句下單前該問自己的話。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="n">01</div>
+          <div>
+            <h4>尺寸對了，世代不對</h4>
+            <p>「我的是 11 吋 iPad Pro，那買 11 吋的就好了吧？」——不一定。第 1～4 代 iPad Pro 11 吋用的是舊版巧控鍵盤，M4／M5 用的是新款，兩者不通用。<strong>下單前先確認：我的是第幾代／哪顆晶片？</strong></p>
+          </div>
+        </div>
+        <div class="step" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="n">02</div>
+          <div>
+            <h4>以為有背光</h4>
+            <p>巧控鍵盤雙面夾功能齊全、有觸控板也有功能鍵列，很容易讓人默認「該有的都有」。但它<strong>沒有背光</strong>。<strong>下單前先確認：我常在暗處打字嗎？</strong>會的話這款要三思。</p>
+          </div>
+        </div>
+        <div class="step" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="n">03</div>
+          <div>
+            <h4>以為每款巧控都有功能鍵列</h4>
+            <p>功能鍵列（最上面那排調亮度、音量的鍵）不是巧控系列的標配。<strong>iPad Pro (M4／M5) 版和巧控鍵盤雙面夾有 14 鍵功能鍵列，舊版巧控鍵盤沒有。</strong><strong>下單前先確認：我需要一鍵調亮度音量嗎？</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">還有一個容易忽略的：系統版本</div>
+        鍵盤不只挑機型，也挑系統。Apple 官方標示：<strong>iPad Air 版巧控鍵盤需要 iPadOS 18.3 以上、巧控鍵盤雙面夾需要 iPadOS 18.3 以上，其他巧控鍵盤裝置需要 iPadOS 14.5 以上。</strong>如果你的 iPad 停在很舊的版本又不打算更新，這點要先算進去。
+      </div>
+    </section>
+
+    <section id="check">
+      <div class="sec-label" style="--c:var(--green)">checklist</div>
+      <h2>05 · 下單前的四個確認</h2>
+      <p>不管你要買新的還是二手的，照這四題問過一遍，幾乎不會買錯：</p>
+      <ul class="check">
+        <li><b>我的 iPad 是哪一台？</b>不是只有「11 吋」，要到「第幾代」或「哪顆晶片」。設定 → 一般 → 關於本機可以查到機型名稱。</li>
+        <li><b>這款鍵盤的官方相容清單有沒有列到我這台？</b>清單沒列到的，就算尺寸看起來一樣也別賭。</li>
+        <li><b>背光、功能鍵列、觸控板，我真的需要哪幾樣？</b>不需要的別為它加價；需要的別假設它一定有。</li>
+        <li><b>我的 iPadOS 版本夠新嗎？</b>Air 版巧控與巧控鍵盤雙面夾要 18.3 以上。</li>
+      </ul>
+
+      <div class="bigquote">
+        <div class="qm">"</div>
+        <p>買鍵盤最貴的不是價差，是買回來裝不上的那次來回。</p>
+        <small>花三分鐘對一次相容清單，比省三百塊實在。</small>
+      </div>
+
+      <h3 id="sources">資料來源</h3>
+      <p class="sources">
+        本文的規格、相容清單、系統需求與售價，皆取自 Apple 官方頁面，查證日期 2026 年 7 月 26 日：<br>
+        · <a href="https://www.apple.com/tw/shop/ipad/accessories/keyboards">Apple 台灣官網 · iPad 鍵盤</a>（現售款式與定價）<br>
+        · <a href="https://support.apple.com/zh-tw/111910">適用於 iPad（11 英寸）的巧控鍵盤 · 技術規格</a>（舊版 11 吋相容清單、背光、USB-C）<br>
+        · <a href="https://support.apple.com/zh-tw/111936">Magic Keyboard for iPad Pro 12.9-inch (4th generation) · 技術規格</a>（12.9 吋相容清單）<br>
+        · <a href="https://support.apple.com/zh-tw/111845">巧控鍵盤雙面夾，適用於 iPad · 技術規格</a>（14 鍵功能鍵列、相容機型、系統需求）<br>
+        · <a href="https://support.apple.com/zh-tw/108762">設定及使用 iPad 的巧控鍵盤</a>（12.9 吋第 5 代密合度說明、USB-C 埠限制、鍵盤亮度設定）<br>
+        · <a href="https://support.apple.com/zh-tw/111814">設定及使用適用於 iPad（第 10 代）的巧控鍵盤雙面夾</a>（聰穎接點供電與資料）<br>
+        · <a href="https://support.apple.com/zh-tw/108361">連接及使用鍵盤式聰穎雙面夾或聰穎鍵盤搭配 iPad</a>（接點位置、免配對免開機）<br>
+        · <a href="https://support.apple.com/zh-tw/108983">如果無法將 iPad 連接鍵盤</a>（接觸不良處理、系統需求）
+      </p>
+      <p class="updated">Apple 隨時可能調整產品線與相容清單。本文查證：<b>2026 年 7 月</b>，購買前請以官方頁面當下資訊為準。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+</script>
+</body>
+</html>

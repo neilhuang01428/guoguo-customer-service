@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>巧控鍵盤快捷鍵＋觸控板手勢完整對照 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式（共用 style.css 沒有；其餘皆由共用檔提供）── */
+
+  /* masthead：內斂卡片版（同 ipad-magic-keyboard-guide） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+  .masthead .pills span b { color: var(--green-deep); }
+
+  /* 表格：鍵帽列垂直置中 */
+  td { vertical-align: middle; }
+
+  /* 鍵帽 keycap（同站內鍵盤系列文章） */
+  .k { font-family: var(--mono); font-size: .82em; min-width: 24px; text-align: center; background: #fff; border: 1px solid var(--line); border-bottom: 2px solid #ccd5e3; border-radius: 6px; padding: 2px 7px; color: var(--ink); display: inline-block; font-weight: 700; line-height: 1.5; }
+  .k.b { background: var(--navy); color: #fff; border-color: var(--navy-deep); border-bottom-color: #081a34; }
+  .k.g { background: var(--green); color: #fff; border-color: var(--green-deep); border-bottom-color: #1a5c32; }
+  .plus { color: var(--muted); font-size: .8em; margin: 0 2px; }
+  td .k, .krow .k { margin: 1px 0; }
+  .krow { white-space: nowrap; }
+
+  /* 已在上手指南講過的列：淡化＋標記 */
+  .a5 { font-family: var(--mono); font-size: .62rem; color: var(--green-deep); background: var(--green-bg); border: 1px solid #c3e4cf; border-radius: 4px; padding: 1px 6px; white-space: nowrap; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>快捷鍵完整對照</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#layers" class="active">00 · 先懂這兩層</a>
+  <div class="grp">查表</div>
+  <a href="#shortcuts">01 · 系統級快捷鍵表</a>
+  <a href="#trackpad">02 · 觸控板手勢表</a>
+  <div class="grp">沒反應？</div>
+  <a href="#deadzone">03 · App 失效地圖</a>
+  <a href="#selftest">04 · 10 秒自我判斷</a>
+  <div class="grp">改成你的</div>
+  <a href="#custom">05 · 改鍵與客製化</a>
+  <a href="#access">06 · 手不方便也能用</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>買機教你用</span><span>快捷鍵查表工具頁</span><span>終身售後諮詢</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">客戶指南 / iPad 鍵盤 · 已上手者的查表工具頁</div>
+    <h1>巧控鍵盤快捷鍵＋觸控板手勢完整對照</h1>
+    <p class="subtitle">哪些會因 App 而異？怎麼把按鍵改成自己的習慣？這頁當字典用：要查什麼，左邊目錄直接跳。</p>
+    <p class="lede">iPad 鍵盤的操作分<strong>兩層</strong>：<strong>系統級</strong>（iPadOS 保證、走到哪都通，像 <span class="k b">⌘</span><span class="plus">+</span><span class="k">Tab</span>、<span class="k b">⌘</span><span class="plus">+</span><span class="k">Space</span>）和 <strong>App 級</strong>（每個 App 自己決定要不要理你）。所以<strong>快捷鍵按了沒反應，多半不是鍵盤壞了，是那個 App 沒有支援</strong>——Excel、Roblox 這類自帶按鍵邏輯的 App 最常見：iPad 版 Excel 官方支援的快捷鍵只有約 19 組，桌面版有 200 多組。這頁給你三樣：系統級快捷鍵與觸控板手勢的完整對照表、「哪些 App 會失效」地圖、以及把 Caps Lock 換成你要的功能的改鍵教學。</p>
+
+    <section id="layers">
+      <div class="sec-label" style="--c:var(--navy)">two_layers</div>
+      <h2>00 · 先懂這兩層，全篇都通</h2>
+      <p>把 iPad 想成一棟大樓：<strong>系統級快捷鍵</strong>是大樓的公共設施——每一層樓（每個 App）都有電梯和逃生梯，保證能用；<strong>App 級快捷鍵</strong>是各樓層自己的裝潢——有的樓層設備齊全，有的什麼都沒裝。</p>
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">🏢</div><div class="bt">系統級（iPadOS 管）</div><div class="bv">全 App 通用</div></div>
+          <div class="arr">vs</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">🚪</div><div class="bt">App 級（App 自己管）</div><div class="bv">有的支援、有的不理你</div></div>
+        </div>
+        <figcaption>快捷鍵沒反應，先分清楚你按的是<b>哪一層</b>的鍵——系統級沒反應才需要懷疑鍵盤。</figcaption>
+      </figure>
+      <div class="callout" style="--c:var(--teal)"><div class="ct">還沒讀過基礎篇？</div>剛從 Windows 換過來、⌘ 和 Ctrl 還會搞混的話，先讀<a class="inline" href="../ipad-magic-keyboard-guide/">〈iPad 巧控鍵盤上手指南〉</a>——那篇教心法，這篇當字典。基礎篇答過的組合，下面表格用 <span class="a5">基礎篇✓</span> 標記、不重複展開。</div>
+    </section>
+
+    <div class="part-div">查表區</div>
+
+    <section id="shortcuts">
+      <div class="sec-label" style="--c:var(--green)">system_shortcuts</div>
+      <h2>01 · 系統級快捷鍵表（全 App 通用）</h2>
+      <p>這張表只收<strong>系統級</strong>——iPadOS 自己處理、不經過 App 的組合。也就是說，<strong>這張表裡的鍵在任何 App 都該有反應；按了沒反應，才輪到懷疑鍵盤本身</strong>（這是後面「10 秒自我判斷」的根據）。</p>
+
+      <h3>全域 · 導航</h3>
+      <table>
+        <tr><th>作用</th><th>按法</th><th>備註</th></tr>
+        <tr><td>切換 App</td><td class="krow"><span class="k b">⌘</span><span class="plus">+</span><span class="k">Tab</span></td><td><span class="a5">基礎篇✓</span>　任何多工模式都通，最穩的切換法</td></tr>
+        <tr><td>回主畫面</td><td class="krow"><span class="k b">⌘</span><span class="plus">+</span><span class="k">H</span></td><td><span class="a5">基礎篇✓</span></td></tr>
+        <tr><td>Spotlight 萬用搜尋</td><td class="krow"><span class="k b">⌘</span><span class="plus">+</span><span class="k">Space</span></td><td><span class="a5">基礎篇✓</span>　開 App、找檔案、算數學都行</td></tr>
+        <tr><td>叫出目前 App 的快捷鍵小抄</td><td class="krow">長按 <span class="k b">⌘</span></td><td><span class="a5">基礎篇✓</span>　查 App 級快捷鍵就靠它</td></tr>
+        <tr><td>等同 Esc（關對話框、退出）</td><td class="krow"><span class="k b">⌘</span><span class="plus">+</span><span class="k">.</span></td><td><span class="a5">基礎篇✓</span></td></tr>
+        <tr><td>切換輸入法（中 ⇄ 英）</td><td class="krow"><span class="k">🌐</span> 或 <span class="k">⌃</span><span class="plus">+</span><span class="k">Space</span></td><td><span class="a5">基礎篇✓</span>　長按 🌐 可挑特定輸入法</td></tr>
+        <tr><td>叫出表情符號鍵盤</td><td class="krow"><span class="k">🌐</span><span class="plus">+</span><span class="k">E</span></td><td>打字時直接插入 emoji</td></tr>
+      </table>
+
+      <h3>🌐 地球鍵系列（系統功能直達）</h3>
+      <p>地球鍵除了切輸入法，搭配字母就是「系統功能的直達車」。先記兩個最常用的，其餘<strong>長按 <span class="k">🌐</span> 不放</strong>，畫面會列出你這台支援的完整清單——這招比背表可靠，不同 iPadOS 版本的清單會微調。</p>
+      <table>
+        <tr><th>作用</th><th>按法</th><th>備註</th></tr>
+        <tr><td>開控制中心</td><td class="krow"><span class="k">🌐</span><span class="plus">+</span><span class="k">C</span></td><td>調亮度、音量不用伸手戳螢幕</td></tr>
+        <tr><td>開通知中心</td><td class="krow"><span class="k">🌐</span><span class="plus">+</span><span class="k">N</span></td><td>—</td></tr>
+        <tr><td>顯示 Dock</td><td class="krow"><span class="k">🌐</span><span class="plus">+</span><span class="k">A</span></td><td>全螢幕 App 裡叫 Dock 出來</td></tr>
+        <tr><td>更多（Siri、備忘錄速記…）</td><td class="krow">長按 <span class="k">🌐</span></td><td>看你這台實際支援哪些，以畫面清單為準</td></tr>
+      </table>
+
+      <h3>文字編輯</h3>
+      <table>
+        <tr><th>作用</th><th>按法</th><th>備註</th></tr>
+        <tr><td>複製 / 貼上 / 剪下 / 全選 / 存檔 / 找字</td><td class="krow"><span class="k b">⌘</span><span class="plus">+</span><span class="k">C</span> <span class="k">V</span> <span class="k">X</span> <span class="k">A</span> <span class="k">S</span> <span class="k">F</span></td><td><span class="a5">基礎篇✓</span>　和 Windows 一樣、Ctrl 換 ⌘</td></tr>
+        <tr><td>復原 / 重做</td><td class="krow"><span class="k b">⌘</span><span class="plus">+</span><span class="k">Z</span>　/　<span class="k">⇧</span><span class="plus">+</span><span class="k b">⌘</span><span class="plus">+</span><span class="k">Z</span></td><td><span class="a5">基礎篇✓</span></td></tr>
+        <tr><td>粗體 / 斜體 / 底線</td><td class="krow"><span class="k b">⌘</span><span class="plus">+</span><span class="k">B</span> <span class="k">I</span> <span class="k">U</span></td><td>要 App 有文字格式功能才有效果</td></tr>
+        <tr><td>游標跳一個詞 / 跳行首行尾</td><td class="krow"><span class="k">⌥</span> / <span class="k b">⌘</span><span class="plus">+</span><span class="k">←→</span></td><td><span class="a5">基礎篇✓</span>　加 ⇧ 變選取</td></tr>
+        <tr><td>刪掉一整個詞</td><td class="krow"><span class="k">⌥</span><span class="plus">+</span><span class="k">⌫</span></td><td><span class="a5">基礎篇✓</span></td></tr>
+      </table>
+
+      <h3>截圖</h3>
+      <table>
+        <tr><th>作用</th><th>按法</th><th>備註</th></tr>
+        <tr><td>截全螢幕</td><td class="krow"><span class="k b">⌘</span><span class="plus">+</span><span class="k">⇧</span><span class="plus">+</span><span class="k">3</span></td><td>左下角縮圖點一下可直接畫重點</td></tr>
+        <tr><td>截圖並直接進標註畫面</td><td class="krow"><span class="k b">⌘</span><span class="plus">+</span><span class="k">⇧</span><span class="plus">+</span><span class="k">4</span></td><td>要截完馬上圈重點傳人，用這組更快</td></tr>
+      </table>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">為什麼這張表沒有列到 300 組？</div>因為<strong>系統級真的就這些常用的</strong>。網路上動輒「iPad 快捷鍵 100 組大全」，其實把 App 級（Safari 的、備忘錄的、Pages 的）全混進來充數——那些換一個 App 就失效，背了反而困惑。App 級的正確查法是在<strong>那個 App 裡長按 <span class="k b">⌘</span></strong>，跳出來的小抄才是它真正支援的。</div>
+    </section>
+
+    <section id="trackpad">
+      <div class="sec-label" style="--c:var(--navy)">trackpad_gestures</div>
+      <h2>02 · 觸控板手勢表</h2>
+      <p>手勢按「幾根指頭」記最快。<strong>一指、兩指是穩定區</strong>——任何 App、任何多工模式行為都一樣；<strong>三指是浮動區</strong>——部分行為會跟著多工模式變，表格最後一欄有標。</p>
+      <table>
+        <tr><th>手勢</th><th>幾指</th><th>作用</th><th>會因模式而異？</th></tr>
+        <tr><td>滑動</td><td>1 指</td><td>移動游標（小圓點）</td><td class="good">不會</td></tr>
+        <tr><td>按一下</td><td>1 指</td><td>點擊</td><td class="good">不會</td></tr>
+        <tr><td>上下滑</td><td>2 指</td><td>捲動頁面</td><td class="good">不會</td></tr>
+        <tr><td>點一下</td><td>2 指</td><td>右鍵選單（長按選單）</td><td class="good">不會</td></tr>
+        <tr><td>開合</td><td>2 指</td><td>放大縮小</td><td class="good">不會</td></tr>
+        <tr><td>上滑</td><td>3 指</td><td>回主畫面</td><td class="good">不會</td></tr>
+        <tr><td>上滑到一半停住</td><td>3 指</td><td>App 切換器（所有 App 卡片）</td><td class="good">不會</td></tr>
+        <tr><td>左右滑</td><td>3 指</td><td>切換前後開的 App</td><td class="bad">會——見下方說明</td></tr>
+        <tr><td>游標推到螢幕最底</td><td>1 指</td><td>叫出 Dock</td><td class="good">不會</td></tr>
+        <tr><td>游標點右上角狀態圖示</td><td>1 指</td><td>開控制中心</td><td class="good">不會</td></tr>
+      </table>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">三指左右滑，為什麼有時沒反應？</div>iPadOS 26 的多工分三種模式（全螢幕 App／視窗 App／幕前調度），<strong>三指左右滑在不同模式下的行為不一樣</strong>，切了模式常會覺得「手勢壞了」。我們的建議很務實：別背三種模式的差異表，<strong>切 App 一律用 <span class="k b">⌘</span><span class="plus">+</span><span class="k">Tab</span></strong>——它在任何模式都一樣。想改模式：<strong>設定 → 多工與手勢</strong>。</div>
+      <div class="callout" style="--c:var(--green)"><div class="ct">游標「怪怪的」其實是特色</div>iPad 游標靠近按鈕會自動「吸」上去變形，跟 Windows 滑鼠的行為不同——這不是故障，是設計。用兩三天就會回不去。</div>
+    </section>
+
+    <div class="part-div">按了沒反應？</div>
+
+    <section id="deadzone">
+      <div class="sec-label" style="--c:var(--red)">dead_zones</div>
+      <h2>03 · App 失效地圖：哪些 App 會不理你的鍵盤</h2>
+      <p>這段是全網快捷鍵對照表最少講的部分，卻是果果客服最常被問的：「<strong>鍵盤是不是壞了？在某某 App 裡按都沒反應。</strong>」我們處理過的這類詢問，絕大多數<strong>鍵盤本身都是好的</strong>——問題出在 App。失效有三種機制，對號入座：</p>
+      <div class="grid g3">
+        <div class="card" style="--c:var(--amber);--cbg:var(--amber-bg)"><div class="c-tag">機制 1 · 自帶體系</div><h4>App 只實作了一小部分</h4><p>大型跨平台 App（Office 系列最典型）有自己的快捷鍵體系，iPad 版只搬了一小部分過來，其他按了就是沒反應。</p></div>
+        <div class="card" style="--c:var(--red);--cbg:var(--red-bg)"><div class="c-tag">機制 2 · 遊戲直讀</div><h4>遊戲把 iPad 當觸控機</h4><p>不少手遊在 iPad 上只認觸控，實體鍵盤只有打字聊天有用，移動、操作一概不理。</p></div>
+        <div class="card" style="--c:var(--teal);--cbg:var(--teal-bg)"><div class="c-tag">機制 3 · 網頁先吃</div><h4>網頁版工具與瀏覽器搶按鍵</h4><p>在 Safari 裡用網頁版工具時，按鍵先被瀏覽器和網頁「搶」——瀏覽器保留鍵（如 ⌘T 開分頁）永遠輪不到網頁。</p></div>
+      </div>
+
+      <h3>實例對照（我們查證過的）</h3>
+      <table>
+        <tr><th>App / 情境</th><th>會發生什麼</th><th>怎麼辦</th></tr>
+        <tr><td>Excel（iPad 版）</td><td>Microsoft 官方支援文件列出的 iPad 快捷鍵只有<strong>約 19 組</strong>（Windows 版超過 200 組）；F2 編輯儲存格、Alt 功能區代碼這些 Windows 慣用鍵，iPad 版根本不存在</td><td>能用的走 Mac 邏輯（Ctrl 換 ⌘）：⌘B 粗體、⌘C/V 都通；沒列的別花時間試，直接用觸控或功能列</td></tr>
+        <tr><td>Roblox</td><td>Roblox 在 iPadOS 上把裝置<strong>當成手機（觸控模式）</strong>，就算接了鍵盤滑鼠，遊戲內仍顯示觸控介面——鍵盤只有聊天打字有用，WASD 移動不支援（Roblox 開發者論壇多年討論、官方未支援，查證於 2026/07）</td><td>這不是鍵盤故障、也沒有設定可解；想鍵鼠玩 Roblox 得用電腦</td></tr>
+        <tr><td>Safari 裡的網頁版工具（如網頁版試算表）</td><td>部分快捷鍵被 Safari 先攔走：⌘T（新分頁）、⌘W（關分頁）這類<strong>瀏覽器保留鍵</strong>，網頁拿不到；網頁自己實作的快捷鍵則各家支援程度不一</td><td>分不清是誰吃掉按鍵時，改用該工具的 App 版（如果有），行為會穩定得多</td></tr>
+      </table>
+      <div class="callout" style="--c:var(--purple)"><div class="ct">果果售後的觀察</div>賣出搭配鍵盤的 iPad 後，「鍵盤在某 App 沒反應」是我們最常接到的售後詢問之一，而真正硬體故障的比例非常低。所以我們才把這段寫成整篇的主菜：<strong>先查這張地圖，再懷疑鍵盤</strong>——能幫你省下一趟白跑的送修。</div>
+    </section>
+
+    <section id="selftest">
+      <div class="sec-label" style="--c:var(--green)">self_test</div>
+      <h2>04 · 10 秒自我判斷：鍵盤壞了，還是 App 不支援？</h2>
+      <p>不用送檢測，你自己 10 秒就能分辨。原理就是第 00 段的兩層觀念：<strong>備忘錄是 Apple 自家 App，系統級和常用文字快捷鍵一定支援</strong>——拿它當「標準考場」。</p>
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">01</div><div><h4>記下沒反應的那組鍵</h4><p>例如你在 Excel 按 ⌘B 沒反應。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">02</div><div><h4>切到「備忘錄」按同一組</h4><p>⌘ + Tab 切過去，隨便打一行字，按同一組鍵。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">03</div><div><h4>看結果、下判斷</h4><p><strong>備忘錄有反應</strong>＝鍵盤是好的，是原本那個 App 不支援（回第 03 段對號入座）。<strong>備忘錄也沒反應</strong>＝才是鍵盤或接觸問題，值得往硬體方向查。</p></div></div>
+      </div>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">整顆鍵盤都沒反應是另一回事</div>如果不是「某組快捷鍵沒反應」，而是<strong>整顆鍵盤打字都沒反應</strong>，那是接觸點或連線問題，不在本篇範圍——處理方式完全不同，別急著套用這頁的判斷。</div>
+    </section>
+
+    <div class="part-div">把鍵盤改成你的</div>
+
+    <section id="custom">
+      <div class="sec-label" style="--c:var(--purple)">customize</div>
+      <h2>05 · 改鍵與客製化：Caps Lock 別浪費</h2>
+      <p>很多人不知道 iPad 可以<strong>把修飾鍵重新對應</strong>。最值得改的一顆是 Caps Lock——大部分人一年按不到十次大寫鎖定，卻佔著鍵盤黃金位置。</p>
+      <h3>修飾鍵重新對應（免費、內建、隨時可改回來）</h3>
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">01</div><div><h4>打開設定路徑</h4><p>設定 → 一般 → 鍵盤 → 實體鍵盤 → <strong>修飾鍵</strong>（要接著鍵盤才會出現「實體鍵盤」選項）。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">02</div><div><h4>選要改的鍵</h4><p>Caps Lock、⌃、⌥、⌘、🌐 都能互換，也可以設成「沒有動作」直接封印。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">03</div><div><h4>推薦兩種改法</h4><p><strong>Caps Lock 改 🌐</strong>：切中英文不用往角落摸，左手小指一壓就切——打中英夾雜文件的人改完回不去。<strong>Caps Lock 改 ⌘</strong>：⌘C/V 單手就按得到，手小的人特別有感。</p></div></div>
+      </div>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">注意：只對「這一顆鍵盤」生效</div>修飾鍵設定是<strong>跟著各個鍵盤記的</strong>——巧控鍵盤改了，之後接別顆藍牙鍵盤要再設一次。另外部分快捷鍵組合是系統保留的，改鍵不會影響它們的作用。</div>
+
+      <h3>游標與觸控板調校</h3>
+      <table>
+        <tr><th>想調什麼</th><th>去哪裡調</th><th>建議</th></tr>
+        <tr><td>游標移動速度、自然捲動、輕點來點按</td><td>設定 → 一般 → 觸控式軌跡板</td><td>從 Windows 過來覺得捲動方向「相反」的，關掉「自然捲動」就恢復你熟悉的方向</td></tr>
+        <tr><td>游標（小圓點）大小、顏色、對比</td><td>設定 → 輔助使用 → 指標控制</td><td>覺得圓點太小常跟丟的，把大小調大一格、加個外框色，立刻好找</td></tr>
+        <tr><td>游標捲動速度</td><td>設定 → 輔助使用 → 指標控制</td><td>跟觸控板的「軌跡速度」是兩件事，捲太快在這裡調</td></tr>
+      </table>
+    </section>
+
+    <section id="access">
+      <div class="sec-label" style="--c:var(--teal)">accessibility</div>
+      <h2>06 · 手不方便也能用：黏性按鍵與慢速按鍵</h2>
+      <p>這段特別寫給「一次按住兩三顆鍵有困難」的使用者——我們的客人裡有不少長輩和手部不便的朋友，客服實際引導過這些設定，很少有文章提，但真的有人需要：</p>
+      <table>
+        <tr><th>功能</th><th>做什麼用</th><th>在哪裡開</th></tr>
+        <tr><td>黏性按鍵</td><td>不用同時按：先按 ⌘ 放開、再按 C，一樣等於 ⌘+C——單手、單指都能打快捷鍵</td><td>設定 → 輔助使用 → 鍵盤（外接鍵盤區）</td></tr>
+        <tr><td>慢速按鍵</td><td>要按住一小段時間才算數，避免手抖誤觸連發</td><td>同上</td></tr>
+        <tr><td>按鍵重複調整</td><td>按住不放時重複輸入的速度，可調慢或關掉</td><td>同上</td></tr>
+      </table>
+      <div class="callout" style="--c:var(--green)"><div class="ct">幫家裡長輩設定的話</div>建議只開「黏性按鍵」就好，並打開它的「按兩下 Shift 來啟用」開關——需要時再啟用，平常不干擾。設定選單的實際名稱各 iPadOS 版本可能微調，認「輔助使用 → 鍵盤」這個路徑就對了。</div>
+
+      <p class="updated">本文查證：<b>2026 年 7 月</b>（Excel 快捷鍵數量出自 Microsoft 官方支援文件、Roblox 行為出自 Roblox 開發者論壇；iPadOS 介面與設定路徑以你機上的最新版本為準，本頁每年 iPadOS 大版本更新後複驗）。</p>
+      <p class="sources">主要來源：Apple 支援「在 iPad 上使用 Apple 外接鍵盤的快速鍵」「iPad 的觸控式軌跡板手勢」、Microsoft 支援「Excel 中的鍵盤快速鍵」（iOS 章節）、Roblox Developer Forum（iPadOS 鍵盤滑鼠行為討論串）。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+</script>
+</body>
+</html>
