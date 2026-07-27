@@ -232,7 +232,7 @@ footer p { font-size: .9rem; color: var(--body); margin: 0; }
       "description": "果果國際客戶專屬的 iPad 使用教學指南集合。",
       "inLanguage": "zh-TW",
       "itemListOrder": "https://schema.org/ItemListOrderAscending",
-      "numberOfItems": 6,
+      "numberOfItems": 7,
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -269,6 +269,12 @@ footer p { font-size: .9rem; color: var(--body); margin: 0; }
           "position": 6,
           "name": "巧控鍵盤快捷鍵＋手勢對照表",
           "url": "https://www.guoguo.tw/guide/articles/magic-keyboard-shortcuts/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "name": "尋找 App 能追蹤哪些東西？",
+          "url": "https://www.guoguo.tw/guide/articles/find-my-device-tiers/"
         }
       ]
     }
@@ -310,7 +316,7 @@ footer p { font-size: .9rem; color: var(--body); margin: 0; }
       <section class="guides" id="guides">
         <h2 class="glabel">全部教學</h2>
         <div class="filters" id="filterChips">
-          <button type="button" class="chip on" data-tag="__all__">全部<span class="cnt">(6)</span></button>
+          <button type="button" class="chip on" data-tag="__all__">全部<span class="cnt">(7)</span></button>
         </div>
         <button type="button" class="chip-toggle" id="filterToggle" aria-expanded="false" hidden>展開全部<span class="ct-caret" aria-hidden="true">▾</span></button>
         <div class="grid2" id="articleGrid">
@@ -354,6 +360,13 @@ footer p { font-size: .9rem; color: var(--body); margin: 0; }
         <div class="tag">技巧</div>
         <h3>巧控鍵盤快捷鍵＋手勢對照表</h3>
         <p>按了沒反應，多半不是鍵盤壞了，是那個 App 不支援。系統級快捷鍵表、觸控板手勢表、App 失效地圖，外加 10 秒自我判斷法。</p>
+        <div class="go">閱讀指南</div>
+      </a>
+      <a class="g" style="--c:var(--red);--cbg:var(--red-bg)" href="articles/find-my-device-tiers/" data-tags="觀念;尋找定位;AirTag" data-search="尋找 app 能追蹤哪些東西？ airtag、apple pencil pro、airpods 都在同一個 app 裡，掉了找得回來的機率卻差很多。喇叭、uwb、作業系統這三個硬體切出五個等級，一張表看懂你手上那台屬哪一級。 觀念 觀念 尋找定位 airtag">
+        <div class="ic">🔍</div>
+        <div class="tag">觀念</div>
+        <h3>尋找 App 能追蹤哪些東西？</h3>
+        <p>AirTag、Apple Pencil Pro、AirPods 都在同一個 App 裡，掉了找得回來的機率卻差很多。喇叭、UWB、作業系統這三個硬體切出五個等級，一張表看懂你手上那台屬哪一級。</p>
         <div class="go">閱讀指南</div>
       </a>
         </div>
@@ -535,7 +548,7 @@ footer p { font-size: .9rem; color: var(--body); margin: 0; }
     if (!input || !panel) return;
 
     // slug → { cat（分類）, tags（標籤陣列）, hue（色票名）}；由 build-homepage.py 從 articles.json 注入。
-    var META = {"ipad-magic-keyboard-guide": {"cat": "上手", "tags": ["上手", "Windows 用戶", "鍵盤配件"], "hue": "navy"}, "ipad-appstore-china-guide": {"cat": "技巧", "tags": ["技巧", "App 下載", "剪映抖音"], "hue": "green"}, "ipad-jianying-pencil-guide": {"cat": "選購", "tags": ["選購", "配件推薦", "Apple Pencil"], "hue": "teal"}, "ipad-jailbreak-guide": {"cat": "觀念", "tags": ["觀念", "防詐騙", "越獄"], "hue": "red"}, "smart-vs-magic-keyboard": {"cat": "選購", "tags": ["選購", "鍵盤配件", "相容對照"], "hue": "teal"}, "magic-keyboard-shortcuts": {"cat": "技巧", "tags": ["技巧", "鍵盤配件", "快捷鍵"], "hue": "green"}};
+    var META = {"ipad-magic-keyboard-guide": {"cat": "上手", "tags": ["上手", "Windows 用戶", "鍵盤配件"], "hue": "navy"}, "ipad-appstore-china-guide": {"cat": "技巧", "tags": ["技巧", "App 下載", "剪映抖音"], "hue": "green"}, "ipad-jianying-pencil-guide": {"cat": "選購", "tags": ["選購", "配件推薦", "Apple Pencil"], "hue": "teal"}, "ipad-jailbreak-guide": {"cat": "觀念", "tags": ["觀念", "防詐騙", "越獄"], "hue": "red"}, "smart-vs-magic-keyboard": {"cat": "選購", "tags": ["選購", "鍵盤配件", "相容對照"], "hue": "teal"}, "magic-keyboard-shortcuts": {"cat": "技巧", "tags": ["技巧", "鍵盤配件", "快捷鍵"], "hue": "green"}, "find-my-device-tiers": {"cat": "觀念", "tags": ["觀念", "尋找定位", "AirTag"], "hue": "red"}};
 
     // ── 雙版基底（runtime 判斷；同一段 JS 兩版共用）──
     // 索引是對 dist 根（/）建的。關鍵：Pagefind 會「依 bundle 載入位置自動推導 baseUrl」，
