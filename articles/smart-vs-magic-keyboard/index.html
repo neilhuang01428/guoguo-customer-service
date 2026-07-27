@@ -303,12 +303,16 @@
       </div>
 
       <h3>接點的位置，各代不一樣</h3>
-      <ul class="styled">
-        <li><b>鍵盤式聰穎雙面夾</b>：聰穎接點在 iPad 的<strong>背面</strong>，三個小型磁性接點。</li>
-        <li><b>聰穎鍵盤</b>：接點在 iPad 的<strong>側邊</strong>，鍵盤這側則在上緣。</li>
-        <li><b>巧控鍵盤雙面夾</b>：鍵盤透過磁力接上 iPad <strong>一側</strong>的聰穎接點。</li>
-      </ul>
-      <p>買二手鍵盤或想確認自己那台能不能裝時，<strong>翻到背面看有沒有那三個小點、或是看側邊</strong>，比記型號名稱可靠得多。</p>
+      <table>
+        <tr><th>款式</th><th>iPad 這側的接點在哪</th><th>怎麼確認</th></tr>
+        <tr><td>鍵盤式聰穎雙面夾</td><td><b>背面</b>，三個小型磁性接點</td><td>翻到背面找三個小圓點</td></tr>
+        <tr><td>聰穎鍵盤</td><td><b>側邊</b>（鍵盤這側在上緣）</td><td>看機身側面的接點列</td></tr>
+        <tr><td>巧控鍵盤雙面夾</td><td><b>一側</b>，靠磁力吸附</td><td>看側邊，吸上去會自動對位</td></tr>
+      </table>
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">買二手鍵盤時的實用小技巧</div>
+        想確認自己那台能不能裝，<strong>翻到背面看有沒有那三個小點、或是看側邊</strong>——比記型號名稱可靠得多。型號會記錯，接點位置不會騙人。
+      </div>
 
       <h3>USB-C 埠只能充電，不能傳資料</h3>
       <p>巧控鍵盤上那個 USB-C 埠是設計來「直通充電」的——線插鍵盤上，電會走到 iPad，這樣 iPad 本身的埠可以空出來接別的東西。但要知道兩件事：</p>
@@ -370,6 +374,23 @@
         <small>花三分鐘對一次相容清單，比省三百塊實在。</small>
       </div>
 
+      <h3>延伸觀看（YouTube 參考）</h3>
+      <p style="font-size:.9rem;color:var(--muted)">這篇是規格與相容性的對照；下面兩支繁中影片補的是「實際拿在手上的感覺」——重量、手感、值不值得那筆錢。影片為第三方製作，規格細節仍以 Apple 官方為準。</p>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=sGUipn0kWKo" target="_blank" rel="noopener" data-yt="sGUipn0kWKo" aria-label="播放：蘋果天價巧控鍵盤是信仰稅？">
+          <img loading="lazy" src="https://i.ytimg.com/vi/sGUipn0kWKo/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/sGUipn0kWKo/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>蘋果天價「巧控鍵盤」是信仰稅？新 M4 iPad Pro 有他真的大加分！</b><small>頻道：陳寗 NingSelect · 直接談「這個價格值不值得」，對應本文沒有回答的那半題 · 繁中</small></div>
+      </div>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=EVaoADQv2Dc" target="_blank" rel="noopener" data-yt="EVaoADQv2Dc" aria-label="播放：蘋果巧控鍵盤開箱，重量鍵盤觸控板優缺點">
+          <img loading="lazy" src="https://i.ytimg.com/vi/EVaoADQv2Dc/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/EVaoADQv2Dc/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>蘋果巧控鍵盤開箱！有 iPad Pro 的人值得買嗎？重量、鍵盤、觸控板優缺點</b><small>頻道：電獺少女 · 有實際重量與觸控板手感示範，規格表看不出來的部分 · 繁中</small></div>
+      </div>
+
       <h3 id="sources">資料來源</h3>
       <p class="sources">
         本文的規格、相容清單、系統需求與售價，皆取自 Apple 官方頁面，查證日期 2026 年 7 月 26 日：<br>
@@ -397,6 +418,19 @@ onscroll=()=>{
   let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
   links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
 };
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
 </script>
 </body>
 </html>

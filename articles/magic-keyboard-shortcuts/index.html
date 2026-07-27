@@ -228,6 +228,23 @@
       </table>
       <div class="callout" style="--c:var(--green)"><div class="ct">幫家裡長輩設定的話</div>建議只開「黏性按鍵」就好，並打開它的「按兩下 Shift 來啟用」開關——需要時再啟用，平常不干擾。設定選單的實際名稱各 iPadOS 版本可能微調，認「輔助使用 → 鍵盤」這個路徑就對了。</div>
 
+      <h3>延伸觀看（YouTube 參考）</h3>
+      <p style="font-size:.9rem;color:var(--muted)">對照表適合查，影片適合「看一次就記住手感」。下面兩支繁中影片，一支專講鍵盤快捷鍵、一支含三指四指手勢的實際操作畫面。影片為第三方製作，設定路徑仍以你機上的 iPadOS 版本為準。</p>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=GMHqUcmRqnk" target="_blank" rel="noopener" data-yt="GMHqUcmRqnk" aria-label="播放：iPad 鍵盤密技，實用快捷鍵一次看懂">
+          <img loading="lazy" src="https://i.ytimg.com/vi/GMHqUcmRqnk/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/GMHqUcmRqnk/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>iPad 鍵盤密技，實用快捷鍵一次看懂！巧控鍵盤 / 聰穎鍵盤都通用</b><small>頻道：APPLEFANS 蘋果迷 · 正好對應本文的快捷鍵段落，有實際操作畫面 · 繁中</small></div>
+      </div>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=8oxDJTa3h_8" target="_blank" rel="noopener" data-yt="8oxDJTa3h_8" aria-label="播放：iPad 必學 16 個功能與小技巧，含三指四指手勢">
+          <img loading="lazy" src="https://i.ytimg.com/vi/8oxDJTa3h_8/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/8oxDJTa3h_8/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>iPad 用戶必學 16 個好用功能與小技巧</b><small>頻道：塔科女子 · 含三指、四指手勢與鍵盤變觸控板的示範，補本文手勢段落的動態畫面 · 繁中</small></div>
+      </div>
+
       <p class="updated">本文查證：<b>2026 年 7 月</b>（Excel 快捷鍵數量出自 Microsoft 官方支援文件、Roblox 行為出自 Roblox 開發者論壇；iPadOS 介面與設定路徑以你機上的最新版本為準，本頁每年 iPadOS 大版本更新後複驗）。</p>
       <p class="sources">主要來源：Apple 支援「在 iPad 上使用 Apple 外接鍵盤的快速鍵」「iPad 的觸控式軌跡板手勢」、Microsoft 支援「Excel 中的鍵盤快速鍵」（iOS 章節）、Roblox Developer Forum（iPadOS 鍵盤滑鼠行為討論串）。</p>
     </section>
@@ -244,6 +261,19 @@ onscroll=()=>{
   let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
   links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
 };
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
 </script>
 </body>
 </html>
