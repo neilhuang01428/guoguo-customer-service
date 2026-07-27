@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Apple Pencil Pro 怎麼看有沒有被綁定？解除只有一條路 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式 ── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 兩個唯一解：answer 卡 */
+  .onlys { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 22px 0; }
+  .only { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 12px; padding: 16px 18px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .only .ic { font-size: 1.6rem; line-height: 1; }
+  .only .q { font-family: var(--mono); font-size: .66rem; color: var(--c); margin-top: 8px; }
+  .only .nm { font-size: 1.02rem; font-weight: 800; color: var(--ink); margin-top: 3px; }
+  .only .one { font-size: .88rem; color: var(--body); margin-top: 8px; }
+
+  /* 對照表：符號欄 */
+  td.y { color: var(--green-deep); font-weight: 700; text-align: center; }
+  td.n { color: var(--muted); text-align: center; }
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 640px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+
+  /* 誰握著鑰匙：三格圖 */
+  .keys { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .keybox { border: 1px solid var(--line); border-radius: 10px; padding: 14px 12px; text-align: center; background: var(--cbg, #fff); }
+  .keybox .ki { font-size: 1.7rem; }
+  .keybox .kt { font-family: var(--mono); font-size: .6rem; color: var(--muted); margin-top: 8px; }
+  .keybox .kv { font-size: .9rem; color: var(--ink); font-weight: 700; margin-top: 3px; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .onlys, .keys { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>Pencil Pro 綁定</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#answer" class="active">00 · 先講結論</a>
+  <div class="grp">先搞懂</div>
+  <a href="#why">01 · 為什麼只有 Pro</a>
+  <div class="grp">實際操作</div>
+  <a href="#check">02 · 怎麼判斷</a>
+  <a href="#unbind">03 · 怎麼解除</a>
+  <div class="grp">避坑</div>
+  <a href="#useless">04 · 那些沒用的方法</a>
+  <a href="#list">05 · 買賣前檢查</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>Pencil 一代到 Pro 都經手</span><span>每天在做這道驗機</span><span>缺點照實揭露</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">Apple 配件 / 帳號與二手</div>
+    <h1>Apple Pencil Pro 怎麼看<br>有沒有被綁定？</h1>
+    <p class="subtitle">判斷只有一個準確方法，解除也只有一條路——而那把鑰匙不在買家手上。</p>
+
+    <p class="lede"><strong>判斷</strong>：唯一準確的方法是打開「尋找」App，試著把它加進<strong>你自己的</strong>帳號。加得進去就是乾淨的；跳出「已與其他 Apple 帳號配對」就是被綁定了。試寫正常、能充電、壓感有反應，全都<strong>證明不了</strong>這件事。</p>
+
+    <p class="lede"><strong>解除</strong>：只有原持有者能解——請他打開自己的「尋找」App，點「裝置」找到那支筆，移除即可。Apple 官方支援文件寫得很直白：「<strong>Apple 無法為你移除</strong>『尋找』鎖定。」買家自己拆電池、重置 iPad、找客服，都沒有用。</p>
+
+    <p class="lede">好消息是：前主人<strong>不必把筆拿回去</strong>，人在外地、筆在你手上，一樣可以遠端解除。所以這件事多數時候只是「聯絡得到人就能解決」，而不是無解。</p>
+
+    <p class="updated">本文查證：<b>2026 年 7 月 28 日</b>，操作路徑與規格以 Apple 官方最新公告為準。<a class="inline" href="#sources">來源列在文末</a>。</p>
+
+    <section id="answer">
+      <div class="sec-label" style="--c:var(--navy)">two_answers</div>
+      <h2>00 · 兩個問題，各只有一個答案</h2>
+      <p>網路上查得到十幾種說法，但真正有效的只有兩條路。先把這兩張卡看完，後面都是在解釋「為什麼其他方法沒用」。</p>
+
+      <div class="onlys">
+        <div class="only" style="--c:var(--teal)">
+          <div class="ic">🔍</div>
+          <div class="q">怎麼判斷</div>
+          <div class="nm">試著加進你自己的「尋找」</div>
+          <div class="one">尋找 App → 底部「裝置」→ 右上 ＋ → 加入 Apple Pencil。加得進＝乾淨，跳出已配對其他帳號＝被綁定。</div>
+        </div>
+        <div class="only" style="--c:var(--green)">
+          <div class="ic">🔑</div>
+          <div class="q">怎麼解除</div>
+          <div class="nm">請原持有者從他的帳號移除</div>
+          <div class="one">他打開「尋找」→「裝置」→ 點那支筆 → 控點向上滑 → 移除此裝置。不必拿回筆，遠端就能做。</div>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">先確認你是哪一種人</div>
+        <strong>已經買到、想確認狀態</strong>看第 02 節；<strong>準備出售或送人</strong>直接跳第 03 節（30 秒就做完）；<strong>還在考慮要不要買</strong>看第 05 節的付款前檢查。
+      </div>
+    </section>
+
+    <section id="why">
+      <div class="sec-label" style="--c:var(--purple)">why_only_pro</div>
+      <h2>01 · 為什麼只有 Pencil Pro 會這樣</h2>
+      <p>很多人以為 Apple Pencil 都會被綁定，其實不是。這件事只發生在 Pencil Pro 身上，原因很單純——<strong>只有它能被加進「尋找」</strong>。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">📍</div><div class="bt">能被找到</div><div class="bv">加進「尋找」</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">🪪</div><div class="bt">就得認人</div><div class="bv">綁一個帳號</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">🔒</div><div class="bt">於是產生</div><div class="bv">尋找鎖定</div></div>
+        </div>
+        <figcaption>「能被找到」和「會被綁定」是<b>同一個功能的兩面</b>——沒有防盜綁定，尋找功能就變成幫小偷定位。</figcaption>
+      </figure>
+
+      <p>把三款 Apple Pencil 的官方技術規格攤開來比，差別一眼就看得到。注意「其他特色」那一欄是 Apple 官方的原始用字，不是我們的整理：</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>型號</th><th>推出</th><th>官方「其他特色」欄</th><th>能加進尋找</th><th>會有綁定問題</th></tr>
+          <tr>
+            <td>Apple Pencil Pro<small>A2538</small></td>
+            <td>2024</td>
+            <td>磁力吸附、配對與充電<small>概覽另寫明「透過『尋找』app 就可輕鬆定位找到」</small></td>
+            <td class="y">✓</td>
+            <td class="y">會</td>
+          </tr>
+          <tr>
+            <td>Apple Pencil（第 2 代）<small>A2051</small></td>
+            <td>2018</td>
+            <td>磁力吸附與配對功能<small>全篇規格未提及「尋找」</small></td>
+            <td class="n">✗</td>
+            <td class="n">不會</td>
+          </tr>
+          <tr>
+            <td>Apple Pencil（USB-C）<small>A3085</small></td>
+            <td>2023</td>
+            <td>磁力吸附<small>全篇規格未提及「尋找」</small></td>
+            <td class="n">✗</td>
+            <td class="n">不會</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">果果的觀察：這也是二手行情的分水嶺</div>
+        我們同時經手這三款。二代與 USB-C 版收購時只要功能正常就沒有後續問題，<strong>只有 Pencil Pro 需要多做一道「帳號有沒有解乾淨」的檢查</strong>——而這道檢查，光試寫是做不出來的。
+      </div>
+
+      <details>
+        <summary>那 Pencil Pro 的「尋找」實際上能做到什麼？</summary>
+        <p>官方技術規格的連線欄只寫「藍牙」——它<b>沒有喇叭、也沒有 UWB 超寬頻晶片</b>。所以你叫不出聲音、也拿不到方向箭頭，能看到的是最後位置與「遠 / 近」的距離提示。換句話說，它的尋找能力屬於最陽春的一種，被綁定時你失去的功能其實有限——但這不代表可以忽略，因為那是<b>永久</b>加不進你自己帳號的狀態。</p>
+      </details>
+    </section>
+
+    <section id="check">
+      <div class="sec-label" style="--c:var(--teal)">how_to_check</div>
+      <h2>02 · 怎麼判斷：唯一準確的方法</h2>
+      <p>筆身上沒有螢幕、沒有指示燈，你不可能從外觀看出它綁在誰名下。唯一的辦法是<strong>實際去加一次</strong>。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--teal)"><div class="n">1</div><div><h4>先把筆吸上 iPad 充電幾分鐘</h4><p>沒電的筆不會被偵測到，容易誤判成「有問題」。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">2</div><div><h4>打開「尋找」App，點底部的「裝置」</h4><p>Apple Pencil Pro 歸在「裝置」，不是「物品」——這一點很多人找錯地方。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">3</div><div><h4>點右上角的 ＋，選「加入 Apple Pencil」</h4><p>這一步就是驗機動作本身。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">4</div><div><h4>看它讓不讓你加</h4><p>順利加進去＝乾淨的；跳出「已與其他 Apple 帳號配對」＝還綁在別人名下。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--red)">
+        <div class="ct">最貴的誤會：「能寫字就沒問題」</div>
+        書寫、壓感、雙指按壓、磁吸充電走的是<strong>藍牙配對</strong>，跟 Apple 帳號是兩條完全獨立的線。一支被綁定的 Pencil Pro，這些功能可以<strong>全部正常</strong>——所以驗貨時試寫得再仔細，也驗不出這件事。
+      </div>
+
+      <h3>三種會讓你誤判的情況</h3>
+      <p>不是每次「加不進去」都代表被綁定。先排除這三種，再下結論：</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你看到的</th><th>可能不是綁定，而是</th><th>怎麼分辨</th></tr>
+          <tr><td>筆完全沒反應</td><td>沒電</td><td>吸上 iPad 側邊充電 15 分鐘再試</td></tr>
+          <tr><td>iPad 根本沒跳出配對</td><td>機型不相容</td><td>Pencil Pro 只支援 11 款 iPad，清單見下方摺疊</td></tr>
+          <tr><td>配對成功，但尋找清單裡找不到它</td><td>已知的顯示問題<small>第三方媒體回報，非官方確認</small></td><td>重開 iPad 再看一次；仍沒有才往綁定方向想</td></tr>
+        </table>
+      </div>
+
+      <details>
+        <summary>Apple Pencil Pro 相容的 11 款 iPad（官方清單）</summary>
+        <div class="tags">
+          <span class="tag" style="--c:var(--navy);--cbg:var(--navy-bg)">13 吋 iPad Pro (M5)</span>
+          <span class="tag" style="--c:var(--navy);--cbg:var(--navy-bg)">11 吋 iPad Pro (M5)</span>
+          <span class="tag" style="--c:var(--navy);--cbg:var(--navy-bg)">13 吋 iPad Pro (M4)</span>
+          <span class="tag" style="--c:var(--navy);--cbg:var(--navy-bg)">11 吋 iPad Pro (M4)</span>
+          <span class="tag" style="--c:var(--teal);--cbg:var(--teal-bg)">13 吋 iPad Air (M4)</span>
+          <span class="tag" style="--c:var(--teal);--cbg:var(--teal-bg)">11 吋 iPad Air (M4)</span>
+          <span class="tag" style="--c:var(--teal);--cbg:var(--teal-bg)">13 吋 iPad Air (M3)</span>
+          <span class="tag" style="--c:var(--teal);--cbg:var(--teal-bg)">11 吋 iPad Air (M3)</span>
+          <span class="tag" style="--c:var(--teal);--cbg:var(--teal-bg)">13 吋 iPad Air (M2)</span>
+          <span class="tag" style="--c:var(--teal);--cbg:var(--teal-bg)">11 吋 iPad Air (M2)</span>
+          <span class="tag" style="--c:var(--green);--cbg:var(--green-bg)">iPad mini (A17 Pro)</span>
+        </div>
+        <p>系統需求為 iPadOS 17.5 或以上。不在清單內的 iPad 連配對都不會成功，那與帳號綁定無關。</p>
+      </details>
+    </section>
+
+    <section id="unbind">
+      <div class="sec-label" style="--c:var(--green)">how_to_unbind</div>
+      <h2>03 · 怎麼解除：鑰匙在誰手上</h2>
+      <p>這一節是整篇最關鍵的地方。先看清楚三個角色各自能做什麼——你會發現能解鎖的人只有一個。</p>
+
+      <figure class="fig">
+        <div class="keys">
+          <div class="keybox" style="--cbg:var(--green-bg)"><div class="ki">🔑</div><div class="kt">原持有者</div><div class="kv">可以解</div></div>
+          <div class="keybox" style="--cbg:var(--red-bg)"><div class="ki">🙅</div><div class="kt">新買家</div><div class="kv">不能解</div></div>
+          <div class="keybox" style="--cbg:var(--red-bg)"><div class="ki">🍏</div><div class="kt">Apple 官方</div><div class="kv">不能代解</div></div>
+        </div>
+        <figcaption>Apple 支援文件原文：<b>「Apple 無法為你移除『尋找』鎖定。」</b>拿發票、拿保固、去直營店都不行。</figcaption>
+      </figure>
+
+      <h3>給原持有者：出售前的 30 秒 SOP</h3>
+      <p>如果你正要賣掉或送人，這四步請務必先做完。做完了，下一位使用者才加得進自己的帳號：</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--green)"><div class="n">1</div><div><h4>在你自己的 iPhone 或 iPad 打開「尋找」App</h4><p>用的是原本綁定那個 Apple 帳號登入的裝置。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">2</div><div><h4>點底部的「裝置」，找到 Apple Pencil Pro</h4><p>清單裡會跟你的 iPhone、iPad 列在一起。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">3</div><div><h4>點進去，把下方的控點向上滑</h4><p>滑開後才會看到完整的動作選單。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">4</div><div><h4>點「移除此裝置」，再點一次「移除」確認</h4><p>這個動作同時解除配對與「尋找」鎖定，兩件事一起完成。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">已經寄出去了也還來得及</div>
+        Apple 官方明確寫著「<strong>不必透過藍牙連接</strong>，也能使用 iPhone 或 Apple 裝置從『Apple 帳號』移除裝置或物品」。筆已經在買家手上、你人在外縣市，照樣解得掉——只是在藍牙範圍內處理會快一點。
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">買家該說的一句話</div>
+        與其問「你有沒有解除綁定」（對方通常不知道那是什麼），不如直接說：<strong>「麻煩打開你的『尋找』App，點裝置，把 Apple Pencil 移除一下，我這邊才加得進來。」</strong>把動作講明白，成功率高很多。
+      </div>
+    </section>
+
+    <section id="useless">
+      <div class="sec-label" style="--c:var(--red)">what_doesnt_work</div>
+      <h2>04 · 那些網路上教的方法，為什麼都沒用</h2>
+      <p>搜尋這個問題時會跳出一堆做法。它們失敗的原因是同一個：鎖不在筆上，也不在 iPad 上，<strong>而在 Apple 帳號上</strong>。你在筆和 iPad 上做的任何事，都碰不到那個鎖。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>常見說法</th><th>結果</th><th>為什麼</th></tr>
+          <tr><td>藍牙裡按「忘記此裝置」</td><td class="bad">沒用</td><td>那是 Apple 官方用來排解「配對不上」的步驟，處理的是藍牙連線，不會動到帳號綁定</td></tr>
+          <tr><td>重置 iPad、恢復原廠設定</td><td class="bad">沒用</td><td>清掉的是 iPad，鎖記在原持有者的 Apple 帳號裡，換十台 iPad 都一樣</td></tr>
+          <tr><td>拆電池、長按重置</td><td class="bad">做不到</td><td>Apple 對 AirTag、AirPods 有提供重置方法，<strong>但沒有為 Apple Pencil Pro 提供任何重置路徑</strong></td></tr>
+          <tr><td>拿發票找 Apple 客服或直營店</td><td class="bad">沒用</td><td>官方支援文件白紙黑字：「Apple 無法為你移除『尋找』鎖定。」</td></tr>
+          <tr><td>第三方「一鍵解鎖」工具</td><td class="bad">別碰</td><td>官方不存在這條路徑；這類工具主打的是 iPhone 啟用鎖定，與配件的尋找鎖定不是同一件事</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)">
+        <div class="ct">一句話記住</div>
+        書寫功能與尋找鎖定是<strong>兩條完全獨立的線</strong>——所以你能寫字，不代表你擁有它；你解不開，也不代表它壞了。
+      </div>
+    </section>
+
+    <section id="list">
+      <div class="sec-label" style="--c:var(--amber)">checklist</div>
+      <h2>05 · 買之前、賣之前，各問自己這幾題</h2>
+
+      <h3>準備出售或送人的話</h3>
+      <ul class="check">
+        <li><b>我解除綁定了嗎？</b>「尋找」App →「裝置」→ 點筆 → 控點上滑 → 移除此裝置。沒做這一步，買家永遠加不進他自己的帳號。</li>
+        <li><b>我還聯絡得到買家嗎？</b>寄出後才想起沒解也沒關係，遠端就能補做——前提是雙方還聯絡得上。</li>
+        <li><b>我賣的是 Pencil Pro 嗎？</b>二代與 USB-C 版沒有這個機制，不用多做這道手續。</li>
+      </ul>
+
+      <h3>正在看二手商品的話</h3>
+      <ul class="check">
+        <li><b>賣家願不願意當場示範「加進尋找」？</b>這是唯一能驗出來的方式，也是最快的信任測試。願意配合的賣家，通常也不會在其他地方藏東西。</li>
+        <li><b>如果賣家說「我不知道怎麼弄」怎麼辦？</b>把第 03 節那四個步驟直接貼給他。多數人不是不願意，是真的沒聽過這個功能。</li>
+        <li><b>賣家已失聯的貨，我還要買嗎？</b>先確認你在意的是什麼——書寫功能完全不受影響，你失去的是「把它加進自己的尋找」這一項。價格上應該反映這個差異。</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">果果的立場</div>
+        我們在收購端<strong>經常遇到前一位主人忘記解除綁定</strong>。這類筆不是壞掉、也不是贓物，多數只是不知道有這道手續而已。我們的做法是先聯繫原賣家協助解除；真的聯絡不上，就在商品資訊裡<strong>明白標示「無法加入尋找」</strong>，讓價格與狀態對得起來——而不是等買家自己發現。
+      </div>
+
+      <div class="bigquote">
+        <div class="qm">"</div>
+        <p>能寫字，不代表你擁有它；<br>解不開，也不代表它壞了。</p>
+        <small>這支筆的書寫功能與帳號綁定，是兩條互不相干的線。</small>
+      </div>
+    </section>
+
+    <section id="watch">
+      <div class="sec-label" style="--c:var(--teal)">videos</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p style="font-size:.9rem;color:var(--muted)">這篇講的是判斷與解除的流程；下面三支影片補的是實際操作畫面與機型差異。影片為第三方製作，功能細節仍以 Apple 官方說明為準。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=a60F6N4PcMo" target="_blank" rel="noopener" data-yt="a60F6N4PcMo" aria-label="播放：最全面對比 Apple Pencil Pro、第 2 代與 USB-C">
+          <img loading="lazy" src="https://i.ytimg.com/vi/a60F6N4PcMo/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/a60F6N4PcMo/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>最全面對比 Apple Pencil：Pro🆚第2代🆚USB-C</b><small>頻道：彼得森 · 對應本文第 01 節：三款筆的差異，正是「為什麼只有 Pro 會被綁定」的答案 · 繁中</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=ZQIcKwIOSHo" target="_blank" rel="noopener" data-yt="ZQIcKwIOSHo" aria-label="播放：How To Add Apple Pencil To Find My">
+          <img loading="lazy" src="https://i.ytimg.com/vi/ZQIcKwIOSHo/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/ZQIcKwIOSHo/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>How To Add Apple Pencil To Find My!</b><small>頻道：LoFi Alpaca · 完整示範第 02 節的驗機動作——「加進尋找」的實際畫面 · 英文（畫面照著點就懂）</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=wMPUNBOS_wU" target="_blank" rel="noopener" data-yt="wMPUNBOS_wU" aria-label="播放：Apple Pencil Pro 開箱，含尋找功能">
+          <img loading="lazy" src="https://i.ytimg.com/vi/wMPUNBOS_wU/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/wMPUNBOS_wU/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>Apple Pencil Pro 開箱！側轉筆觸、雙指按壓、尋找功能全都有</b><small>頻道：Neil 尼歐 · 想先看看「尋找」裡的 Pencil Pro 長什麼樣，這支有實際畫面 · 繁中</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">本文的操作路徑、規格與官方立場皆取自 Apple 官方支援文件與技術規格頁，查證日期 2026 年 7 月 28 日：</p>
+      <ul class="sources">
+        <li><a href="https://support.apple.com/zh-tw/102620">如果物品或裝置已連接其他「Apple 帳號」</a>（一次只能配對一個帳號、移除步驟、「Apple 無法為你移除『尋找』鎖定」、不必藍牙連接也能移除；文件發佈日 2025 年 11 月 6 日）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipad4654d625/ipados">從 iPad 上的「尋找」中移除 AirTag、Apple Pencil Pro 或其他物品</a>（iPad 使用手冊 · 確認 Apple Pencil Pro 適用此移除流程）</li>
+        <li><a href="https://support.apple.com/zh-tw/120123">Apple Pencil Pro · 技術規格</a>（型號 A2538、2024 年推出、連線僅藍牙、相容 11 款 iPad、系統需求 iPadOS 17.5 以上、「透過『尋找』app 就可輕鬆定位找到」）</li>
+        <li><a href="https://support.apple.com/zh-tw/111889">Apple Pencil（第 2 代）· 技術規格</a>（型號 A2051、其他特色僅列磁力吸附與配對，全篇未提及「尋找」）</li>
+        <li><a href="https://support.apple.com/zh-tw/121318">Apple Pencil（USB-C）· 技術規格</a>（型號 A3085、其他特色僅列磁力吸附，全篇未提及「尋找」）</li>
+        <li><a href="https://support.apple.com/zh-tw/108788">如果你無法將 Apple Pencil 與 iPad 配對</a>（確認藍牙「忘記此裝置設定」屬於配對排障流程，與帳號綁定是不同機制）</li>
+      </ul>
+      <p class="updated">操作介面文字可能隨 iPadOS 版本微調，認「尋找 App → 裝置 → 移除此裝置」這條路徑就對了。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
