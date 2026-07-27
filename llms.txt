@@ -65,7 +65,7 @@
   - 本篇回答：改了修飾鍵設定，換一顆鍵盤還有效嗎？
   - 本篇回答：iPad 的游標太小常常跟丟，可以調大嗎？
   - 本篇回答：手不方便沒辦法同時按住兩顆鍵，有解嗎？
-- [尋找 App 能追蹤哪些東西？](https://www.guoguo.tw/guide/articles/find-my-device-tiers/)：AirTag、Apple Pencil Pro、AirPods 都在同一個 App 裡，掉了找得回來的機率卻差很多。喇叭、UWB、作業系統這三個硬體切出五個等級，一張表看懂你手上那台屬哪一級。（觀念、尋找定位、AirTag／2026-07-28）
+- [尋找 App 能追蹤哪些東西？](https://www.guoguo.tw/guide/articles/find-my-device-tiers/)：AirTag、Apple Pencil Pro、AirPods 都在同一個 App 裡，掉了找得回來的機率卻差很多。喇叭、UWB、作業系統這三個硬體切出五個等級，一張表看懂你手上那台屬哪一級。（觀念、尋找定位、AirTag、Apple Pencil／2026-07-28）
   - 本篇回答：Apple Pencil Pro 掉了，可以像 AirTag 一樣找到嗎？
   - 本篇回答：AirTag 有 GPS 嗎？沒有網路的地方還定位得到嗎？
   - 本篇回答：尋找 App 到底可以加哪些東西？
