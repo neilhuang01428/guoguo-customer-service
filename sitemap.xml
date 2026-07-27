@@ -49,7 +49,19 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.guoguo.tw/guide/articles/apple-pencil-pro-unbinding/</loc>
+    <lastmod>2026-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.guoguo.tw/guide/tag/apple-pencil/</loc>
+    <lastmod>2026-07-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.guoguo.tw/guide/tag/%E5%B0%8B%E6%89%BE%E5%AE%9A%E4%BD%8D/</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>

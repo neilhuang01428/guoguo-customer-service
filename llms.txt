@@ -74,6 +74,15 @@
   - 本篇回答：第三方防丟卡跟 AirTag 差在哪？
   - 本篇回答：AirTag 可以拿來防車子被偷、或追蹤寵物嗎？
   - 本篇回答：二手買的 Apple Pencil Pro 加不進我的尋找，是壞掉了嗎？
+- [Apple Pencil Pro 怎麼解除綁定？](https://www.guoguo.tw/guide/articles/apple-pencil-pro-unbinding/)：二手 Pencil Pro 加不進自己的「尋找」，不是壞掉，是前一位主人沒解綁。判斷只有一個準確方法，解除也只有一條路——而 Apple 官方明說它不能代為移除。（技巧、Apple Pencil、尋找定位／2026-07-28）
+  - 本篇回答：Apple Pencil Pro 怎麼看有沒有被綁定？
+  - 本篇回答：二手 Apple Pencil Pro 加不進我的尋找，是壞掉了嗎？
+  - 本篇回答：Apple Pencil Pro 要怎麼解除綁定？
+  - 本篇回答：我可以自己解除別人綁定的 Apple Pencil Pro 嗎？
+  - 本篇回答：藍牙裡按「忘記此裝置」可以解除綁定嗎？
+  - 本篇回答：為什麼 Apple Pencil 第 2 代沒有這個綁定問題？
+  - 本篇回答：賣掉 Apple Pencil Pro 前要注意什麼？
+  - 本篇回答：被綁定的 Apple Pencil Pro 還能正常使用嗎？
 
 ## 其他
 
