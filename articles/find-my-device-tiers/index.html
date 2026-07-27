@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>「尋找」App 能追蹤哪些東西？五個等級一次看懂 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式 ── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 三道分水嶺：閘門卡 */
+  .gates { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 22px 0; }
+  .gate { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 12px; padding: 16px 18px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .gate .ic { font-size: 1.6rem; line-height: 1; }
+  .gate .nm { font-size: 1.02rem; font-weight: 800; color: var(--ink); margin-top: 8px; }
+  .gate .q { font-family: var(--mono); font-size: .66rem; color: var(--c); margin-top: 3px; }
+  .gate .one { font-size: .88rem; color: var(--body); margin-top: 8px; }
+
+  /* 對照表：符號欄 */
+  td.y { color: var(--green-deep); font-weight: 700; text-align: center; }
+  td.n { color: var(--muted); text-align: center; }
+  td.p { color: var(--amber); font-weight: 700; text-align: center; }
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 700px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+
+  /* 清單雙欄：能加 / 不能加 */
+  .twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .listcard { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .listcard .hd { font-size: .95rem; font-weight: 800; color: var(--c); margin-bottom: 10px; }
+  .listcard ul { list-style: none; }
+  .listcard li { font-size: .88rem; padding: 6px 0 6px 22px; position: relative; border-bottom: 1px solid var(--grid); color: var(--body); }
+  .listcard li:last-child { border-bottom: 0; }
+  .listcard li::before { content: var(--mk); position: absolute; left: 0; color: var(--c); font-weight: 800; }
+  .listcard li b { color: var(--ink); }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .gates, .twocol { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>「尋找」全解析</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#answer" class="active">00 · 先講結論</a>
+  <div class="grp">為什麼有差</div>
+  <a href="#gates">01 · 三道分水嶺</a>
+  <a href="#tiers">02 · 五個等級對照</a>
+  <div class="grp">實際情況</div>
+  <a href="#detail">03 · 掉了會怎樣</a>
+  <a href="#list">04 · 完整清單</a>
+  <div class="grp">避坑</div>
+  <a href="#myths">05 · 最常搞錯的四件事</a>
+  <a href="#check">06 · 買之前先問自己</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>2018–2026 全型號都經手</span><span>Pencil 一代到 Pro 都摸過</span><span>缺點照實揭露</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">Apple 生態 / 尋找與防丟</div>
+    <h1>「尋找」App 能追蹤哪些東西？<br>五個等級一次看懂</h1>
+    <p class="subtitle">AirTag、Apple Pencil Pro、AirPods、第三方防丟卡都在同一個 App 裡——但掉了之後找得回來的機率差很多。</p>
+
+    <p class="lede">能加進「尋找」的東西不只 AirTag，但<strong>它們的能力差很多，不是同一回事</strong>。決定差在哪的其實只有三個硬體：<strong>有沒有喇叭</strong>（能不能叫出聲音）、<strong>有沒有 UWB 超寬頻晶片</strong>（能不能給你方向箭頭）、<strong>有沒有作業系統</strong>（能不能遠端鎖住、清除裡面的資料）。照這三樣切下去剛好分成五級，從最強的 iPhone、iPad，到最弱的 MagSafe 卡套。<strong>最常被誤會的是最後一級</strong>——Apple Pencil Pro 確實列在「尋找」裡，但它<strong>沒有喇叭也沒有 UWB</strong>，掉進沙發縫時你叫不出聲音、也沒有箭頭指路，只能盯著螢幕上的「遠 / 近」慢慢摸。</p>
+
+    <p class="updated">本文查證：<b>2026 年 7 月 27 日</b>，規格與支援清單以 Apple 官方最新公告為準。<a class="inline" href="#sources">來源列在文末</a>。</p>
+
+    <section id="answer">
+      <div class="sec-label" style="--c:var(--navy)">tldr</div>
+      <h2>00 · 先講結論：你想解決哪件事？</h2>
+      <p>先分流，省得你讀完整篇才發現不是你要的：</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)">
+          <div class="ct">「我怕東西掉了找不回來」</div>
+          直接看 <a class="inline" href="#tiers">第 02 節的五級表</a>。想要真正的防丟能力，你要的是<strong>第 2 級</strong>（AirTag 或有喇叭的第三方防丟卡），不是把希望寄託在配件本身的「尋找」欄位。
+        </div>
+        <div class="callout" style="--c:var(--navy)">
+          <div class="ct">「我想知道我這台掉了會怎樣」</div>
+          跳到 <a class="inline" href="#detail">第 03 節</a>，每一級都寫了「掉在三種地方分別會發生什麼」。
+        </div>
+        <div class="callout" style="--c:var(--teal)">
+          <div class="ct">「我想知道哪些東西加得進尋找」</div>
+          看 <a class="inline" href="#list">第 04 節的完整清單</a>——包含<strong>很多人以為可以、其實加不進去</strong>的那幾樣。
+        </div>
+        <div class="callout" style="--c:var(--amber)">
+          <div class="ct">「我在考慮要不要為了尋找功能加價」</div>
+          先看 <a class="inline" href="#myths">第 05 節</a>。我們的誠實建議是：<strong>為了「有尋找功能」而加價買 Apple Pencil Pro，划不來</strong>，理由在裡面。
+        </div>
+      </div>
+
+      <div class="bigquote">
+        <div class="qm">"</div>
+        <p>喇叭決定你找不找得到，<br>UWB 決定你要找多久，<br>作業系統決定你的資料保不保得住。</p>
+        <small>這三句話就是整篇文章。下面只是把它拆開講清楚。</small>
+      </div>
+    </section>
+
+    <section id="gates">
+      <div class="sec-label" style="--c:var(--green)">hardware_gates</div>
+      <h2>01 · 三道分水嶺：為什麼同一個 App 裡差這麼多</h2>
+      <p>很多人以為「有沒有支援尋找」是一個是非題——有支援就找得回來，沒支援就找不回來。實際上不是。<strong>「支援尋找」只代表它能被畫在地圖上</strong>，而從「看到地圖上的一個點」到「東西真的回到你手上」，中間還隔著三道硬體門檻。</p>
+
+      <div class="gates">
+        <div class="gate" style="--c:var(--green)">
+          <div class="ic">🔊</div>
+          <div class="nm">一、有沒有喇叭</div>
+          <div class="q">決定「找不找得到」</div>
+          <div class="one">東西掉在同一個房間時，地圖幾乎沒用——因為誤差範圍比整個房間還大。這時候<strong>能不能叫它出聲</strong>，才是找不找得到的關鍵。</div>
+        </div>
+        <div class="gate" style="--c:var(--navy)">
+          <div class="ic">🧭</div>
+          <div class="nm">二、有沒有 UWB</div>
+          <div class="q">決定「要找多久」</div>
+          <div class="one">超寬頻晶片能讓 iPhone 變成指南針，畫面直接出現<strong>箭頭與距離</strong>。有它，三十秒找到；沒它，靠聲音或「遠 / 近」慢慢逼近。</div>
+        </div>
+        <div class="gate" style="--c:var(--purple)">
+          <div class="ic">🔒</div>
+          <div class="nm">三、有沒有作業系統</div>
+          <div class="q">決定「資料保不保得住」</div>
+          <div class="one">有 iOS／iPadOS／macOS 的東西才能<strong>遠端鎖定、顯示留言、遠端清除資料</strong>。配件沒有系統、也沒有你的資料，這一層對它們不存在。</div>
+        </div>
+      </div>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">🔊</div><div class="bt">有喇叭嗎</div><div class="bv">叫得出聲</div></div>
+          <div class="arr">＋</div>
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">🧭</div><div class="bt">有 UWB 嗎</div><div class="bv">看得到方向</div></div>
+          <div class="arr">＋</div>
+          <div class="box" style="--cbg:var(--purple-bg)"><div class="bi">🔒</div><div class="bt">有系統嗎</div><div class="bv">鎖得住資料</div></div>
+          <div class="arr">＝</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">🎯</div><div class="bt">綜合起來</div><div class="bv">五個等級</div></div>
+        </div>
+        <figcaption>三個硬體問題，切出五個能力等級。<b>加進「尋找」只是入場券，這三樣才是實力。</b></figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">順便解釋一個常被搞混的觀念</div>
+        <strong>「尋找網絡」跟「GPS」是兩回事。</strong>AirTag 這類配件<strong>沒有 GPS、沒有 SIM 卡、也沒有 Wi-Fi</strong>，它只是不斷發出一段加密的藍牙訊號；真正回報位置的，是剛好路過的別人的 iPhone——它匿名地幫你把「我在這附近看到它」傳回去。所以地圖上的那個點，其實是<strong>「路人手機的位置」</strong>，不是配件自己算出來的座標。這也是為什麼在深山、無人倉庫、金屬櫃裡它會失聯：沒有人經過，就沒有人幫你回報。
+      </div>
+    </section>
+
+    <section id="tiers">
+      <div class="sec-label" style="--c:var(--teal)">tier_table</div>
+      <h2>02 · 五個等級，一張表對齊</h2>
+      <p>把三道分水嶺套用到所有能加進「尋找」的東西上，剛好落成五級。橫著看是能力，直著看是等級：</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr>
+            <th>等級</th><th>代表產品</th><th>喇叭</th><th>UWB 方向</th><th>遠端鎖定 / 清除</th><th>離身通知</th><th>掉了實際能做什麼</th>
+          </tr>
+          <tr>
+            <td>第 1 級<small>完整裝置</small></td>
+            <td>iPhone、iPad、Mac、Apple Watch</td>
+            <td class="y">有</td><td class="p">看機型</td><td class="y">有</td><td class="p">部分</td>
+            <td>看地圖、播放聲音、鎖定並顯示聯絡訊息、<strong>遠端清除全部資料</strong>；別人撿到也無法重灌自用</td>
+          </tr>
+          <tr>
+            <td>第 2 級<small>專業尋找器</small></td>
+            <td>AirTag</td>
+            <td class="y">有</td><td class="y">有</td><td class="n">無資料可清</td><td class="y">有</td>
+            <td>看地圖、叫出聲音、<strong>箭頭與距離帶你走到它面前</strong>、可分享給家人、可產生臨時連結給航空公司找行李</td>
+          </tr>
+          <tr>
+            <td>第 3 級<small>有喇叭的耳機</small></td>
+            <td>AirPods 3 以後多數型號、AirPods Max</td>
+            <td class="y">有</td><td class="p">部分型號</td><td class="n">無</td><td class="p">部分</td>
+            <td>看地圖、播放聲音；較新的 Pro 系列充電盒內建 UWB，可做精確尋找</td>
+          </tr>
+          <tr>
+            <td>第 4 級<small>第三方認證配件</small></td>
+            <td>標示「Works with Apple Find My」的防丟卡、鑰匙圈、行李箱</td>
+            <td class="p">多數有</td><td class="n">無</td><td class="n">無</td><td class="p">看產品</td>
+            <td>看地圖、多數能叫出聲音；<strong>沒有方向箭頭</strong>——只能到大概位置後靠聲音找</td>
+          </tr>
+          <tr>
+            <td>第 5 級<small>受限配件</small></td>
+            <td>Apple Pencil Pro、MagSafe 卡套</td>
+            <td class="n">無</td><td class="n">無</td><td class="n">無</td><td class="n">無</td>
+            <td>只能看位置。Pencil Pro 另有「尋找附近」的遠 / 近提示；MagSafe 卡套<strong>只記錄脫離的那一刻在哪</strong></td>
+          </tr>
+        </table>
+      </div>
+      <p style="font-size:.86rem;color:var(--muted)">「部分」代表同一類產品裡不同型號有差，購買前請對照你那款的官方規格頁。第 3 級的 UWB 支援情形依充電盒世代而異。</p>
+
+      <div class="callout" style="--c:var(--red)">
+        <div class="ct">這張表最反直覺的一格</div>
+        <strong>第 5 級的 Apple Pencil Pro，和第 2 級的 AirTag 差了三個等級</strong>——但它們在「尋找」App 裡看起來幾乎一樣，都是一個名字加一個位置。這就是為什麼很多人買 Pencil Pro 時以為「順便買了防丟保險」，直到筆真的掉了才發現：沒有聲音可以叫，沒有箭頭可以跟。
+      </div>
+    </section>
+
+    <section id="detail">
+      <div class="sec-label" style="--c:var(--amber)">what_happens</div>
+      <h2>03 · 逐級看：東西掉了，實際會發生什麼</h2>
+      <p>能力表是靜態的，實際情況才是你要的。同樣三種情境測五個等級——<strong>掉在同一個房間、掉在外面某處、被別人拿走了</strong>：</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>等級</th><th>🏠 掉在同一個房間</th><th>🚶 掉在外面某處</th><th>🕵️ 被別人拿走了</th></tr>
+          <tr>
+            <td>L1 完整裝置<small>iPhone / iPad / Mac / Watch</small></td>
+            <td class="good">播放聲音，多數一分鐘內解決</td>
+            <td>地圖看得到；開遺失模式鎖住螢幕、顯示你留的訊息</td>
+            <td class="good"><b>可遠端清除全部資料</b><small>有啟用鎖定，對方重灌也開不了機</small></td>
+          </tr>
+          <tr>
+            <td>L2 AirTag<small>專業尋找器</small></td>
+            <td class="good">叫出聲音<small>新款音量比前代提升 50%</small></td>
+            <td class="good"><b>箭頭＋距離直接帶你走過去</b><small>新款精確尋找距離比前代長 50%</small></td>
+            <td class="bad">對方收到未知追蹤器警告 → 拆掉電池<small>它不是防盜器</small></td>
+          </tr>
+          <tr>
+            <td>L3 AirPods<small>有喇叭的耳機</small></td>
+            <td>播放聲音<small>音量不大，地毯下要很近才聽得到</small></td>
+            <td>靠協尋網絡回報；較新 Pro 系列充電盒可精確尋找</td>
+            <td>沒有遠端清除；對方要配對到自己帳號會受限</td>
+          </tr>
+          <tr>
+            <td>L4 第三方認證<small>Works with Apple Find My</small></td>
+            <td>多數有蜂鳴器可叫<small>音量與音色各家差很多</small></td>
+            <td>與 AirTag 同一張網，這段幾乎沒差<small>但沒有箭頭，最後十公尺靠聲音摸</small></td>
+            <td class="bad">同樣觸發未知追蹤器警告</td>
+          </tr>
+          <tr>
+            <td>L5 受限配件<small>Pencil Pro / MagSafe 卡套</small></td>
+            <td class="bad"><b>叫不出聲、也沒有箭頭</b><small>Pencil Pro 只能靠「遠 / 近 / 伸手可及」慢慢摸</small></td>
+            <td class="bad">看得到位置紀錄，但別期待持續更新</td>
+            <td class="bad">沒有遺失模式、沒有遠端清除<small>只有「尋找鎖定」：別人也加不進自己帳號</small></td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--purple)">
+          <div class="ct">L1 的隱藏強項：關機了還找得到</div>
+          支援的 iPhone 就算<strong>關機，最長 24 小時內仍然找得到</strong>；電力耗盡進入省電模式也還有最長 5 小時。藍牙模組會保留一點備用電量繼續當廣播塔。
+        </div>
+        <div class="callout" style="--c:var(--red)">
+          <div class="ct">L2 的誠實話：AirTag 不是防盜器</div>
+          Apple 自己把它定位為「<strong>追蹤個人物品</strong>」。小偷的手機（iPhone 或 Android 都一樣）會跳出警告，AirTag 也可能自己出聲，然後被拆掉電池。
+        </div>
+        <div class="callout" style="--c:var(--teal)">
+          <div class="ct">L3 最容易踩的雷：耳機和盒子會分開走</div>
+          較新的型號可以把<strong>單耳與充電盒分別標記為遺失</strong>。只掉一隻的話記得分開處理，別整組標記。
+        </div>
+        <div class="callout" style="--c:var(--navy)">
+          <div class="ct">L5 的 MagSafe 卡套，其實不算會被追蹤</div>
+          它記錄的是「<strong>從 iPhone 脫離的那一刻，你人在哪</strong>」。所以它能回答「我大概在哪裡掉的」，不能回答「它現在在哪」。
+        </div>
+      </div>
+
+      <details>
+        <summary>補充：L4 第三方防丟卡的價差，到底買到什麼？</summary>
+        <p>協尋網絡的部分兩者幾乎沒差，差的是<strong>最後那十公尺</strong>——AirTag 有 UWB 方向箭頭，第三方沒有。所以第三方能把你帶到「就在這棟樓裡」，剩下靠聲音自己摸。反過來說，防丟卡是扁平的，放進錢包比圓形的 AirTag 順手，這是它的主場。<strong>你最在意哪一段，就決定了那筆價差值不值得。</strong></p>
+      </details>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">這一點官方沒有把話說死，我們也不裝懂</div>
+        Apple Pencil Pro 離開配對的 iPad 之後，究竟還會不會像 AirTag 那樣<strong>持續</strong>被路人的裝置回報新位置，<strong>Apple 的公開文件並沒有明確說明</strong>。官方對它列出的能力是「查看位置」「尋找附近」與「尋找鎖定」三項，沒有列出 AirTag 那些（播放聲音、離身通知、分享物品位置、多人共享）。網路上兩種說法都有人講，但我們找不到官方依據支持「它有 AirTag 等級的全球追蹤能力」這個說法——所以這篇文章不會替你保證任何一邊。<strong>實務上請當它是「看得到最後位置」的等級來用</strong>，不要把它當防丟方案。
+      </div>
+    </section>
+
+    <section id="list">
+      <div class="sec-label" style="--c:var(--navy)">full_list</div>
+      <h2>04 · 完整清單：什麼加得進去、什麼加不進去</h2>
+      <p>「尋找」App 裡其實分成三個分頁：<strong>人員、裝置、物品</strong>。搞清楚哪個東西被放在哪一頁，你就能猜到它大概屬於第幾級。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--teal-bg)"><div class="bi">👥</div><div class="bt">人員</div><div class="bv">家人與朋友</div></div>
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">📱</div><div class="bt">裝置</div><div class="bv">Apple 自家硬體</div></div>
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">🏷</div><div class="bt">物品</div><div class="bv">AirTag 與認證配件</div></div>
+        </div>
+        <figcaption><b>Apple Pencil Pro 被放在「裝置」頁，不是「物品」頁</b>——但它的實際能力比多數「物品」還弱。分頁看的是「誰做的」，不是「多好找」。</figcaption>
+      </figure>
+
+      <div class="twocol">
+        <div class="listcard" style="--c:var(--green-deep);--mk:'✓'">
+          <div class="hd">加得進「尋找」的</div>
+          <ul>
+            <li><b>iPhone、iPad</b>　最完整的一級</li>
+            <li><b>Mac</b>　同上</li>
+            <li><b>Apple Watch</b>　同上</li>
+            <li><b>AirTag</b>　專業尋找器</li>
+            <li><b>AirPods 3 以後多數型號、AirPods Max</b>　與部分 Beats 耳機</li>
+            <li><b>Apple Pencil Pro</b>　<span style="color:var(--red)">只有 Pro 這一款</span></li>
+            <li><b>支援的 MagSafe 卡套</b>　只記錄脫離位置</li>
+            <li><b>標示「Works with Apple Find My」的第三方配件</b>　防丟卡、鑰匙圈、行李箱、自行車…</li>
+          </ul>
+        </div>
+        <div class="listcard" style="--c:var(--red);--mk:'✕'">
+          <div class="hd">很多人以為可以、其實不行的</div>
+          <ul>
+            <li><b>Apple Pencil 第一代、第二代、USB-C 款</b>　沒有對應硬體，完全加不進去</li>
+            <li><b>巧控鍵盤、聰穎鍵盤</b>　所有 iPad 原廠鍵盤都不支援</li>
+            <li><b>Apple TV、HomePod</b>　是 Apple 產品，但不在清單裡</li>
+            <li><b>一般藍牙耳機、藍牙喇叭</b>　沒通過認證就不行</li>
+            <li><b>沒有認證標章的便宜防丟片</b>　它連的是自家 App，不是 Apple 的協尋網絡</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)">
+        <div class="ct">判斷準則，記這一句就好</div>
+        <strong>「是不是 Apple 產品」不是判準，「有沒有內建尋找模組」才是。</strong>Apple TV 和 HomePod 是 Apple 自己做的，一樣加不進去；而一個第三方廠牌的防丟卡，只要通過認證，就能用上同一張全球協尋網絡。買配件時要找的是包裝上那行<strong>「Works with Apple Find My」</strong>——沒有這行字，就只是普通藍牙裝置。
+      </div>
+    </section>
+
+    <section id="myths">
+      <div class="sec-label" style="--c:var(--red)">myths</div>
+      <h2>05 · 最常被搞錯的四件事</h2>
+      <p>這四個誤解我們在客服端遇過太多次，網路上也到處都是——包括你問 AI 助理時，它也常常給錯。</p>
+
+      <ul class="flags">
+        <li><b>「AirTag 裡面有 GPS」</b>——沒有。它沒有 GPS、沒有 SIM 卡、也沒有 Wi-Fi，位置全靠路過的 iPhone 幫忙回報。所以它<strong>不是即時定位器</strong>：有人經過才會更新，深山或無人倉庫就會停在最後一次被看到的位置。Apple 官方也明講，AirTag <strong>不會在裝置上實體儲存位置資料或記錄</strong>——它不是行車紀錄器，回放不了完整軌跡。</li>
+        <li><b>「Apple Pencil Pro 有精確尋找，能給方向箭頭」</b>——沒有。這是目前流傳最廣的一條錯誤資訊，連 AI 助理都常常這樣回答（它會把「支援尋找」直接聯想成「有 UWB」）。<strong>Apple Pencil Pro 沒有 UWB 晶片，也沒有喇叭</strong>，能給你的只有「遠 / 近 / 伸手可及」的文字提示。</li>
+        <li><b>「都能加進尋找，所以能力差不多」</b>——差三個等級。加進「尋找」只代表它能被畫在地圖上，喇叭、UWB、作業系統這三樣才決定你實際找不找得回來。</li>
+        <li><b>「第三方防丟卡就是便宜版 AirTag」</b>——協尋網絡的部分確實一樣，但<strong>精確尋找是 AirTag 專屬的</strong>，第三方配件目前不支援 UWB 方向指引。差價買的是「最後十公尺」。</li>
+      </ul>
+
+      <h3>果果的誠實建議：別為了「尋找功能」加價買 Apple Pencil Pro</h3>
+      <p>我們同時在賣 Apple Pencil 一代、二代與 Pro，三種都經手過，所以這句話講得出口——<strong>如果你升級到 Pro 的主要理由是「它有尋找功能」，那筆錢花得不划算</strong>。三張卡看完就懂：</p>
+
+      <div class="grid g3">
+        <div class="card" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="c-tag">你以為多買到的</div>
+          <h4>一份防丟保險</h4>
+          <p>「加了尋找功能，掉了應該找得回來吧。」</p>
+          <span class="ex">❌ 誤會</span>
+        </div>
+        <div class="card" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="c-tag">實際多買到的</div>
+          <h4>玩你冷你熱的權利</h4>
+          <p>它在第 5 級：沒喇叭、沒箭頭。掉在沙發縫只能盯著「遠 / 近」慢慢摸。</p>
+          <span class="ex">⚠️ 期待落差</span>
+        </div>
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">真正值得加價的</div>
+          <h4>三個天天用得到的</h4>
+          <p>捏擠選單、觸覺回饋、筆身側轉控制筆刷角度。</p>
+          <span class="ex">✅ 這才是理由</span>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">真的怕弄丟筆的話，這樣做比較實際</div>
+        買一個<strong>能放 AirTag 的筆袋或筆套</strong>——<strong>一個第 2 級的東西，勝過期待第 5 級的功能</strong>。尋找功能是希望永遠用不到的那種，捏擠選單卻是每天都在按的。
+      </div>
+
+      <div class="callout" style="--c:var(--teal)">
+        <div class="ct">二手買家要多知道的一件事</div>
+        這些能加進「尋找」的配件（AirTag、Apple Pencil Pro、AirPods、MagSafe 卡套）都有一個共通點：<strong>它們一次只能綁在一個 Apple 帳號下</strong>。買二手時如果前一位使用者忘記從自己的「尋找」移除，你會發現東西功能都正常、就是加不進你自己的帳號——而且這件事<strong>光測功能是測不出來的</strong>，必須實際去綁一次才知道。這是二手配件最容易踩、也最容易被忽略的一個雷。
+      </div>
+    </section>
+
+    <section id="check">
+      <div class="sec-label" style="--c:var(--green)">checklist</div>
+      <h2>06 · 買之前，先問自己這三題</h2>
+      <ul class="check">
+        <li><b>我要解決的是「掉在家裡找不到」還是「掉在外面拿不回來」？</b>前者靠喇叭與 UWB（第 2 級），後者靠協尋網絡（第 2 到 4 級都行）。搞錯方向就會買到不解決問題的東西。</li>
+        <li><b>這個東西裡面有沒有我的資料？</b>有的話（手機、平板、電腦、手錶），你該優先確認的不是「找不找得到」，而是「遺失模式與遠端清除有沒有先設定好」。資料比硬體貴。</li>
+        <li><b>包裝上有沒有「Works with Apple Find My」？</b>沒有這行字的第三方防丟片，用的是廠商自己的 App 和自己的用戶網絡——在台灣，那個網絡的密度通常遠不如 Apple 的。</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">最後提醒：防丟不等於防盜</div>
+        Apple 把 AirTag 明確定位為「追蹤個人物品」，並內建了一整套<strong>防止不必要追蹤</strong>的機制——包括跨平台的提醒，以及會頻繁變更的獨特藍牙識別碼。這代表兩件事：第一，別人不能拿它偷偷追蹤你；第二，<strong>你也不能拿它防竊或追人</strong>。如果你的需求是車輛防盜或寵物定位，該找的是有 GPS 與 SIM 卡的專用設備，不是 AirTag。
+      </div>
+
+      <div class="bigquote">
+        <div class="qm">"</div>
+        <p>「支援尋找」是入場券，不是保證書。</p>
+        <small>真正決定你找不找得回來的，是喇叭、UWB 與作業系統這三樣硬體。</small>
+      </div>
+
+      <h3>延伸觀看（YouTube 參考）</h3>
+      <p style="font-size:.9rem;color:var(--muted)">這篇講的是「哪一級能做什麼」；如果你想看實際操作畫面（精確尋找的箭頭長什麼樣、離身通知怎麼設、共享怎麼開），下面兩支繁中影片補得剛好。影片為第三方製作，功能細節仍以 Apple 官方說明為準。</p>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=1zDxI-lmNtc" target="_blank" rel="noopener" data-yt="1zDxI-lmNtc" aria-label="播放：AirTag 2 開箱與上手指南，含一代二代測試">
+          <img loading="lazy" src="https://i.ytimg.com/vi/1zDxI-lmNtc/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/1zDxI-lmNtc/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>AirTag 2 開箱與上手指南，必學 12 個設定一次看（含 AirTag 1 vs 2 測試）</b><small>頻道：塔科女子 · 有一代與二代的實際比較，對應本文的「新款升級幅度」· 繁中</small></div>
+      </div>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=mktfBFY7d2E" target="_blank" rel="noopener" data-yt="mktfBFY7d2E" aria-label="播放：AirTag 完整使用攻略，共享、NFC、離身通知設定">
+          <img loading="lazy" src="https://i.ytimg.com/vi/mktfBFY7d2E/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/mktfBFY7d2E/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>AirTag 完整使用攻略！共享、NFC、離身通知設定教學</b><small>頻道：塔科女子 · 本文第 2 級提到的那些功能，這支有實際操作畫面 · 繁中</small></div>
+      </div>
+
+      <h3 id="sources">資料來源</h3>
+      <p class="sources">
+        本文的規格、功能範圍與價格皆取自 Apple 官方頁面與官方支援文件，查證日期 2026 年 7 月 27 日：<br>
+        · <a href="https://www.apple.com/tw/newsroom/2026/01/apple-introduces-new-airtag-with-expanded-range-and-improved-findability/">Apple 台灣新聞稿 · 推出新版 AirTag</a>（精確尋找距離與音量提升幅度、第二代超寬頻晶片、Apple Watch 支援錶款、台灣售價、不儲存位置資料、防不必要追蹤機制）<br>
+        · <a href="https://support.apple.com/zh-tw/126203">AirTag（第 2 代）· 技術規格</a>（無線技術、揚聲器、電池、精確尋找相容機型）<br>
+        · <a href="https://support.apple.com/zh-tw/126302">針對遺失的裝置或物品可使用的「尋找」功能</a>（各裝置支援的功能範圍）<br>
+        · <a href="https://support.apple.com/zh-tw/102648">在 iPhone、iPad 或 Mac 上開啟「尋找」</a>（尋找網絡運作方式、支援尋找網絡的 AirPods 型號）<br>
+        · <a href="https://support.apple.com/zh-tw/guide/ipad/ipad445ff36d/ipados">在 iPad 上的「尋找」中定位裝置</a>（裝置分頁、尋找附近的遠近提示）<br>
+        · <a href="https://support.apple.com/zh-tw/guide/ipad/ipad4654d625/ipados">從「尋找」中移除 AirTag、Apple Pencil Pro 或其他物品</a>（一次只能加入一個 Apple 帳號）<br>
+        · <a href="https://support.apple.com/zh-tw/119874">如果收到未知配件跟著你移動的提示</a>（跨平台未知追蹤器警告）<br>
+        · <a href="https://www.apple.com/tw/airtag/">Apple 台灣 · AirTag 產品頁</a>（產品定位為追蹤個人物品）
+      </p>
+      <p class="updated">Apple 隨時可能調整產品線與功能支援範圍。本文查證：<b>2026 年 7 月 27 日</b>；文中標示「部分型號」之處，購買前請以你那款產品的官方規格頁為準。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
