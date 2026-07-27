@@ -159,7 +159,9 @@
   .check { list-style: none; margin: 14px 0; }
   .check li { padding: 9px 0 9px 28px; position: relative; border-bottom: 1px solid var(--grid); font-size: .92rem; color: var(--body); }
   .check li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-family: var(--mono); font-weight: 800; }
-  .check li b { color: var(--ink); }
+  /* 問句獨立成行：這類清單是「問題＋解答」，擠在同一行時問句會被答案吃掉、
+     三個項目糊成一片。6px 比段落間距(22px)小得多，維持「同一項目內」的親近感。 */
+  .check li b { display: block; margin-bottom: 6px; color: var(--ink); }
 
   ul.styled { list-style: none; margin: 12px 0; }
   ul.styled li { padding: 7px 0 7px 20px; position: relative; font-size: .92rem; color: var(--body); border-bottom: 1px solid var(--grid); }
