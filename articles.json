@@ -637,6 +637,7 @@
         "q": "舊 iPad 是不是就用不到這些「尋找」功能？",
         "a": "大部分都用得到。七個功能裡只有兩個卡系統版本：分享物品位置要 iPadOS 18.2 以上、共享 AirTag 要 iPadOS 17 以上，2018 年以後出的 iPad 多半都過得了。像離身通知、顯示聯絡資訊、找到時通知、傳送最後記錄的位置，連 2015 年的 iPad Air 2 都有。要注意的是新款 AirTag（第 2 代）要 iPadOS 26.2.1 才配對得起來。"
       }
-    ]
+    ],
+    "ogImage": "assets/og/find-my-hidden-features-cover.png"
   }
 ]
