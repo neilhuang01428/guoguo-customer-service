@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>「尋找」App 的 7 個隱藏功能：行李掉了怎麼把位置給航空公司 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式 ── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 導言：先講答案的重點卡 */
+  .answer-box { background: linear-gradient(180deg,#fff 0%,var(--navy-bg) 100%); border: 1px solid #d8e2f0; border-radius: 16px; padding: 22px 24px 18px; margin: 26px 0 24px; box-shadow: 0 6px 20px rgba(20,39,68,.06); }
+  .answer-box .ab-tag { font-family: var(--mono); font-size: .66rem; letter-spacing: .06em; color: var(--navy); background: #fff; border: 1px solid #cfdaea; border-radius: 999px; padding: 4px 12px; display: inline-block; margin-bottom: 13px; }
+  .answer-box .ab-lead { font-size: 1.06rem; line-height: 1.8; color: var(--ink); margin: 0 0 16px; }
+  .answer-box .ab-lead b { color: var(--navy); }
+  .ab-facts { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+  .ab-facts .f { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 11px 13px; }
+  .ab-facts .f i { font-style: normal; font-family: var(--mono); font-size: .6rem; letter-spacing: .06em; color: var(--muted); display: block; }
+  .ab-facts .f b { display: block; font-size: .92rem; color: var(--ink); margin: 4px 0 3px; }
+  .ab-facts .f small { display: block; font-size: .76rem; color: var(--muted); line-height: 1.5; }
+
+  /* 導言：這頁給你什麼（三張導覽卡） */
+  .giving { display: grid; grid-template-columns: repeat(3,1fr); gap: 11px; margin: 18px 0 10px; }
+  .giving .g { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .giving .g .gi { font-size: 1.35rem; line-height: 1; }
+  .giving .g b { display: block; font-size: .94rem; color: var(--ink); margin: 8px 0 4px; }
+  .giving .g small { display: block; font-size: .82rem; color: var(--muted); line-height: 1.55; }
+
+  /* 招數編號牌：每節開頭的「第 N 招」 */
+  .trick { display: flex; align-items: center; gap: 12px; margin: 4px 0 14px; }
+  .trick .no { font-family: var(--mono); font-size: .72rem; font-weight: 800; color: #fff; background: var(--c); border-radius: 8px; padding: 5px 10px; flex: none; }
+  .trick .nm { font-size: .9rem; color: var(--body); }
+  .trick .nm b { color: var(--ink); }
+
+  /* 對照表：符號欄 + 可橫捲 */
+  td.y { color: var(--green-deep); font-weight: 700; text-align: center; }
+  td.n { color: var(--muted); text-align: center; }
+  td.p { color: var(--amber); font-weight: 700; text-align: center; }
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 660px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+
+  /* 雙欄清單：對方看得到 / 看不到 */
+  .twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .listcard { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .listcard .hd { font-size: .95rem; font-weight: 800; color: var(--c); margin-bottom: 10px; }
+  .listcard ul { list-style: none; }
+  .listcard li { font-size: .88rem; padding: 6px 0 6px 22px; position: relative; border-bottom: 1px solid var(--grid); color: var(--body); }
+  .listcard li:last-child { border-bottom: 0; }
+  .listcard li::before { content: var(--mk); position: absolute; left: 0; color: var(--c); font-weight: 800; }
+  .listcard li b { color: var(--ink); }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .twocol, .ab-facts, .giving { grid-template-columns: 1fr; }
+    .answer-box { padding: 18px 18px 16px; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>「尋找」隱藏功能</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#answer" class="active">00 · 先講結論</a>
+  <a href="#map">01 · 七招速覽表</a>
+  <div class="grp">出門在外</div>
+  <a href="#luggage">02 · 行李掉了給航空公司</a>
+  <a href="#leftbehind">03 · 離身通知＋信任位置</a>
+  <a href="#share">04 · 一個 AirTag 五個人用</a>
+  <div class="grp">東西找不到</div>
+  <a href="#precision">05 · 箭頭指路的精確尋找</a>
+  <a href="#lostmode">06 · 讓撿到的人聯絡你</a>
+  <a href="#switches">07 · 兩個小開關</a>
+  <div class="grp">你吃得到嗎</div>
+  <a href="#compat">08 · 全世代對照表</a>
+  <a href="#myths">09 · 三個常見誤會</a>
+  <a href="#view">10 · 果果的誠實話</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>2018–2026 全型號都經手</span><span>逐招標「哪一代吃得到」</span><span>缺點照實揭露</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">Apple 生態 / 尋找與防丟</div>
+    <h1>「尋找」App 的 7 個隱藏功能</h1>
+    <p class="subtitle">大部分人只用過「播放聲音」跟看地圖。剩下這七個，有的能讓航空公司幫你找行李，有的能在你走出門的那一刻就拍你肩膀。</p>
+
+    <div class="answer-box">
+      <div class="ab-tag">先講最有用的那一個</div>
+      <p class="ab-lead">行李裡放了 AirTag 卻沒跟你一起下飛機時，打開「尋找」App 就能產生一個七天有效的臨時網頁連結，交給航空公司地勤，他們打開就看得到行李現在在哪。這個功能叫 <b>「分享物品位置」</b>。</p>
+      <div class="ab-facts">
+        <div class="f"><i>台灣適用性</i><b>中華航空有支援</b><small>2025 年 4 月起，Apple 名單上唯一的國籍航空</small></div>
+        <div class="f"><i>版本門檻</i><b>iPadOS／iOS 18.2</b><small>免付費、免安裝，系統內建的按鈕</small></div>
+        <div class="f"><i>有效期限</i><b>七天自動失效</b><small>找回行李或你手動停止也會即刻中止</small></div>
+      </div>
+    </div>
+
+    <p class="lede">這些功能沒有藏在什麼神祕選單裡。它們就在你每天看到的那個畫面下方——只是從來沒人告訴你，那一頁還可以往下滑。</p>
+
+    <div class="giving">
+      <div class="g" style="--c:var(--green)"><div class="gi">🧭</div><b>七招 × 真實情境</b><small>每一招都配一個會發生在你身上的場景，加上完整操作路徑。</small></div>
+      <div class="g" style="--c:var(--navy)"><div class="gi">📱</div><b>逐項標「你吃得到嗎」</b><small>2018–2026 全世代 iPad 對照表，含哪一代卡在哪個版本。</small></div>
+      <div class="g" style="--c:var(--red)"><div class="gi">⚠️</div><b>三個台灣人的誤會</b><small>其中一個功能，台灣目前根本用不到——原因寫在裡面。</small></div>
+    </div>
+
+    <p class="updated">本文查證：<b>2026 年 7 月 28 日</b>，功能與支援清單以 Apple 官方最新公告為準。<a class="inline" href="#sources">來源列在文末</a>。</p>
+
+    <section id="answer">
+      <div class="sec-label" style="--c:var(--navy)">tldr</div>
+      <h2>00 · 先講結論：你現在是哪一種狀況？</h2>
+      <p>先分流，免得你讀完整篇才發現不是你要的：</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--red)">
+          <div class="ct">「東西已經掉了，現在就要救」</div>
+          直接跳 <a class="inline" href="#luggage">第 02 節</a>（行李／交給第三方找）與 <a class="inline" href="#lostmode">第 06 節</a>（讓撿到的人聯絡得到你）。這兩招是掉了以後才用得上的。
+        </div>
+        <div class="callout" style="--c:var(--green)">
+          <div class="ct">「東西還在，我想以後別再掉」</div>
+          看 <a class="inline" href="#leftbehind">第 03 節</a>的離身通知。設定一次，之後你把東西留在餐廳，手機會在你走出去的那一刻提醒你。
+        </div>
+        <div class="callout" style="--c:var(--teal)">
+          <div class="ct">「東西就在附近，但我摸不到」</div>
+          看 <a class="inline" href="#precision">第 05 節</a>。有箭頭指路的那個功能不是每台手機都有，這節寫了誰有誰沒有。
+        </div>
+        <div class="callout" style="--c:var(--amber)">
+          <div class="ct">「我只想知道我這台吃得到幾個」</div>
+          跳 <a class="inline" href="#compat">第 08 節的全世代對照表</a>。先講結論：七招裡有五招跟你的 iPad 幾歲無關。
+        </div>
+      </div>
+
+      <div class="bigquote">
+        <div class="qm">"</div>
+        <p>「尋找」不是一個定位 App，<br>是一套「東西離開你之後」的處理流程。</p>
+        <small>播放聲音只是流程的最後一步。前面還有六步，多數人從來沒開過。</small>
+      </div>
+    </section>
+
+    <section id="map">
+      <div class="sec-label" style="--c:var(--green)">overview</div>
+      <h2>01 · 七招速覽表：一眼看完再決定看哪節</h2>
+      <p>下面這張表是整篇的骨架。「官方名稱」那欄很重要——你在自己的 iPad 或 iPhone 上要找的就是那幾個字，中文介面顯示的跟這裡完全一樣。</p>
+
+      <div class="tbl-wrap">
+      <table>
+        <tr><th>招</th><th>什麼時候用</th><th>在畫面上叫什麼</th><th>版本門檻</th></tr>
+        <tr><td>1</td><td>行李沒跟你下飛機，要讓地勤幫你找</td><td>分享物品位置</td><td>iPadOS／iOS 18.2 以上</td></tr>
+        <tr><td>2</td><td>常常把東西忘在餐廳、教室、客戶那裡</td><td>離身通知＋信任位置</td><td>iPadOS／iOS 15 以上</td></tr>
+        <tr><td>3</td><td>一把鑰匙全家輪流用、東西借給朋友</td><td>共享此 AirTag</td><td>iPadOS／iOS 17 以上</td></tr>
+        <tr><td>4</td><td>知道就在這個房間，但翻不出來</td><td>尋找附近（精確尋找）</td><td>要 UWB 晶片，見第 05 節</td></tr>
+        <tr><td>5</td><td>掉在外面，想讓撿到的人聯絡你</td><td>顯示聯絡資訊</td><td>能加 AirTag 的機型都有</td></tr>
+        <tr><td>6</td><td>現在完全定位不到，想等它出現</td><td>找到時通知</td><td>能加 AirTag 的機型都有</td></tr>
+        <tr><td>7</td><td>手機／平板本身快沒電又找不到</td><td>傳送最後記錄的位置</td><td>設定裡的開關，全機型</td></tr>
+      </table>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">一句話分辨「物品」和「裝置」</div>
+        「尋找」App 底下有兩個分頁：<strong>裝置</strong>放你的 iPhone、iPad、Mac、AirPods；<strong>物品</strong>放 AirTag 與第三方防丟配件。招 1、2、3、4、5、6 都在「物品」那一頁，招 7 在「裝置」。找不到按鈕時，先確認你點對分頁。
+      </div>
+    </section>
+
+    <div class="part-div">出門在外用得到的三招</div>
+
+    <section id="luggage">
+      <div class="sec-label" style="--c:var(--red)">trick_01</div>
+      <h2>02 · 第 1 招：行李掉了，把位置直接給航空公司</h2>
+      <div class="trick" style="--c:var(--red)"><div class="no">招 1</div><div class="nm">畫面上叫 <b>「分享物品位置」</b>·　需要 iPadOS／iOS 18.2 以上</div></div>
+
+      <p>過去行李沒跟著你出來，你只能在櫃檯前跟地勤描述「我的 AirTag 顯示它還在轉機的那個機場」。對方沒辦法查證，你也沒辦法把畫面給他。</p>
+
+      <p>現在你可以直接產生一個網頁連結給他。Apple 官方的說法是：「你可以製作一個臨時網頁，共享遺失 AirTag 或其他物品的位置。例如，你可以與航空公司分享這個網頁，協助他們追蹤處理不當的行李。」</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">🧳</div><div class="bt">你的行李</div><div class="bv">裡面有 AirTag</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">🔗</div><div class="bt">尋找 App</div><div class="bv">產生臨時連結</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">🧑‍✈️</div><div class="bt">地勤打開</div><div class="bv">看到即時位置</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--red-bg)"><div class="bi">⏳</div><div class="bt">7 天後</div><div class="bv">自動失效</div></div>
+        </div>
+        <figcaption>連結會在<b>三種情況</b>下停止：你找回東西、滿七天、或你自己按停止。</figcaption>
+      </figure>
+
+      <h3>怎麼做（四步）</h3>
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">1</div><div><h4>打開「尋找」App，點下方的「物品」</h4><p>不是「裝置」。這個按鈕只有 AirTag 和第三方尋找配件有。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">2</div><div><h4>點那個物品，再點「分享物品位置」</h4><p>依畫面指示製作臨時網頁。這個動作不會把 AirTag 標成遺失，兩件事是分開的。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">3</div><div><h4>把連結傳出去</h4><p>AirDrop、郵件、訊息都可以。中華航空的說法是「透過網站或至服務櫃檯與航空公司共享」，所以你也可以現場給櫃檯。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">4</div><div><h4>回頭看誰看過</h4><p>再點一次「分享物品位置」，裡面有「瀏覽人數」和「到期日」，也可以隨時按「停止分享物品位置」。</p></div></div>
+      </div>
+
+      <h3>對方會看到什麼、看不到什麼</h3>
+      <p>這點值得先知道，因為連結一送出去就收不回來（只能停止分享）。</p>
+
+      <div class="twocol">
+        <div class="listcard" style="--c:var(--amber);--mk:'!'">
+          <div class="hd">對方看得到</div>
+          <ul>
+            <li>物品的<b>最新位置</b>，地圖會自動更新</li>
+            <li>註冊這個物品的 Apple 帳號<b>電話號碼或電子郵件</b></li>
+            <li>物品的<b>序號</b></li>
+            <li>在 iOS 26 以上、AirTag 又在藍牙範圍內時，對方能用「尋找附近」精確定位</li>
+          </ul>
+        </div>
+        <div class="listcard" style="--c:var(--green);--mk:'✓'">
+          <div class="hd">受到保護的部分</div>
+          <ul>
+            <li>對方<b>必須登入才看得到</b>：選 Apple 帳號登入，或選「Apple Partner」輸入公司信箱收驗證碼</li>
+            <li>你的其他物品、其他裝置<b>完全不會出現</b></li>
+            <li>七天後連結自己失效，不需要你記得去關</li>
+            <li>你找回物品後，分享會自動停止</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">兩個會讓你按不出來的雷區</div>
+        第一，Apple 官方註記：<strong>物品如果就在正在分享位置的那台裝置附近，你反而沒辦法分享它的位置</strong>——這個功能是設計給「東西真的不在你身邊」的情況。第二，要讓位置持續更新，你至少要有一台已登入 Apple 帳號的 Apple 裝置保持在線。
+      </div>
+
+      <h3>台灣人最該知道的一段：哪些航空公司真的收</h3>
+      <p>這是最容易被寫錯的數字，我們把兩個官方說法並排給你看，因為它們算的不是同一件事。</p>
+
+      <table>
+        <tr><th>說法</th><th>數字</th><th>它在算什麼</th></tr>
+        <tr><td>Apple 2026 年 1 月公告</td><td>36 家</td><td>目前<strong>實際已經上線</strong>、地勤流程收得了這個連結的航空公司</td></tr>
+        <tr><td>Apple 2026 年 1 月新款 AirTag 新聞稿</td><td>超過 50 家</td><td>Apple <strong>直接簽了合作</strong>、願意接收連結的航空公司總數，其中有些還沒在地勤流程上開通</td></tr>
+      </table>
+
+      <p>台灣的部分很單純：<strong>中華航空是唯一的國籍航空</strong>，2025 年 4 月 15 日宣布支援，也在 Apple 那份 36 家的名單上。長榮與星宇在當時的新聞報導中被列為研議中，本文查證時尚未出現在名單裡。</p>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">這招真的有用嗎？有第三方數字</div>
+        負責全球行李查詢系統 WorldTracer 的 SITA 在 2025 年 12 月公布：行李上有 AirTag 或尋找配件、而且啟用位置分享的情況下，<strong>「真正遺失」的行李數量下降了 90%</strong>；延誤行李的尋回時間也縮短 26%。這不是 Apple 自己的數字，是實際跑這套流程的系統商統計的。
+      </div>
+    </section>
+
+    <section id="leftbehind">
+      <div class="sec-label" style="--c:var(--amber)">trick_02</div>
+      <h2>03 · 第 2 招：走出門那一刻，手機拍你肩膀</h2>
+      <div class="trick" style="--c:var(--amber)"><div class="no">招 2</div><div class="nm">畫面上叫 <b>「離身通知」</b>與 <b>「信任位置」</b>·　需要 iPadOS／iOS 15 以上</div></div>
+
+      <p>這招解決的是一件很具體的事：你把包包留在咖啡廳、把鑰匙忘在客戶辦公室，走到捷運站才發現。開了離身通知之後，只要你跟物品分開，手機當下就會跳通知。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">🚶</div><div class="bt">你走了</div><div class="bv">手機跟著你</div></div>
+          <div class="arr">＋</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">🎒</div><div class="bt">東西沒跟上</div><div class="bv">留在原地</div></div>
+          <div class="arr">＝</div>
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">🔔</div><div class="bt">立刻通知</div><div class="bv">「你把它留下了」</div></div>
+        </div>
+        <figcaption>但如果分開的地點在你的<b>「信任位置」</b>名單裡，就不會吵你。</figcaption>
+      </figure>
+
+      <p>信任位置是這招的靈魂。沒設它的人通常一週就把通知關掉了——因為每天在家把鑰匙丟在玄關、進房間睡覺，都會被提醒一次。Apple 對它的定義是「你可以留下物品而不會收到提示的位置」。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">1</div><div><h4>「物品」→ 點物品 →「通知」下方點「離身通知」</h4><p>把它打開。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">2</div><div><h4>加入信任位置</h4><p>可以直接選系統建議的位置，或點「新增位置」在地圖上自己圈。家和公司一定要加。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">3</div><div><h4>確認「尋找」的通知是開的</h4><p>官方特別標為重要事項：通知被關掉的話，這個功能等於沒開。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--teal)"><div class="ct">同一招也能用在 iPad 本身</div>
+        「裝置」那一頁也有離身提示。常帶 iPad 出門開會、上課的人可以順手開起來——你人走了、iPad 還躺在會議室桌上，手機會提醒你。
+      </div>
+    </section>
+
+    <section id="share">
+      <div class="sec-label" style="--c:var(--teal)">trick_03</div>
+      <h2>04 · 第 3 招：一個 AirTag，最多五個人一起看</h2>
+      <div class="trick" style="--c:var(--teal)"><div class="no">招 3</div><div class="nm">畫面上叫 <b>「共享此 AirTag」</b>·　雙方都要 iPadOS／iOS 17 以上</div></div>
+
+      <p>家裡一把備份鑰匙、一台輪流騎的機車、一個常借人的行李箱——這些東西上的 AirTag 本來只有登記者看得到位置。共享之後，其他人也能在自己的「尋找」裡看到它。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">🔑</div><div class="bt">一個 AirTag</div><div class="bv">你是擁有者</div></div>
+          <div class="arr">＋</div>
+          <div class="box" style="--cbg:var(--teal-bg)"><div class="bi">👥</div><div class="bt">最多 5 位</div><div class="bv">借用人</div></div>
+          <div class="arr">＝</div>
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">📍</div><div class="bt">共 6 人</div><div class="bv">都看得到位置</div></div>
+        </div>
+        <figcaption>官方原文：「你可以與你以外的<b>最多五位借用人</b>共享，每件物品總共六位使用者。」</figcaption>
+      </figure>
+
+      <h3>共享真正的好處，其實不是「一起看」</h3>
+      <p>是<strong>對方不會再被追蹤警告騷擾</strong>。這件事很多人沒意識到，但它才是實際使用上最有感的差別——沒共享的話，對方的手機會不斷提醒他「有東西在跟著你」，那個 AirTag 甚至可能自己叫起來。</p>
+
+      <table>
+        <tr><th>情境</th><th>沒有共享</th><th>有共享</th></tr>
+        <tr><td>把附 AirTag 的鑰匙借給家人</td><td class="bad">對方手機跳出「有未知的 AirTag 跟著你移動」，AirTag 之後還可能自己叫出聲音</td><td class="good">對方不會收到追蹤通知，還能自己用「尋找」和精確尋找找它</td></tr>
+        <tr><td>對方想主動要求</td><td class="bad">只能自己想辦法關通知</td><td class="good">同一個「家人共享」群組內，可在追蹤通知上點「要求擁有者共享 AirTag」</td></tr>
+        <tr><td>你想收回</td><td>—</td><td>隨時可「停止共享」，對方立刻看不到位置</td></tr>
+      </table>
+
+      <details>
+        <summary>共享的四個前提條件（沒過就找不到那個按鈕）</summary>
+        <p>① 你的 Apple 帳號必須開啟雙重認證。② 對方要有 Apple 帳號、已登入、而且有在用 iCloud，兒童帳號不能共享。③ 雙方都要開啟「iCloud 鑰匙圈」。④ 雙方系統要 iOS 17、iPadOS 17、macOS 14 以上。第三方尋找配件的共享方式與 AirTag 完全相同。</p>
+      </details>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">停止共享之後的一個小尾巴</div>
+        對方確實看不到位置了，但 Apple 註明：當這個 AirTag 跟著對方一起移動時，<strong>對方可能仍會收到追蹤通知</strong>。這是防止不必要追蹤的機制，不是故障。
+      </div>
+    </section>
+
+    <div class="part-div">東西找不到時的三招</div>
+
+    <section id="precision">
+      <div class="sec-label" style="--c:var(--purple)">trick_04</div>
+      <h2>05 · 第 4 招：有箭頭指路的「精確尋找」</h2>
+      <div class="trick" style="--c:var(--purple)"><div class="no">招 4</div><div class="nm">畫面上叫 <b>「尋找附近」</b>·　要有超寬頻（UWB）晶片</div></div>
+
+      <p>播放聲音只能告訴你「大概那個方向」。精確尋找給的是箭頭加上剩餘距離，像導航一樣帶你走到它面前，靠近時手機還會震動。東西卡在沙發縫、壓在一疊信件下面時，差別非常明顯。</p>
+
+      <p>代價是它挑硬體，而且 2026 年多了一層——AirTag 出了第二代，用的是第 2 代超寬頻晶片。這層很容易被誤讀，所以先講清楚：新款 AirTag 配舊 iPhone <strong>一樣有箭頭</strong>，只是距離拉不了那麼遠。</p>
+
+      <div class="tbl-wrap">
+      <table>
+        <tr><th>你手上的追蹤器</th><th>要搭什麼才有箭頭</th><th>不符合會怎樣</th></tr>
+        <tr><td>AirTag（第 1 代・2021）</td><td>iPhone 11 與後續機型<small>不包括 iPhone SE 第 2、3 代與 iPhone 16e</small></td><td>退回一般尋找：看地圖、播放聲音</td></tr>
+        <tr><td>AirTag（第 2 代・2026）</td><td>iPhone Air，或 iPhone 15 與後續機型<small>官方限縮的是「更大範圍的」精確尋找，不包括 iPhone 16e 與 iPhone 17e</small></td><td>距離縮回一般水準<small>這代本身還需要 iOS／iPadOS 26.2.1 才加得進「尋找」</small></td></tr>
+        <tr><td>第三方尋找配件</td><td>目前沒有 UWB 方向指引</td><td>只能靠地圖與聲音</td></tr>
+      </table>
+      </div>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">iPad 使用者請先有心理準備</div>
+        Apple 官方的超寬頻裝置清單裡，<strong>沒有任何一台 iPad</strong>——第 1 代、第 2 代都沒有。所以不管你是 2018 年的 iPad Pro 還是最新的 M5 機種，用 iPad 找 AirTag 都<strong>不會出現箭頭</strong>，只有地圖與播放聲音。要箭頭就得拿 iPhone 或支援的 Apple Watch。
+      </div>
+
+      <details>
+        <summary>按不到「尋找附近」時，先檢查這三件事</summary>
+        <p>① 確認你的 iPhone 支援超寬頻（見上表）。② 到「設定」→「隱私權與安全性」→「定位服務」→「尋找」，把「準確位置」打開。③ AirTag 可能單純不在藍牙範圍內——先用地圖走到附近，再試一次。</p>
+        <p style="margin-top:10px">官方另外提醒兩件事：牆壁材質或中間隔著的物體會影響效果；畫面提示光線不足時，確認相機沒被擋住，或直接點「開啟手電筒」。</p>
+      </details>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">地區限制：台灣沒問題，這幾個國家不行</div>
+        超寬頻並非全球通用。Apple 列出的無法使用清單包含俄羅斯、烏克蘭、哈薩克等十個國家；日本因當地法規，部分超寬頻功能受限。<strong>台灣不在限制名單上</strong>，功能正常。
+      </div>
+    </section>
+
+    <section id="lostmode">
+      <div class="sec-label" style="--c:var(--navy)">trick_05</div>
+      <h2>06 · 第 5 招：讓撿到的人有辦法聯絡你</h2>
+      <div class="trick" style="--c:var(--navy)"><div class="no">招 5</div><div class="nm">畫面上叫 <b>「顯示聯絡資訊」</b>·　沒有版本門檻</div></div>
+
+      <p>AirTag 內建 NFC。撿到的人不需要是 iPhone 使用者，也不需要裝任何 App——用<strong>任何支援 NFC 的智慧型手機</strong>（包含 Android）輕觸 AirTag 白色那一面並保持不動，手機就會跳出通知，點下去會打開一個網頁。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">🙋</div><div class="bt">撿到的人</div><div class="bv">任何 NFC 手機</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">📲</div><div class="bt">碰白色那面</div><div class="bv">手機跳通知</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">🌐</div><div class="bt">打開網頁</div><div class="bv">看到你的訊息</div></div>
+        </div>
+        <figcaption>網頁預設只有辨識用資訊；<b>你留的訊息與完整聯絡方式，要先開「顯示聯絡資訊」才會出現</b>。</figcaption>
+      </figure>
+
+      <p>這就是重點。依 Apple 官方的安全指南，沒開這個開關時，撿到的人看到的是物品序號、加上註冊者電話的<strong>末四碼</strong>或一個被遮蔽處理的電子郵件——足以辨識，但打不通、寄不到。</p>
+
+      <p>開了之後，那個網頁才會出現「這個物品已遺失」的訊息，以及你自己填的完整電話或電子郵件。撿到的人這時才真的有辦法聯絡你。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">1</div><div><h4>「物品」→ 點遺失的物品 →「顯示聯絡資訊」</h4><p>依指示輸入可以聯絡到你的電話號碼；想用 email 就點「使用電子郵件地址」。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">2</div><div><h4>訊息可以改</h4><p>回到同一個地方就能編輯電話號碼或訊息內容。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">3</div><div><h4>找回來以後記得關掉</h4><p>點「停止顯示資訊」。忘了關，等於你的電話號碼一直對任何碰到它的人公開。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">留哪個聯絡方式比較好？</div>
+        如果這個 AirTag 是掛在行李箱、鑰匙這種會出現在公共場合的東西上，留一組<strong>你不介意被陌生人看到的聯絡方式</strong>會比較安心——例如專門的 email，而不是你的主要手機號碼。這不是安全漏洞，是設計上必要的取捨：不留東西，撿到的人就沒辦法找你。
+      </div>
+    </section>
+
+    <section id="switches">
+      <div class="sec-label" style="--c:var(--green)">trick_06_07</div>
+      <h2>07 · 第 6、7 招：兩個小開關，掉了才知道多重要</h2>
+
+      <div class="trick" style="--c:var(--green)"><div class="no">招 6</div><div class="nm">畫面上叫 <b>「找到時通知」</b>·　在「物品」分頁</div></div>
+      <p>當某個物品現在完全定位不到，「尋找」會顯示它最後出現的地點與時間。這時往下滑，「通知」下方有一個「找到時通知」——打開它，等到這個 AirTag 再次被任何一支路過的 iPhone 掃到，你就會收到通知。</p>
+      <p>它適合的情境是：你已經知道東西不見了，但沒辦法一直盯著手機看。開起來，讓系統幫你等。</p>
+
+      <div class="trick" style="--c:var(--teal);margin-top:26px"><div class="no">招 7</div><div class="nm">畫面上叫 <b>「傳送最後記錄的位置」</b>·　在「設定」裡，不在 App 裡</div></div>
+      <p>這一招管的是你的 iPad 或 iPhone 本身，不是 AirTag。官方說明是：「若你的裝置電量極低，系統會自動將其位置傳送至 Apple。」</p>
+      <p>差別在關鍵的那幾分鐘。裝置沒電關機之後，地圖上通常就停在最後一次連線的地方；有開這個開關，至少你拿到的是「它斷氣前的位置」，而不是三小時前你還帶著它走路時的位置。</p>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">順手一起確認的第三個開關</div>
+        同一組設定裡還有「尋找網絡」。它讓裝置在<strong>沒有連 Wi-Fi、也沒有行動網路</strong>的情況下仍然能被定位——靠的是路過的其他 Apple 裝置匿名代為回報。這三個開關建議一起開，它們是同一件事的前中後段。
+      </div>
+    </section>
+
+    <div class="part-div">你手上那台，吃得到幾招？</div>
+
+    <section id="compat">
+      <div class="sec-label" style="--c:var(--amber)">compatibility</div>
+      <h2>08 · 全世代對照表：舊 iPad 到底被落下多少</h2>
+      <p>果果 2018 到 2026 年的 iPad 全型號都在賣，最常被問的一句就是「舊的是不是就吃不到這些新功能」。我們把它拆開算給你看。</p>
+
+      <p>七招裡面，<strong>真正卡系統版本的只有兩招</strong>：招 1（分享物品位置，要 18.2）與招 3（共享 AirTag，要 17）。招 4 跟版本無關、是硬體問題，而且所有 iPad 一律不支援。其餘四招的門檻低到不構成問題——最高的是離身通知，只要 iPadOS 15。</p>
+
+      <div class="tbl-wrap">
+      <table>
+        <tr><th>你的 iPad</th><th>最高可升</th><th>招 1 分享位置</th><th>招 3 五人共享</th><th>招 4 箭頭指路</th><th>其餘四招</th></tr>
+        <tr><td>iPad Pro 11"（全代）<br>iPad Pro 12.9"（第 3 代／2018 起）</td><td>iPadOS 26</td><td class="y">✓</td><td class="y">✓</td><td class="n">✗</td><td class="y">✓</td></tr>
+        <tr><td>iPad Air 第 3 代起<br>iPad mini 第 5 代起</td><td>iPadOS 26</td><td class="y">✓</td><td class="y">✓</td><td class="n">✗</td><td class="y">✓</td></tr>
+        <tr><td>iPad 第 8 代起（含 A16）</td><td>iPadOS 26</td><td class="y">✓</td><td class="y">✓</td><td class="n">✗</td><td class="y">✓</td></tr>
+        <tr><td>iPad 第 7 代（2019）</td><td>iPadOS 18</td><td class="y">✓</td><td class="y">✓</td><td class="n">✗</td><td class="p">✓<small>加不了 AirTag 第 2 代</small></td></tr>
+        <tr><td>iPad 第 6 代（2018）<br>iPad Pro 10.5"、12.9"（第 2 代）</td><td>iPadOS 17</td><td class="n">✗</td><td class="y">✓</td><td class="n">✗</td><td class="y">✓</td></tr>
+        <tr><td>更早的機型<br>（iPad 第 5 代、Air 2、mini 4…）</td><td>iPadOS 16 或更舊</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="y">✓</td></tr>
+      </table>
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">看完這張表，最實際的三個結論</div>
+        ① <strong>2018 年以後的 iPad 幾乎全部吃得到招 1 和招 3</strong>，只有 iPad 第 6 代那一批卡在 iPadOS 17。② 就算是 2015 年的 iPad Air 2，加 AirTag、開離身通知、設遺失聯絡資訊都沒問題。③ <strong>沒有任何一台 iPad 有箭頭指路</strong>，這一招從第一天起就是 iPhone 與 Apple Watch 專屬。
+      </div>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">AirTag 第 2 代有個容易踩到的門檻</div>
+        Apple 的技術規格頁寫「需要 iPadOS 26.0 以上」，但支援文件另外註明實際要<strong>更新到 26.2.1 才配對得起來</strong>——那是 Apple 為了支援新 AirTag 才推的版本。所以停在 iPadOS 18 的 iPad 第 7 代買新款回來會加不進去，第 1 代則只要 iPadOS 14.5 以上就行。
+      </div>
+    </section>
+
+    <section id="myths">
+      <div class="sec-label" style="--c:var(--red)">myths</div>
+      <h2>09 · 三個在台灣特別容易誤會的地方</h2>
+
+      <ul class="flags">
+        <li><b>誤會一：以為「沒訊號也能用衛星回報位置」</b><br>「尋找」確實有透過衛星分享位置的功能，但它有地區限制，而台灣不在名單上。對照 Apple 官方的功能適用範圍頁：「透過衛星傳送訊息」目前只列出加拿大、日本、墨西哥、美國四地，<strong>台灣不在其中</strong>，台灣也還沒開放衛星緊急服務。所以在台灣爬山、去無訊號的地方，別把希望寄託在衛星上。</li>
+        <li><b>誤會二：以為 AirTag 有 GPS、可以即時追蹤</b><br>AirTag 沒有 GPS、沒有 SIM 卡。地圖上那個點其實是「剛好路過的別人的 iPhone 幫忙回報的位置」。人多的地方更新很快，深山、地下室、金屬櫃裡就會停在最後一次被看到的地方。</li>
+        <li><b>誤會三：以為連結傳出去對方就能直接看</b><br>不行。收到「分享物品位置」連結的人<strong>必須先驗證身分</strong>：一般人用自己的 Apple 帳號登入，航空公司地勤則選「Apple Partner」、輸入公司信箱收驗證碼。所以你不能隨手傳給一個沒有 Apple 帳號、也不是合作夥伴的路人。</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">還有一個沒有標準答案的：AirPods 能不能用招 1？</div>
+        官方文件寫的是「遺失 AirTag 或『尋找』網絡配件」，而 AirPods 被歸在「裝置」分頁、不在「物品」分頁，依此推論按不到那個按鈕。但我們沒查到官方明文排除，所以這條列為<strong>待驗證</strong>——最快的確認方法是打開你的「尋找」點 AirPods 看一眼。
+      </div>
+    </section>
+
+    <section id="view">
+      <div class="sec-label" style="--c:var(--purple)">our_take</div>
+      <h2>10 · 果果的誠實話：這七招，沒有一招值得你為它換新機</h2>
+
+      <p>我們天天在對照 2018 到 2026 年的每一代 iPad，所以這句話有底氣：七招裡有<strong>五招跟你的 iPad 幾歲無關</strong>。真正被版本擋住的只有兩招，而擋人的門檻是 iPadOS 17 與 18.2——2018 年以後出的機器，多半都過得了這兩關。</p>
+
+      <p>唯一真的有新舊落差的是箭頭指路，但那個落差不在 iPad 身上，而在 iPhone。而且就算你有最新的 iPhone，箭頭也只在最後幾公尺才派得上用場。</p>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">決定成敗的是前面那幾步，不是最後那幾公尺</div>
+        有沒有開離身通知、有沒有留聯絡資訊、有沒有記得產生連結給航空公司——這三件事全部不挑機型。這是我們一貫的立場，也是我們願意賣二手機的理由：真正天天在用的功能，通常不住在最新那一代裡面。
+      </div>
+
+      <h3>一個從售後學到的提醒：買二手 AirTag 要先問這件事</h3>
+      <p>AirTag 和 Apple Pencil Pro 一樣，一次只能綁在一個 Apple 帳號底下。前一位使用者沒有從自己的「尋找」移除，下一位就<strong>加不進去</strong>——而且這件事光測功能測不出來，它照樣會叫、照樣有電。</p>
+
+      <p>所以買二手的追蹤配件時，把「能不能加進我自己的帳號」當成必測項目，而不是看它會不會響。這個坑我們替客人踩過，寫在這裡讓你不用再踩一次。</p>
+
+      <div class="bigquote">
+        <div class="qm">"</div>
+        <p>找得回東西的人，不是手機比較新的人，<br>是七天前就把開關打開的人。</p>
+        <small>這七個開關全部免費，全部在你已經有的那台裝置裡。</small>
+      </div>
+
+      <h3>延伸觀看（YouTube 參考）</h3>
+      <p style="font-size:.9rem;color:var(--muted)">這篇講的是「有哪些功能、誰吃得到」；下面三支繁中影片補上實際操作與新聞脈絡。影片為第三方製作，功能細節仍以 Apple 官方說明為準。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=uXxpwM8Q_9c" target="_blank" rel="noopener" data-yt="uXxpwM8Q_9c" aria-label="播放：華航攜蘋果支援 AirTag 分享行李位置新聞報導">
+          <img loading="lazy" src="https://i.ytimg.com/vi/uXxpwM8Q_9c/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/uXxpwM8Q_9c/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>行李不見怎麼辦？華航攜蘋果支援追蹤，AirTag 分享行李位置｜非凡財經新聞 20250415</b><small>頻道：USTV 非凡電視 · 第 02 節那件事的當天台灣新聞，也交代了長榮、星宇當時的態度 · 繁中</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=lPUND49olbo" target="_blank" rel="noopener" data-yt="lPUND49olbo" aria-label="播放：AirTag 2 十個你可能沒用過的用法">
+          <img loading="lazy" src="https://i.ytimg.com/vi/lPUND49olbo/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/lPUND49olbo/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>AirTag 2 還能這樣用？10 個你可能沒用過的用法</b><small>頻道：彼得森 · 2026 年 1 月的新片，與本文同一個題目但取角不同，可以互相補洞 · 繁中</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=mktfBFY7d2E" target="_blank" rel="noopener" data-yt="mktfBFY7d2E" aria-label="播放：AirTag 完整使用攻略，共享、NFC、離身通知設定教學">
+          <img loading="lazy" src="https://i.ytimg.com/vi/mktfBFY7d2E/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/mktfBFY7d2E/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>AirTag 完整使用攻略！共享、NFC、離身通知設定教學</b><small>頻道：塔科女子 · 本文第 03、04、06 節的實際操作畫面都在這支裡（2024 年拍攝，介面與現在略有差異）· 繁中</small></div>
+      </div>
+
+      <h3 id="sources">資料來源</h3>
+      <p class="sources">本文的功能說明、版本門檻與機型清單皆取自 Apple 官方支援文件與官方頁面，航空公司家數與成效數字另註出處，查證日期 2026 年 7 月 28 日：</p>
+      <ul class="sources">
+        <li><a href="https://support.apple.com/zh-tw/121488">如何使用「尋找遺失的物品」</a>（系統版本需求、收件方必須以 Apple 帳號或 Apple 合作夥伴身分驗證、對方看得到的資訊、七天到期）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipad696c3e93/ipados">在 iPad 上的「尋找」中分享遺失物品的位置</a>（操作步驟、瀏覽人數與到期日、物品靠近分享裝置時無法分享）</li>
+        <li><a href="https://support.apple.com/guide/findmy-mac/share-the-location-of-a-lost-item-fmm22667ba3b/mac">Mac 版「尋找」使用手冊 · 分享遺失物品的位置</a>（三種終止條件、物品在附近時無法分享、需一台裝置在線）</li>
+        <li><a href="https://www.apple.com/newsroom/2024/11/apples-find-my-enables-sharing-location-of-lost-items-with-third-parties/">Apple Newsroom · Find My 開放與第三方分享遺失物品位置</a>（功能推出版本、端對端加密、首波合作航空公司名單）</li>
+        <li><a href="https://www.apple.com/newsroom/2026/01/2025-marked-a-record-breaking-year-for-apple-services/">Apple Newsroom（2026/01/12）· 2025 年服務回顧</a>（新增 27 家、合計 36 家航空公司支援 Share Item Location）</li>
+        <li><a href="https://www.apple.com/newsroom/2026/01/apple-introduces-new-airtag-with-expanded-range-and-improved-findability/">Apple Newsroom（2026/01/26）· 推出新款 AirTag</a>（已直接與超過 50 家航空公司合作、更大範圍的精確尋找）</li>
+        <li><a href="https://www.china-airlines.com/hk/en/discover/news/press-release/20250415">中華航空官方新聞稿（2025/04/15）</a>（華航啟用 Find My 分享物品位置協助尋回行李）</li>
+        <li><a href="https://www.apple.com/tw/airtag/">Apple 台灣 · AirTag 產品頁</a>（精確尋找相容機型、系統需求、台灣上市狀況）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipadbc45b698/ipados">在 iPad 上的「尋找」中共享 AirTag 或其他物品</a>（最多五位借用人、四項前提條件、追蹤通知與停止共享）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipad6fcf5158/ipados">在 iPad 上「尋找」中設定離身提示</a>（離身通知、信任位置定義、需允許通知）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/findmy-mac/get-notified-if-you-leave-an-item-behind-fmm8fbb0b3e8/mac">Mac 版「尋找」使用手冊 · 離身提示</a>（離身提示與信任位置的官方定義、iOS／iPadOS 15 以上的版本門檻）</li>
+        <li><a href="https://support.apple.com/guide/personal-safety/stay-safe-with-airtag-ips139b15fd9/web">Apple 個人安全使用指南 · 安全使用 AirTag</a>（NFC 網頁顯示序號與電話末四碼／遮蔽的電子郵件、共享後追蹤通知被抑制）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipad5eed364c/ipados">在 iPad 上的「尋找」中將 AirTag 或其他物品標記為遺失</a>（顯示聯絡資訊、修改與關閉方式）</li>
+        <li><a href="https://support.apple.com/zh-tw/102170">如何找出 AirTag 的型號或序號</a>（任何支援 NFC 的智慧型手機皆可讀取、兩代型號代碼）</li>
+        <li><a href="https://support.apple.com/zh-tw/109021">使用 AirTag 和「尋找」來追蹤個人物品</a>（尋找附近的操作、準確位置設定、共享後不再收到追蹤通知）</li>
+        <li><a href="https://support.apple.com/zh-tw/109512">了解超寬頻適用情況</a>（第 1／第 2 代 UWB 裝置清單、無 iPad 列入、無法使用的國家清單）</li>
+        <li><a href="https://support.apple.com/zh-tw/111847">AirTag · 技術規格</a>（第 1 代精確尋找相容機型、iPadOS 14.5 以上）</li>
+        <li><a href="https://support.apple.com/zh-tw/126203">AirTag（第 2 代）· 技術規格</a>（2026 年推出、需 iOS／iPadOS 26、更大範圍精確尋找的機型限制）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipadb17e07b8/ipados">將 iPad 加入「尋找」</a>（尋找網絡、傳送最後記錄的位置）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/iphone/ipha779f0c10/ios">在 iPhone 上的「尋找」中定位 AirTag 或其他物品</a>（找到時通知、播放聲音、路線）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipad213a25b2/ipados">相容於 iPadOS 26 的 iPad 機型</a>（以及 18.0、17.0 版本的對應清單，用於第 08 節對照表）</li>
+        <li><a href="https://www.apple.com/tw/ios/feature-availability/">Apple 台灣 · iOS 與 iPadOS 功能特色適用範圍</a>（透過衛星傳送訊息的開放地區）</li>
+        <li><a href="https://www.macrumors.com/2026/01/12/iphone-airtag-bag-tracking-airlines-list/">MacRumors · 支援 Share Item Location 的 36 家航空公司名單</a>（引述 Apple 2026 年 1 月公告，中華航空為名單中唯一國籍航空）</li>
+        <li><a href="https://www.sita.aero/pressroom/news-releases/one-year-later-sita-shows-how-integration-of-apples-find-my-share-item-location-can-strengthen-baggage-operations-for-airports-and-airlines/">SITA 新聞稿（2025/12/18）</a>（真正遺失行李減少 90%、延誤行李尋回時間縮短 26%）</li>
+        <li><a href="https://www.ettoday.net/news/20250415/2943535.htm">ETtoday · 華航攜手 Apple 支援 AirTag 行李追蹤（2025/04/15）</a>（華航開放日期、透過網站或服務櫃檯共享連結）</li>
+      </ul>
+      <p class="updated">Apple 隨時可能調整功能範圍與合作名單，航空公司家數也會持續增加。本文查證：<b>2026 年 7 月 28 日</b>；出發前請以你搭乘的航空公司與 Apple 官方最新公告為準。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
