@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AirTag 不是 GPS 追蹤器：它靠什麼定位、9 種會失效的情況 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式 ── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 三層答案卡 */
+  .layers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 22px 0; }
+  .layer { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 12px; padding: 16px 18px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .layer .ic { font-size: 1.6rem; line-height: 1; }
+  .layer .q { font-family: var(--mono); font-size: .66rem; color: var(--c); margin-top: 8px; }
+  .layer .nm { font-size: 1.02rem; font-weight: 800; color: var(--ink); margin-top: 3px; }
+  .layer .one { font-size: .88rem; color: var(--body); margin-top: 8px; }
+
+  /* 對照表符號欄 */
+  td.y { color: var(--green-deep); font-weight: 700; text-align: center; }
+  td.n { color: var(--red); text-align: center; }
+  td.m { color: var(--muted); text-align: center; }
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 620px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+
+  /* 失效情境：編號徽章 */
+  .fail { display: grid; gap: 9px; margin: 18px 0; }
+  .failrow { display: flex; gap: 13px; align-items: flex-start; background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 10px; padding: 13px 16px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .failrow .n { font-family: var(--mono); min-width: 26px; height: 26px; border-radius: 7px; background: var(--cbg); color: var(--c); font-weight: 800; font-size: .8rem; display: grid; place-items: center; flex: none; }
+  .failrow h4 { font-size: .97rem; color: var(--ink); font-weight: 700; margin-bottom: 3px; }
+  .failrow p { font-size: .87rem; color: var(--body); margin: 0; }
+  .failrow .see { display: block; font-family: var(--mono); font-size: .74rem; color: var(--muted); margin-top: 6px; }
+  .failrow .see::before { content: '你會看到 › '; color: var(--c); }
+
+  /* 分組小標 */
+  .gtitle { font-family: var(--mono); font-size: .68rem; letter-spacing: .05em; color: var(--c); margin: 24px 0 4px; }
+  .gtitle::before { content: '── '; color: var(--line); }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .layers { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>AirTag 怎麼定位</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#answer" class="active">00 · 先講結論</a>
+  <div class="grp">它怎麼運作</div>
+  <a href="#how">01 · 位置是誰傳的</a>
+  <a href="#missing">02 · 它沒有的三樣</a>
+  <div class="grp">會失效的時候</div>
+  <a href="#fail">03 · 9 種失效情況</a>
+  <a href="#good">04 · 什麼時候最好用</a>
+  <div class="grp">買之前</div>
+  <a href="#check">05 · 三個檢查</a>
+  <a href="#stand">06 · 果果的立場</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>我們沒賣 AirTag</span><span>所以敢直接勸退</span><span>規格全部附官方出處</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">Apple 配件 / 定位原理</div>
+    <h1>AirTag 不是 GPS 追蹤器</h1>
+    <p class="subtitle">它靠什麼知道東西在哪？為什麼位置常常停在半小時前？這篇把定位機制講清楚，再列出 9 種它一定會失效的情況。</p>
+
+    <p class="lede">AirTag 身上沒有 GPS、沒有 SIM 卡、也沒有 Wi-Fi。它唯一做的事是不斷發出藍牙訊號，等路過的陌生 iPhone 聽到、再幫它把位置回報給你。位置不是它自己算的，是<strong>別人幫忙傳的</strong>。</p>
+
+    <p class="lede">懂了這一句，後面九種失效情況全部推得出來——沒有人經過的地方，<strong>它就是啞的</strong>。</p>
+
+    <p class="updated">本文查證：<b>2026 年 7 月 28 日</b>，規格與售價以 Apple 官方最新公告為準。<a class="inline" href="#sources">來源列在文末</a>。</p>
+
+    <section id="answer">
+      <div class="sec-label" style="--c:var(--navy)">three_facts</div>
+      <h2>00 · 三句話先講完</h2>
+      <p>買之前想知道的、東西掉了正在查的，需要的其實是同一組事實。先攤開，後面每一節各展開一個：</p>
+
+      <div class="layers">
+        <div class="layer" style="--c:var(--teal)">
+          <div class="ic">📡</div>
+          <div class="q">事實一 · 它有什麼</div>
+          <div class="nm">藍牙、UWB、NFC</div>
+          <div class="one">官方技術規格的「連接」欄只列這三項。藍牙負責被聽見，UWB 負責最後幾公尺的方向。</div>
+        </div>
+        <div class="layer" style="--c:var(--red)">
+          <div class="ic">🚫</div>
+          <div class="q">事實二 · 它沒有什麼</div>
+          <div class="nm">沒有 GPS 也沒有網路</div>
+          <div class="one">同一份規格從頭到尾沒有出現 GPS、SIM 或 Wi-Fi。它沒辦法自己把位置送出去。</div>
+        </div>
+        <div class="layer" style="--c:var(--amber)">
+          <div class="ic">🚶</div>
+          <div class="q">事實三 · 所以會怎樣</div>
+          <div class="nm">要有人經過才有位置</div>
+          <div class="one">附近沒有 Apple 裝置，地圖就停在最後一次被聽見的地方，而且最多只留 7 天。</div>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">先說清楚：這篇不是要你別買</div>
+        AirTag 用在對的地方非常好用，第 <a class="inline" href="#good">04 節</a>會列出來。這篇要做的是把「它做不到什麼」講在你花錢之前，而不是等東西掉了、盯著一個沒更新的地圖才發現。
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="sec-label" style="--c:var(--teal)">how_it_works</div>
+      <h2>01 · 你看到的位置，其實是陌生人傳的</h2>
+      <p>很多人以為 AirTag 像行車紀錄器或寵物定位項圈，會自己回報座標。實際的流程要繞一大圈，而且中間有一段完全不受你控制：</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">🏷️</div><div class="bt">第一步</div><div class="bv">AirTag<br>發出藍牙訊號</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">📱</div><div class="bt">第二步 · 關鍵</div><div class="bv">路過的陌生<br>Apple 裝置聽到</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--teal-bg)"><div class="bi">🔐</div><div class="bt">第三步</div><div class="bv">加密回報<br>給 Apple</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">🗺️</div><div class="bt">第四步</div><div class="bv">你的「尋找」<br>顯示大約位置</div></div>
+        </div>
+        <figcaption>整條鏈只要<b>第二步沒發生</b>，後面三步都不會發生。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--navy)">
+        <div class="ct">Apple 官方怎麼描述這件事</div>
+        「『尋找』網絡是超過十億部 Apple 裝置所構成的<strong>眾包網絡</strong>，這些裝置會使用藍牙技術來偵測配件或裝置的位置，並將其<strong>大約位置</strong>回報給擁有者。」——注意兩個詞：「眾包」代表要靠別人，「大約」代表不是精準座標。
+      </div>
+
+      <p>這裡有個容易被跳過的細節：你在地圖上看到的那個經緯度，其實是那部路過手機自己的 GPS 座標。AirTag 只負責喊「我在這裡」，把「這裡是哪裡」填進去的，是<strong>別人的手機</strong>。</p>
+
+      <p>十億部聽起來很多，但重點不是總數，是<strong>此時此刻、那個地點有沒有人</strong>。台北捷運站裡一分鐘可能經過上百部 iPhone；南橫公路的某個彎道，可能三小時都沒有一部。同一顆 AirTag 在這兩個地方的表現，會像兩種產品。</p>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">台灣其實是相對有利的環境</div>
+        「尋找」網絡的密度取決於周遭有多少 Apple 裝置——而且不只 iPhone，iPad 與 Mac 同樣算數。以 StatCounter 的統計，2026 年 6 月台灣行動裝置的 iOS 使用佔比約 <strong>57%</strong>（網頁流量推估值，不是官方普查）。但這改變不了「離開人群就失效」的本質——它讓好的情況更好，不會讓壞的情況變好。
+      </div>
+    </section>
+
+    <section id="missing">
+      <div class="sec-label" style="--c:var(--red)">what_it_lacks</div>
+      <h2>02 · 它身上沒有的三樣東西</h2>
+      <p>把手機、AirTag、專用 GPS 追蹤器擺在一起，差別一眼就看得出來。這張表也順便解釋了為什麼 AirTag 一顆鈕扣電池可以撐一年多：</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>能力</th><th>你的 iPhone</th><th>AirTag</th><th>專用 GPS 追蹤器</th></tr>
+          <tr><td>GPS 晶片</td><td class="y">有</td><td class="n">沒有</td><td class="y">有</td></tr>
+          <tr><td>SIM 卡／行動網路</td><td class="y">有</td><td class="n">沒有</td><td class="y">有<small>要付月租</small></td></tr>
+          <tr><td>Wi-Fi</td><td class="y">有</td><td class="n">沒有</td><td class="m">部分機種有</td></tr>
+          <tr><td>藍牙</td><td class="y">有</td><td class="y">有</td><td class="y">有</td></tr>
+          <tr><td>能不能自己回報位置</td><td class="y">能</td><td class="n">不能<small>要靠路過的裝置代傳</small></td><td class="y">能</td></tr>
+          <tr><td>電池</td><td class="m">一天一充</td><td class="y">CR2032 撐一年以上<small>可自行更換</small></td><td class="m">通常數天到數週</td></tr>
+          <tr><td>月租費</td><td class="m">有</td><td class="y">沒有</td><td class="n">有</td></tr>
+        </table>
+      </div>
+
+      <p>沒有 GPS、沒有網路，正是它便宜又省電的原因。你省下的月租費，代價就是<strong>那條要靠陌生人接力的鏈</strong>——這不是缺陷，是設計上的交換。理解這個交換，才不會用錯地方。</p>
+
+      <div class="callout" style="--c:var(--teal)">
+        <div class="ct">「它沒有 GPS」這件事，是怎麼確定的？</div>
+        Apple 從來沒有寫過「AirTag 沒有 GPS」這句話——官方規格是<strong>沒有列出</strong>，不是明文否認。真正把它釘死的是拆解：iFixit 與 Hackaday 拆開第 2 代，內部只有 Nordic 藍牙晶片、Apple U2 超寬頻晶片、Bosch 加速度計與一顆記憶體，沒有 GPS、沒有蜂巢式數據機，也沒有衛星元件。
+      </div>
+
+      <details>
+        <summary>那「精確尋找」的方向箭頭又是什麼？</summary>
+        <p>那是 UWB（超寬頻）晶片在最後幾公尺才會啟動的功能，跟「它現在在哪個城市」是兩回事。</p>
+        <p>AirTag 第 2 代用的是 Apple 第二代 UWB 晶片，官方說精確尋找的適用距離最遠比前一代長 50%，揚聲器音量也提升 50%。</p>
+        <p>但要用到它，你得先走到 AirTag 附近。UWB 算出來的是「相對於你現在位置的方向與距離」，不是經緯度——它幫你解決「最後十公尺」，不解決「它在哪一區」。</p>
+      </details>
+    </section>
+
+    <section id="fail">
+      <div class="sec-label" style="--c:var(--red)">failure_modes</div>
+      <h2>03 · 九種它會失效的情況</h2>
+      <p>下面九種分成三類。前四種是環境問題、中間兩種是時間問題，最後三種最重要——那是<strong>用途本身就選錯了</strong>，換多好的產品都救不回來。</p>
+
+      <div class="gtitle" style="--c:var(--amber)">環境類 · 訊號傳不出去</div>
+      <div class="fail">
+        <div class="failrow" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="n">01</div>
+          <div>
+            <h4>深山、產業道路、人煙稀少的郊區</h4>
+            <p>沒有 Apple 裝置經過，就沒有人幫它把位置傳出去。台灣要分開看：熱門百岳路線假日人流不小，其實撐得住；真正會失效的是傳統路線、廢棄產業道路這種平常沒人走的地方。</p>
+            <span class="see">位置停在最後一次有人經過的地方</span>
+          </div>
+        </div>
+        <div class="failrow" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="n">02</div>
+          <div>
+            <h4>完整包覆的金屬空間：保險箱、貨櫃、鐵櫃深處</h4>
+            <p>藍牙是低功率短距訊號，被完整包覆的金屬擋住會大幅衰減。但 Apple 官方的措辭也很保守，只說「牆壁材質或物體可能會影響尋找效果」——是變慢變不準，不是保證歸零。</p>
+            <span class="see">更新變慢、斷斷續續，不一定完全消失</span>
+          </div>
+        </div>
+        <div class="failrow" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="n">03</div>
+          <div>
+            <h4>泡水超過官方標示的範圍</h4>
+            <p>官方標示為 IP67：最深 1 公尺、最長 30 分鐘。掉進深一點的水池或泡久了，就超出設計範圍。官方也註明防水能力會隨日常耗損下降。</p>
+            <span class="see">可能直接失去訊號，不只是延遲</span>
+          </div>
+        </div>
+        <div class="failrow" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="n">04</div>
+          <div>
+            <h4>極端溫度</h4>
+            <p>官方標示的作業環境溫度是 −20°C 到 60°C。夏天曬整個下午的車內、或冷凍庫，都可能超出這個範圍。</p>
+            <span class="see">在恢復正常溫度前可能停止回報</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">「拿它當登山防走失」要分兩個階段看</div>
+        平常在山上走的那段幾乎沒用——路上沒人，就沒人幫它回報。但真的出事、搜救隊帶著幾十支手機進場之後，它反而可能突然回報一次最後位置。所以它不是登山追蹤器，比較像<strong>一張搜救時才可能被讀到的紙條</strong>。
+      </div>
+
+      <div class="gtitle" style="--c:var(--purple)">時間類 · 過期就沒了</div>
+      <div class="fail">
+        <div class="failrow" style="--c:var(--purple);--cbg:var(--purple-bg)">
+          <div class="n">05</div>
+          <div>
+            <h4>電池沒電</h4>
+            <p>用的是可自行更換的 CR2032 鈕扣電池，官方標示可運作超過一年。但沒電之後它就不再發訊號，也就沒有任何裝置聽得到它。</p>
+            <span class="see">停在沒電前的最後一個位置</span>
+          </div>
+        </div>
+        <div class="failrow" style="--c:var(--purple);--cbg:var(--purple-bg)">
+          <div class="n">06</div>
+          <div>
+            <h4>超過 7 天沒有回報</h4>
+            <p>這條最多人不知道。官方明訂：距離上次透過「尋找」網絡傳送位置超過 7 天，系統就<strong>不再顯示位置</strong>，連最後已知的那個點都看不到。</p>
+            <span class="see">畫面直接變成「找不到位置」</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="gtitle" style="--c:var(--red)">用途類 · 一開始就選錯工具</div>
+      <div class="fail">
+        <div class="failrow" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="n">07</div>
+          <div>
+            <h4>拿來追寵物</h4>
+            <p>官方在新版 AirTag 的發表資料裡寫得很明白：「為追蹤物品而設計，<strong>而非用於追蹤人或寵物</strong>。」而且貓狗走失時多半往人少的地方鑽，正好是它最無力的環境。</p>
+            <span class="see">位置嚴重落後，或整段時間沒有更新</span>
+          </div>
+        </div>
+        <div class="failrow" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="n">08</div>
+          <div>
+            <h4>拿來掌握小孩或長輩的行蹤</h4>
+            <p>對方的手機會跳出「偵測到有 AirTag 正跟著你移動」，AirTag 本身離開你之後也會在移動時發出聲音——這是 Apple 與 Google 共同建立的跨平台機制，不是漏洞。官方另外提醒：未經同意追蹤他人行蹤，在許多國家與地區是犯罪行為。</p>
+            <span class="see">對方收到通知，而你得到的仍只是大約位置</span>
+          </div>
+        </div>
+        <div class="failrow" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="n">09</div>
+          <div>
+            <h4>拿來防機車、單車或汽車被偷</h4>
+            <p>跟第 08 種同一個機制：偷走它的人手機會收到提示，AirTag 也會自己叫。防不必要追蹤的設計保護了所有人，也包含小偷。想防竊該找的是有 GPS 與 SIM 卡的專用設備。</p>
+            <span class="see">等於主動通知對方「這台裝了追蹤器」</span>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-size:.9rem;color:var(--muted)">最後這三種不是規格問題，是期待放錯位置。這支繁體中文影片把同樣幾種情境逐一實測拆解，看完會比讀規格表更有感覺。</p>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=6TYioy53dds" target="_blank" rel="noopener" data-yt="6TYioy53dds" aria-label="播放：蘋果 AirTag 沒那麼神，五種常見用途逐一說明為什麼不合適">
+          <img loading="lazy" src="https://i.ytimg.com/vi/6TYioy53dds/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/6TYioy53dds/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>蘋果 AirTag 沒那麼神！抓姦／找老人／顧小孩／找機車／登山搜救，都不合適！</b><small>頻道：陳寗 NingSelect · 把本節「用途類」三種失效拆成五個實際情境逐一說明，論據與本文一致：它沒有 GPS，得靠路過的手機代傳 · 繁中（含 CC 字幕）</small></div>
+      </div>
+
+      <details>
+        <summary>那託運行李在飛機貨艙裡，不是包得更徹底嗎？</summary>
+        <p>對，這個反例正好說明「有金屬」不等於「一定失效」。實務上大量案例是飛行中完全不更新、落地艙門一開就跳出位置——訊號被壓住的那段變成空白，但沒有永久消失。</p>
+        <p>所以上面第 02 種要理解成「更新會延遲、會斷」，而不是「碰到金屬就找不到」。真正接近完全阻斷的，是密封保險箱、貨櫃這種沒有縫隙的完整包覆。</p>
+      </details>
+
+      <details>
+        <summary>那我可以回頭看它走過哪些路嗎？</summary>
+        <p>不行。官方明確說明 AirTag 不會在裝置上<strong>實體儲存位置資料或記錄</strong>，所有與「尋找」網絡的通訊都經過端對端加密，只有擁有者能存取位置。你看到的是「目前的大約位置」，不是一條完整軌跡——它不是行車紀錄器。</p>
+      </details>
+    </section>
+
+    <section id="good">
+      <div class="sec-label" style="--c:var(--green)">good_uses</div>
+      <h2>04 · 那它什麼時候最好用？</h2>
+      <p>把上面九種反過來看，適合的條件其實很清楚：東西會待在有人的地方，而且你只要「<strong>提高找回機率</strong>」而不是「即時掌握」。</p>
+
+      <div class="grid">
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">最經典的用途</div>
+          <h4>託運行李</h4>
+          <p>機場與飛機周圍全是人和 Apple 裝置，訊號幾乎不會斷。Apple 已與超過 50 家航空公司合作「分享物品位置」功能。</p>
+          <span class="ex">✅ 環境條件完美</span>
+        </div>
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">日常最有感</div>
+          <h4>鑰匙、錢包</h4>
+          <p>多數時候是掉在家裡或辦公室——這時派上用場的其實是揚聲器與精確尋找，跟網絡沒關係。</p>
+          <span class="ex">✅ 沙發縫剋星</span>
+        </div>
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">出門常忘</div>
+          <h4>背包、相機包</h4>
+          <p>放在餐廳或計程車上時，「最後出現的位置」通常就足以讓你判斷該回哪裡找。</p>
+          <span class="ex">✅ 縮小搜尋範圍</span>
+        </div>
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">被低估的一種</div>
+          <h4>借出去的東西</h4>
+          <p>書、工具、外接硬碟這類「借了就忘了在誰那裡」的東西，看一眼位置就想起來了。</p>
+          <span class="ex">✅ 不用開口問</span>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--teal)">
+        <div class="ct">一句話分辨適不適合</div>
+        問自己：這個東西如果不見了，它最可能出現在有人的地方，還是<strong>沒人的地方</strong>？答案是前者，AirTag 很划算；答案是後者，再貴的配件也救不了你。
+      </div>
+    </section>
+
+    <section id="check">
+      <div class="sec-label" style="--c:var(--navy)">before_you_buy</div>
+      <h2>05 · 買之前的三個檢查</h2>
+      <ul class="check">
+        <li><b>你手上的 iPhone 有沒有超寬頻？</b>第 2 代 AirTag 更大範圍的「精確尋找」需要 iPhone Air 或 iPhone 15 以後的機型，但不包含 iPhone 16e 與 iPhone 17e。沒有這顆晶片一樣能用，只是少了最後幾公尺的方向指引。</li>
+        <li><b>你的系統版本夠新嗎？</b>第 2 代 AirTag 需要 iOS 26.0 或以上、iPadOS 26.0 或以上；要在「尋找」列表裡正常出現，官方標示需要 OS 26.2.1 以上。Apple Watch 上的精確尋找則需要 watchOS 26.2.1，且是 Series 9 或 Ultra 2 以後的錶款。</li>
+        <li><b>你要的是「提高找回機率」還是「隨時知道在哪」？</b>這是最關鍵的一題。前者 AirTag 很稱職，後者請直接看有 GPS 與 SIM 卡的專用設備，不要指望靠加購配件解決。</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">台灣的超寬頻功能沒有被限制</div>
+        Apple 有一份文件列出超寬頻不可用或受限的國家與地區，<strong>台灣不在名單上</strong>，功能完整。這點值得特別提，是因為<strong>日本</strong>因當地法規限制了部分超寬頻頻率，擴大的精確尋找範圍與 Apple Watch 精確尋找都用不到——看到日文開箱說「這個功能沒有」時，別直接套用到台灣。
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">價格參考</div>
+        以 Apple 官方 2026 年 1 月公布的台灣售價，AirTag 單件 NT$990、四件裝 NT$3,390，與前一代相同。四件裝平均一顆約 848 元，如果你確定要放在兩個以上的地方，直接買四件裝比較划算。
+      </div>
+    </section>
+
+    <section id="stand">
+      <div class="sec-label" style="--c:var(--purple)">our_position</div>
+      <h2>06 · 果果為什麼要寫一篇自己沒賣的東西</h2>
+      <p>我們賣 iPad 與 Apple 週邊，沒有賣 AirTag。這篇不會替我們帶來任何一筆訂單，寫它的原因反而正是這個——沒有利益衝突的時候，<strong>勸退才有份量</strong>。</p>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">我們在客服端最常遇到的一句話</div>
+        「我在 iPad 上貼一顆 AirTag，是不是就不怕弄丟了？」——這句話裡有個誤會：iPad 本身就在「尋找」裡，而且<strong>能力比 AirTag 高一級</strong>。它有作業系統、有網路、有喇叭，掉了之後能做的事遠比一顆 AirTag 多。真正該優先確認的是 iPad 的「尋找」有沒有開、遺失模式會不會用，不是再花 990 元買一顆貼上去。
+      </div>
+
+      <p>不同的東西能被「尋找」找到的程度差很多，這件事我們單獨寫過一篇：決定「找不找得回來」的其實<strong>只有三個硬體</strong>——有沒有喇叭、有沒有超寬頻、有沒有作業系統。完整的五個等級對照，見<a class="inline" href="../find-my-device-tiers/">〈尋找 App 能追蹤哪些裝置？〉</a>。</p>
+
+      <div class="bigquote">
+        <div class="qm">"</div>
+        <p>它不是追蹤器，是一張「有人看到過它」的紙條。</p>
+        <small>紙條很有用，但要有人經過才寫得成——這就是 AirTag 的全部。</small>
+      </div>
+
+      <h3>延伸觀看（YouTube 參考）</h3>
+      <p style="font-size:.9rem;color:var(--muted)">這篇講的是原理與界線；如果你想看實際設定畫面與新舊差異，下面兩支繁中影片補得剛好。影片為第三方製作，功能細節仍以 Apple 官方說明為準。</p>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=e494RB1g0XM" target="_blank" rel="noopener" data-yt="e494RB1g0XM" aria-label="播放：AirTag 用途、原理說明與追蹤寵物適不適合">
+          <img loading="lazy" src="https://i.ytimg.com/vi/e494RB1g0XM/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/e494RB1g0XM/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>AirTag 用途有哪些？功能、原理說明！用來追蹤寵物適合嗎？會被拿來跟蹤嗎？</b><small>頻道：Play智慧家庭 · 開箱同時講原理，並直接處理本文第 07、08 種失效——寵物與跟蹤，可當本文的影音版對照 · 繁中</small></div>
+      </div>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=m7ZsPSpfK_Q" target="_blank" rel="noopener" data-yt="m7ZsPSpfK_Q" aria-label="播放：新版 AirTag 2026 完整攻略與設定教學">
+          <img loading="lazy" src="https://i.ytimg.com/vi/m7ZsPSpfK_Q/sddefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/m7ZsPSpfK_Q/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>新版 AirTag (2026) 完整攻略｜5 大升級重點＋設定教學一次看懂</b><small>頻道：C w C 頻道 iPhone · 第 2 代的五項升級與實際設定流程，對應本文第 05 節「買之前的三個檢查」 · 繁中</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">本文的規格、機制描述、官方立場與台灣售價皆取自 Apple 官方頁面與官方支援文件，查證日期 2026 年 7 月 28 日：</p>
+      <ul class="sources">
+        <li><a href="https://support.apple.com/zh-tw/126203">AirTag（第 2 代）· 技術規格</a>（「連接」欄僅列藍牙、第 2 代超寬頻晶片、NFC，未列 GPS／SIM／Wi-Fi；感測器僅加速度計；CR2032 電池；IP67；作業溫度 −20° 至 60°C；需 iOS 26.0 或以上）</li>
+        <li><a href="https://support.apple.com/zh-tw/104978">使用「尋找」來尋找遺失的 Apple 裝置或 AirTag</a>（最後已知位置最長 7 天、超過即顯示「找不到位置」；「尋找」網絡為超過十億部裝置的眾包網絡、回報「大約位置」；AirTag 第 2 代需 OS 26.2.1 以上；文件發佈日 2026 年 5 月 27 日）</li>
+        <li><a href="https://www.apple.com/tw/newsroom/2026/01/apple-introduces-new-airtag-with-expanded-range-and-improved-findability/">Apple 台灣新聞稿 · 推出新版 AirTag</a>（台灣售價 NT$990／NT$3,390；「為追蹤物品而設計，而非用於追蹤人或寵物」；不在裝置上實體儲存位置資料或記錄；精確尋找距離與音量各提升 50%；超過 50 家航空公司支援「分享物品位置」）</li>
+        <li><a href="https://support.apple.com/zh-tw/119874">如果收到提示指出有 AirTag⋯在你身邊，該如何處理</a>（跨平台追蹤提示的觸發條件；離開擁有者後移動會發出聲音；「未經他人同意使用這些產品來追蹤其行蹤是一種犯罪行為」）</li>
+        <li><a href="https://www.apple.com/tw/uwb/">超寬頻功能適用地區說明</a>（台灣不在不可用名單；日本因當地法規限制部分超寬頻頻率，擴大精確尋找範圍與 Apple Watch 精確尋找不適用；文件發佈日 2026 年 3 月 27 日）</li>
+        <li><a href="https://support.apple.com/zh-tw/109021">使用 AirTag 和「尋找」來追蹤個人物品</a>（「iPhone 和 AirTag 之間的環境因素（包括牆壁材質或物體）可能會影響尋找效果」——註：這句的範圍是「精確尋找」的效能，不是網絡回報；文件發佈日 2026 年 3 月 26 日）</li>
+        <li><a href="https://www.ifixit.com/News/50145/airtag-teardown-part-one-yeah-this-tracks">iFixit · AirTag 拆解</a>與 <a href="https://hackaday.com/2026/02/02/teardown-of-an-apple-airtag-2-with-die-shots/">Hackaday · AirTag 2 拆解</a>（實體驗證內部元件：Nordic 藍牙晶片、Apple 超寬頻晶片、加速度計與記憶體，無 GPS／蜂巢式數據機／衛星元件）</li>
+        <li><a href="https://gs.statcounter.com/os-market-share/mobile/taiwan">StatCounter · 台灣行動作業系統市佔</a>（2026 年 6 月 iOS 約 57.2%、Android 約 42.8%；為網頁流量推估的使用比例，非裝置普查）</li>
+        <li><a href="https://www.apple.com/tw/airtag/">AirTag · Apple 台灣官網</a>（精確尋找的機型需求：iPhone Air 或 iPhone 15 以後，不含 iPhone 16e 與 iPhone 17e；電池可運作超過一年）</li>
+      </ul>
+      <p class="updated">台灣 iOS 佔比為 StatCounter 依網頁流量推估的使用比例，非 Apple 公布的裝置數量，僅作環境密度的參考。功能與售價可能隨版本與政策調整，請以 Apple 官方最新公告為準。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
