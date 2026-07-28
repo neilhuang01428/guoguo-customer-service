@@ -242,5 +242,33 @@
    "apple-pencil-1-typec-adapter",
    "apple-pencil-1-cap"
   ]
+ },
+ "reset-all-settings-vs-erase": {
+  "heading": "",
+  "group": "ipad-2",
+  "products": [
+   "ipad-6-2018-refurbished",
+   "ipad-7-2019-refurbished",
+   "ipad-8-2020-refurbished",
+   "ipad-9-2021-refurbished",
+   "ipad-10-2022-refurbished",
+   "ipad-A16-2025-refurbished",
+   "ipad-mini-5-2019-refurbished",
+   "ipad-mini-6-2021-refurbished",
+   "ipad-mini-7-2024-refurbished",
+   "ipad-air-4-2020-refurbished",
+   "ipad-air-5-2021-refurbished",
+   "ipad-air-11-M2-2024-refurbished",
+   "ipad-air-13-M2-2024-refurbished",
+   "ipad-air-11-2025-refurbished",
+   "ipad-air-13-M3-2025-refurbished",
+   "ipad-pro-4th-2020-refurbished",
+   "ipad-pro-11-3th-2021-refurbished-M1",
+   "ipad-pro-5th-2021-refurbished-M1",
+   "ipad-pro-11-4th-2018-refurbished-M2",
+   "ipad-pro-6th-2022-refurbished-M2",
+   "ipad-pro-11-2024-refurbished-M4",
+   "ipad-pro-13-2024-refurbished-M4"
+  ]
  }
 }
