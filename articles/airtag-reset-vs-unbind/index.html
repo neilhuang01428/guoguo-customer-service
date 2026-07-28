@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AirTag 重置完還是不能配對？重置與解綁差在哪 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式 ── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 清單雙欄：清掉了 / 沒清掉 */
+  .twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .listcard { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 12px; padding: 16px 18px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .listcard .hd { font-size: .95rem; font-weight: 800; color: var(--c); margin-bottom: 10px; }
+  .listcard ul { list-style: none; }
+  .listcard li { font-size: .88rem; padding: 7px 0 7px 22px; position: relative; border-bottom: 1px solid var(--grid); color: var(--body); line-height: 1.65; }
+  .listcard li:last-child { border-bottom: 0; }
+  .listcard li::before { content: var(--mk); position: absolute; left: 0; color: var(--c); font-weight: 800; }
+  .listcard li b { color: var(--ink); }
+
+  /* 表格：符號欄 */
+  td.y { color: var(--green-deep); font-weight: 700; }
+  td.n { color: var(--red); font-weight: 700; }
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 640px; }
+
+  /* 官方原文引用卡：把「Apple 怎麼說」與「白話是什麼意思」分層 */
+  .qbox { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--navy); border-radius: 10px; margin: 22px 0; overflow: hidden; box-shadow: 0 2px 10px rgba(20,39,68,.04); }
+  .qbox .qlabel { font-family: var(--mono); font-size: .66rem; letter-spacing: .04em; color: var(--navy); background: var(--navy-bg); padding: 7px 16px; border-bottom: 1px solid var(--line); }
+  .qbox .qtext { font-size: 1.02rem; line-height: 1.75; color: var(--ink); padding: 14px 16px 0; margin: 0; }
+  .qbox .qtrans { font-size: .9rem; color: var(--body); padding: 10px 16px 14px; display: flex; gap: 9px; align-items: flex-start; }
+  .qbox .qtrans::before { content: '→'; font-family: var(--mono); color: var(--green); font-weight: 800; flex: none; }
+
+  /* 導言下的三格導覽（迷你目錄，可點） */
+  .mini-hd { font-family: var(--mono); font-size: .66rem; letter-spacing: .05em; color: var(--muted); margin: 26px 0 -6px; }
+  .mini-hd::before { content: '▸ '; color: var(--green); }
+  a.card { display: block; text-decoration: none; transition: border-color .15s, box-shadow .15s, transform .15s; }
+  a.card:hover { border-color: var(--c); box-shadow: 0 6px 18px rgba(20,39,68,.09); transform: translateY(-2px); }
+  a.card .go { font-family: var(--mono); font-size: .68rem; color: var(--c); margin-top: 10px; display: block; }
+  a.card .go::after { content: ' →'; }
+
+  /* 證據等級小標 */
+  .lv { display: inline-block; font-family: var(--mono); font-size: .58rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; vertical-align: middle; margin-left: 6px; }
+  .lv.ok { color: var(--green-deep); background: var(--green-bg); border: 1px solid #c3e4cf; }
+  .lv.inf { color: var(--purple); background: var(--purple-bg); border: 1px solid #d8cdf3; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .twocol { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>AirTag 重置真相</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#answer" class="active">00 · 先講結論</a>
+  <div class="grp">觀念</div>
+  <a href="#diff">01 · 重置 vs 解綁</a>
+  <a href="#which">02 · 你是哪一種情況</a>
+  <div class="grp">動手做</div>
+  <a href="#gen">03 · 先確認是一代還二代</a>
+  <a href="#reset">04 · 兩代的重置步驟</a>
+  <div class="grp">判斷</div>
+  <a href="#decide">05 · 這顆救不救得回</a>
+  <a href="#buy">06 · 買之前的驗證動作</a>
+  <a href="#myth">07 · 最常搞錯的五件事</a>
+  <div class="grp">附錄</div>
+  <a href="#watch">延伸觀看</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>官方文件逐條查證</span><span>推論與事實分開標</span><span>缺點照實揭露</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">果果客服指南 / 二手配件與帳號鎖</div>
+    <h1>AirTag 重置完，還是不能配對？</h1>
+    <p class="subtitle">扣電池五次做的是一件事，解除綁定是另一件事。這頁把兩件事分開講清楚。</p>
+
+    <p class="lede">先給答案：<strong>扣電池五次是「重置」，不是「解鎖」</strong>。它只讓 AirTag 忘記自己上一次配對的對象，Apple 帳號那邊的登記完全沒動。所以你聽到第五聲、蓋回電池蓋、靠近 iPhone，還是跳出「已連接其他 Apple 帳號」——這不是你步驟做錯，是這個動作本來就辦不到那件事。</p>
+
+    <div class="qbox">
+      <div class="qlabel">Apple 支援文件 102620 · 原文</div>
+      <p class="qtext">「雖然你仍無法將裝置或物品與『Apple 帳號』配對，但這會防止裝置或物品與先前擁有者分享你的位置。」</p>
+      <div class="qtrans">官方在講的是「無法從帳號移除時，改用重置」的情況。翻成白話：<strong>重置買到的是隱私，不是所有權。</strong></div>
+    </div>
+
+    <div class="mini-hd">這頁會回答三件事</div>
+    <div class="grid g3">
+      <a class="card" href="#diff" style="--c:var(--navy);--cbg:var(--navy-bg)">
+        <div class="c-tag">01</div>
+        <h4>重置清掉了什麼</h4>
+        <p>哪些真的被清掉、哪些一動也沒動。</p>
+        <span class="go">看對照表</span>
+      </a>
+      <a class="card" href="#reset" style="--c:var(--green);--cbg:var(--green-bg)">
+        <div class="c-tag">02</div>
+        <h4>一代二代不一樣</h4>
+        <p>連按幾秒、等幾秒都不同，弄錯會以為壞了。</p>
+        <span class="go">看步驟</span>
+      </a>
+      <a class="card" href="#buy" style="--c:var(--amber);--cbg:var(--amber-bg)">
+        <div class="c-tag">03</div>
+        <h4>付錢前怎麼驗</h4>
+        <p>唯一有效的動作，而且必須當場做完。</p>
+        <span class="go">看驗證流程</span>
+      </a>
+    </div>
+
+    <section id="answer">
+      <div class="sec-label" style="--c:var(--navy)">answer</div>
+      <h2>00 · 一張圖看懂卡在哪</h2>
+      <p>一顆 AirTag 能不能變成你的，其實牽涉到三個地方。重置這個動作，只碰得到最左邊那一格。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">🔘</div><div class="bt">AirTag 本體</div><div class="bv">重置動得到</div></div>
+          <div class="arr">✕</div>
+          <div class="box" style="--cbg:var(--red-bg)"><div class="bi">☁️</div><div class="bt">Apple 帳號的登記</div><div class="bv">重置動不到</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">📱</div><div class="bt">你要配對</div><div class="bv">在這裡被擋</div></div>
+        </div>
+        <figcaption>決定配對過不過的是<b>中間那格</b>，而重置只摸得到左邊那格。</figcaption>
+      </figure>
+
+      <p>Apple 把中間那格叫做「尋找」鎖定——它是這顆 AirTag 的序號和某個 Apple 帳號之間的一條連結，存在 Apple 的伺服器上，不在 AirTag 裡面。你手上這顆小圓片，沒有能力去改寫別人帳號裡的資料。</p>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">先講最傷人的一句</div>Apple 官方文件寫明：<strong>「Apple 無法為你移除『尋找』鎖定。」</strong>不是客服懶得幫，是這條連結只設計成由原帳號持有人自己解開。</div>
+    </section>
+
+    <section id="diff">
+      <div class="sec-label" style="--c:var(--teal)">difference</div>
+      <h2>01 · 重置 vs 解綁：一張表分清楚</h2>
+      <p>網路上大部分「AirTag 重置教學」的問題不在步驟寫錯，而在沒告訴你這兩個動作的目的完全不同。放在一起比，差別馬上跳出來。</p>
+
+      <div class="tbl-wrap">
+      <table>
+        <tr><th>比較項目</th><th>扣電池五次（重置）</th><th>前主人按「移除」（解綁）</th></tr>
+        <tr><td>實際做了什麼</td><td>讓 AirTag 忘記上一次的配對，回到「等人來設定」的狀態</td><td>把序號與 Apple 帳號的連結刪掉，也就是移除「尋找」鎖定</td></tr>
+        <tr><td>誰做得到</td><td>拿到這顆 AirTag 的任何人</td><td class="y">只有原帳號持有人</td></tr>
+        <tr><td>需要東西在手邊嗎</td><td>要，得拆電池</td><td>不用。官方說明不必透過藍牙連接也能移除，只是在範圍內會比較快</td></tr>
+        <tr><td>前主人還看得到位置嗎</td><td class="y">看不到新位置了</td><td class="y">看不到，整筆從他帳號消失</td></tr>
+        <tr><td>你能配對來用嗎</td><td class="n">不能</td><td class="y">可以</td></tr>
+      </table>
+      </div>
+
+      <p>把最後兩列一起看，就懂了：重置解決的是「別人還在不在看我」，解綁解決的是「這東西是不是我的」。兩件事都重要，但它們不會互相取代。</p>
+
+      <div class="twocol">
+        <div class="listcard" style="--c:var(--green);--mk:'✓'">
+          <div class="hd">重置確實清掉的</div>
+          <ul>
+            <li>它和<b>上一支 iPhone</b> 的配對狀態，之後靠近任何 iPhone 都會嘗試跳出設定卡</li>
+            <li>它繼續<b>回報新位置</b>給前主人的行為——官方明說重置可防止它把你的位置分享給先前擁有者</li>
+            <li>你帶著它到處跑時，<b>行蹤外流</b>的風險</li>
+          </ul>
+        </div>
+        <div class="listcard" style="--c:var(--red);--mk:'✕'">
+          <div class="hd">重置清不掉的</div>
+          <ul>
+            <li>伺服器上「<b>這顆序號屬於某帳號</b>」的那筆登記，也就是「尋找」鎖定</li>
+            <li>你配對時會被擋這件事——<b>做幾次都一樣</b>，不是次數不夠</li>
+            <li>前主人清單裡的那一列。<b>它應該還在</b>，只是不再更新位置<span class="lv inf">推論</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">關於上面那個「推論」標記</div>Apple 沒有明文寫「重置後前主人清單裡還看得到這個物品」。我們是從「重置只影響位置分享、不影響帳號連結」推出來的，所以照實標成推論，不假裝是官方說法。</div>
+    </section>
+
+    <section id="which">
+      <div class="sec-label" style="--c:var(--amber)">triage</div>
+      <h2>02 · 你現在遇到的是哪一種？</h2>
+      <p>同樣是「重置了還是不能用」，背後其實有三種完全不同的狀況。先對號入座，再決定要不要繼續花時間。</p>
+
+      <div class="grid g3">
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">情況 A · 有救</div>
+          <h4>前主人已經移除了</h4>
+          <p>但移除的當下，AirTag 不在他手機的藍牙範圍內，所以它自己還不知道。這時重置就是正確解法，重置完就能配對。</p>
+          <span class="ex">重置 → 成功</span>
+        </div>
+        <div class="card" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="c-tag">情況 B · 沒救</div>
+          <h4>前主人根本沒移除</h4>
+          <p>「尋找」鎖定還在。重置本身不需要驗證任何帳號，所以照樣做得完，但配對一定被擋。除了請對方移除，沒有第二條路。</p>
+          <span class="ex">重置 → 還是被擋</span>
+        </div>
+        <div class="card" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="c-tag">情況 C · 自己的</div>
+          <h4>是你自己的 AirTag 出狀況</h4>
+          <p>連不上、位置不更新。正確順序是先在「尋找」裡移除它，再重置，最後重新加入——順序反了會白做工。</p>
+          <span class="ex">先移除 → 再重置</span>
+        </div>
+      </div>
+
+      <p>最容易被誤導的是 B。因為重置流程本身是純硬體動作，不需要驗證任何帳號，所以它一定「做得成功」——你會聽到第五聲、會覺得自己完成了。真正的關卡在下一步靠近 iPhone 的那一刻才出現。</p>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">賣家說「我重置過了」，未必是在騙你</div>他可能真的重置過，也真的聽到了第五聲——只是他跟你一樣，以為那就是解鎖。所以這句話沒有保證效力，<strong>驗貨責任還是得落回買家身上</strong>。</div>
+    </section>
+
+    <section id="gen">
+      <div class="sec-label" style="--c:var(--navy)">generation</div>
+      <h2>03 · 動手之前，先確認是一代還是二代</h2>
+      <p>2026 年 1 月 26 日，Apple 推出了 AirTag（第 2 代）。外型幾乎沒變，但<strong>重置手法不一樣</strong>——用一代的節奏去弄二代，你會一直聽不到那個不同的第五聲，然後以為它壞了。</p>
+
+      <div class="tbl-wrap">
+      <table>
+        <tr><th>項目</th><th>AirTag（第 1 代）</th><th>AirTag（第 2 代）</th></tr>
+        <tr><td>推出年份</td><td>2021</td><td>2026</td></tr>
+        <tr><td>型號（電池下方）</td><td>A2187</td><td>A2937</td></tr>
+        <tr><td>重量</td><td>11 公克</td><td>11.8 公克</td></tr>
+        <tr><td>晶片</td><td>U1 超寬頻</td><td>Apple 第 2 代超寬頻</td></tr>
+        <tr><td>加入「尋找」的系統需求</td><td>iOS / iPadOS 14.5 以上</td><td>iOS / iPadOS 26.2.1 以上</td></tr>
+        <tr><td>重置節奏</td><td>壓住約 2 秒聽到聲音即可</td><td class="n">要多按 2 秒，取出後還要等 12 秒</td></tr>
+      </table>
+      </div>
+
+      <p>那一列「系統需求」對二手買家特別重要。二代要 iOS 26.2.1 以上才加得進「尋找」，如果你的 iPhone 還停在舊版，就算這顆完全乾淨，你也一樣加不進去，白白誤判成鎖住。</p>
+
+      <h3>怎麼知道手上這顆是第幾代</h3>
+      <div class="steps">
+        <div class="step" style="--c:var(--green)"><div class="n">01</div><div><h4>開蓋看型號（買二手最實用）</h4><p>電池蓋往下壓、逆時針轉到底，取下蓋子和電池，AirTag 內部印著型號與序號。A2187 是一代，A2937 是二代。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">02</div><div><h4>NFC 一碰（不用拆）</h4><p>用手機頂端輕觸 AirTag 白色那一面不要動，跳出通知後點開，會開啟一個顯示序號的網頁。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">03</div><div><h4>「尋找」App 裡看（只適用自己的）</h4><p>物品 → 點名稱 → 點地址，就會顯示型號與序號。這招需要它已經在你帳號下，二手驗貨時通常用不到。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">順手做的小事，價值很高</div>NFC 碰出來的那個網頁，除了序號，還會顯示<strong>註冊者電話號碼的後四碼</strong>。碰得出別人的電話後四碼，就是「這顆還登記在別人名下」的強烈訊號——比任何口頭保證都可靠。</div>
+    </section>
+
+    <section id="reset">
+      <div class="sec-label" style="--c:var(--green)">how_to</div>
+      <h2>04 · 兩代的重置步驟（照官方寫法）</h2>
+      <p>知道自己是哪一代之後，照對應的那一組做。兩組的前後都一樣，差別集中在中間的節奏。</p>
+
+      <h3>第 1 代（A2187）</h3>
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">1</div><div><h4>開蓋、取出電池</h4><p>不鏽鋼電池蓋往下壓並逆時針旋轉，直到轉不動為止，取下電池蓋和電池。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">2</div><div><h4>裝回電池，壓住約 2 秒</h4><p>壓到聽見一個聲音為止。這個聲音代表電池接上了。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">3</div><div><h4>聲音停了，再重複四次</h4><p>取出電池、裝回去、壓住直到聽見聲音。連同第一次總共五次。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">4</div><div><h4>聽第五聲</h4><p>第五次的聲音會跟前四次不一樣，代表可以配對了。如果不一樣的聲音沒出現，就繼續重複，直到聽到為止。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">5</div><div><h4>蓋回去</h4><p>電池蓋的三個卡榫對準 AirTag 上的三個插槽，壓下去，再順時針轉到底。</p></div></div>
+      </div>
+
+      <h3>第 2 代（A2937）</h3>
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">1</div><div><h4>開蓋、取出電池</h4><p>和一代一樣：往下壓、逆時針轉到底、取下電池蓋和電池。</p></div></div>
+        <div class="step" style="--c:var(--red)"><div class="n">2</div><div><h4>壓住聽到聲音後，再按住 2 秒</h4><p>這是和一代最大的差別。裝回電池壓約 2 秒聽見聲音，然後<strong>不要放</strong>，繼續按住 2 秒。</p></div></div>
+        <div class="step" style="--c:var(--red)"><div class="n">3</div><div><h4>取出電池，等 12 秒</h4><p>聲音結束後把電池拿出來，等滿 12 秒再裝回去。這段等待也是一代沒有的。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">4</div><div><h4>重複四次</h4><p>同樣加起來五次、五個聲音，第五聲不一樣就完成了。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">5</div><div><h4>聽不到第五聲時</h4><p>官方特別註明：為了聽到第五次的聲音，你可能需要按住電池 12 秒。所以先別懷疑機器，先延長按壓時間。</p></div></div>
+      </div>
+
+      <h3>別靠耳朵判斷成功沒有</h3>
+      <p>Apple 只寫「第五次的聲音會與前四次不同」，沒有形容它長什麼樣。網路上流傳的「比較長、比較低」都是使用者的主觀描述，不是官方說法，安靜的房間裡也未必分得出來。</p>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">更可靠的判準：看畫面，不是聽聲音</div>蓋回電池蓋，把 AirTag 靠近你已解鎖的 iPhone。<strong>螢幕跳出「連接」卡片＝重置成功</strong>；毫無反應＝重置沒完成，回去重做；跳出「已連接其他 Apple 帳號」＝重置其實成功了，被擋住的是帳號那一關。</div>
+
+      <p>這三種結果剛好對應前面說的三格圖：沒反應是左邊那格沒過，跳帳號訊息是中間那格沒過。分得清楚，就不會把力氣花在錯的地方。</p>
+
+      <details>
+        <summary>兩份官方文件對「二代要哪個系統版本」講得不一樣，怎麼辦？</summary>
+        <p>技術規格頁寫的是「搭載 iOS 26.0 或以上版本的 iPhone 機型」，但〈如何將 AirTag 加入「尋找」〉這篇寫的是「如果要加入 AirTag（第 2 代），你需要 iOS 或 iPadOS 26.2.1 或以上版本」。兩篇都是 Apple 官方。</p>
+        <p style="margin-top:10px">我們採信後者：它講的是「加入」這個具體動作，發佈日期也比較新（2026 年 5 月 13 日）。實務上最省事的做法是直接更新到最新版再試，免得把版本問題誤判成帳號鎖。</p>
+      </details>
+    </section>
+
+    <section id="decide">
+      <div class="sec-label" style="--c:var(--red)">decision</div>
+      <h2>05 · 這顆到底還救不救得回？</h2>
+      <p>如果你已經確認被擋在帳號那一關，接下來只剩一個問題：找不找得到前主人。這是整件事唯一還有轉圜的地方。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">🧑</div><div class="bt">聯絡得到前主人？</div><div class="bv">先問這個</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">✅</div><div class="bt">請他打開「尋找」</div><div class="bv">物品 → 移除物品</div></div>
+          <div class="arr">或</div>
+          <div class="box" style="--cbg:var(--red-bg)"><div class="bi">❌</div><div class="bt">聯絡不到</div><div class="bv">走退貨，不要留著</div></div>
+        </div>
+        <figcaption>沒有第三條路。<b>Apple 不會、也無法幫你解</b>，這是官方文件白紙黑字寫的。</figcaption>
+      </figure>
+
+      <p>請前主人操作其實很快：打開「尋找」App，點「物品」，點那顆 AirTag，把控點往上滑，點「移除物品」再確認一次就好。他人在國外、AirTag 早就寄給你了，都沒關係——官方說明不需要透過藍牙連接也能移除。</p>
+
+      <p>他移除之後，因為 AirTag 已經不在他手機的藍牙範圍內，這顆的狀態會落在前面說的「情況 A」。這時你再重置一次，就可以正常配對了。</p>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">聯絡不到人的話，請認賠</div>它不會壞，但它永遠只能當一個發出聲音的小圓片，加不進任何人的「尋找」。一顆全新 AirTag 在 Apple 台灣官網的售價是 NT$990，為了省幾百塊留著一顆用不了的，並不划算——盡快申請退款或退貨才是對的。</div>
+
+      <details>
+        <summary>那「拿發票去找 Apple 就能解鎖」的說法呢？</summary>
+        <p>我們在 Apple 官方支援文件裡找不到任何依據。相反地，官方那句「Apple 無法為你移除『尋找』鎖定」寫得非常明確。網路上這類說法多半是把 iPhone 啟用鎖定的流程套過來的想像，AirTag 並沒有對應的官方管道。除非哪天 Apple 改政策，否則別把希望壓在這上面。</p>
+      </details>
+    </section>
+
+    <section id="buy">
+      <div class="sec-label" style="--c:var(--purple)">verify</div>
+      <h2>06 · 付錢之前，唯一有效的驗證動作</h2>
+      <p>前面五節講的都是「為什麼會卡住」。這一節反過來——如果你還沒付錢，怎麼一次就確認這顆是乾淨的。</p>
+
+      <div class="bigquote">
+        <div class="qm">“</div>
+        <p>會響、會被偵測到，只證明它沒壞。<br>能綁進帳號，才證明它能用。</p>
+        <small>帶帳號鎖的東西，「功能正常」和「可以過戶」是兩張完全不同的考卷。</small>
+      </div>
+
+      <p>所以驗證不能只做到「它有反應」。付錢前該做的動作只有一組，而且必須當場做完。做不完就先不要付款，這比事後爭執有效得多。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--green)"><div class="n">01</div><div><h4>先確認你的 iPhone 版本夠新</h4><p>一代要 iOS 14.5 以上，二代要 iOS 26.2.1 以上。用舊機驗二代，會把好的驗成壞的。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">02</div><div><h4>NFC 碰一下做快篩</h4><p>碰出別人的電話後四碼，幾乎可以確定還沒解綁。這是快篩不是定論，沒碰出來也還要做下一步。<span class="lv inf">推論</span></p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">03</div><div><h4>解鎖 iPhone，把 AirTag 靠上去</h4><p>看跳出來的是「連接」還是「已連接其他 Apple 帳號」。這一步就分勝負。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">04</div><div><h4>真的走完加入流程</h4><p>命名、點「同意」、點「完成」，看到它出現在「尋找」的物品清單裡，才算通過。跳出設定卡不等於加得進去。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">05</div><div><h4>驗完再從自己的帳號移除</h4><p>如果最後決定不買，記得移除，不然它會留在你的清單裡佔位，而且你也不希望別人的東西掛在自己帳號下。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">如果你是要收貨、不只是買一顆</div>別把「重置成功」當成驗收通過的標準。重置是任何人都做得成的硬體動作，它沒有驗證任何東西——真正有意義的紀錄是「已成功加入帳號並移除」，那一行才代表這顆真的能用。</div>
+
+      <p>順帶一提，一顆沒解綁的 AirTag 帶在身上還有個副作用：因為它已經離開擁有者又跟著你移動，你自己的 iPhone 會開始跳「偵測到有 AirTag 正跟著你移動」。這是防跟蹤機制正常運作，不是手機壞了。<span class="lv inf">依官方觸發條件推得</span></p>
+    </section>
+
+    <section id="myth">
+      <div class="sec-label" style="--c:var(--red)">red_flags</div>
+      <h2>07 · 最常被搞錯的五件事</h2>
+      <p>下面五句話聽起來都很合理，但每一句都是錯的。看到就提高警覺。</p>
+
+      <ul class="flags">
+        <li><b>「我已經幫你重置好了，可以直接用」</b>——重置和解綁是兩回事，這句話沒有任何保證效力，說的人自己也未必知道。堅持當場配對驗證。</li>
+        <li><b>「多扣幾次、扣個十次就會解開」</b>——次數不是關卡。第五聲之後再做下去，只是重複同一個動作，帳號連結一動也不會動。</li>
+        <li><b>「拿發票找 Apple 客服就能解」</b>——官方文件明寫 Apple 無法為你移除「尋找」鎖定，也沒有 AirTag 版的解鎖申請管道。</li>
+        <li><b>「聽不到第五聲＝這顆壞了」</b>——先確認是不是第 2 代。二代要多按 2 秒、取出等 12 秒，官方甚至說可能得按住 12 秒才聽得到。</li>
+        <li><b>「反正重置後前主人看不到了，那就沒差」</b>——位置確實停了，但你依然用不了它。而且關掉自己 iPhone 的藍牙或定位並不會讓它停止回報，官方特別強調過這點。</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">一句話帶走</div>重置讓 AirTag 忘記你，解綁才讓 Apple 忘記它。兩者只做了前面那半，這顆就還不是你的。</div>
+
+      <p>如果你想再往上一層看——為什麼有些 Apple 產品是「啟用鎖定」、有些是「尋找鎖定」、有些根本沒有鎖，可以接著讀站上的 <a class="inline" href="../find-my-device-tiers/">「尋找」App 能追蹤哪些裝置</a>；配件端的實際案例則可以看 <a class="inline" href="../pencil-pro-locked-worth-buying/">已綁定的 Apple Pencil Pro，到底能不能買</a>。</p>
+    </section>
+
+    <section id="watch">
+      <div class="sec-label" style="--c:var(--teal)">videos</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p style="font-size:.9rem;color:var(--muted)">說明：目前找不到專門講「重置 ≠ 解綁」這個主題的繁中影片，所以下面兩支補的是本文用得到的周邊操作——分辨世代，以及 NFC 與離身通知的實機畫面。影片為第三方製作，功能細節仍以 Apple 官方說明為準。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=1zDxI-lmNtc" target="_blank" rel="noopener" data-yt="1zDxI-lmNtc" aria-label="播放：AirTag 2 開箱與上手指南，必學 12 個設定一次看">
+          <img loading="lazy" src="https://i.ytimg.com/vi/1zDxI-lmNtc/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/1zDxI-lmNtc/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>AirTag 2 開箱與上手指南，必學 12 個設定一次看（含 AirTag 1 vs 2 測試）</b><small>頻道：塔科女子 · 推薦原因：本文第 03 節要你先分辨一代二代，這支有兩代並排的實機畫面與加入流程，比看文字快 · 繁中</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=mktfBFY7d2E" target="_blank" rel="noopener" data-yt="mktfBFY7d2E" aria-label="播放：AirTag 完整使用攻略，共享、NFC、離身通知設定教學">
+          <img loading="lazy" src="https://i.ytimg.com/vi/mktfBFY7d2E/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/mktfBFY7d2E/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>AirTag 完整使用攻略！共享、NFC、離身通知設定教學</b><small>頻道：塔科女子 · 推薦原因：第 03 節的「NFC 碰一下快篩」和第 06 節的離身通知，這支有實際操作畫面，第一次玩 AirTag 的人看了比較有底 · 繁中</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">本文的操作步驟、規格與官方立場皆取自 Apple 官方支援文件與新聞稿，查證日期 2026 年 7 月 28 日：</p>
+      <ul class="sources">
+        <li><a href="https://support.apple.com/zh-tw/102577">如何重置 AirTag</a>（一代與二代兩套步驟、五個聲音與第五聲不同、二代需多按 2 秒並取出等 12 秒；文件發佈日 2026 年 4 月 20 日）</li>
+        <li><a href="https://support.apple.com/zh-tw/102620">如果物品或裝置已連接其他「Apple 帳號」</a>（取消配對才會移除「尋找」鎖定、「Apple 無法為你移除『尋找』鎖定」、無法移除時改用重置只能防止分享位置）</li>
+        <li><a href="https://support.apple.com/zh-tw/102170">如何找出 AirTag 的型號或序號</a>（型號 A2187／A2937、三種查法、NFC 輕觸顯示序號）</li>
+        <li><a href="https://support.apple.com/zh-tw/101602">如何將 AirTag 加入「尋找」</a>（配對流程、第 2 代需 iOS／iPadOS 26.2.1 以上、加不進去時的排查順序）</li>
+        <li><a href="https://support.apple.com/zh-tw/119874">如果收到提示指出有 AirTag⋯⋯在你身邊，該如何處理</a>（追蹤提示觸發條件、NFC 顯示註冊者電話後四碼、關閉自身藍牙無法阻止擁有者查看位置）</li>
+        <li><a href="https://support.apple.com/zh-tw/126203">AirTag（第 2 代）· 技術規格</a>與 <a href="https://support.apple.com/zh-tw/111847">AirTag · 技術規格</a>（推出年份、重量、晶片、系統需求）</li>
+        <li><a href="https://www.apple.com/tw/newsroom/2026/01/apple-introduces-new-airtag-with-expanded-range-and-improved-findability/">Apple 推出新版 AirTag，連線範圍更廣，尋找更容易</a>（2026 年 1 月 26 日發表、台灣售價 NT$990／四件裝 NT$3,390）</li>
+      </ul>
+      <p class="updated">介面文字與系統需求可能隨 iOS 版本調整，操作前請以 Apple 官方最新說明為準。文中標示<b>推論</b>的段落為依官方資訊推得，非官方明文。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
