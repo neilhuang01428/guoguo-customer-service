@@ -92,6 +92,24 @@
   - 本篇回答：為什麼二手市場上常常出現已綁定的 Apple Pencil Pro？
   - 本篇回答：買二手 Apple Pencil Pro 前，要怎麼確認有沒有被綁定？
   - 本篇回答：什麼情況下不該買已綁定的 Apple Pencil Pro？
+- [AirTag 不是 GPS 追蹤器](https://www.guoguo.tw/guide/articles/airtag-not-gps-tracker/)：AirTag 身上沒有 GPS、沒有 SIM 卡、也沒有 Wi-Fi，位置是路過的陌生 Apple 裝置用藍牙聽到後、拿自己的 GPS 座標代為回報的。懂了這件事，九種失效情況全部推得出來——追寵物、追人、防竊這三種，是一開始就選錯工具。（觀念、AirTag、尋找定位／2026-07-28）
+  - 本篇回答：AirTag 的定位原理是什麼？
+  - 本篇回答：AirTag 裡面有 GPS 嗎？
+  - 本篇回答：為什麼我的 AirTag 位置一直沒更新？
+  - 本篇回答：AirTag 可以用來追蹤寵物嗎？
+  - 本篇回答：可以放一顆 AirTag 在小孩或長輩身上嗎？
+  - 本篇回答：AirTag 可以防止機車或腳踏車被偷嗎？
+  - 本篇回答：AirTag 的位置可以保留多久？
+  - 本篇回答：AirTag 什麼情況最好用？
+- [AirTag 重置完，還是不能配對？](https://www.guoguo.tw/guide/articles/airtag-reset-vs-unbind/)：扣電池五次是「重置」，不是「解鎖」。它只讓 AirTag 忘記上一次配對的對象，Apple 伺服器上那筆帳號登記一動也沒動——所以聽到第五聲不代表解開了。這頁把兩件事分開講，附一代二代不同的重置步驟，以及付錢前唯一有效的驗證動作。（觀念、AirTag、尋找定位／2026-07-28）
+  - 本篇回答：AirTag 重置了為什麼還是不能配對？
+  - 本篇回答：扣電池五次是不是就等於解除綁定？
+  - 本篇回答：買到已綁定其他 Apple 帳號的 AirTag 還有救嗎？
+  - 本篇回答：Apple 可以幫我解除 AirTag 的「尋找」鎖定嗎？
+  - 本篇回答：AirTag 重置之後，前主人還看得到它的位置嗎？
+  - 本篇回答：AirTag 一代和二代的重置方式一樣嗎？
+  - 本篇回答：重置 AirTag 時聽不到不一樣的第五聲怎麼辦？
+  - 本篇回答：買二手 AirTag 前要怎麼確認它是乾淨的？
 
 ## 其他
 
