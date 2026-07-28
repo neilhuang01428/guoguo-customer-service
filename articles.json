@@ -537,7 +537,8 @@
         "q": "買二手 AirTag 前要怎麼確認它是乾淨的？",
         "a": "唯一有效的方法是當場用自己的 iPhone 真的加進「尋找」一次。順序是：先確認手機系統版本夠新（一代要 iOS 14.5 以上、二代要 26.2.1 以上），用 NFC 輕觸白色面做快篩，再把 AirTag 靠近解鎖的 iPhone 看跳出什麼，最後完整走完命名與加入流程，看到它出現在物品清單裡才算通過。賣家說「已經重置過」不能當作保證。"
       }
-    ]
+    ],
+    "ogImage": "assets/og/airtag-reset-vs-unbind-cover.png"
   },
   {
     "slug": "reset-all-settings-vs-erase",
