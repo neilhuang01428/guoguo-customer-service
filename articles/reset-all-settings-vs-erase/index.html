@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>「重置所有設定」和「清除所有內容和設定」差在哪？7 個選項一次看懂 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式 ── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 兩欄「留著 / 歸零」清單 */
+  .ba { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .ba .pane { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 12px; padding: 15px 17px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .ba .pane .sub { font-family: var(--mono); font-size: .66rem; color: var(--c); }
+  .ba .pane h4 { font-size: 1rem; color: var(--ink); font-weight: 800; margin: 3px 0 10px; }
+  .ba .pane ul { list-style: none; }
+  .ba .pane li { font-size: .87rem; padding: 6px 0 6px 16px; position: relative; border-bottom: 1px solid var(--grid); color: var(--body); }
+  .ba .pane li:last-child { border-bottom: 0; }
+  .ba .pane li::before { content: '·'; position: absolute; left: 3px; color: var(--c); font-weight: 800; }
+
+  /* 選單模擬（截圖替身，純 CSS） */
+  .menu { max-width: 330px; margin: 20px auto; background: var(--panel2); border: 1px solid var(--line); border-radius: 16px; padding: 12px; }
+  .menu .row { background: #fff; border-radius: 11px; padding: 11px 14px; margin-bottom: 8px; font-size: .93rem; color: var(--ink); display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .menu .row:last-child { margin-bottom: 0; }
+  .menu .row .tagx { font-family: var(--mono); font-size: .6rem; padding: 2px 7px; border-radius: 999px; color: var(--c); background: var(--cbg); border: 1px solid var(--c); flex: none; }
+  .menu .cap2 { font-size: .8rem; color: var(--muted); text-align: center; margin-top: 10px; }
+
+  /* 表格橫向捲動 */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 640px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .ba { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>重置 vs 清除</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#answer" class="active">00 · 一句話差別</a>
+  <div class="grp">選單全解</div>
+  <a href="#menu">01 · 七個選項長怎樣</a>
+  <a href="#reset-all">02 · 重置所有設定</a>
+  <a href="#small">03 · 另外五個小選項</a>
+  <a href="#erase">04 · 清除所有內容和設定</a>
+  <div class="grp">實際要按哪個</div>
+  <a href="#which">05 · 對號入座</a>
+  <a href="#before">06 · 按清除前三件事</a>
+  <a href="#oops">07 · 按錯了怎麼辦</a>
+  <div class="grp">二手</div>
+  <a href="#used">08 · 買賣二手的檢查點</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>每個選項都附官方原文</span><span>會失去什麼列成清單</span><span>按錯了怎麼救也寫了</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">iPad 設定 / 重置選單</div>
+    <h1>「重置所有設定」和「清除所有內容和設定」差在哪</h1>
+    <p class="subtitle">停在選單前不敢按？這頁把七個選項全部拆開，逐項告訴你會失去什麼、不會失去什麼，以及你現在該按哪一個。</p>
+
+    <p class="lede">「重置所有設定」只把設定歸零，照片、App、訊息、LINE 對話一個都不會少；「清除所有內容和設定」是整台抹掉、回到出廠狀態。兩者不是同一件事的不同講法，是<strong>完全不同等級的動作</strong>。</p>
+
+    <p class="lede">Apple 官方的說法很直白：重置所有設定「不會刪除你的照片、訊息、App 和文件」；而要把 iPad 賣掉或送人，官方要你「改用『清除所有內容和設定』」。一個是家具歸位，一個是清空退租。</p>
+
+    <p class="lede">底下先給你一張「會失去／不會失去」對照表，再把「重置」選單裡其他五個小選項一次講完——它們才是大多數情況下你真正該按的那一個。</p>
+
+    <p class="updated">本文查證：<b>2026 年 7 月 28 日</b>，以 iPadOS 26／iOS 26 官方使用手冊與支援文件為準。<a class="inline" href="#sources">來源列在文末</a>。</p>
+
+    <section id="answer">
+      <div class="sec-label" style="--c:var(--navy)">the_answer</div>
+      <h2>00 · 一句話差別，先吃定心丸</h2>
+      <p>兩個選項的名字長得像，後果差非常遠。用租屋來想最快：</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">🛋️</div><div class="bt">重置所有設定</div><div class="bv">家具歸位</div></div>
+          <div class="arr">vs</div>
+          <div class="box" style="--cbg:var(--red-bg)"><div class="bi">📦</div><div class="bt">清除所有內容和設定</div><div class="bv">清空退租</div></div>
+        </div>
+        <figcaption>家具歸位＝東西<b>一樣都沒少</b>，只是位置回到原本的樣子；清空退租＝房子變空屋，<b>裡面什麼都不剩</b>。</figcaption>
+      </figure>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>比較項目</th><th>重置所有設定</th><th>清除所有內容和設定</th></tr>
+          <tr><td>照片、影片、音樂</td><td class="good">留著</td><td class="bad">全部清掉</td></tr>
+          <tr><td>App 與 App 裡的資料（含通訊軟體對話）</td><td class="good">留著</td><td class="bad">全部清掉</td></tr>
+          <tr><td>訊息、聯絡人、行事曆、檔案</td><td class="good">留著</td><td class="bad">全部清掉</td></tr>
+          <tr><td>Wi-Fi 密碼、藍牙配對</td><td class="bad">歸零，要重連重配</td><td class="bad">歸零</td></tr>
+          <tr><td>Face ID／Touch ID 設定</td><td class="bad">要重新設定</td><td class="bad">歸零</td></tr>
+          <tr><td>Apple 帳號（iCloud）登入狀態</td><td class="good">還在</td><td class="bad">登出，服務一併關閉</td></tr>
+          <tr><td>「尋找」與「啟用鎖定」</td><td class="good">維持原狀</td><td class="good">會關閉，新持有者才能用</td></tr>
+          <tr><td>適合什麼時候用</td><td>系統怪怪的、重開機沒用</td><td>要賣掉、送人、換購</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">最常被問的那句</div>「重置所有設定」<strong>不會</strong>刪掉照片，也不會刪掉通訊軟體的對話。Apple 官方把「不會被刪除」的東西列成清單，第一項就是照片、影片和音樂——完整清單放在第 02 節。</div>
+    </section>
+
+    <section id="menu">
+      <div class="sec-label" style="--c:var(--teal)">the_menu</div>
+      <h2>01 · 那個選單長什麼樣，為什麼你只看到六項</h2>
+      <p>路徑固定是這一條：<code>設定</code> → <code>一般</code> → <code>移轉或重置 iPad</code> → <code>重置</code>。點下去會從螢幕下方彈出一排選項。</p>
+
+      <div class="menu">
+        <div class="row" style="--c:var(--amber);--cbg:var(--amber-bg)">重置所有設定 <span class="tagx">大掃除</span></div>
+        <div class="row" style="--c:var(--teal);--cbg:var(--teal-bg)">重置網路設定 <span class="tagx">小刀</span></div>
+        <div class="row" style="--c:var(--teal);--cbg:var(--teal-bg)">重置鍵盤辭典 <span class="tagx">小刀</span></div>
+        <div class="row" style="--c:var(--purple);--cbg:var(--purple-bg)">重置手寫風格 <span class="tagx">26 新增</span></div>
+        <div class="row" style="--c:var(--teal);--cbg:var(--teal-bg)">重置主畫面佈局 <span class="tagx">小刀</span></div>
+        <div class="row" style="--c:var(--teal);--cbg:var(--teal-bg)">重置定位服務與隱私權 <span class="tagx">小刀</span></div>
+        <div class="cap2">Wi-Fi 機型會看到這六項。行動網路機型（Wi-Fi + 行動網路）會多一項「刪除所有 eSIM」。</div>
+      </div>
+
+      <p>注意這裡只有六個選項，<strong>沒有一個會刪掉你的資料</strong>。「清除所有內容和設定」不在這張清單裡，它在上一層的「移轉或重置 iPad」頁面上，是獨立的一列。</p>
+
+      <figure class="fig">
+        <div class="spectrum">
+          <div class="seg old">「重置」選單裡的六～七項<small>只動設定</small><b>資料全部留著</b></div>
+          <div class="divider">分水嶺</div>
+          <div class="seg new">清除所有內容和設定<small>另一層、另一個按鈕</small><b>資料全部清光</b></div>
+        </div>
+        <figcaption>整個選單只有<b>一個</b>選項會刪資料，而且它<b>不在「重置」那一排裡面</b>。</figcaption>
+      </figure>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--navy)"><div class="ct">iPhone 也一樣</div>同一套選單在 iOS 26 的 iPhone 上完全相同，只有字面上的「iPad」換成「iPhone」。這篇的每一條對 iPhone 同樣成立。</div>
+        <div class="callout" style="--c:var(--purple)"><div class="ct">「重置手寫風格」是新面孔</div>Apple 官方使用手冊在 iPadOS 17、18 版本都還沒有這一項，到 iPadOS 26／iOS 26 版才出現。你以前沒看過它，不是眼花。</div>
+      </div>
+    </section>
+
+    <section id="reset-all">
+      <div class="sec-label" style="--c:var(--amber)">reset_all</div>
+      <h2>02 · 「重置所有設定」到底動了什麼</h2>
+      <p>Apple 有一份專門講這個選項的支援文件，把「會被重置」和「不會被刪除」兩邊都列成清單。直接照抄給你看：</p>
+
+      <div class="ba">
+        <div class="pane" style="--c:var(--amber)">
+          <div class="sub">會被移除或回復預設 · 17 項</div>
+          <h4>這些要重來一次</h4>
+          <ul>
+            <li>Wi-Fi 密碼和網路、Wi-Fi 連線</li>
+            <li>藍牙配對</li>
+            <li>Apple Watch 配對</li>
+            <li>Apple Pay 卡片</li>
+            <li>Face ID 設定、Touch ID 設定</li>
+            <li>主畫面佈局和背景圖片</li>
+            <li>鍵盤辭典</li>
+            <li>定位服務偏好設定</li>
+            <li>「隱私權與安全性」設定</li>
+            <li>「通知」設定</li>
+            <li>「螢幕顯示與亮度」設定</li>
+            <li>「音效與觸覺回饋」設定</li>
+            <li>「輔助使用」設定</li>
+            <li>VPN 設定</li>
+            <li>先前信任的電腦和配件</li>
+          </ul>
+        </div>
+        <div class="pane" style="--c:var(--green)">
+          <div class="sub">官方明列「不會刪除」· 6 類</div>
+          <h4>這些一根汗毛都不會少</h4>
+          <ul>
+            <li>照片、影片和音樂</li>
+            <li>App 和 App 資料</li>
+            <li>訊息和通話記錄</li>
+            <li>聯絡人和行事曆行程</li>
+            <li>文件和檔案</li>
+            <li>已下載的內容</li>
+          </ul>
+          <p style="font-size:.83rem;color:var(--muted);margin:10px 0 0">「App 資料」就是通訊軟體對話、遊戲進度、筆記內容這些東西。它們跟著 App 走，不會被這個動作碰到。</p>
+        </div>
+      </div>
+
+      <p>看完清單你會發現：它的代價不是「資料不見」，而是「很多東西要<strong>重設一次</strong>」。Apple 官方也直接列出重置後你要做的事：</p>
+
+      <ul class="check">
+        <li>重新連接 Wi-Fi 網路（密碼要重打，包含家裡跟公司的）</li>
+        <li>配對藍牙裝置（鍵盤、滑鼠、耳機都要重來）</li>
+        <li>配對 Apple Watch</li>
+        <li>重新設定 Face ID 或 Touch ID</li>
+        <li>重新加入 Apple Pay 的卡片</li>
+        <li>調整其他偏好設定（桌布、主畫面排列、通知都會回到預設）</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">官方自己說：這一招不常需要</div>Apple 的建議順序是——系統功能出問題時<strong>先重新開機</strong>，重開機沒用才用「重置所有設定」。原文還加了一句：「只有極少數的情況會需要執行此步驟。」</div>
+
+      <details>
+        <summary>那螢幕鎖定密碼呢？會不會被清掉？</summary>
+        <p>官方那份「會被移除或回復為預設值」的清單裡，<b>沒有</b>螢幕鎖定密碼；被列進去的是「Face ID 設定」與「Touch ID 設定」。所以合理的理解是：密碼會留著，但臉部／指紋要重新建一次。我們沒有實機逐版驗證這一點，如果你的密碼對你很關鍵，重置前先確認自己記得它。</p>
+      </details>
+    </section>
+
+    <section id="small">
+      <div class="sec-label" style="--c:var(--teal)">small_knives</div>
+      <h2>03 · 另外五個小選項，其實才是你常用的</h2>
+      <p>「重置所有設定」像用大掃把掃整間房。多數時候你的問題只在某一個角落，選單裡另外五項就是專門掃那個角落用的——代價小很多。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>選項</th><th>官方怎麼說</th><th>白話：什麼時候用</th><th>代價</th></tr>
+          <tr>
+            <td>重置網路設定</td>
+            <td>所有網路設定將被移除；裝置名稱重置為「iPad」；手動設為信任的憑證改為不受信任<small>行動網路機型的數據漫遊可能一併關閉</small></td>
+            <td>Wi-Fi 連不上、一直掉線、明明密碼對卻加不進去</td>
+            <td>所有存過的 Wi-Fi 密碼要重打；VPN 設定不見</td>
+          </tr>
+          <tr>
+            <td>重置鍵盤辭典</td>
+            <td>你拒絕系統建議時會把字加進辭典，重置<b>只會</b>清除你加入的字</td>
+            <td>打字一直跳出奇怪的自訂字、錯字被記起來了</td>
+            <td>幾乎沒有，是全選單最無痛的一個</td>
+          </tr>
+          <tr>
+            <td>重置手寫風格</td>
+            <td>將自訂手寫偏好設定重置為預設值</td>
+            <td>「備忘錄」模仿出來的筆跡越看越不像你，想讓它重新學</td>
+            <td>系統學過的筆跡樣本歸零，要重新寫一陣子</td>
+          </tr>
+          <tr>
+            <td>重置主畫面佈局</td>
+            <td>將<b>內建 App</b> 重置為其在主畫面上的原始佈局</td>
+            <td>主畫面被排到亂七八糟，想一鍵回到出廠的排法</td>
+            <td>自己排的資料夾與順序會沒了（第三方 App 的擺法官方沒寫明）</td>
+          </tr>
+          <tr>
+            <td>重置定位服務與隱私權</td>
+            <td>將定位服務與隱私權設定重置為其預設值</td>
+            <td>不確定哪些 App 拿到了位置／相簿／麥克風權限，想全部重問一次</td>
+            <td>之後每個 App 都會再問一輪權限，要重按同意</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--purple)"><div class="ct">「手寫風格」到底是什麼</div>iPadOS 18 起，「備忘錄」會用裝置端模型記住你的筆跡風格，能幫你修飾字跡、甚至把貼上的文字用你的手寫體呈現。這個選項清掉的就是那份「它學到的你」。</div>
+        <div class="callout" style="--c:var(--teal)"><div class="ct">Wi-Fi 問題請先用小刀</div>網路怪怪的時候不需要動「重置所有設定」。「重置網路設定」處理同一件事，但你的 Face ID、Apple Pay、主畫面都不會被牽連。</div>
+      </div>
+
+      <details>
+        <summary>進階：重置網路設定的一些細節（官方原文）</summary>
+        <p>重置後 Wi-Fi 會先關閉再開啟，斷開現有連線，但「Wi-Fi」與「詢問是否加入網路」這兩個開關會維持開啟。它會移除以前連過的網路，以及<b>不是</b>由設定描述檔或行動裝置管理（MDM）安裝的 VPN 設定。</p>
+        <p style="margin-top:10px">若 VPN 或網路設定是描述檔／MDM 裝上去的，要到「設定」→「一般」→「VPN 與裝置管理」移除描述檔或管理才會消失，而那同時也會移除描述檔提供的其他設定與帳號。</p>
+      </details>
+    </section>
+
+    <section id="erase">
+      <div class="sec-label" style="--c:var(--red)">erase_all</div>
+      <h2>04 · 「清除所有內容和設定」做了什麼</h2>
+      <p>這是唯一會刪資料的那一個。Apple 的描述是：清除後 iPad 會<strong>回復成出廠預設值</strong>。除了照片、聯絡人、音樂、App 全部清掉之外，還有兩件事常被忽略。</p>
+
+      <div class="grid">
+        <div class="card" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="c-tag">連帶效果 1</div>
+          <h4>服務會一起關掉</h4>
+          <p>官方原文列出 iCloud、iMessage、FaceTime、Game Center 等服務都會關閉，Apple Pay 加入的信用卡與簽帳金融卡也會一併移除。</p>
+        </div>
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">連帶效果 2</div>
+          <h4>「啟用鎖定」會解除</h4>
+          <p>如果你先前開過「尋找」，清除時「尋找我的裝置」和「啟用鎖定」會關閉——這正是把機器交給下一個人時必須做的一步。</p>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">一個很多人不知道的好消息</div>官方特別註明：<strong>清除裝置時，不會從 iCloud 刪除你的內容。</strong>換句話說，同步在 iCloud 上的照片與資料還在雲端，用同一個 Apple 帳號登入新機就看得到。清空的是這台機器，不是你的帳號。</div>
+
+      <p>它也不是按一下就執行。官方流程本身就是三道關卡：</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">🔢</div><div class="bt">關卡 1</div><div class="bv">iPad 密碼</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">🍎</div><div class="bt">關卡 2</div><div class="bv">Apple 帳號密碼</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--red-bg)"><div class="bi">⚠️</div><div class="bt">關卡 3</div><div class="bv">點「繼續」確認</div></div>
+        </div>
+        <figcaption>官方步驟寫明會要求密碼再要求確認，<b>不是滑一下就全沒了</b>——但也代表：走完這三步就真的回不去。</figcaption>
+      </figure>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">01</div><div><h4>設定 → 一般 → 移轉或重置 iPad</h4><p>跟「重置」是同一個頁面，但「清除所有內容和設定」是獨立的一列，不在彈出的那排選項裡。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">02</div><div><h4>點「清除所有內容和設定」</h4><p>如果出現提示，輸入你的 iPad 密碼或 Apple 帳號密碼。有設「取用限制密碼」（螢幕使用時間）的話也會被問。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">03</div><div><h4>點「繼續」確認</h4><p>確認之後才開始清除。這一步之前都還可以退出去。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">04</div><div><h4>行動網路機型：決定 eSIM 去留</h4><p>可以選擇清除或保留 eSIM。要賣掉或送人就選連 eSIM 一起清除；但清掉之後，需要聯絡電信業者重新啟用你的行動方案。</p></div></div>
+      </div>
+    </section>
+
+    <section id="which">
+      <div class="sec-label" style="--c:var(--navy)">which_one</div>
+      <h2>05 · 你現在的狀況，該按哪一個</h2>
+      <p>把常見情境直接對到選項。找不到自己那一行的話，預設答案是「先重新開機」。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你的狀況</th><th>按這個</th><th>為什麼</th></tr>
+          <tr><td>藍牙鍵盤、滑鼠、耳機配對怪怪的，連不上或時斷時續</td><td>先重開機；沒用再「重置所有設定」</td><td>官方建議的順序就是這樣。系統功能異常先重開機，無效才動設定</td></tr>
+          <tr><td>Wi-Fi 連不上、一直掉、密碼明明對卻加不進去</td><td class="good">重置網路設定</td><td>問題就在網路那一塊，不需要把 Face ID 和 Apple Pay 也賠進去</td></tr>
+          <tr><td>打字一直跳出奇怪的自訂字</td><td class="good">重置鍵盤辭典</td><td>只清掉你自己加進去的字，其他完全不動</td></tr>
+          <tr><td>手寫辨識或模仿的筆跡越來越不像你</td><td class="good">重置手寫風格</td><td>只重設自訂手寫偏好，備忘錄內容不受影響</td></tr>
+          <tr><td>主畫面被排亂，想回到出廠的排法</td><td class="good">重置主畫面佈局</td><td>內建 App 回原位；自己排的資料夾會沒了，先想清楚</td></tr>
+          <tr><td>搞不清楚哪些 App 拿了位置與相簿權限</td><td class="good">重置定位服務與隱私權</td><td>權限一次回到預設，之後每個 App 會重新問你一輪</td></tr>
+          <tr><td>要賣掉、送人、換購，或要交給家人重新設定</td><td class="bad">清除所有內容和設定</td><td>官方明說賣掉或送人要用這個。只按「重置所有設定」帳號還在機器上</td></tr>
+          <tr><td>iPad 變慢、變卡，想「清一清讓它變快」</td><td>兩個都不是解</td><td class="bad">重置設定不會讓機器變快；清除只是把資料清光，效能問題通常在別處</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">誠實說一件事</div>「重置一下會不會比較順？」——很多人抱著這個期待按下去，結果只是花一個下午重設 Wi-Fi 和桌布。<strong>系統重置不是效能保養</strong>。機器卡頓比較常見的原因是儲存空間快滿、系統版本與機齡不合，或某個 App 在背景吃資源，那些要各自處理。</div>
+    </section>
+
+    <section id="before">
+      <div class="sec-label" style="--c:var(--green)">before_erase</div>
+      <h2>06 · 按「清除」之前，一定要做的三件事</h2>
+      <p>「重置所有設定」不用準備，隨時可以按。但「清除」是不可逆的，這三件事沒做完就別按。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--green)"><div class="n">01</div><div><h4>先備份</h4><p>官方在「清除 iPad」那頁的第一行就是「開始之前：備份你的 iPad」。iCloud 備份或用電腦備份都可以，重點是清除前一定要有一份。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">02</div><div><h4>確認你記得 Apple 帳號密碼</h4><p>清除流程會問。而且清完之後重新啟用，只要曾經開過「尋找」，系統一樣會要這組密碼——記不得就會卡在啟用畫面。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">03</div><div><h4>要給別人的話，先登出 Apple 帳號</h4><p>設定 →〔你的名字〕→ 往下捲到「登出」。iPadOS 26 起會多問一句要「清除這部裝置」還是「登出但不清除」，看清楚再選。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--teal)"><div class="ct">iCloud 空間不夠？Apple 會免費借你</div>換新機時如果 iCloud 空間不足以備份，可以走「設定」→「一般」→「移轉或重置 iPad」→「為新的 iPad 做準備」拿到<strong>暫時的免費 iCloud 空間</strong>。你有 <strong>21 天</strong>把這份備份回復到新機；新機沒在 21 天內到貨，可以再延 21 天。回復完成後，暫時備份會再保留 7 天才刪除。</div>
+
+      <ul class="flags">
+        <li><b>在把備份回復到新機之前，不要先清除舊機。</b>官方明文提醒這一點。順序錯了，暫時備份到期就是永久刪除，救不回來。</li>
+        <li><b>沒備份就按清除＝資料真的沒了。</b>沒有偷吃步、沒有神奇工具。這是我們最不想看到、卻每年都會遇到幾次的情況。</li>
+      </ul>
+    </section>
+
+    <section id="oops">
+      <div class="sec-label" style="--c:var(--amber)">oops</div>
+      <h2>07 · 已經按錯了，怎麼辦</h2>
+      <p>先分清楚你按到的是哪一個，兩種情況的嚴重程度差很遠。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">誤按「重置所有設定」· 別慌</div>資料一件都沒少。你要付的代價是時間：重連 Wi-Fi、重配藍牙、重設 Face ID、重加 Apple Pay 卡片、把主畫面和桌布排回來。照第 02 節那份清單一項一項做完就恢復了。</div>
+        <div class="callout" style="--c:var(--red)"><div class="ct">誤按「清除所有內容和設定」· 只能靠備份</div>因為要過密碼與確認兩道關，純手滑按到的機率很低。但真的清了，唯一的路是從備份回復；沒有備份就是沒有——我們不會給你「其實還能救」的假希望。</div>
+      </div>
+
+      <p>還沒按、只是站在選單前猶豫的話，判斷方法只有一句：你的目的是「<strong>修好它</strong>」還是「<strong>交出去</strong>」。修好它，永遠從最小的那把刀開始；交出去，才需要動「清除」。</p>
+
+      <div class="bigquote">
+        <div class="qm">“</div>
+        <p>「重置」是把設定歸位，「清除」是把機器交出去。</p>
+        <small>名字很像，是因為它們都在同一個選單；後果完全不同，是因為只有一個會動到你的資料。</small>
+      </div>
+    </section>
+
+    <section id="used">
+      <div class="sec-label" style="--c:var(--purple)">used_device</div>
+      <h2>08 · 果果的角度：二手機最該檢查的那一關</h2>
+      <p>我們每天在做的事，就是把機器收進來、整理好、再交到下一個人手上。這個過程裡，「清除」做得徹不徹底是驗機的第一關——沒清乾淨的機器，新主人根本開不起來。</p>
+
+      <p>Apple 官方給買二手機的人一組很明確的檢查步驟，說法也罕見地強硬，連續三次用了「請勿接手」：</p>
+
+      <ul class="flags">
+        <li><b>看到「已為擁有者鎖定」畫面</b>——裝置還綁在前一位擁有者的帳號上，請勿接手。</li>
+        <li><b>開機看到密碼鎖定畫面或主畫面</b>——代表根本還沒清除，請賣家清乾淨再說，請勿接手。</li>
+        <li><b>設定過程被要求輸入前一位擁有者的 Apple 帳號</b>——還沒從對方帳號移除，請勿接手。</li>
+        <li><b>正確的樣子只有一種：開機停在「哈囉」畫面。</b>那才代表這台機器準備好給你用了。</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">我們的立場：不碰「解啟用鎖定」這條路</div>網路上有各種宣稱能繞過啟用鎖定的工具和服務。我們不用、也不建議——官方的說法就是<strong>請勿接手受啟用鎖定保護的二手機</strong>，來路不明的鎖定機在保固、維修、甚至來源上都可能有問題。乾淨的機器該長什麼樣，開機第一個畫面就看得出來。</div>
+
+      <p>另外一個從售後累積出來的觀察：客人反應「配件怪怪的」——藍牙鍵盤打不出字、滑鼠時靈時不靈——重開機無效之後，「重置所有設定」常常就把問題解掉了。代價是那 17 項要重設一次，但它確實比送修快得多，也不用擔心資料。</p>
+
+      <h3>延伸觀看（YouTube 參考）</h3>
+      <p style="font-size:.9rem;color:var(--muted)">這篇是把每個選項的後果寫清楚；如果你想看實際操作畫面，下面兩支繁中影片補得剛好。影片為第三方製作，選項名稱與畫面仍以你機器上的 iPadOS 版本與 Apple 官方說明為準。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=xzp2BvON_is" target="_blank" rel="noopener" data-yt="xzp2BvON_is" aria-label="播放：iPhone 七種重置設定技巧一定要會">
+          <img loading="lazy" src="https://i.ytimg.com/vi/xzp2BvON_is/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/xzp2BvON_is/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>iPhone 七種重置設定技巧一定要會［Apple 蘋果小技巧］</b><small>頻道：3cTim哥生活日常 · 推薦原因：本文第 03 節那幾個小選項，這支有逐項的操作示範 · 注意：影片較早期，當年選單還沒併進「移轉或重置」，也還沒有「重置手寫風格」，項目請以本文表格為準 · 繁中</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=3ZzudrkNDrM" target="_blank" rel="noopener" data-yt="3ZzudrkNDrM" aria-label="播放：換機必看，舊機資料轉移全攻略與免費 iCloud 備份">
+          <img loading="lazy" src="https://i.ytimg.com/vi/3ZzudrkNDrM/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/3ZzudrkNDrM/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>換機必看！舊機資料轉移全攻略：免費 iCloud 讓你備份，對話、照片、App 通通不遺失</b><small>頻道：APPLEFANS蘋果迷 · 推薦原因：對應本文第 06 節「按清除前先備份」與那個暫時免費 iCloud 空間，影片有完整實際操作 · 繁中</small></div>
+      </div>
+
+      <h3 id="sources">資料來源</h3>
+      <p class="sources">本文所有選項名稱、清除範圍與流程皆取自 Apple 官方使用手冊與支援文件，查證日期 2026 年 7 月 28 日：</p>
+      <ul class="sources">
+        <li><a href="https://support.apple.com/zh-tw/126643">在 iPhone 或 iPad 上重置所有設定</a>（「會被移除或回復為預設值」17 項與「不會刪除」6 類的完整清單、重置後要重做的事、建議先重開機、賣機請改用清除）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipad9a74dc01/ipados">iPad 使用手冊 · 將 iPad 設定重置為預設值</a>（選單路徑、七個選項的官方逐項說明，含重置網路設定的細節與「重置手寫風格」）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipad8f91b5e3/26/ipados/26">iPad 使用手冊 · 清除 iPad</a>（清除流程、密碼與確認關卡、eSIM 保留或清除）</li>
+        <li><a href="https://support.apple.com/zh-tw/109511">將 iPhone 或 iPad 賣掉、送人或換購以前的注意事項</a>（清除會關閉哪些服務、不會從 iCloud 刪除內容、iPadOS 26 的登出選項、啟用鎖定會關閉）</li>
+        <li><a href="https://support.apple.com/zh-tw/108794">iPhone 和 iPad 的「啟用鎖定」</a>（運作方式，以及購買二手機前的四項檢查與「請勿接手」的情況）</li>
+        <li><a href="https://support.apple.com/zh-tw/104980">購買新 iPhone 或 iPad 時，取得暫時的 iCloud 儲存空間</a>（資格、21 天回復期限、可再延 21 天、回復後保留 7 天）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipad9a74df05xx/26/ipados/26">iPad 使用手冊 · 備份 iPad</a>（iCloud 與電腦備份方式）</li>
+        <li><a href="https://support.apple.com/zh-tw/121259">在 iPad 的「備忘錄」中使用手寫功能</a>（裝置端模型依筆跡風格重建手寫內容，即「手寫風格」的背景）</li>
+      </ul>
+      <p class="updated">Apple 隨時可能調整選單與選項名稱。本文查證：<b>2026 年 7 月 28 日</b>，畫面以 <b>iPadOS 26</b> 為準；如果你的 iPad 停在較舊的系統版本，選項數量可能不同（例如「重置手寫風格」在 iPadOS 18 以前的官方手冊中沒有）。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
