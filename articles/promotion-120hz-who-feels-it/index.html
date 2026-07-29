@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>iPad 120Hz 和 60Hz 差多少？誰真的感覺得到 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式 ── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 更新率示意：一秒之內畫幾張 */
+  .ticks { display: grid; gap: 12px; }
+  .trow { display: flex; align-items: center; gap: 12px; }
+  .trow .hz { flex: 0 0 62px; font-family: var(--mono); font-size: .82rem; font-weight: 800; color: var(--c); }
+  .trow .strip { flex: 1; height: 34px; border-radius: 7px; border: 1px solid var(--line); background: #fff; background-image: repeating-linear-gradient(90deg, var(--c) 0 3px, transparent 3px var(--gap)); background-position: 4px 0; }
+  .trow .ms { flex: 0 0 108px; font-family: var(--mono); font-size: .7rem; color: var(--muted); text-align: right; }
+
+  /* 寬表格橫向捲動 */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 560px; }
+  td.y { color: var(--green-deep); font-weight: 700; }
+  td.n { color: var(--muted); }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+
+  /* 價差對照條 */
+  .gap2 { display: grid; gap: 9px; margin: 18px 0; }
+  .gaprow { display: flex; align-items: center; gap: 12px; }
+  .gaprow .nm { flex: 0 0 132px; font-size: .88rem; color: var(--ink); font-weight: 600; }
+  .gaprow .bar { flex: 1; height: 24px; background: var(--panel2); border-radius: 6px; overflow: hidden; }
+  .gaprow .fill { height: 100%; background: var(--c); display: flex; align-items: center; justify-content: flex-end; padding-right: 9px; color: #fff; font-family: var(--mono); font-size: .7rem; font-weight: 700; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .trow .ms { display: none; }
+    .gaprow .nm { flex: 0 0 96px; font-size: .8rem; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>120Hz 差多少</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#answer" class="active">00 · 先看你是哪種人</a>
+  <a href="#what">01 · 到底在快什麼</a>
+  <div class="grp">四種用途拆開看</div>
+  <a href="#pencil">02 · 手寫與繪圖</a>
+  <a href="#video">03 · 看影片</a>
+  <a href="#scroll">04 · 捲動與遊戲</a>
+  <div class="grp">怎麼決定</div>
+  <a href="#which">05 · 你那台有沒有</a>
+  <a href="#worth">06 · 值不值得加價</a>
+  <a href="#used">07 · 最省的那條路</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>2015 年至今全世代都在架上</span><span>敢說「這台你不用買」</span><span>缺點照實揭露</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">iPad 選購 / 規格白話翻譯</div>
+    <h1>120Hz 和 60Hz 的 iPad，<br>到底差多少？</h1>
+    <p class="subtitle">規格表上那個「ProMotion」值不值得加價，答案不在螢幕上，在你的使用習慣裡。這篇按四種用途分開講，也直說哪些人不必花這筆錢。</p>
+
+    <p class="lede">差別是真的，但它只在一種時刻出現：<strong>你的手正推著畫面動的時候</strong>。用 Apple Pencil 寫字、畫圖的人感受最深，長時間捲動閱讀的人次之。看影片、追劇的人幾乎感覺不到——因為多數影片本身一秒只有 24 到 30 格，螢幕再快也沒有更多畫面可以放。</p>
+
+    <p class="lede">所以真正該問的不是「120Hz 好不好」，而是「我每天有多少時間，手正在推著畫面動」。這個問題只有你自己答得出來，規格表答不了。</p>
+
+    <p class="lede">這頁給你四種用途的有感程度、一句話查出手上那台有沒有 ProMotion、2015 到 2026 全世代對照表，以及把加價金額換算成其他升級之後的實際比較。</p>
+
+    <p class="updated">本文查證：<b>2026 年 7 月 29 日</b>，規格與售價以 Apple 官方最新公告為準。<a class="inline" href="#sources">來源列在文末</a>。</p>
+
+    <section id="answer">
+      <div class="sec-label" style="--c:var(--navy)">who_feels_it</div>
+      <h2>00 · 先看你是哪一種人</h2>
+      <p>與其解釋技術，不如先讓你對號入座。下面是果果客服面對面服務時，實際觀察到的有感程度排序：</p>
+
+      <div class="meter" style="--c:var(--green);--w:100%"><div class="mtop"><b>用 Apple Pencil 手寫、繪圖</b><span>最有感</span></div><div class="track"><div class="fill"></div></div></div>
+      <div class="meter" style="--c:var(--teal);--w:66%"><div class="mtop"><b>長時間捲動閱讀（網頁、PDF、社群）</b><span>有感，但會習慣</span></div><div class="track"><div class="fill"></div></div></div>
+      <div class="meter" style="--c:var(--amber);--w:45%"><div class="mtop"><b>玩遊戲</b><span>看遊戲而定</span></div><div class="track"><div class="fill"></div></div></div>
+      <div class="meter" style="--c:var(--muted);--w:12%"><div class="mtop"><b>看影片、追劇、視訊通話</b><span>幾乎無感</span></div><div class="track"><div class="fill"></div></div></div>
+      <div class="meter" style="--c:var(--muted);--w:10%"><div class="mtop"><b>打字、文書、線上課程</b><span>幾乎無感</span></div><div class="track"><div class="fill"></div></div></div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">這張圖是經驗，不是實驗數據</div>
+        更新率的感受因人而異，有人天生對動態敏感、有人怎麼看都一樣。上面的長條是果果客服在門市讓客人兩台並排實際滑過之後的<strong>歸納印象</strong>，不是量測結果——請當成「該把注意力放哪裡」的地圖，不是分數。
+      </div>
+
+      <p>每一種用途背後的原因不一樣，後面第 02 到 04 節各展開一種。先把完整版本放在這裡：</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你主要拿 iPad 做什麼</th><th>有感程度</th><th>原因</th></tr>
+          <tr>
+            <td>Apple Pencil 手寫筆記、繪圖</td>
+            <td class="y">最有感</td>
+            <td>筆尖跟墨跡之間的落差會縮短。而且你的手就在旁邊，等於自帶一個對照組<small>參見第 02 節</small></td>
+          </tr>
+          <tr>
+            <td>捲動網頁、PDF、社群動態</td>
+            <td class="y">有感</td>
+            <td>快速捲動時文字邊緣比較不糊。但這是最容易「用兩週就習慣、換回去才發現」的一項</td>
+          </tr>
+          <tr>
+            <td>玩遊戲</td>
+            <td>要看條件</td>
+            <td>遊戲本身要支援高幀率，機器效能也要跟得上，兩個條件缺一就等於沒有<small>參見第 04 節</small></td>
+          </tr>
+          <tr>
+            <td>看影片、追劇、YouTube</td>
+            <td class="n">幾乎無感</td>
+            <td>片源一秒只有 24 到 30 格，螢幕能畫 120 張也沒東西可放<small>參見第 03 節</small></td>
+          </tr>
+          <tr>
+            <td>打字、看講義、線上課程</td>
+            <td class="n">幾乎無感</td>
+            <td>畫面絕大多數時間是靜止的，靜止畫面在幾 Hz 之下長得完全一樣</td>
+          </tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="what">
+      <div class="sec-label" style="--c:var(--teal)">how_it_works</div>
+      <h2>01 · 120Hz 到底在快什麼？</h2>
+      <p>先把名詞翻成白話。<strong>更新率</strong>講的是「螢幕一秒鐘重畫幾次」，單位是 Hz（赫茲）。60Hz 就是一秒重畫 60 次，120Hz 是 120 次。</p>
+
+      <figure class="fig">
+        <div class="ticks">
+          <div class="trow" style="--c:var(--amber);--gap:24px"><div class="hz">60Hz</div><div class="strip"></div><div class="ms">每 16.7 毫秒一張</div></div>
+          <div class="trow" style="--c:var(--green);--gap:12px"><div class="hz">120Hz</div><div class="strip"></div><div class="ms">每 8.3 毫秒一張</div></div>
+        </div>
+        <figcaption>同樣一秒鐘，下面那條塞進<b>兩倍數量</b>的畫面。差距就是這 8.3 毫秒。</figcaption>
+      </figure>
+
+      <p>8.3 毫秒有多短？大約是眨一次眼的四十分之一。單獨拿出來根本感覺不到——但當畫面連續動起來，這些間隔會累積成「順」或「頓」的整體印象。</p>
+
+      <div class="callout" style="--c:var(--navy)">
+        <div class="ct">整篇最關鍵的一句話</div>
+        更新率只有在<strong>畫面正在改變</strong>時才發揮作用。畫面靜止的時候，60Hz 和 120Hz 長得一模一樣——因為它們重畫的都是同一張圖。
+      </div>
+
+      <p>這句話決定了後面所有答案。你只要問自己一件事：我用 iPad 的時候，畫面是「一直在動」還是「大多數時間定在那裡」？</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">✍️</div><div class="bt">你的手在推</div><div class="bv">寫字・捲動</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">🔄</div><div class="bt">畫面每一格都不同</div><div class="bv">更新率有用</div></div>
+        </div>
+        <div class="flow" style="margin-top:10px">
+          <div class="box" style="--cbg:var(--panel2)"><div class="bi">🎬</div><div class="bt">片源在推</div><div class="bv">影片・靜止畫面</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--panel2)"><div class="bi">⏸️</div><div class="bt">新畫面的數量固定</div><div class="bv">更新率幫不上忙</div></div>
+        </div>
+        <figcaption>差別不在螢幕多快，在於<b>有沒有足夠的新畫面餵給它</b>。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">Apple 的作法：不是永遠 120Hz</div>
+        現售 iPad Pro 的官方規格寫的是「ProMotion 技術，支援 <strong>10Hz 至 120Hz</strong> 自動適應更新頻率」——它會依畫面內容自己調整，看靜態網頁時降下來省電，手一滑立刻拉滿。所以「120Hz 比較耗電」這個直覺，在 ProMotion 身上並不成立。
+      </div>
+
+      <details>
+        <summary>那為什麼舊款 iPad Pro 的規格頁沒寫 Hz 範圍？</summary>
+        <p>2017 到 2022 年那批 LCD 螢幕的 iPad Pro，官方規格只寫「ProMotion 自動適應更新率技術」，<b>沒有公布下限數字</b>。到了 2024 年換成串聯式 OLED 螢幕的 M4 機型，才開始標示「10Hz 至 120Hz」。</p>
+        <p>換句話說，舊款一樣會自動調整、上限一樣是 120Hz，只是 Apple 沒說它最低能降到多少。看到規格頁沒寫範圍，<b>不代表沒有 ProMotion</b>——要看的是有沒有出現「ProMotion」這幾個字。</p>
+      </details>
+    </section>
+
+    <section id="pencil">
+      <div class="sec-label" style="--c:var(--green)">pencil</div>
+      <h2>02 · 手寫與繪圖：差最多的就是這一塊</h2>
+      <p>如果你買 iPad 是為了做筆記或畫圖，這是唯一一節你非讀不可。</p>
+
+      <p>用 Pencil 寫字時，螢幕要做的事情是「追上你的手」。你的手已經滑到 B 點了，墨跡還停在 A 點——這段落差就是<strong>延遲</strong>。螢幕重畫得越頻繁，追得越緊，落差就越小。</p>
+
+      <div class="callout" style="--c:var(--navy)">
+        <div class="ct">為什麼偏偏是寫字最有感</div>
+        因為你的手<strong>就在墨跡旁邊</strong>。看影片時你沒有東西可以比較；寫字時，筆尖和墨跡同時出現在視野裡，落差有多大一眼就看到。這是自帶對照組的使用情境，也是唯一一個。
+      </div>
+
+      <p>Apple 在 2017 年推出 ProMotion 時，官方新聞稿直接給了數字：搭配 ProMotion 的 Apple Pencil 延遲是「業界最佳的 20 毫秒」。這是 Apple 唯一一次公開講明的延遲數字，後來的機型都只用「低延遲」帶過。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)">
+          <div class="ct">這些人加價通常划算</div>
+          每天用 Pencil 超過一小時、畫插畫或漫畫、上課全靠手寫筆記、做設計稿。落差縮小是<strong>持續累積</strong>的體驗，不是偶爾才用到。
+        </div>
+        <div class="callout" style="--c:var(--amber)">
+          <div class="ct">這些人先別急</div>
+          一週只簽幾份 PDF、偶爾在截圖上畫個圈、主要用鍵盤打字。這種頻率下，多數人裝上鍵盤兩週後就忘了自己有筆。
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--red)">
+        <div class="ct">別把兩件事搞混了</div>
+        延遲小 <strong>不等於</strong> 手感好。筆尖材質、螢幕鍍膜、有沒有貼類紙膜、你用的 App 引擎，對「寫起來像不像紙」的影響往往比更新率更大。有人在 120Hz 機器上貼了不合適的保護貼，寫起來反而比 60Hz 裸機還鈍。
+      </div>
+
+      <h3>與其看文字，不如看一次實際的</h3>
+      <p>這支是果果自己拍的，兩台機器並排、同一個動作，一分鐘看完就知道差距長什麼樣：</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=pCDfYcd_-gg" target="_blank" rel="noopener" data-yt="pCDfYcd_-gg" aria-label="播放：iPad 60Hz 對比 120Hz 螢幕刷新率感受差異">
+          <img loading="lazy" src="https://i.ytimg.com/vi/pCDfYcd_-gg/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/pCDfYcd_-gg/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>iPad 60Hz v.s 120Hz 螢幕刷新率の感受差異</b><small>頻道：果果國際 - iPad嚴選 · 推薦原因：兩台實機並排、同一個動作滑給你看，一分鐘結束不囉嗦。文字再怎麼描述「順」，都不如自己看一次 · 繁中</small></div>
+      </div>
+    </section>
+
+    <section id="video">
+      <div class="sec-label" style="--c:var(--muted)">video</div>
+      <h2>03 · 看影片為什麼幾乎沒感覺？</h2>
+      <p>這是最多人誤會的一節。直覺會說「螢幕更新越快，影片一定越順」——但實際上，決定影片順不順的是<strong>片源本身有幾格</strong>，不是螢幕能畫幾張。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">🎬</div><div class="bt">片源</div><div class="bv">一秒 24～30 格</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--panel2)"><div class="bi">📱</div><div class="bt">螢幕能畫</div><div class="bv">120 張</div></div>
+          <div class="arr">＝</div>
+          <div class="box" style="--cbg:var(--panel2)"><div class="bi">🤷</div><div class="bt">實際看到</div><div class="bv">還是 24～30 格</div></div>
+        </div>
+        <figcaption>螢幕不會<b>憑空生出</b>片源沒拍的畫面。多的產能只能重複播同一張。</figcaption>
+      </figure>
+
+      <p>這個數字不是猜的。Netflix 在自家技術部落格寫得很明白：他們的片庫與觀看時數，絕大多數集中在 <strong>23.97 到 30fps</strong> 的內容（fps 就是「一秒幾格」）。電影長年以 24 格為標準，北美電視則是 30 格。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你在看的東西</th><th>一秒幾格</th><th>60Hz 夠不夠</th></tr>
+          <tr><td>電影、Netflix 影集</td><td>24 格</td><td class="y">綽綽有餘</td></tr>
+          <tr><td>電視節目、新聞</td><td>30 格</td><td class="y">綽綽有餘</td></tr>
+          <tr><td>一般 YouTube 影片</td><td>24～30 格</td><td class="y">綽綽有餘</td></tr>
+          <tr><td>YouTube 高幀率影片、部分體育賽事</td><td>50～60 格</td><td class="y">剛好吃滿</td></tr>
+          <tr><td>超過 60 格的片源</td><td>——</td><td class="n">日常幾乎遇不到</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">可以放心的結論</div>
+        如果你買 iPad 主要是追劇、看 YouTube、上視訊會議，ProMotion 對你的<strong>價值接近零</strong>。把這筆錢挪去買更大的容量或更好的耳機，回報明顯得多。
+      </div>
+
+      <details>
+        <summary>公平起見：120Hz 播影片有一個很小的優點</summary>
+        <p>24 除不進 60（60 ÷ 24 = 2.5），所以 60Hz 螢幕播 24 格的電影時，只能讓有些畫面停留兩次、有些停留三次來湊——業界叫做 <b>3:2 pulldown</b>，湊出來的不均勻會產生輕微抖動，術語叫 judder。Netflix 的工程部落格也提到這個現象。</p>
+        <p>120 就剛好整除：120 ÷ 24 = 5，每一格平均停留五次，不必湊。所以理論上 120Hz 播電影是比較平順的。</p>
+        <p>但請注意兩件事：第一，這個差異<b>非常細微</b>，在平板尺寸的螢幕上多數人不會注意到；第二，它跟「螢幕比較順」是兩回事，別把它當成加價理由。誠實講出來，是因為說「完全沒差」並不精確。</p>
+      </details>
+    </section>
+
+    <section id="scroll">
+      <div class="sec-label" style="--c:var(--amber)">scroll_game</div>
+      <h2>04 · 捲動與遊戲：兩個要附加條件的情況</h2>
+
+      <h3>捲動閱讀：有感，但它會偷偷變成日常</h3>
+      <p>快速捲動網頁或 PDF 時，60Hz 的文字邊緣會有一點糊，120Hz 比較清楚。這是除了 Pencil 之外第二明顯的差異。</p>
+
+      <p>但這一項有個特性：<strong>它會被習慣吃掉</strong>。用一段時間之後，順就變成理所當然，你不會每天為它高興；反而是換回 60Hz 的那一天，才會突然覺得卡。</p>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">「一用就回不去」這句話，其實只講了一半</div>
+        評測常說 120Hz 一用就回不去。這句話是真的，但成立的前提是<strong>你已經先用過了</strong>。從來沒用過 120Hz 的人，不會因為手上是 60Hz 而覺得卡——因為沒有對照組。所以真正該問的是：你的手機是 120Hz 嗎？如果是，換到 60Hz 的 iPad 落差感會比較明顯；如果不是，這一項對你的影響會小很多。
+      </div>
+
+      <h3>遊戲：兩個條件缺一不可</h3>
+      <p>很多人以為買了 120Hz 的機器，遊戲就自動變順。實際上要兩件事同時成立：</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">1</div><div><h4>遊戲本身要支援高幀率</h4><p>很多手遊上限就是鎖 60fps，甚至只有 30fps。遊戲不放行，螢幕再快也只能重複播同一張。部分遊戲要進設定裡手動開啟高幀率選項。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">2</div><div><h4>機器效能要真的跑得動</h4><p>畫質全開的大型 3D 遊戲，就算螢幕能畫 120 張，晶片畫不出 120 張也是白搭。這種時候降畫質往往比換螢幕更有效。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">先查再決定</div>
+        如果你是為了某一款特定遊戲才考慮加價，先去查那款遊戲<strong>支不支援 120fps</strong>，再回來看要不要多花錢。這個順序反過來，很容易買完才發現用不到。
+      </div>
+    </section>
+
+    <section id="which">
+      <div class="sec-label" style="--c:var(--navy)">which_models</div>
+      <h2>05 · 你手上（或想買）那台，到底有沒有？</h2>
+      <p>這題有一個非常乾脆的答案，而且不用背機型：</p>
+
+      <div class="bigquote">
+        <div class="qm">"</div>
+        <p>只有 iPad Pro 有 120Hz，而且必須是 2017 年之後的 iPad Pro。</p>
+        <small>其他所有 iPad ——包含最新的 iPad Air 與 iPad mini ——都是 60Hz。</small>
+      </div>
+
+      <figure class="fig">
+        <div class="spectrum">
+          <div class="seg old">2015 – 2016<small>iPad Pro 12.9 吋一代<br>iPad Pro 9.7 吋</small><b>沒有 120Hz</b></div>
+          <div class="divider">2017 年<br>ProMotion<br>登場</div>
+          <div class="seg new" style="background:var(--green-bg)"><small>iPad Pro 10.5 吋<br>iPad Pro 12.9 吋二代<br>及之後所有 Pro</small><b style="color:var(--green-deep)">全部都有</b></div>
+        </div>
+        <figcaption>分水嶺在 <b>2017 年 6 月</b>。同樣叫 iPad Pro，早一年就沒有。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--teal)">
+        <div class="ct">怎麼自己查，一句話就好</div>
+        打開 Apple 官方技術規格頁，在「顯示器」那一段找有沒有 <strong>ProMotion</strong> 這幾個字。有，就是最高 120Hz；沒有，就是 60Hz。
+      </div>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">一個很多人不知道的細節</div>
+        Apple 的規格頁<strong>從來不會寫「60Hz」</strong>。你在 iPad Air、iPad mini、標準版 iPad 的規格裡找不到任何更新率的字眼——不是它們藏起來了，而是 Apple 只標示值得宣傳的那一項。所以「找不到更新率」本身就是答案。
+      </div>
+
+      <h3>2015 到 2026 全世代對照表</h3>
+      <p>果果同時經手所有世代，這張表是我們替客人查機型時實際在用的：</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>系列</th><th>世代</th><th>更新率</th><th>官方規格頁上的字</th></tr>
+          <tr><td>iPad Pro</td><td>12.9 吋 第 1 代（2015）</td><td class="n">60Hz</td><td class="n">無 ProMotion 字樣</td></tr>
+          <tr><td>iPad Pro</td><td>9.7 吋（2016）</td><td class="n">60Hz</td><td class="n">無 ProMotion 字樣</td></tr>
+          <tr><td>iPad Pro</td><td>10.5 吋、12.9 吋 第 2 代（2017）</td><td class="y">最高 120Hz</td><td>ProMotion 自動適應更新率技術</td></tr>
+          <tr><td>iPad Pro</td><td>11 吋 第 1～4 代、12.9 吋 第 3～6 代（2018–2022）</td><td class="y">最高 120Hz</td><td>ProMotion 自動適應更新率技術</td></tr>
+          <tr><td>iPad Pro</td><td>M4（2024）、M5（2025 起）</td><td class="y">10Hz 至 120Hz</td><td>ProMotion 技術，支援 10Hz 至 120Hz 自動適應更新頻率</td></tr>
+          <tr><td>iPad Air</td><td>全部世代，含現售 M4 機型</td><td class="n">60Hz</td><td class="n">規格頁未列更新率</td></tr>
+          <tr><td>iPad mini</td><td>全部世代，含現售 A17 Pro 機型</td><td class="n">60Hz</td><td class="n">規格頁未列更新率</td></tr>
+          <tr><td>iPad（標準版）</td><td>全部世代，含現售 A16 機型</td><td class="n">60Hz</td><td class="n">規格頁未列更新率</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--red)">
+        <div class="ct">最常見的誤會</div>
+        「iPad Air 比較新、晶片比較強，螢幕應該也比較好吧？」——更新率這一項<strong>不跟著世代走，只跟著產品線走</strong>。一台 2018 年的 iPad Pro 有 120Hz，2026 年的 iPad Air 沒有。買二手時，這是最容易看走眼的地方。
+      </div>
+    </section>
+
+    <section id="worth">
+      <div class="sec-label" style="--c:var(--green)">worth_it</div>
+      <h2>06 · 那到底值不值得加價？</h2>
+      <p>談錢之前要先講一件公平的事，因為很多比較文都跳過了。</p>
+
+      <div class="callout" style="--c:var(--red)">
+        <div class="ct">你沒辦法「只買 120Hz」</div>
+        ProMotion 不是單獨販售的選配，它綁在 iPad Pro 這一整包裡。你加的價錢同時買到了 OLED 螢幕、更高的亮度與對比、更強的晶片、Thunderbolt 埠、Face ID。把整筆差價都算在 120Hz 頭上並不公平；反過來說，<strong>只為了 120Hz 付這筆錢也是買錯理由</strong>。
+      </div>
+
+      <p>把容量拉成一樣再比，才看得出真正的差距。以下是 Apple 台灣官網 Wi-Fi 機型的定價，查證於 2026 年 7 月 29 日：</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>11 吋・同容量</th><th>iPad Air（60Hz）</th><th>iPad Pro（120Hz）</th><th>價差</th></tr>
+          <tr><td>256GB</td><td>NT$28,400</td><td>NT$39,900</td><td class="bad">＋NT$11,500</td></tr>
+          <tr><td>512GB</td><td>NT$35,400</td><td>NT$46,900</td><td class="bad">＋NT$11,500</td></tr>
+          <tr><td>1TB</td><td>NT$45,900</td><td>NT$60,900</td><td class="bad">＋NT$15,000</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">注意官網「起價」會讓你算錯</div>
+        官網寫 iPad Air 從 NT$24,900 起、iPad Pro 從 NT$39,900 起，看起來差 15,000。但那是 Air 128GB 對 Pro 256GB——<strong>容量本來就不一樣</strong>。拉齊之後實際是 11,500。
+      </div>
+
+      <h3>把 11,500 元換成別的東西看看</h3>
+      <p>同樣一筆錢，放在其他地方能買到什麼？這是果果最常拿來跟客人一起算的三個選項：</p>
+
+      <div class="gap2">
+        <div class="gaprow" style="--c:var(--red)"><div class="nm">升級成 Pro</div><div class="bar"><div class="fill" style="width:100%">＋11,500 換 120Hz</div></div></div>
+        <div class="gaprow" style="--c:var(--green)"><div class="nm">Air 加容量</div><div class="bar"><div class="fill" style="width:91%">＋10,500 換 128GB→512GB</div></div></div>
+        <div class="gaprow" style="--c:var(--teal)"><div class="nm">還有找</div><div class="bar"><div class="fill" style="width:9%">1,000</div></div></div>
+      </div>
+
+      <p>換句話說：11 吋 iPad Air 512GB（NT$35,400）比 11 吋 iPad Pro 256GB（NT$39,900）<strong>便宜 4,500 元，容量還多一倍</strong>。如果你的痛點是「拍的影片存不下、App 一直要刪」，這個選擇的實際回報會比更新率明顯得多。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)">
+          <div class="ct">建議加價</div>
+          每天用 Pencil 創作或做筆記；手機已經是 120Hz、對順暢度敏感；本來就想要 OLED 螢幕與更強效能——加價買到的不只更新率，這時候整包才划算。
+        </div>
+        <div class="callout" style="--c:var(--teal)">
+          <div class="ct">建議省下</div>
+          主要追劇、上課、看講義、打字；一週用不到幾次筆；容量才是你真正的痛點。這筆錢換成容量或配件，你每天都感覺得到。
+        </div>
+      </div>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:#fff"><div class="bi">🤔</div><div class="bt">先問自己</div><div class="bv">每天用筆嗎</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">✍️</div><div class="bt">會，而且很久</div><div class="bv">加價合理</div></div>
+          <div class="arr">／</div>
+          <div class="box" style="--cbg:var(--teal-bg)"><div class="bi">📺</div><div class="bt">不太用</div><div class="bv">錢換容量</div></div>
+        </div>
+        <figcaption>一句話版本：<b>看你的手，不是看規格表。</b></figcaption>
+      </figure>
+    </section>
+
+    <section id="used">
+      <div class="sec-label" style="--c:var(--purple)">used_market</div>
+      <h2>07 · 果果的立場：想要 120Hz，有一條更省的路</h2>
+      <p>評測拿到的是公關機，不用自己付錢，所以他們的結論通常是「買最新的 Pro」。我們的立場不一樣——因為所有世代都在我們架上，我們沒有理由只推最新的那一台。</p>
+
+      <p>如果你看完前面，確定自己就是「用筆很兇、真的需要 120Hz」的那種人，那最省的路不是買最新的 Pro：2017 年之後的任何一台 iPad Pro，<strong>都有完整的 ProMotion</strong>。這件事第 05 節的表已經寫得很清楚了。</p>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">為什麼我們願意講這件事</div>
+        因為 120Hz 這一項<strong>沒有進化空間</strong>——2018 年的 120Hz 和 2026 年的 120Hz，就是同一個 120Hz。它不像晶片一代比一代強，也不像相機一代比一代好。單就更新率而言，舊 Pro 給你的東西跟新 Pro 一模一樣。
+      </div>
+
+      <p>但話要講完整。買舊 Pro 換 120Hz，你確實會在別的地方付出代價，這些我們一樣照實說：</p>
+
+      <ul class="flags">
+        <li><b>電池是消耗品</b>——年份越舊，健康度越可能下降。二手機一定要看得到實際電池健康度數字，看不到就別買。</li>
+        <li><b>系統支援有年限</b>——Apple 會逐步讓舊機型停止更新到最新 iPadOS。買越舊，能陪你的時間越短。</li>
+        <li><b>Apple Pencil 世代要對</b>——不同年份的 iPad Pro 支援的 Pencil 不一樣。買機器前先確認手上那支筆能不能用，不然筆得重買。</li>
+        <li><b>螢幕技術有差</b>——舊 Pro 是 LCD，現售 M4／M5 是串聯式 OLED。更新率一樣，但亮度、對比與 HDR 表現差很多。</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">誠實的但書</div>
+        我們不會說「舊 Pro 一定比新 Air 好」。<strong>這是一場交換</strong>：你用「較舊的機身、較短的支援年限、LCD 螢幕」去換「120Hz 和更便宜的價格」。划不划算，取決於你有多需要那個 120Hz——而這正是前面六節在幫你判斷的事。
+      </div>
+
+      <ul class="check">
+        <li><b>我每天用 Pencil 嗎？</b>會，而且時間長 → 120Hz 對你是真需求，值得認真比較。</li>
+        <li><b>我主要拿它追劇、上課嗎？</b>是 → 這項對你價值接近零，把預算放容量上。</li>
+        <li><b>我的手機是 120Hz 嗎？</b>是 → 換到 60Hz 的 iPad 落差感會比較明顯，先去門市滑滑看。</li>
+        <li><b>我最常抱怨的是空間不夠嗎？</b>是 → 同樣的錢升容量，實際感受會強得多。</li>
+        <li><b>我看得到這台二手機的電池健康度嗎？</b>看不到 → 不管幾 Hz，先別買。</li>
+      </ul>
+    </section>
+
+    <section id="watch">
+      <div class="sec-label" style="--c:var(--teal)">videos</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p>第 02 節已經放了果果自己拍的並排實測；下面兩支補的是「筆記繪畫實際差多少」與「值不值得多花錢」。影片為第三方製作，規格細節仍以 Apple 官方說明為準。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=f98bbmpXy6w" target="_blank" rel="noopener" data-yt="f98bbmpXy6w" aria-label="播放：60Hz iPad Air 對比 120Hz iPad Pro 哪個更適合筆記與繪畫">
+          <img loading="lazy" src="https://i.ytimg.com/vi/f98bbmpXy6w/sddefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/f98bbmpXy6w/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>60Hz iPad Air v.s. 120Hz iPad Pro 哪個更適合筆記＆繪畫？</b><small>頻道：BPW 學習日誌 · 推薦原因：正好對應本文第 02 節。用 Goodnotes 和 Procreate 實際寫、實際畫，是「該不該為了筆加價」最貼近的參考 · 繁中</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=SzDi7XSuqq0" target="_blank" rel="noopener" data-yt="SzDi7XSuqq0" aria-label="播放：11 吋 iPad 全面實測 值得多花錢嗎">
+          <img loading="lazy" src="https://i.ytimg.com/vi/SzDi7XSuqq0/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/SzDi7XSuqq0/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>11 吋 iPad 全面實測｜A16、Air、Pro 差在哪？值得多花錢嗎？</b><small>頻道：彼得森 · 推薦原因：把同尺寸三台放在一起比，能看到 120Hz 之外你還多付了什麼——正是本文第 06 節「你沒辦法只買 120Hz」的實機版 · 繁中</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">本文的更新率規格、機型分界與售價皆取自 Apple 官方頁面，影片幀率取自 Netflix 官方技術部落格，查證日期 2026 年 7 月 29 日：</p>
+      <ul class="sources">
+        <li><a href="https://www.apple.com/tw/ipad-pro/specs/">iPad Pro · 技術規格（Apple 台灣）</a>（顯示器欄原文「ProMotion 技術，支援 10Hz 至 120Hz 自動適應更新頻率」）</li>
+        <li><a href="https://www.apple.com/tw/ipad-air/specs/">iPad Air · 技術規格（Apple 台灣）</a>（顯示器欄無 ProMotion、亦未列任何更新率）</li>
+        <li><a href="https://www.apple.com/tw/ipad-mini/specs/">iPad mini · 技術規格（Apple 台灣）</a>（同上，未列更新率）</li>
+        <li><a href="https://www.apple.com/tw/ipad-11/specs/">iPad · 技術規格（Apple 台灣）</a>（同上，未列更新率）</li>
+        <li><a href="https://www.apple.com/newsroom/2017/06/ipad-pro-10-5-and-12-9-inch-models-introduces-worlds-most-advanced-display-breakthrough-performance/">Apple Newsroom · 2017 年 6 月 iPad Pro 發表稿</a>（ProMotion 首次登場於 10.5 吋與 12.9 吋第 2 代；Apple Pencil「industry-best, 20-millisecond latency」的原始出處）</li>
+        <li><a href="https://support.apple.com/kb/SP762?viewlocale=zh_TW&locale=zh_TW">iPad Pro（10.5 吋）· 技術規格</a>與<a href="https://support.apple.com/kb/SP761?viewlocale=zh_TW&locale=zh_TW">iPad Pro（12.9 吋，第 2 代）· 技術規格</a>（兩者皆列「ProMotion 自動適應更新率技術」，未標 Hz 範圍）</li>
+        <li><a href="https://support.apple.com/kb/SP723?viewlocale=zh_TW&locale=zh_TW">iPad Pro（12.9 吋，第 1 代）· 技術規格</a>與<a href="https://support.apple.com/en-us/111965">iPad Pro（9.7 吋）· 技術規格</a>（兩者顯示器欄皆無 ProMotion，佐證 2017 年為分水嶺）</li>
+        <li><a href="https://support.apple.com/en-us/111974">iPad Pro 11 吋（第 1 代）</a>、<a href="https://support.apple.com/en-us/118452">第 2 代</a>、<a href="https://support.apple.com/en-us/111897">第 3 代</a>、<a href="https://support.apple.com/kb/SP882?locale=zh_TW&viewlocale=zh_TW">第 4 代</a>技術規格（逐代確認皆列 ProMotion）</li>
+        <li><a href="https://www.apple.com/tw/shop/buy-ipad/ipad-air">Apple 台灣官網 · iPad Air 購買頁</a>與<a href="https://www.apple.com/tw/shop/buy-ipad/ipad-pro">iPad Pro 購買頁</a>（第 06 節同容量價差的定價來源，Wi-Fi 機型）</li>
+        <li><a href="https://netflixtechblog.com/native-frame-rate-playback-6c87836a948">Netflix Technology Blog · Native Frame Rate Playback</a>（原文「the majority of our catalog and viewing hours can be attributed to members watching 23.97 to 30fps content」，以及 3:2 pulldown 造成 judder 的說明）</li>
+      </ul>
+      <p class="updated">售價與機型陣容會隨 Apple 更新而變動，新機型上市後本表需補列；「有感程度」為果果客服的服務經驗歸納，非量測數據，個人感受仍會有差異。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
