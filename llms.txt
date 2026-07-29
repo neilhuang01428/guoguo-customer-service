@@ -146,6 +146,15 @@
   - 本篇回答：用 Apple Pencil 一定要買 120Hz 的 iPad 嗎？
   - 本篇回答：怎麼知道我的 iPad 是不是 120Hz？
   - 本篇回答：想要 120Hz 但預算有限，買舊的 iPad Pro 可以嗎？
+- [iPad 支援 5G 是哪一種 5G？](https://www.guoguo.tw/guide/articles/ipad-5g-wifi-vs-cellular/)：接家裡的 5G Wi-Fi 不會有 5G 網速。規格表上的 5G 只指行動網路，要行動網路版＋eSIM 才有——兩個撞名的 5G，一次分清楚。（觀念、連網與網速、選購／2026-07-29）
+  - 本篇回答：iPad 支援 5G 是什麼意思？
+  - 本篇回答：iPad 接家裡的 5G Wi-Fi 會有 5G 網速嗎？
+  - 本篇回答：Wi-Fi 版的 iPad 可以插 SIM 卡嗎？
+  - 本篇回答：怎麼知道我的 iPad 是不是行動網路版？
+  - 本篇回答：哪一年之後的 iPad 才有 5G？
+  - 本篇回答：iPad 用 eSIM 要花多少錢？
+  - 本篇回答：Wi-Fi 6 跟 5G 是同一件事嗎？
+  - 本篇回答：一定要買行動網路版的 iPad 嗎？
 
 ## 其他
 
