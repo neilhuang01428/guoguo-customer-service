@@ -840,6 +840,7 @@
         "q": "Apple Pencil 的筆尖磨損有保固嗎？",
         "a": "沒有，要自費更換。Apple 原廠配件的有限保固是自原零售購買日起一年，但條款明列「不涵蓋電池等消耗品零件的正常耗損」，筆尖磨損就屬於這一類。另外要注意 Apple Pencil 內部不可維修——iFixit 給第 1 代的可修復性評分是 10 分裡的 1 分，原文寫「不破壞裝置就打不開」，電池也無法更換，所以實務上是整支更換而不是拆開修。"
       }
-    ]
+    ],
+    "ogImage": "assets/og/apple-pencil-pressure-troubleshooting-cover.png"
   }
 ]
