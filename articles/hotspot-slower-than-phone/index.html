@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>iPhone 開熱點給 iPad，網速為什麼只剩一半？六個原因與救得回來的三個 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式 ── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 表格橫向捲動（電信資費對照欄位多） */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 640px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+
+  /* 兩條路徑對照（一段 vs 兩段） */
+  .paths { display: grid; gap: 12px; margin: 4px 0 0; }
+  .paths .lane { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 13px 15px; }
+  .paths .lane .lt { font-family: var(--mono); font-size: .64rem; color: var(--c); margin-bottom: 9px; }
+  .paths .lane .hops { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .paths .lane .hop { flex: none; font-size: .84rem; color: var(--ink); background: var(--cbg); border: 1px solid var(--line); border-radius: 9px; padding: 7px 11px; }
+  .paths .lane .seg { flex: none; font-family: var(--mono); font-size: .62rem; color: var(--c); border-bottom: 2px dashed var(--c); padding: 0 8px 3px; }
+
+  /* 速度尺（把降速門檻畫成看得懂的長度） */
+  .ruler { margin: 18px 0; }
+  .ruler .rrow { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+  .ruler .rname { width: 132px; flex: none; font-size: .84rem; color: var(--ink); }
+  .ruler .rbar { flex: 1; height: 15px; background: var(--panel2); border-radius: 4px; overflow: hidden; }
+  .ruler .rbar i { display: block; height: 100%; width: var(--w); background: var(--c); }
+  .ruler .rval { width: 74px; flex: none; font-family: var(--mono); font-size: .76rem; color: var(--c); text-align: right; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .ruler .rname { width: 96px; font-size: .78rem; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>熱點為什麼變慢</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#answer" class="active">00 · 一句話答案</a>
+  <div class="grp">先量再修</div>
+  <a href="#triage">01 · 你掉了幾成</a>
+  <a href="#measure">02 · 把測法修對</a>
+  <div class="grp">為什麼會掉</div>
+  <a href="#why">03 · 兩段路法則</a>
+  <a href="#six">04 · 六個原因對號入座</a>
+  <a href="#carrier">05 · 合約裡那條線</a>
+  <div class="grp">怎麼處理</div>
+  <a href="#fixable">06 · 救得回來的三個</a>
+  <a href="#ceiling">07 · 救不回來的三個</a>
+  <div class="grp">售後現場</div>
+  <a href="#guoguo">08 · 這不是 iPad 壞掉</a>
+  <a href="#hardware">09 · 何時才該懷疑機器</a>
+  <a href="#watch">延伸觀看</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>三大電信降速門檻附官方資費表</span><span>Apple 官方原文佐證</span><span>哪三個能救、哪三個不能</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">iPad 連網與網速 / 熱點診斷</div>
+    <h1>iPhone 開熱點給 iPad，網速為什麼只剩一半</h1>
+    <p class="subtitle">掉三到五成是熱點的常態，不是 iPad 故障。這頁先教你怎麼測才算數，再依落差幅度把六個原因對號入座。</p>
+
+    <p class="lede">熱點比手機本身慢，是<strong>正常的</strong>。手機自己上網只有一段路：基地台直接連到手機。開熱點是把訊號轉手一次，中間多插了一段 Wi-Fi，最後的速度只能取兩段裡比較慢的那一段。掉三到五成很常見，跟 iPad 好不好沒有關係。</p>
+
+    <p class="lede">真正該看的是落差幅度。如果掉到只剩十分之一——手機 300Mbps、iPad 只有 20Mbps——那通常是三件事之一：電信方案的熱點流量用完被降速、iPhone 開了「最大化相容性」、或手機發燙與低耗電模式在自保。這三件都救得回來。</p>
+
+    <p class="lede">底下先給一張「掉幾成 → 是什麼問題」的分流表，再把測法修對（測錯了後面全白搭），最後把六個原因拆成能救的三個與是天花板的三個，包含台灣三大電信白紙黑字寫在資費表上的熱點降速門檻。</p>
+
+    <p class="updated">本文查證：<b>2026 年 7 月 29 日</b>，Apple 說明以 iOS 26／iPadOS 26 官方文件為準，電信資費以三大電信官網當日公告為準。<a class="inline" href="#sources">來源列在文末</a>。</p>
+
+    <section id="answer">
+      <div class="sec-label" style="--c:var(--navy)">the_answer</div>
+      <h2>00 · 一句話答案：你多買了一段路</h2>
+      <p>手機直連跟開熱點，中間差的不是「訊號好不好」，而是你的資料要走<strong>幾段路</strong>。這件事畫成圖就很清楚，一眼可以看出瓶頸多了一個：</p>
+
+      <figure class="fig">
+        <div class="paths">
+          <div class="lane" style="--c:var(--green);--cbg:var(--green-bg)">
+            <div class="lt">手機自己上網 · 一段路</div>
+            <div class="hops">
+              <span class="hop">📡 基地台</span><span class="seg">行動網路</span><span class="hop">📱 iPhone</span>
+            </div>
+          </div>
+          <div class="lane" style="--c:var(--amber);--cbg:var(--amber-bg)">
+            <div class="lt">開熱點給 iPad · 兩段路</div>
+            <div class="hops">
+              <span class="hop">📡 基地台</span><span class="seg">行動網路</span><span class="hop">📱 iPhone</span><span class="seg">Wi-Fi</span><span class="hop">📲 iPad</span>
+            </div>
+          </div>
+        </div>
+        <figcaption>兩段路的總速度，等於<b>比較慢的那一段</b>——而且轉手本身也要耗掉一點。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">給這件事取個名字：熱點稅</div>
+        每次把網路轉一手，都要繳一筆「熱點稅」。稅率高低看環境，但一定收——這是結構決定的，不是你的裝置有問題。<strong>會讓人真正吃虧的不是這筆稅，是把它誤判成故障</strong>，然後跑去退換一台其實好好的 iPad。
+      </div>
+
+      <p>所以判斷的順序是：先確認自己量到的「稅率」是多少，再回頭找原因。掉兩三成跟只剩十分之一，是完全不同的兩件事。</p>
+    </section>
+
+    <div class="part-div">先量再修</div>
+
+    <section id="triage">
+      <div class="sec-label" style="--c:var(--teal)">triage</div>
+      <h2>01 · 30 秒分流：你到底掉了幾成</h2>
+      <p>把「手機自己測的速度」當成 100%，看 iPad 接熱點剩下多少，對照這張表就知道要往哪一節走。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>iPad 剩下的速度</th><th>這代表什麼</th><th>該做什麼</th></tr>
+          <tr><td>60～80%</td><td class="good">標準的熱點稅，完全正常</td><td>不用修。想懂原理看 <a class="inline" href="#why">03 節</a></td></tr>
+          <tr><td>約 50%</td><td>正常區間的下緣，通常還混了位置或發燙<small>手機塞在包包裡、放在充電的筆電旁邊都算</small></td><td>照 <a class="inline" href="#fixable">06 節</a>喬環境，能拉回一些</td></tr>
+          <tr><td>20～35%</td><td class="bad">多半有設定在扯後腿</td><td>查最大化相容性、低耗電模式、低數據模式</td></tr>
+          <tr><td>固定停在 5 或 10 Mbps<small>怎麼測都是這個數字，不會跳</small></td><td class="bad">幾乎確定是電信商降速</td><td>直接看 <a class="inline" href="#carrier">05 節</a>查方案流量</td></tr>
+          <tr><td>連得上但幾乎不通、一直斷</td><td class="bad">這是連線問題，不是速度問題</td><td>兩台都重開機，再重置網路設定</td></tr>
+        </table>
+      </div>
+
+      <figure class="fig">
+        <div class="spectrum">
+          <div class="seg old">掉 20～50%<small>兩段路的結構性損耗</small><b>正常，不用修</b></div>
+          <div class="divider">分水嶺<br>剩一半</div>
+          <div class="seg new">只剩 10～35%<small>設定、發燙或被降速</small><b>有東西可以救</b></div>
+        </div>
+        <figcaption>分水嶺大約在<b>「剩一半」</b>：在這條線之上多半是常態，之下才值得花時間查。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">內部訣竅：整數的速度不是巧合</div>
+        測速結果如果反覆停在 <code>5 Mbps</code> 或 <code>10 Mbps</code> 這種漂亮整數，而且測幾次都一樣，那幾乎不可能是訊號問題——訊號造成的落差會跳來跳去。這兩個數字剛好就是台灣三大電信寫在資費表上的熱點降速上限，<a class="inline" href="#carrier">05 節</a>有原文對照。
+      </div>
+    </section>
+
+    <section id="measure">
+      <div class="sec-label" style="--c:var(--green)">measure</div>
+      <h2>02 · 先把測法修對，不然後面全白做</h2>
+      <p>行動網路的速度本來就每分鐘在變。同一支手機站在原地連測三次，差個一兩倍是常有的事。所以「手機 300、iPad 150」這組數字，很可能只是你先後測了兩個不同的時刻。</p>
+      <p>要讓落差有意義，只需要守住三個「同」，再加一個中位數。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">01</div><div><h4>同位置</h4><p>兩台放在一起測，距離不要超過一個手臂。手機在窗邊、iPad 在房間，量到的是房子不是熱點。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">02</div><div><h4>同時段</h4><p>兩次測試間隔控制在兩分鐘內。中午十二點和晚上九點的基地台，本來就是兩個世界。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">03</div><div><h4>同伺服器</h4><p>測速 App 裡手動選同一個測速點，不要讓它自動挑。自動挑常常兩台選到不同機房。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">04</div><div><h4>各測三次，取中間那次</h4><p>不是取最好的，也不是取最差的。取中位數才代表你平常真正會用到的速度。</p></div></div>
+        <div class="step" style="--c:var(--purple)"><div class="n">05</div><div><h4>順手記下上傳</h4><p>熱點的上傳通常掉得比下載更兇。如果你的痛點是視訊會議卡，真正的兇手往往是上傳。</p></div></div>
+      </div>
+
+      <table>
+        <tr><th>常見測法</th><th>為什麼不算數</th><th>改成這樣</th></tr>
+        <tr><td>手機測完，過十分鐘再測 iPad</td><td class="bad">中間基地台的人數已經變了</td><td class="good">兩分鐘內測完兩台</td></tr>
+        <tr><td>各測一次就下結論</td><td class="bad">單次結果的浮動可能比落差還大</td><td class="good">各三次取中位數</td></tr>
+        <tr><td>用不同的測速網站或 App</td><td class="bad">不同伺服器的線路品質不同</td><td class="good">同一個 App、同一個伺服器</td></tr>
+        <tr><td>邊下載影片邊測</td><td class="bad">頻寬被自己佔走了</td><td class="good">測之前先關掉正在跑的下載</td></tr>
+      </table>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">測之前先確認一件事</div>
+        Apple 官方寫得很直白：「你只能透過分享 iPhone 的行動網路連線來使用『個人熱點』。你不能將 iPhone 連接至 Wi-Fi 網路，然後再與另一部裝置分享網路。」所以熱點吃的<strong>一定</strong>是行動數據，跟你家 Wi-Fi 多快完全無關。
+      </div>
+    </section>
+
+    <div class="part-div">為什麼會掉</div>
+
+    <section id="why">
+      <div class="sec-label" style="--c:var(--navy)">the_physics</div>
+      <h2>03 · 兩段路法則：為什麼一定會掉一些</h2>
+      <p>把 iPhone 想成一間便利商店的收銀台。它一邊要跟總公司調貨（行動網路），一邊要把貨遞給客人（Wi-Fi）。這兩件事都得由同一個店員完成，而且遞貨的那條走道還是單行道。</p>
+
+      <p>「單行道」不是比喻，是 Wi-Fi 的設計。同一個頻道上，同一時間<strong>只能有一台裝置在講話</strong>，其他人得排隊等。傳資料要來回確認，於是實際跑得動的速度，通常只有連線畫面上那個漂亮數字的一半左右。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">📡</div><div class="bt">第一段</div><div class="bv">行動網路<br>快，但會浮動</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">📱</div><div class="bt">轉手的地方</div><div class="bv">iPhone<br>同時收又發</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">📲</div><div class="bt">第二段</div><div class="bv">Wi-Fi<br>單行道，要排隊</div></div>
+        </div>
+        <figcaption>瓶頸可能出現在<b>任何一段</b>；你量到的，永遠是最窄的那一段。</figcaption>
+      </figure>
+
+      <details>
+        <summary>為什麼 Wi-Fi 的實際速度大約只有標示的一半？</summary>
+        <p>Wi-Fi 是「半雙工」的共享媒介：收和發不能同時進行，得輪流。每一包資料送出去之後還要等對方回一個確認，這些來回都在佔用時間。加上前導訊號、通道競爭等固定開銷，業界的經驗法則是實際吞吐量約為連線速率的一半上下。所以看到 Wi-Fi 顯示「866 Mbps」卻只跑 300～400 Mbps，是常態而不是故障。</p>
+      </details>
+
+      <p>還有一件容易被忽略的事：iPhone 不是路由器。家裡的路由器插著電、天線比較多、散熱空間也大；iPhone 靠電池、天線要塞在金屬機身裡，還常常被你的手掌或包包擋住。同樣叫 Wi-Fi，<strong>發射條件差很多</strong>。</p>
+    </section>
+
+    <section id="six">
+      <div class="sec-label" style="--c:var(--amber)">causes</div>
+      <h2>04 · 六個原因對號入座</h2>
+      <p>下面六張卡，前三張是<span style="color:var(--green-deep)">能救的</span>、後三張是<span style="color:var(--red)">天花板</span>。先看標籤，再看你的症狀對不對得上。</p>
+
+      <div class="grid g3">
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">能救 · 最常見</div>
+          <h4>設定在扯後腿</h4>
+          <p>最大化相容性、低耗電模式、低數據模式，三個開關任何一個開著都會拖慢。</p>
+          <span class="ex">症狀：突然變慢</span>
+        </div>
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">能救</div>
+          <h4>環境沒喬好</h4>
+          <p>手機在包包、在口袋、貼著金屬桌腳，或已經燙到燙手。Wi-Fi 那段先天被削弱。</p>
+          <span class="ex">症狀：忽快忽慢</span>
+        </div>
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">能救 · 要花錢</div>
+          <h4>方案到量被降速</h4>
+          <p>熱點流量用完了。速度會被鎖在合約寫死的數字上，加購或換方案才解得開。</p>
+          <span class="ex">症狀：卡在整數</span>
+        </div>
+        <div class="card" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="c-tag">天花板</div>
+          <h4>多一段的轉手損耗</h4>
+          <p>Wi-Fi 半雙工＋轉手開銷。除非不用熱點，否則這一段永遠在。</p>
+          <span class="ex">影響：固定掉一到三成</span>
+        </div>
+        <div class="card" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="c-tag">天花板</div>
+          <h4>手機當不成路由器</h4>
+          <p>電池供電、天線受限、還要同時跑兩個無線電。它不是設計來當基地台的。</p>
+          <span class="ex">影響：距離一拉開就掉</span>
+        </div>
+        <div class="card" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="c-tag">天花板</div>
+          <h4>行動網路本身在浮動</h4>
+          <p>同一個基地台大家一起用。尖峰時段、地下室、車上，速度本來就會變。</p>
+          <span class="ex">影響：每次測都不一樣</span>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--teal)"><div class="ct">怎麼快速分辨是哪一類</div>
+        <strong>突然變慢</strong>多半是設定或到量；<strong>一直都這樣</strong>多半是結構性的；<strong>忽快忽慢</strong>多半是環境或訊號。三種症狀對應三條路，不用六個原因一起查。
+      </div>
+    </section>
+
+    <section id="carrier">
+      <div class="sec-label" style="--c:var(--red)">carrier_limits</div>
+      <h2>05 · 電信合約裡那條線：熱點的天花板比手機低</h2>
+      <p>這是最多人不知道、卻最容易對上「剛好一半」的原因。台灣三大電信對「手機本機」和「熱點分享出去的裝置」，設的其實是<strong>兩條不同的降速線</strong>，而且熱點那一條明顯低——這不是傳聞，是印在資費表上的。</p>
+      <p>以中華電信「精采5G購機」599 方案為例，官方資費表寫得清清楚楚：本機到量降速至 12 Mbps，熱點分享到量降速至 5 Mbps。台灣大哥大 599 專案的數字一模一樣。</p>
+
+      <div class="stats">
+        <div class="stat" style="--c:var(--navy)"><div class="num">12</div><div class="lab">Mbps · 599 方案<br>手機本機到量後上限</div><span class="badge">官方資費表</span></div>
+        <div class="stat" style="--c:var(--red)"><div class="num">5</div><div class="lab">Mbps · 同一個方案<br>熱點裝置到量後上限</div><span class="badge">官方資費表</span></div>
+        <div class="stat" style="--c:var(--amber)"><div class="num">10</div><div class="lab">Mbps · 三家電信<br>熱點降速最常見數字</div></div>
+        <div class="stat" style="--c:var(--teal)"><div class="num">50–200</div><div class="lab">GB · 高階吃到飽方案<br>另外給的獨立熱點量</div></div>
+      </div>
+
+      <div class="ruler">
+        <div class="rrow" style="--c:var(--navy);--w:100%"><div class="rname">本機（599）</div><div class="rbar"><i></i></div><div class="rval">12 Mbps</div></div>
+        <div class="rrow" style="--c:var(--red);--w:41.7%"><div class="rname">熱點（599）</div><div class="rbar"><i></i></div><div class="rval">5 Mbps</div></div>
+        <div class="rrow" style="--c:var(--navy);--w:100%"><div class="rname">本機（799）</div><div class="rbar"><i></i></div><div class="rval">21 Mbps</div></div>
+        <div class="rrow" style="--c:var(--red);--w:47.6%"><div class="rname">熱點（799）</div><div class="rbar"><i></i></div><div class="rval">10 Mbps</div></div>
+      </div>
+      <p style="font-size:.86rem;color:var(--muted)">同一條線上的兩根長度比一比，「熱點只剩一半」這句話就有了字面上的來源。以上為到量降速後的上限，中華電信與台灣大哥大 599／799 方案數字相同。</p>
+
+      <h3>三大電信的熱點條款怎麼看</h3>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>電信</th><th>熱點流量怎麼算</th><th>到量後熱點的速度上限</th><th>本機到量後</th></tr>
+          <tr><td>中華電信<small>精采5G購機 599／799</small></td><td>與行動上網量<strong>併計</strong></td><td class="bad">5 Mbps／10 Mbps</td><td>12 Mbps／21 Mbps</td></tr>
+          <tr><td>中華電信<small>1,399 以上吃到飽</small></td><td>另給獨立熱點量 50～200 GB</td><td class="bad">10 Mbps</td><td class="good">不降速（上限 1～1.5 Gbps）</td></tr>
+          <tr><td>台灣大哥大<small>599／799 綁約專案</small></td><td>與本機使用量<strong>共同計算</strong></td><td class="bad">5 Mbps／10 Mbps</td><td>12 Mbps／21 Mbps</td></tr>
+          <tr><td>台灣大哥大<small>1,399 型以上</small></td><td>贈送獨立計算的熱點分享量</td><td class="bad">10 Mbps</td><td class="good">依專案</td></tr>
+          <tr><td>遠傳電信<small>多數 5G 方案</small></td><td>與本機上網傳輸量<strong>併計</strong></td><td class="bad">10 Mbps</td><td>依方案（例：4G 疾速吃到飽 17 Mbps）</td></tr>
+          <tr><td>遠傳電信<small>1,399／1,799／2,699</small></td><td>另給獨立熱點量 50／90／200 GB</td><td class="bad">10 Mbps</td><td class="good">吃到飽</td></tr>
+        </table>
+      </div>
+      <p style="font-size:.86rem;color:var(--muted)">資料取自三家官網公告資費，查證於 2026 年 7 月 29 日。方案內容常變動，你自己的合約一律<strong>以申辦當時為準</strong>——這點三家條款都有寫。</p>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">「吃到飽」不等於熱點也吃到飽</div>
+        中低價的吃到飽是「本機吃到飽」，熱點跟本機共用同一桶流量；用完之後手機還能跑 12～21 Mbps，但分享給 iPad 的只剩 5～10 Mbps。<strong>很多人以為自己是吃到飽就不會被限速，其實限的是熱點那一段</strong>。
+      </div>
+
+      <ul class="check">
+        <li><b>怎麼查自己還剩多少？</b>用電信商自己的 App 看「行動上網用量」。要注意熱點分享的量在多數方案裡是<strong>併進本機用量</strong>一起算的，不會分開顯示。</li>
+        <li><b>怎麼確認是不是被降速了？</b>把 iPad 從熱點斷開，改用手機本身測速。如果手機也剛好卡在 12 或 21 Mbps，那就是整個方案到量了，不只是熱點。</li>
+        <li><b>降到 10 Mbps 還能做什麼？</b>文字、通訊軟體、聽音樂、開網頁都還行；1080p 影片勉強；4K 串流、大檔上傳、多人視訊就會開始卡。</li>
+      </ul>
+    </section>
+
+    <div class="part-div">怎麼處理</div>
+
+    <section id="fixable">
+      <div class="sec-label" style="--c:var(--green)">fixable</div>
+      <h2>06 · 救得回來的三個，拆成六個動作</h2>
+      <p>能救的三類是設定、環境、方案。實際要按的東西拆開來是六個動作，下面由快到慢、由免費到花錢排好。每做完一步就重測一次，別一次全改完，否則你不會知道哪一招有效。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--green)"><div class="n">1</div><div><h4>關掉「最大化相容性」</h4><p>iPhone 的「設定」→「個人熱點」裡。Apple 官方註明：開啟時「連接熱點的裝置的網際網路效能和 Wi-Fi 安全性可能會降低」。這個開關只有 iPhone 12 以後的機型才有。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">2</div><div><h4>關掉低耗電模式</h4><p>iPhone「設定」→「電池」。Apple 明列低耗電模式下「5G 會在大多數裝置上關閉」——手機自己退回 4G，熱點當然跟著慢。狀態列電池變黃就是它。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">3</div><div><h4>檢查 iPad 上的低數據模式</h4><p>iPad「設定」→「Wi-Fi」→ 熱點名稱旁的 ⓘ。這個設定是<strong>每個網路各自記憶</strong>的，而且 iCloud 會同步到你所有裝置，常常在你沒印象的情況下就是開著的。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">4</div><div><h4>把手機拿出來、讓它涼下來</h4><p>從包包裡拿出來、離 iPad 一個手臂內、不要壓在筆電旁邊。Apple 說明過熱時「電磁波進入低功率狀態時，行動網路訊號可能會減弱」——摸起來燙就是它在自保。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">5</div><div><h4>查方案用量，必要時加購熱點量</h4><p>對照 <a class="inline" href="#carrier">05 節</a>。如果已經到量，前面四招全都救不回來，只能加購流量或換方案。</p></div></div>
+        <div class="step" style="--c:var(--purple)"><div class="n">6</div><div><h4>還是不對，重置網路設定</h4><p>iPhone「設定」→「一般」→「移轉或重置 iPhone」→「重置」→「重置網路設定」。會清掉 Wi-Fi 密碼、行動網路與 VPN 設定，資料不受影響。</p></div></div>
+      </div>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">加分做法</div>兩台都登入同一個 Apple 帳號。Apple 官方寫：登入同一個帳號時「連接速度會快很多」，而且不必輸入密碼就能連。</div>
+        <div class="callout" style="--c:var(--red)"><div class="ct">別亂試的做法</div>網路上流傳的「改 DNS 加速熱點」「裝加速 App」對頻寬沒有幫助。DNS 影響的是查網址的那零點幾秒，不是你的下載速度。</div>
+      </div>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">內部訣竅：症狀不同，兇手不同</div>
+        低數據模式最容易被誤會。它<strong>不太會讓測速數字掉下來</strong>，因為它限制的是 App 行為不是頻寬——真正的症狀是影片畫質變差、iCloud 停止同步、背景更新不跑。如果你是「測速正常但影片很糊」，該查的是它；如果是「測速數字直接砍半」，兇手在別的地方。
+      </div>
+    </section>
+
+    <section id="ceiling">
+      <div class="sec-label" style="--c:var(--red)">the_ceiling</div>
+      <h2>07 · 救不回來的三個，早知道早省事</h2>
+      <p>這三件事沒有設定可以調、沒有 App 可以裝，也不是換一台 iPad 就會好。認清它們，是為了不要把時間浪費在無效的排查上。</p>
+
+      <table>
+        <tr><th>天花板</th><th>為什麼救不了</th><th>唯一的替代方案</th></tr>
+        <tr><td>多一段 Wi-Fi 的轉手損耗</td><td>Wi-Fi 是半雙工單行道，收發要輪流；轉手本身就要吃掉時間</td><td>改用 USB 連接線直接連（Mac／Windows 適用），或直接買 Cellular 版 iPad 插自己的網卡</td></tr>
+        <tr><td>手機當不成路由器</td><td>電池供電、天線受機身限制、還要同時跑行動網路與 Wi-Fi 兩套無線電</td><td>改用隨身路由器（分享器），它是插電或大電池、天線也專門為此設計</td></tr>
+        <tr><td>行動網路本身在浮動</td><td>基地台是大家共用的，尖峰時段、室內、地下室、高鐵上都會掉</td><td>沒得救，只能換位置或換時間。這也是為什麼「測法要三同」那麼重要</td></tr>
+      </table>
+
+      <div class="bigquote">
+        <div class="qm">“</div>
+        <p>熱點不是把手機的網路搬過來，是把它轉了一手——轉手一定有折舊。</p>
+        <small>看懂這句話，就不會把正常的熱點稅當成故障。</small>
+      </div>
+    </section>
+
+    <div class="part-div">售後現場</div>
+
+    <section id="guoguo">
+      <div class="sec-label" style="--c:var(--teal)">from_our_desk</div>
+      <h2>08 · 果果售後現場：這通常不是 iPad 壞掉</h2>
+      <p>「我用熱點測速只有手機的一半，是不是你們這台 iPad 的網路模組有問題？」——這是果果客服固定會遇到的一類詢問，而且客人通常已經測了好幾次、很認真，只是測的方法沒辦法區分問題出在哪一段。</p>
+      <p>我們的處理方式不是先解釋原理，是先請客人做一組交叉驗證。三組數字擺出來，責任歸屬自己就浮現了，不用爭論。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>測這個</th><th>怎麼測</th><th>正常代表</th><th>不正常代表</th></tr>
+          <tr><td>A. iPad 接家裡 Wi-Fi</td><td>接固網路由器，測三次</td><td class="good">iPad 的 Wi-Fi 收發沒問題</td><td class="bad">這時候才輪到懷疑 iPad</td></tr>
+          <tr><td>B. iPhone 自己測</td><td>關掉熱點，用行動網路測</td><td class="good">你的行動網路正常</td><td class="bad">問題在電信或收訊，跟 iPad 無關</td></tr>
+          <tr><td>C. iPad 接這支 iPhone 的熱點</td><td>三同一中位數</td><td class="good">熱點稅在正常範圍</td><td class="bad">往設定與方案查（06、05 節）</td></tr>
+          <tr><td>D. iPad 接另一支手機的熱點</td><td>借家人的手機開一次</td><td class="good">問題鎖定在原本那支手機或那個方案</td><td class="bad">兩支都慢＝這是熱點的常態</td></tr>
+        </table>
+      </div>
+
+      <p>實務上，A 正常而 C 偏低的情況佔了絕大多數——也就是 iPad 本身完全健康，掉速全部發生在「轉手」那一段。這種時候換一台 iPad 不會改善任何事，因為換掉的不是出問題的環節。</p>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">我們的立場：先驗機，但也講清楚驗機驗不到什麼</div>
+        果果每台機器都會做完整檢測，Wi-Fi 收發當然在檢測項目裡。但我們也會把話講在前面：<strong>檢測能證明 iPad 的無線功能正常，不能讓熱點跑得比它上游的行動網路還快</strong>。這不是推託，是把「哪一段歸誰負責」講明白——客人才知道錢該花在哪裡，是換機、換方案，還是買一台隨身路由器。
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">給正在挑二手 iPad 的人</div>
+        如果你平常主要靠 iPhone 熱點上網，而且很在意速度，那真正該考慮的是<strong>加價買 Cellular（行動網路）版本</strong>：它自己插網卡直連基地台，等於把兩段路變回一段。只用 Wi-Fi 版也完全沒問題，只是要接受熱點稅的存在，別把它記在 iPad 頭上。
+      </div>
+    </section>
+
+    <section id="hardware">
+      <div class="sec-label" style="--c:var(--amber)">red_flags</div>
+      <h2>09 · 什麼時候才該真的懷疑機器</h2>
+      <p>上面的路都走完、A 組測試也做過了，如果還出現下面這些狀況，那才值得往硬體方向查。</p>
+
+      <ul class="flags">
+        <li><b>接家裡的 Wi-Fi 也一樣慢</b>——同一個路由器，其他裝置正常、只有這台 iPad 慢，問題就不在熱點了。</li>
+        <li><b>Wi-Fi 訊號格數明顯比旁邊的手機少</b>——同一個位置、同一個網路，格數長期少一到兩格。</li>
+        <li><b>只要離開路由器兩三公尺就掉線</b>——正常的 iPad 不會這麼敏感。</li>
+        <li><b>重置網路設定之後症狀完全沒變</b>——軟體層面的可能性已經排掉了。</li>
+        <li><b>Wi-Fi 開關會自己跳回關閉，或設定裡直接變灰</b>——這是比較典型的無線模組異常訊號。</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">反過來說，這些不算故障證據</div>
+        「熱點測速只有手機的一半」「同一個熱點在不同房間速度不同」「上傳比下載慢很多」「用久了手機發燙後變慢」——這四件事在健康的裝置上都會發生，單獨拿出來都不足以判定 iPad 有問題。
+      </div>
+
+      <p>順帶一提，如果你的症狀其實是「熱點根本連不上」而不是「連得上但慢」，那是另一條路：兩台都重開機、確認「允許其他人加入」有開、更新到最新系統，再不行才重置網路設定。速度問題和連線問題的排查順序不一樣，別混在一起試。</p>
+    </section>
+
+    <section id="watch">
+      <div class="sec-label" style="--c:var(--purple)">watch</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p style="font-size:.9rem;color:var(--muted)">本文講的是判斷方法；下面三支影片補的是「數字實際上長什麼樣子」。影片皆為第三方製作，數據與畫面以你自己的方案、機型與當下環境為準。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=yHJ4yGwWZi4" target="_blank" rel="noopener" data-yt="yHJ4yGwWZi4" aria-label="播放：低速4G吃到飽 128k 到 10M 到底能不能看影片實測">
+          <img loading="lazy" src="https://i.ytimg.com/vi/yHJ4yGwWZi4/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/yHJ4yGwWZi4/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>【實測】低速4G吃到飽(128k/256k/1M/3M/10M)到底能夠看影片嗎？</b><small>頻道：愛蓁 AiZhen · 推薦原因：本文 05 節說熱點到量會被降到 5～10 Mbps，這支就是把 1M／3M／10M 各自能不能看影片實際跑一遍，讓那個數字變成有感覺的東西 · 繁中</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=ZC1kSTngQUc" target="_blank" rel="noopener" data-yt="ZC1kSTngQUc" aria-label="播放：WiFi 路由器 2.4GHz 跟 5GHz 差異是">
+          <img loading="lazy" src="https://i.ytimg.com/vi/ZC1kSTngQUc/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/ZC1kSTngQUc/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>WiFi 路由器 2.4GHz 跟 5GHz 差異是? Wilson說給你聽</b><small>頻道：Wilson說給你聽 · 推薦原因：對應 06 節第 1 步「關掉最大化相容性」——這支把兩個頻段的速度與穿透力差別講得很白話，看完就知道為什麼那個開關會讓熱點變慢 · 繁中</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=CCehRBRh7YI" target="_blank" rel="noopener" data-yt="CCehRBRh7YI" aria-label="播放：為什麼網路速度買很快，但用起來卻還是卡卡的">
+          <img loading="lazy" src="https://i.ytimg.com/vi/CCehRBRh7YI/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/CCehRBRh7YI/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>為什麼網路速度買很快，但用起來卻還是卡卡的? | 一探啾竟 第53集</b><small>頻道：啾啾鞋 · 推薦原因：呼應 02 節第 5 步「順手記下上傳」——這支講的正是上傳速度這個最常被忽略的瓶頸；影片主題是固網不是熱點，但觀念完全通用 · 繁中</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">Apple 功能說明取自官方使用手冊與支援文件，電信條款取自三家官網公告資費，查證日期 2026 年 7 月 29 日：</p>
+      <ul class="sources">
+        <li><a href="https://support.apple.com/zh-tw/guide/iphone/iph45447ca6/ios">iPhone 使用手冊 · 從 iPhone 分享你的網際網路連線</a>（個人熱點只能分享行動網路、不能轉發 Wi-Fi；最大化相容性開啟時可能降低效能；同一 Apple 帳號連線較快；可連裝置數依電信商與機型而定）</li>
+        <li><a href="https://support.apple.com/zh-tw/119837">如果 iPhone 或 iPad（Wi-Fi + 行動網路）上的「個人熱點」無法運作</a>（最大化相容性適用機型為 iPhone 12 以後等；官方註記開啟時「連接熱點的裝置的網際網路效能和 Wi-Fi 安全性可能會降低」；重置網路設定步驟）</li>
+        <li><a href="https://support.apple.com/zh-tw/101604">使用「低耗電模式」以保留 iPhone 或 iPad 的電池續航力</a>（低耗電模式下 5G 會在大多數裝置上關閉、背景 App 重新整理與自動下載關閉）</li>
+        <li><a href="https://support.apple.com/zh-tw/102433">在 iPhone 和 iPad 上使用「低數據模式」</a>（可分別針對行動網路與每個 Wi-Fi 網路開啟、iCloud 會同步各網路偏好設定、限制項目清單）</li>
+        <li><a href="https://support.apple.com/zh-tw/118431">如果 iPhone 或 iPad 過熱或過冷</a>（內部溫度超出正常範圍時「電磁波進入低功率狀態時，行動網路訊號可能會減弱」）</li>
+        <li><a href="https://www.cht.com.tw/home/campaign/5grate">中華電信 · 5G 全資費</a>（精采5G購機 599／799 的本機與熱點降速數字、1,399 以上方案的獨立熱點分享量 50～200 GB）</li>
+        <li><a href="https://www.taiwanmobile.com/mobile/postpaid/ratePlan/plan-5G-all.html">台灣大哥大 · 5G 手機專案資費</a>（熱點分享傳輸量與本機共同計算、599／799／999／1199 各級的本機與熱點分享裝置降速門檻）</li>
+        <li><a href="https://www.fetnet.net/content/cbu/estore/exclusive/5g.html">遠傳電信 · 5G 吃到飽方案</a>（熱點分享傳輸量與本機上網傳輸量併計、達量後熱點降速至最高 10 Mbps）</li>
+      </ul>
+      <p class="updated">電信資費與方案內容變動頻繁，各家條款均註明<b>以申辦當時所選專案規定為準</b>；Apple 也可能調整功能與選項名稱。本文查證：<b>2026 年 7 月 29 日</b>，實際條件請以你自己的合約與裝置系統版本為準。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
