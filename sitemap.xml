@@ -91,6 +91,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.guoguo.tw/guide/articles/promotion-120hz-who-feels-it/</loc>
+    <lastmod>2026-07-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.guoguo.tw/guide/tag/airtag/</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>weekly</changefreq>
@@ -121,6 +127,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.guoguo.tw/guide/tag/%E7%9B%B8%E5%AE%B9%E5%B0%8D%E7%85%A7/</loc>
+    <lastmod>2026-07-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.guoguo.tw/guide/tag/%E8%A7%80%E5%BF%B5/</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>weekly</changefreq>
@@ -128,7 +140,7 @@
   </url>
   <url>
     <loc>https://www.guoguo.tw/guide/tag/%E9%81%B8%E8%B3%BC/</loc>
-    <lastmod>2026-07-28</lastmod>
+    <lastmod>2026-07-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
