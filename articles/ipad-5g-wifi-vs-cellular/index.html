@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>iPad 寫「支援 5G」是哪一種 5G？ · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式（共用 style.css 沒有；其餘皆由共用檔提供）── */
+
+  /* masthead：內斂卡片版（同站內其他指南） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 規格原文標記：讓「照抄自官方規格頁的字」看得出來 */
+  .spec { font-family: var(--mono); font-size: .82em; background: var(--navy-bg); color: var(--navy); border: 1px solid #cfdaea; border-radius: 5px; padding: 1px 7px; white-space: nowrap; }
+
+  /* 兩條路徑：上下堆疊的流程列 */
+  .path { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
+  .path .pl { font-family: var(--mono); font-size: .62rem; color: var(--c); background: var(--cbg); border: 1px solid var(--c); border-radius: 5px; padding: 2px 8px; white-space: nowrap; }
+  .path .node { font-size: .87rem; color: var(--ink); }
+  .path .sep { color: var(--muted); font-family: var(--mono); font-size: .8rem; }
+  .path .cap { width: 100%; font-size: .8rem; color: var(--muted); margin-top: 4px; }
+  .path .cap b { color: var(--c); }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>iPad 的 5G 是哪一種</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#answer" class="active">00 · 先給答案</a>
+  <div class="grp">搞懂原理</div>
+  <a href="#collision">01 · 為什麼會撞名</a>
+  <a href="#paths">02 · 網速從哪裡來</a>
+  <div class="grp">對照自己</div>
+  <a href="#which">03 · 我這台是哪一種</a>
+  <a href="#howto">04 · 想用行動 5G</a>
+  <div class="grp">避雷</div>
+  <a href="#myths">05 · 五個常見誤會</a>
+  <a href="#secondhand">06 · 二手買家注意</a>
+  <a href="#video">延伸觀看</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>買機前先問清楚</span><span>規格白話翻譯</span><span>終身售後諮詢</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">客戶指南 / iPad 連網 · 下單前先分清楚</div>
+    <h1>iPad 寫「支援 5G」是哪一種 5G？</h1>
+    <p class="subtitle">接家裡的 5G Wi-Fi，並不會有 5G 網速——兩個都叫 5G，但它們是兩件不同的事。</p>
+
+    <p class="lede">先給答案：iPad 規格表上的「5G」只有一個意思，就是<strong>用 SIM／eSIM 上網的行動網路 5G</strong>。它要買到「Wi-Fi + 行動網路」版本才有，Wi-Fi 版怎麼設定都不會有。</p>
+
+    <p class="lede">家裡路由器上那個「5G」是另一回事，它指的是 Wi-Fi 的 <strong>5GHz 頻段</strong>。iPad 接上去只是換了一條 Wi-Fi 車道，速度上限還是你家申請的網路方案，不會因此變成電信的 5G。</p>
+
+    <p class="lede">這頁幫你三件事：分清楚兩個撞名的 5G、三秒看出手上這台是哪個版本，以及真的想用行動 5G 時要準備什麼。</p>
+
+    <section id="answer">
+      <div class="sec-label" style="--c:var(--navy)">the_answer</div>
+      <h2>00 · 先給答案：規格上的 5G 指的是插卡上網</h2>
+      <p>這是客服每週都會遇到的一句話：「你們這台支援 5G 嗎？」我們一定會先反問一句——<strong>你是要帶出門插卡上網，還是家裡 Wi-Fi 想變快？</strong>因為這兩種情況的答案剛好相反。</p>
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">📶</div><div class="bt">路由器上的 5G</div><div class="bv">Wi-Fi 的 5GHz 頻段</div></div>
+          <div class="arr">≠</div>
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">📡</div><div class="bt">規格表上的 5G</div><div class="bv">電信的行動網路</div></div>
+        </div>
+        <figcaption>兩個都寫成「5G」，但一個是<b>家裡的 Wi-Fi 車道</b>，一個是<b>電信基地台</b>——彼此毫無關係。</figcaption>
+      </figure>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">一句話帶走</div>要吃到行動網路的 5G，機器必須是「Wi-Fi + 行動網路」版本，而且要辦門號、裝 eSIM。純 Wi-Fi 版的 iPad 沒有這個零件，接再快的 Wi-Fi 也變不出 5G。</div>
+    </section>
+
+    <div class="part-div">搞懂原理</div>
+
+    <section id="collision">
+      <div class="sec-label" style="--c:var(--green)">name_collision</div>
+      <h2>01 · 為什麼會撞名：三個都有「5」的東西</h2>
+      <p>會搞混不是你的錯，是這幾個名字真的太像。家裡的路由器通常同時發出兩個訊號，很多廠商直接把名字取成「XXX-2.4G」和「XXX-5G」，於是「5G」就變成大家對 Wi-Fi 的日常稱呼。</p>
+      <p>更麻煩的是，Wi-Fi 自己也有世代編號——Wi-Fi 5、Wi-Fi 6、Wi-Fi 7。所以規格表上會同時出現兩種「5」，一種是頻段、一種是世代，兩種都不是電信的 5G。</p>
+      <table>
+        <tr><th>你看到的字</th><th>它其實是什麼</th><th>會出現在哪裡</th><th>跟行動 5G 有關嗎</th></tr>
+        <tr><td>5G（Wi-Fi 名稱裡）</td><td>Wi-Fi 的 5GHz 頻段</td><td>家裡 Wi-Fi 的網路名稱</td><td class="bad">沒有關係</td></tr>
+        <tr><td>Wi-Fi 5</td><td>Wi-Fi 的第 5 代（802.11ac）</td><td>規格表的 Wi-Fi 欄位</td><td class="bad">沒有關係</td></tr>
+        <tr><td>5G (sub-6 GHz)</td><td>行動通訊第五代</td><td>規格表「Wi-Fi + 行動網路機型」欄位</td><td class="good">這個才是</td></tr>
+      </table>
+      <p>Apple 官方規格頁其實寫得很清楚，只是大家不會逐字讀。以現售機型為例，iPad Pro 與 iPad Air 的 Wi-Fi 欄位寫的是 <span class="spec">Wi-Fi 7 (802.11be)</span>，入門的 iPad (A16) 是 <span class="spec">Wi-Fi 6 (802.11ax)</span>。</p>
+      <p>括號裡那串英數字才是真正的技術代號，「Wi-Fi 7」只是好記的世代名。而 <span class="spec">5G (sub-6 GHz)</span> 這行，一定掛在「Wi-Fi + 行動網路機型」這個小標底下——這就是它屬於行動網路的證據。</p>
+      <details>
+        <summary>為什麼 Wi-Fi 要另外取「Wi-Fi 5、Wi-Fi 6」這種名字？</summary>
+        <p>因為原本的名字是 802.11n、802.11ac、802.11ax 這種一般人記不住的代號。後來改用數字世代讓消費者好懂，於是 802.11ac 變成 Wi-Fi 5、802.11ax 變成 Wi-Fi 6。</p>
+        <p>立意良善，但這件事剛好發生在行動網路進入 5G 的同一個時期。市面上同時出現「Wi-Fi 5」和「5G」，混淆就此開始。</p>
+      </details>
+      <div class="callout" style="--c:var(--purple)"><div class="ct">記憶法</div>看到 5G 先問一句：<strong>這個字旁邊講的是「路由器」還是「門號」？</strong>講路由器就是 Wi-Fi 頻段，講門號才是行動網路。</div>
+    </section>
+
+    <section id="paths">
+      <div class="sec-label" style="--c:var(--teal)">two_paths</div>
+      <h2>02 · 你的網速實際上從哪裡來</h2>
+      <p>把「iPad 能不能上網」拆成兩條路，很多疑問會自己解開。iPad 平常只走其中一條，而每一條的速度上限由完全不同的人決定。</p>
+      <figure class="fig">
+        <div class="path" style="--c:var(--green);--cbg:var(--green-bg)">
+          <span class="pl">路徑 A · Wi-Fi</span>
+          <span class="node">📱 iPad</span><span class="sep">→</span>
+          <span class="node">📶 你家路由器</span><span class="sep">→</span>
+          <span class="node">🏠 你申請的寬頻</span><span class="sep">→</span>
+          <span class="node">🌐 網際網路</span>
+          <span class="cap">速度上限＝<b>你家寬頻方案的速率</b>。接 2.4GHz 或 5GHz 只是換車道，不會超過這個上限。</span>
+        </div>
+        <div class="path" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <span class="pl">路徑 B · 行動網路</span>
+          <span class="node">📱 iPad（行動網路版）</span><span class="sep">→</span>
+          <span class="node">📡 基地台</span><span class="sep">→</span>
+          <span class="node">📞 你的電信方案</span><span class="sep">→</span>
+          <span class="node">🌐 網際網路</span>
+          <span class="cap">速度上限＝<b>訊號強度＋你辦的資費</b>。這條路才有「4G／5G」之分。</span>
+        </div>
+        <figcaption>兩條路各走各的。<b>規格表上的 5G 只影響路徑 B</b>，跟你家 Wi-Fi 一點關係都沒有。</figcaption>
+      </figure>
+      <table>
+        <tr><th>比較項目</th><th>走 Wi-Fi（路徑 A）</th><th>走行動網路（路徑 B）</th></tr>
+        <tr><td>需要哪種 iPad</td><td>任何一台都可以</td><td>只有 Wi-Fi + 行動網路版</td></tr>
+        <tr><td>速度上限誰決定</td><td>你家寬頻方案＋路由器</td><td>訊號強度＋電信資費</td></tr>
+        <tr><td>要不要月租費</td><td>不用（已含在家用網路裡）</td><td>要，另外辦平板上網方案</td></tr>
+        <tr><td>出門在外能上網嗎</td><td>要有 Wi-Fi 或手機熱點</td><td>可以，開機就有</td></tr>
+        <tr><td>「5G」在這裡指什麼</td><td>5GHz 頻段，只是車道</td><td>第五代行動網路，真的比較快</td></tr>
+      </table>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">最常被問錯的一題</div>「我家 Wi-Fi 換成 5G 了，為什麼 iPad 還是很慢？」——這句其實問錯對象。要查的是<strong>你家申請的是幾 M 的寬頻</strong>，不是 iPad 支援什麼。iPad 再新，也拿不到你家沒有的速度。</div>
+    </section>
+
+    <div class="part-div">對照自己</div>
+
+    <section id="which">
+      <div class="sec-label" style="--c:var(--amber)">identify</div>
+      <h2>03 · 三秒看出手上這台是哪一種</h2>
+      <p>不用翻包裝盒，也不用查型號。開機看一個地方就知道：</p>
+      <div class="steps">
+        <div class="step" style="--c:var(--green)"><div class="n">01</div><div><h4>打開「設定」，看左邊那排清單</h4><p>有「行動數據」這一項 → 就是 Wi-Fi + 行動網路版。完全沒有這一項 → 純 Wi-Fi 版。這是最可靠的判斷法。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">02</div><div><h4>看機身側邊有沒有 SIM 卡槽</h4><p>舊機型適用：側邊有一個要用退卡針戳開的小孔，就是行動網路版。但這招對新機已經失效，原因看下面那格。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">03</div><div><h4>設定 → 一般 → 關於本機，往下滑</h4><p>找得到「eSIM」「IMEI」這類欄位，代表這台有行動網路模組。純 Wi-Fi 版不會有。</p></div></div>
+      </div>
+      <div class="callout" style="--c:var(--red)"><div class="ct">別再只看卡槽了</div>現售的 iPad Pro、iPad Air、iPad (A16) 全部改成<strong>只吃 eSIM</strong>，官方規格頁直接寫明「與實體 SIM 卡不相容」。也就是說<strong>新機沒有卡槽，不代表它不能上行動網路</strong>——請改用第一步的「設定裡有沒有行動數據」來判斷。</div>
+    </section>
+
+    <section id="howto">
+      <div class="sec-label" style="--c:var(--purple)">how_to_get</div>
+      <h2>04 · 真的想用行動 5G，要準備三樣東西</h2>
+      <p>確認自己要的是路徑 B 之後，缺一不可的有三樣。少任何一樣，都會變成「買了卻上不了網」。</p>
+      <div class="grid g3">
+        <div class="card" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="c-tag">第 1 樣 · 機器</div>
+          <h4>行動網路版，而且要 2021 年之後</h4>
+          <p>第一款支援 5G 的 iPad 是 2021 年的 iPad Pro（M1）。在那之前的行動網路版，最快只到 4G LTE。</p>
+        </div>
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">第 2 樣 · 卡</div>
+          <h4>現售機型只吃 eSIM</h4>
+          <p>不是實體卡片，是向電信申請後寫進機器裡的數位門號。舊機型才有實體卡槽。</p>
+        </div>
+        <div class="card" style="--c:var(--teal);--cbg:var(--teal-bg)">
+          <div class="c-tag">第 3 樣 · 資費</div>
+          <h4>平板專用的上網方案</h4>
+          <p>要另外向電信申請，跟手機門號是分開的兩件事，也是另一筆月租費。</p>
+        </div>
+      </div>
+      <p>以中華電信為例，官方 eSIM 說明頁列出支援的機型從 <strong>iPad（第 7 代）</strong>之後開始，另外 iPad Air（第 3 代之後）、iPad mini（第 5、6 代）與各代 iPad Pro 也在名單內。</p>
+      <p>費用部分官方寫得很明白：<strong>首次申請免收設定費</strong>；但如果之後刪除或作廢再重新申請，就得跑一趟門市，每次收 300 元設定費。換機、換門號前值得先想一下這筆。</p>
+      <div class="callout" style="--c:var(--green)"><div class="ct">果果的誠實建議：多數人其實不需要</div>如果你的 iPad 有九成時間待在家裡或辦公室，用 iPhone 開熱點就夠了。行動網路版的<strong>機器價差</strong>加上<strong>每個月的月租費</strong>，長期算下來是一筆不小的錢——這筆錢拿去升級容量或世代，多數人的體感反而比較明顯。</div>
+      <p>真正值得買行動網路版的，通常是這三種人：外務或業務（車上、客戶端要隨時開機就有網）、把 iPad 當主力工作機而且常在外面（熱點會拖慢手機也吃電）、以及買給長輩或小孩的機器（不想教他們每次都要開熱點）。</p>
+    </section>
+
+    <div class="part-div">避雷</div>
+
+    <section id="myths">
+      <div class="sec-label" style="--c:var(--red)">myths</div>
+      <h2>05 · 五個最常見的誤會</h2>
+      <p>這五句話，客服每一句都聽過不只一次。看看你有沒有中：</p>
+      <ul class="flags">
+        <li><b>「我家 Wi-Fi 是 5G，所以 iPad 也有 5G」</b>——那是 Wi-Fi 的 5GHz 頻段。它跟電信的 5G 只是名字撞在一起。</li>
+        <li><b>「先買 Wi-Fi 版，之後想插卡再插就好」</b>——Wi-Fi 版<strong>沒有行動網路的零件</strong>，不是少一個卡槽而已，也裝不了 eSIM。想要就只能換機。</li>
+        <li><b>「規格寫 Wi-Fi 6，是不是就有 6G 網路了」</b>——Wi-Fi 6 是 Wi-Fi 的世代編號（802.11ax），跟行動網路的世代是兩套不同的計數。</li>
+        <li><b>「連上 5GHz 那個 Wi-Fi，網速就會變快」</b>——5GHz 通常比 2.4GHz 快、但穿牆較差；不論選哪一條，上限都是你家申請的寬頻速率。</li>
+        <li><b>「二手看到寫 Cellular，就是 5G 版」</b>——2021 年以前的行動網路版<strong>只有 4G LTE</strong>。這是二手平台最常見的誤標。</li>
+      </ul>
+      <div class="callout" style="--c:var(--teal)"><div class="ct">順手做一件事</div>Apple 官方建議路由器的 2.4GHz、5GHz（以及 Wi-Fi 6E 的 6GHz）<strong>用同一個網路名稱</strong>，讓裝置自己挑最適合的那條。如果你家現在是分成兩個名字，合併之後 iPad 走動時的連線會穩定一些。</div>
+    </section>
+
+    <section id="secondhand">
+      <div class="sec-label" style="--c:var(--navy)">secondhand</div>
+      <h2>06 · 二手買家特別注意：Cellular 不等於 5G</h2>
+      <p>果果同時在售 2018 到 2026 年的 iPad，這條分界線我們每天都在跟客人確認：<strong>「有行動網路」和「有 5G」是兩件事</strong>，中間差了整整一個世代。</p>
+      <figure class="fig">
+        <div class="spectrum">
+          <div class="seg old">2021 年以前的行動網路版<small>iPad Pro 2020、Air 3、iPad 8 等</small><b>只有 4G LTE</b></div>
+          <div class="divider">2021<br>分水嶺</div>
+          <div class="seg new">2021 年以後<small>從 iPad Pro（M1）開始</small><b>才有 5G</b></div>
+        </div>
+        <figcaption>賣場標「Cellular 版」只代表<b>能插卡上網</b>，不保證是 5G。年份才是關鍵。</figcaption>
+      </figure>
+      <p>實務上最常見的狀況是：賣家自己也搞不清楚，看到機器能插卡就寫成「5G 版」。買家如果是為了 5G 才加價，就會白花一筆。</p>
+      <p>下單前有個零成本的確認法：<strong>問清楚年份與型號，再去 Apple 官方技術規格頁翻「行動網路與無線」那一欄</strong>。寫 <span class="spec">5G (sub-6 GHz)</span> 的才是，只寫 LTE 的就是 4G 機。</p>
+      <div class="callout" style="--c:var(--green)"><div class="ct">給只是想省錢的人</div>如果你買二手是為了控制預算，這裡有個實際的建議：先確認自己真的需要行動網路版嗎。同一個世代、同樣容量，Wi-Fi 版通常便宜一截，省下來的錢往往足以往上跳一個世代——那個差異比 4G 變 5G 有感得多。</div>
+    </section>
+
+    <section id="video">
+      <div class="sec-label" style="--c:var(--red)">video</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p>本文最容易混淆的「路由器那個 5G 到底是什麼」，用影片看會更快。下面兩支都是中文、講的是 Wi-Fi 頻段那一半——<strong>行動網路 5G 的部分請以本文與官方規格頁為準</strong>。</p>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=ZC1kSTngQUc" target="_blank" rel="noopener" data-yt="ZC1kSTngQUc" aria-label="播放：WiFi 路由器 2.4GHz 跟 5GHz 差異是?">
+          <img loading="lazy" src="https://i.ytimg.com/vi/ZC1kSTngQUc/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/ZC1kSTngQUc/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>WiFi 路由器 2.4GHz 跟 5GHz 差異是?</b><small>頻道：Wilson說給你聽 · 直接對應本文第 01、05 節：路由器上那個「5G」是頻段不是行動網路，並講到速度與穿牆的取捨 · 中文</small></div>
+      </div>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=vp5KdHfiUQY" target="_blank" rel="noopener" data-yt="vp5KdHfiUQY" aria-label="播放：Wi-Fi 2.4G 和 5G 差別在哪">
+          <img loading="lazy" src="https://i.ytimg.com/vi/vp5KdHfiUQY/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/vp5KdHfiUQY/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>【貘】Wi-Fi 2.4G 和 5G 差別在哪？</b><small>頻道：貘 · 用白話解釋兩個頻段的取捨，適合搭配本文「接 5GHz 不會變成 5G」那一段一起看 · 中文</small></div>
+      </div>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">為什麼只放兩支</div>「兩個 5G 撞名」這個題目，目前找不到專門講清楚的中文影片——上面兩支都只涵蓋 Wi-Fi 那一半。與其硬湊，不如老實說：行動網路那一半，看本文的表格比看影片快。</div>
+
+      <p class="updated">本文查證：<b>2026 年 7 月 29 日</b>。iPad 規格、eSIM 支援機型與電信費用皆以官方最新公告為準；本頁在每年 iPad 新機發表後複驗。</p>
+      <p class="sources">本文的規格與費用全部取自官方頁面，查證日期 2026 年 7 月 29 日：</p>
+      <ul class="sources">
+        <li><a href="https://www.apple.com/tw/ipad-pro/specs/">Apple 台灣官網 · iPad Pro 技術規格</a>（Wi-Fi 7 (802.11be)、5G (sub-6 GHz) 掛在「Wi-Fi + 行動網路機型」下、eSIM 與實體 SIM 卡不相容）</li>
+        <li><a href="https://www.apple.com/tw/ipad-air/specs/">Apple 台灣官網 · iPad Air 技術規格</a>（同上，現售 Air 亦為純 eSIM）</li>
+        <li><a href="https://www.apple.com/tw/ipad-11/specs/">Apple 台灣官網 · iPad (A16) 技術規格</a>（入門機型為 Wi-Fi 6 (802.11ax)，行動網路版支援 5G 與 Gigabit LTE）</li>
+        <li><a href="https://support.apple.com/en-us/102766">Apple 支援 · Wi-Fi 路由器與存取點的建議設定</a>（建議 2.4GHz／5GHz／6GHz 使用同一個網路名稱）</li>
+        <li><a href="https://www.apple.com/newsroom/2021/04/apple-unveils-new-ipad-pro-with-m1-chip-and-stunning-liquid-retina-xdr-display/">Apple Newsroom · 2021 年 4 月 iPad Pro (M1) 發表</a>（首款支援 5G 的 iPad）</li>
+        <li><a href="https://www.cht.com.tw/home/prepaid/esim_setup/index.html">中華電信 · eSIM 設定說明</a>（支援 iPad 機型清單；首次申請免收設定費，刪除或作廢後重新申請須至門市辦理並收取 300 元／次）</li>
+      </ul>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
