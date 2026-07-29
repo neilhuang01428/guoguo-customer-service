@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Apple Pencil 壓感沒反應？先換筆尖，別急著送修 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式 ── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 排查階梯：由便宜到貴 */
+  .ladder { display: grid; gap: 10px; margin: 20px 0; }
+  .lrow { display: flex; gap: 14px; align-items: center; background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 10px; padding: 13px 16px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .lrow .lv { font-family: var(--mono); min-width: 30px; height: 30px; border-radius: 8px; background: var(--cbg); color: var(--c); font-weight: 800; font-size: .78rem; display: grid; place-items: center; flex: none; }
+  .lrow .lt { flex: 1; }
+  .lrow .lt b { display: block; color: var(--ink); font-size: .96rem; }
+  .lrow .lt small { color: var(--muted); font-size: .84rem; }
+  .lrow .lc { font-family: var(--mono); font-size: .76rem; color: var(--c); background: var(--cbg); padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+
+  /* 對照表符號欄 */
+  td.y { color: var(--green-deep); font-weight: 700; text-align: center; }
+  td.n { color: var(--red); font-weight: 700; text-align: center; }
+  td.mid { color: var(--amber); text-align: center; }
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 600px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+
+  /* 證據等級標籤 */
+  .lv-tag { display: inline-block; font-family: var(--mono); font-size: .58rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; vertical-align: middle; }
+  .lv-tag.ok { color: var(--green-deep); background: var(--green-bg); border: 1px solid #c3e4cf; }
+  .lv-tag.infer { color: var(--amber); background: var(--amber-bg); border: 1px solid #e6d3a6; }
+  .lv-tag.todo { color: var(--red); background: var(--red-bg); border: 1px solid #eec4b8; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .lrow { flex-wrap: wrap; }
+    .lrow .lc { margin-left: 44px; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>壓感變怪怎麼辦</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#answer" class="active">00 · 30 秒分流</a>
+  <a href="#how">01 · 壓感怎麼來的</a>
+  <div class="grp">四層排查</div>
+  <a href="#tip">02 · 筆尖</a>
+  <a href="#system">03 · iPadOS 設定</a>
+  <a href="#app">04 · App 設定</a>
+  <a href="#pair">05 · 配對與電量</a>
+  <div class="grp">停止點</div>
+  <a href="#broken">06 · 真的壞了嗎</a>
+  <a href="#honest">07 · 查證等級</a>
+  <a href="#watch">延伸觀看</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>Pencil 一代到 Pro 都經手</span><span>每支都要整備到能出貨</span><span>缺點照實揭露</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">Apple Pencil / 疑難排解</div>
+    <h1>Apple Pencil 壓感變怪，<br>該先換的不是筆</h1>
+    <p class="subtitle">輕壓沒反應、線條粗細不跟手、一下筆就變超粗——在按下「預約送修」之前，有四層排查可以做，第一層只要一分鐘。</p>
+
+    <p class="lede">Apple Pencil 壓感異常，最該先做的不是送修，是<strong>把筆尖轉緊、或換一顆新的</strong>。原因寫在第 01 節：壓力訊號來自筆尖被壓進去時的那一點點位移，筆尖跟筆身之間只要鬆一點點，量到的數字就不對了。</p>
+
+    <p class="lede">成本差距也很現實。Apple 官方替換筆尖一組四入 NT$590，平均一顆 NT$148；一支 Apple Pencil Pro 是 NT$4,390。先花三十分之一的錢排掉最常見的原因，是划算的順序。</p>
+
+    <p class="lede">這篇按「由便宜到貴」排出四層：筆尖 → iPadOS 設定 → App 設定 → 配對與電量，最後給你「什麼症狀才真的該送修」的停止點。</p>
+
+    <p class="updated">本文查證：<b>2026 年 7 月 29 日</b>，規格、售價與介面文字以 Apple 官方最新公告為準。<a class="inline" href="#sources">來源列在文末</a>，<a class="inline" href="#honest">哪些是推論也標出來了</a>。</p>
+
+    <section id="answer">
+      <div class="sec-label" style="--c:var(--navy)">triage</div>
+      <h2>00 · 先做 30 秒分流</h2>
+      <p>動手排查之前，先確認一件最容易被冤枉的事：<strong>你手上這支筆，本來就有壓感嗎？</strong></p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>款式</th><th>壓力感應</th><th>傾斜度感應</th><th>懸浮</th><th>說明</th></tr>
+          <tr>
+            <td>Apple Pencil Pro</td>
+            <td class="y">✓ 有</td><td class="y">✓ 有</td><td class="mid">部分 iPad</td>
+            <td>Apple 台灣官網比較表明列<small>另有側轉、雙指按壓、觸覺回饋</small></td>
+          </tr>
+          <tr>
+            <td>Apple Pencil（USB-C）</td>
+            <td class="n">✗ 沒有</td><td class="y">✓ 有</td><td class="mid">部分 iPad</td>
+            <td>官方比較表寫「不適用」<small>本來就沒有，不是壞掉</small></td>
+          </tr>
+          <tr>
+            <td>Apple Pencil（第 2 代）</td>
+            <td class="y">✓ 有</td><td class="y">✓ 有</td><td class="mid">僅兩款 iPad Pro</td>
+            <td>技術規格頁未逐項列出<small>見第 07 節的證據說明</small></td>
+          </tr>
+          <tr>
+            <td>Apple Pencil（第 1 代）</td>
+            <td class="y">✓ 有</td><td class="y">✓ 有</td><td class="n">✗ 沒有</td>
+            <td>官方規格頁直接寫明<small>「靈敏感應筆尖的壓力與傾斜角度」</small></td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--red)">
+        <div class="ct">最常被冤枉的一款：Apple Pencil（USB-C）</div>
+        它<strong>從出廠就沒有壓力感應</strong>——Apple 台灣官網的機型比較表把「壓力感應」這一列標成「不適用於 Apple Pencil (USB-C)」。它有傾斜、有懸浮、有像素等級精準度，就是沒有筆壓。畫出來的線永遠一樣粗是設計如此，換筆尖、重灌系統都不會變。
+      </div>
+
+      <p>確認過型號之後，用症狀分三條路走：</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--navy)">
+          <div class="ct">A · 換哪個 App 都沒有壓感</div>
+          問題在筆或系統這一側。從<a class="inline" href="#tip">第 02 節</a>的筆尖開始，一層層往下。
+        </div>
+        <div class="callout" style="--c:var(--teal)">
+          <div class="ct">B · 只有某一個 App 不對勁</div>
+          筆是好的。直接跳到<a class="inline" href="#app">第 04 節</a>看那個 App 的壓感開關與曲線。
+        </div>
+        <div class="callout" style="--c:var(--amber)">
+          <div class="ct">C · 根本寫不出字、配不上</div>
+          這不是壓感問題，是連線或電量。直接看<a class="inline" href="#pair">第 05 節</a>的官方步驟。
+        </div>
+        <div class="callout" style="--c:var(--purple)">
+          <div class="ct">D · 螢幕某一塊寫不出來</div>
+          換個位置畫同樣的線，只有特定區塊失靈，那是 iPad 螢幕的事，不是筆。
+        </div>
+      </div>
+
+      <p>下面是完整的四層排查，按「花你多少時間、多少錢」由低到高排。多數人停在第一層。</p>
+
+      <div class="ladder">
+        <div class="lrow" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="lv">L1</div>
+          <div class="lt"><b>筆尖：轉緊、看磨損、必要時換一顆</b><small>命中率最高的一層，也是官方疑難排解文件沒寫的一層</small></div>
+          <div class="lc">1 分鐘 · 0～148 元</div>
+        </div>
+        <div class="lrow" style="--c:var(--teal);--cbg:var(--teal-bg)">
+          <div class="lv">L2</div>
+          <div class="lt"><b>iPadOS 設定：確認你沒有在調錯的滑桿</b><small>系統其實沒有筆壓設定，這一層主要是拆掉誤解</small></div>
+          <div class="lc">1 分鐘 · 免費</div>
+        </div>
+        <div class="lrow" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="lv">L3</div>
+          <div class="lt"><b>App 設定：壓感開關與壓力曲線</b><small>GoodNotes、Concepts、Procreate 各有各的位置</small></div>
+          <div class="lc">2 分鐘 · 免費</div>
+        </div>
+        <div class="lrow" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="lv">L4</div>
+          <div class="lt"><b>配對與電量：走完 Apple 官方那八步</b><small>忘記裝置、重新配對、拆掉保護殼</small></div>
+          <div class="lc">5 分鐘 · 免費</div>
+        </div>
+        <div class="lrow" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="lv">停</div>
+          <div class="lt"><b>四層都做完還是不對：走檢測或送修</b><small>Apple Pencil 內部不可維修，實務上是整支換</small></div>
+          <div class="lc">整支的價格</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="sec-label" style="--c:var(--purple)">how_it_works</div>
+      <h2>01 · 壓感是怎麼做到的？</h2>
+      <p>知道訊號從哪來，才知道該先懷疑誰。Apple 官方對這件事只留下一句話，但那句話很關鍵。</p>
+
+      <div class="bigquote">
+        <div class="qm">“</div>
+        <p>它能靈敏感應筆尖的壓力與傾斜角度</p>
+        <small>Apple 台灣官網「Apple Pencil（第 1 代）技術規格」頁——這是 Apple 唯一一次把「壓力」和「筆尖」寫進同一句話。</small>
+      </div>
+
+      <p>再往下就得靠拆解。iFixit 在 2015 年拆過第一代，看到的結構是這樣：筆尖是<strong>彈簧承載</strong>的，可以被往內推；筆桿組件末端與一塊極小的電路板上，各有三個互相對應的接點。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">✍️</div><div class="bt">你下筆</div><div class="bv">力道加上去</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">🔩</div><div class="bt">筆尖被推進去</div><div class="bv">位移幾微米</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--teal-bg)"><div class="bi">📡</div><div class="bt">筆身量到位移</div><div class="bv">藍牙回報數值</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">🎨</div><div class="bt">App 收到數值</div><div class="bv">決定線多粗</div></div>
+        </div>
+        <figcaption>壓感量的不是「你手指多用力」，是<b>筆尖被推進去多少</b>。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">關鍵推論：這條鏈的第一節就在筆尖</div>
+        既然壓力是靠「筆尖相對筆身的位移」換算出來的，那筆尖與筆身的機械接合狀態就直接寫在算式裡。<strong>鎖不緊，位移的起點就跑掉了。</strong>這也是為什麼一支功能完全正常的筆，只要筆尖鬆半圈，畫出來的線就會不跟手。
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">這裡要誠實：哪一段是事實，哪一段是推論</div>
+        「筆尖是彈簧承載的、內部有對應接點」是拆解拍到的事實。至於「位移就是壓力來源」，iFixit 原文用的是「如果要我們猜（If we had to hazard a guess）」——那是拆解者的推測，不是 Apple 的技術文件。方向合理，但我們不會把它寫成 Apple 說過的話。
+      </div>
+
+      <h3>順帶釐清：壓力和傾斜是兩套機制</h3>
+      <p>很多人把「壓感」跟「傾斜」混在一起講，其實它們在硬體上是分開的。筆尖裡另有兩顆發射器，負責讓 iPad 判斷筆的角度與方向。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)">
+          <div class="ct">壓力感應</div>
+          你壓多重 → 線多粗、顏色多深。靠筆尖位移量測。
+        </div>
+        <div class="callout" style="--c:var(--teal)">
+          <div class="ct">傾斜度感應</div>
+          你筆桿多斜 → 像鉛筆側鋒那樣塗出寬面。靠筆尖內兩顆發射器。
+        </div>
+      </div>
+
+      <p>它們可以只壞一個，也可以在 App 裡被分開關掉——像 Concepts 就把 Pressure 和 Tilt 做成兩個獨立開關。所以描述症狀時講清楚是哪一個，排查會快很多。</p>
+    </section>
+
+    <section id="tip">
+      <div class="sec-label" style="--c:var(--green)">layer_1</div>
+      <h2>02 · 第一層：筆尖</h2>
+      <p>先看成本。這一層之所以放第一，不只因為命中率高，也因為它便宜到幾乎沒有嘗試成本。</p>
+
+      <div class="stats">
+        <div class="stat" style="--c:var(--green)"><div class="num">0</div><div class="lab">轉緊筆尖的花費</div><span class="badge">先做這個</span></div>
+        <div class="stat" style="--c:var(--teal)"><div class="num">148</div><div class="lab">官方筆尖平均每顆（元）</div></div>
+        <div class="stat" style="--c:var(--navy)"><div class="num">590</div><div class="lab">官方筆尖 4 件裝（元）</div></div>
+        <div class="stat" style="--c:var(--red)"><div class="num">4,390</div><div class="lab">Apple Pencil Pro 一支（元）</div></div>
+      </div>
+
+      <p>一顆筆尖是一支新筆的三十分之一。而且 Apple 官方那一組四入的筆尖，Pro、第 2 代、USB-C 版、第 1 代<strong>全部通用</strong>，都能用同一顆，不用擔心買錯。</p>
+
+      <h3>四個動作，一分鐘做完</h3>
+      <div class="steps">
+        <div class="step" style="--c:var(--green)"><div class="n">1</div><div><h4>逆時針轉開筆尖</h4><p>筆尖是旋上去的，用手指就轉得下來，不需要工具。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">2</div><div><h4>看有沒有露出金屬</h4><p>筆尖前端本來是一層軟材質。磨到中間的金屬芯露出來，就該換了——這時候它不只影響手感，還會刮螢幕鍍膜。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">3</div><div><h4>轉回去，鎖到「緊，但沒有用力」</h4><p>順時針轉到轉不動就停，不要硬扭。社群間流傳的判準是鎖好之後筆尖與筆身間會剩一張紙的縫隙——這是使用者的經驗法則，不是 Apple 的規格，當參考就好。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">4</div><div><h4>開「備忘錄」畫一筆，由輕壓到重壓</h4><p>用內建 App 測，避開第三方 App 的設定變因。線條該從細到粗連續變化，不該是一整條均勻的粗線。</p></div></div>
+      </div>
+
+      <h3>哪些症狀真的該懷疑筆尖</h3>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你遇到的狀況</th><th>筆尖嫌疑</th><th>為什麼</th></tr>
+          <tr><td>輕壓沒反應，要很用力才出線</td><td class="y">高</td><td>位移的起點跑掉，輕壓那一段被吃掉了</td></tr>
+          <tr><td>起筆斷斷續續、線頭會缺一截</td><td class="y">高</td><td>接觸不穩定，訊號在起筆瞬間對不上</td></tr>
+          <tr><td>所有 App 都完全沒有粗細變化</td><td class="mid">中</td><td>先回<a class="inline" href="#answer">第 00 節</a>確認型號本來有沒有壓感</td></tr>
+          <tr><td>只有某一個 App 沒粗細變化</td><td class="n">低</td><td>去<a class="inline" href="#app">第 04 節</a>，是 App 設定</td></tr>
+          <tr><td>螢幕特定區塊怎麼畫都沒反應</td><td class="n">低</td><td>換個位置畫同樣的線就能驗證，這是螢幕</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">果果在整備台上看到的事</div>
+        我們收回來的每一支筆都要整備到能出貨，所以會反覆碰到同一件事：<strong>顧客說「壓感壞了」的案子，絕大多數停在筆尖與配對這兩層</strong>，真正需要整支換的比例，遠低於客人自己以為的。差別在於客人查到的資料通常直接跳到「送修」，中間那幾步沒人告訴他。
+      </div>
+
+      <div class="callout" style="--c:var(--teal)">
+        <div class="ct">多久換一次筆尖？看的是保護貼，不是月份</div>
+        果果的售後經驗是：貼<strong>類紙膜</strong>的話大約 3～4 個月就要換一次筆尖，因為那層粗糙面本來就是拿摩擦力換手感的。貼一般鋼化玻璃的話可以撐很久。<br>
+        這個落差在官方社群裡看得更誇張：有人用了三週就露出金屬，同一串裡也有人兩個月完全沒有可察覺的磨損。所以「多久換一次」沒有通用答案，用看的比用算的準。
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">磨損跟鬆脫，我們分開講</div>
+        「筆尖<strong>鎖不緊</strong>會影響壓感」有結構上的依據——位移量測是這樣運作的。但「筆尖<strong>磨損</strong>會讓壓感數值失準」這件事，Apple 沒說過，iFixit 拆解也沒提。<br>
+        可以確定的是：磨到露金屬會刮螢幕，也會改變下筆觸感與起筆穩定度。所以磨損該換，但我們不會把它說成「壓感故障的元凶」——那超出目前查得到的證據。
+      </div>
+
+      <details>
+        <summary>那筆尖套（矽膠套、金屬尖）到底會不會害到壓感？</summary>
+        <p>老實說，<b>我們找不到可靠的實測或官方說明</b>。Apple 完全沒有提過筆尖套；官方社群裡兩種說法都有人講，甚至有使用者回報「拿掉矽膠套之後反而變得很不靈敏」——那更可能是筆尖本身已經鬆了或壞了，套子只是剛好補上接觸。</p>
+        <p>實務上的做法很簡單：排查的時候<b>先把它拆掉</b>。這是唯一能確定它有沒有影響的方法，也不花你任何錢。拆掉之後如果一切正常，再自己決定要不要裝回去。</p>
+      </details>
+    </section>
+
+    <section id="system">
+      <div class="sec-label" style="--c:var(--teal)">layer_2</div>
+      <h2>03 · 第二層：iPadOS 設定</h2>
+      <p>這一層要講的結論可能跟你預期的相反——它不是「去哪裡調」，是「這東西根本不存在」。</p>
+
+      <div class="callout" style="--c:var(--navy)">
+        <div class="ct">核心觀念</div>
+        <strong>iPadOS 沒有全域的筆壓靈敏度或壓力曲線設定。</strong>所以「壓感太重／太輕」永遠不會是系統設定沒調好——那一定是 App 那一層的事。
+      </div>
+
+      <p>Apple 的 iPadOS 26 使用手冊裡，Apple Pencil 章節總共十個條目，沒有任何一條跟壓力有關。真正能調的東西是這些：</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>設定位置</th><th>實際能調什麼</th><th>會影響筆壓嗎</th></tr>
+          <tr>
+            <td>設定 → Apple Pencil</td>
+            <td>「隨手寫」開關、點兩下要做什麼、查看電量</td>
+            <td class="n">✗ 不會</td>
+          </tr>
+          <tr>
+            <td>設定 → 輔助使用 → Apple Pencil</td>
+            <td>擠壓力道滑桿（含 Extended Range）、點兩下開關、點兩下速度</td>
+            <td class="n">✗ 不會</td>
+          </tr>
+          <tr>
+            <td>全域筆壓曲線／靈敏度</td>
+            <td>系統裡沒有這個項目</td>
+            <td class="mid">—</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--red)">
+        <div class="ct">最大的誤會：那條「要按多用力」的滑桿</div>
+        「設定 → 輔助使用 → Apple Pencil」底下確實有一條調力道的滑桿，很多人一看就以為找到筆壓設定了。<br>
+        它調的是<strong>擠壓（squeeze）</strong>——就是捏一下筆桿叫出工具面板的那個動作，而且只有 Apple Pencil Pro 有這個功能。它<strong>完全不會改變繪圖 App 收到的筆壓數值</strong>。拉這條滑桿排查壓感，是在白花時間。
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">小提醒：找不到選項，可能是搜錯詞</div>
+        Apple 官方繁體中文把 Scribble 譯成「<strong>隨手寫</strong>」，不是網路教學常寫的「塗鴉」。在設定裡搜「塗鴉」是找不到的。
+      </div>
+
+      <p>這一層做完，你其實只花了一分鐘，而且知道了一件重要的事：往下所有「壓感太敏感／太遲鈍」的抱怨，都要往 App 去找。</p>
+    </section>
+
+    <section id="app">
+      <div class="sec-label" style="--c:var(--amber)">layer_3</div>
+      <h2>04 · 第三層：App 裡的壓感開關與曲線</h2>
+      <p>這一層最容易被跳過，卻是「只有某個 App 怪怪的」唯一的答案。每個 App 把壓感藏在不同地方，名字也不一樣：</p>
+
+      <div class="grid">
+        <div class="card" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="c-tag">GoodNotes</div>
+          <h4>壓感綁在「筆的樣式」上</h4>
+          <p>官方教學裡，想關掉壓感的方法就是把筆換成「Ball Pen（原子筆）」樣式。反過來說，你選到 Ball Pen 就吃不到壓感——不是筆壞了。</p>
+          <span class="ex">先看你選的是哪一支筆</span>
+        </div>
+        <div class="card" style="--c:var(--teal);--cbg:var(--teal-bg)">
+          <div class="c-tag">Concepts</div>
+          <h4>有一個可以整個關掉的開關</h4>
+          <p>Settings → Interaction → Stylus 底下有 Pressure 開關，旁邊還有獨立的 Tilt 開關。被關掉的話，壓感是真的完全消失。</p>
+          <span class="ex">Pressure 要是開的</span>
+        </div>
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">Procreate</div>
+          <h4>有完整的壓力曲線可以拉</h4>
+          <p>Actions → Prefs → Pressure &amp; Smoothing。覺得要很用力才畫得出深線就把曲線往左調，太敏感往右調；底部 Reset All 一鍵回到預設的線性。</p>
+          <span class="ex">排查前先 Reset All</span>
+        </div>
+        <div class="card" style="--c:var(--purple);--cbg:var(--purple-bg)">
+          <div class="c-tag">Notability</div>
+          <h4>沒有曲線，但有連線開關</h4>
+          <p>官方只說「用力就變粗」，沒有壓感曲線可調。要注意的是它有「中斷連接 Apple Pencil」的功能，開著的時候筆的行為會不一樣。</p>
+          <span class="ex">檢查有沒有被中斷連接</span>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">排查時的正確順序</div>
+        進 App 之後<strong>先把曲線 Reset 回預設、把 Pressure 開關打開</strong>，再判斷壓感正不正常。順序反過來的話，你永遠分不清是筆的問題還是自己半年前調過的曲線。
+      </div>
+
+      <div class="callout" style="--c:var(--teal)">
+        <div class="ct">怎麼一次驗證是不是 App 的問題</div>
+        打開 iPad 內建的「備忘錄」或「無邊記」，用手寫工具畫一筆由輕到重。內建 App 沒有任何壓感設定可以調，所以它是最乾淨的對照組——<strong>內建 App 正常、第三方 App 不正常，那就是 App 設定，不是筆。</strong>
+      </div>
+    </section>
+
+    <section id="pair">
+      <div class="sec-label" style="--c:var(--navy)">layer_4</div>
+      <h2>05 · 第四層：配對與電量</h2>
+      <p>做到這裡還沒解決，就把 Apple 官方那套流程完整走一次。有件事得先講清楚：</p>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">Apple 沒有一篇「壓感異常」的疑難排解文件</div>
+        Apple 對 Apple Pencil 只有一篇疑難排解文，標題是「<strong>如果你無法將 Apple Pencil 與 iPad 配對</strong>」（2026 年 1 月 15 日更新）。舊的那篇 HT205236 現在也直接導到它。<br>
+        更值得注意的是：這篇文章<strong>從頭到尾沒有提到筆尖</strong>。「開始之前」只列三件事——更新 iPad、確認型號相容、可能要先充電。也就是說，命中率最高的那一步，官方文件裡並沒有寫。
+      </div>
+
+      <h3>官方八步，照順序做</h3>
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">1</div><div><h4>把 Apple Pencil 實體接上 iPad</h4><p>Pro 與第 2 代：吸在磁力接點正中央。第 1 代配 iPad 6～9 代：取下筆蓋插進 Lightning。第 1 代配 iPad 第 10 代：要用「USB-C 對 Apple Pencil 轉接器」加一條 USB-C 線。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">2</div><div><h4>維持連接狀態，重新啟動 iPad，再試配對</h4><p>注意是「連著的時候重開機」，不是拔下來重開。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">3</div><div><h4>設定 → 藍牙，確認藍牙是開的</h4><p>官方把這一步也放進充電流程裡——藍牙關著會連帶影響正常運作。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">4</div><div><h4>在「我的裝置」找到 Apple Pencil → 資訊 → 忘記此裝置設定</h4><p>這是 Apple 認可的解除配對做法。Apple Pencil 沒有實體重置鍵，也沒有長按重置。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">5</div><div><h4>重新接上，等「配對」按鈕出現後點它</h4><p>按鈕通常幾秒內就會跳出來。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">6</div><div><h4>沒跳出「配對」按鈕？先充電一分鐘再試</h4><p>官方明講電量不足會讓配對按鈕不出現。這是「低電量會造成異常行為」少數有官方依據的一條。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">7</div><div><h4>Pro 與第 2 代：拆掉 iPad 的保護殼或護蓋再試</h4><p>官方直接把這一步寫進流程，代表配件干擾磁吸是真的會發生。</p></div></div>
+        <div class="step" style="--c:var(--red)"><div class="n">8</div><div><h4>還是沒有配對按鈕 → 官方說可能需要維修</h4><p>這是 Apple 給的停止點。到這一步就不要再自己試了。</p></div></div>
+      </div>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--amber)">
+          <div class="ct">第 1 代特有的坑</div>
+          官方明說第 1 代的配對<strong>不是永久的</strong>：只要重開機 iPad、關掉藍牙、或把筆配對到另一台 iPad，配對就失效，得重插一次再配。第 2 代與 Pro 吸上去就會保持配對，沒這個問題。
+        </div>
+        <div class="callout" style="--c:var(--teal)">
+          <div class="ct">電量怎麼看</div>
+          官方只給兩個位置：加入「電池」小工具，或到「設定 → Apple Pencil」看。沒有第三個官方管道。
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">果果售後常遇到的一種：筆套與保護殼只能擇一</div>
+        很多人給 Apple Pencil 加了矽膠筆套，iPad 又用了偏厚的保護殼，兩個加起來就吸不牢、貼合不到位。這跟官方第 7 步是同一件事的兩面——排查時<strong>兩樣都先拆掉，裸機裸筆測一次</strong>。
+      </div>
+    </section>
+
+    <section id="broken">
+      <div class="sec-label" style="--c:var(--red)">stop_here</div>
+      <h2>06 · 什麼情況才是真的壞了</h2>
+      <p>排查最怕的不是做不完，是不知道什麼時候該停。這一節給你明確的停止點。</p>
+
+      <h3>先做完這個隔離測試</h3>
+      <div class="steps">
+        <div class="step" style="--c:var(--teal)"><div class="n">A</div><div><h4>換 App 測：用內建「備忘錄」或「無邊記」</h4><p>內建 App 沒有壓感設定可調，是最乾淨的對照組。只有第三方 App 不對 → App 問題，收工。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">B</div><div><h4>換一顆筆尖測</h4><p>手邊沒有備品的話，這是唯一需要花錢的一步，但只要 148 元。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">C</div><div><h4>忘記裝置，重新配對一次</h4><p>照第 05 節的官方八步走完。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">D</div><div><h4>換一台 iPad 測（如果借得到）</h4><p>這是唯一能分清「是筆還是 iPad」的方法。注意相容限制：Apple Pencil Pro 只能配 M4／M5 的 iPad Pro、M2 以上的 iPad Air 與 iPad mini (A17 Pro)，不是隨便找一台就能測。</p></div></div>
+      </div>
+
+      <p>四步做完症狀還在，那就是硬體。下面幾種情況，我們會建議直接跳過排查：</p>
+
+      <ul class="flags">
+        <li><b>是摔過之後才開始的</b>——別再花時間試軟體。壓感結構是機械式的，撞擊之後跑掉就是跑掉了。</li>
+        <li><b>筆尖螺牙滑掉、轉不緊或轉到底還在晃</b>——螺牙壞了換筆尖也救不回來，因為固定不住。</li>
+        <li><b>電量顯示正常，但完全沒有任何反應</b>——排除了電量這個變因之後，剩下的就是內部問題。</li>
+        <li><b>只有某一小段力道區間失靈</b>（例如中等力道會突然跳粗）——這種非線性異常通常是感測結構本身，不是接觸問題。</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--red)">
+        <div class="ct">別花錢在這些地方</div>
+        Apple Pencil <strong>內部不可維修</strong>。iFixit 給第 1 代的可修復性評分是 1 分（滿分 10），原文寫「不破壞裝置就打不開」，電池也無法更換。所以坊間「拆開清潔內部」「更換壓感元件」這類服務，風險遠大於效益。
+      </div>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--amber)">
+          <div class="ct">保固：一年，但筆尖不算</div>
+          Apple 原廠配件的有限保固是<strong>自原零售購買日起一年</strong>。條款同時明列「不涵蓋消耗品零件的正常耗損」——筆尖磨損要自費換，依據就在這裡。
+        </div>
+        <div class="callout" style="--c:var(--navy)">
+          <div class="ct">保固內不一定是換新</div>
+          官方條款保留三種處理方式：免費維修、更換同型號替換品、或退還購買款項，由 Apple 決定。所以「保固內一定整支換新」不是官方寫的承諾。
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">保固外要多少錢？這件事我們沒有官方答案</div>
+        Apple 台灣的「產品服務與維修資訊」頁面列出十二類可查詢維修的產品，<strong>裡面沒有 Apple Pencil</strong>，官網也沒有公布保固外的服務費率。網路上流傳的金額我們查不到官方出處，所以不寫進來——實際費用請以 Apple 或授權維修中心當下的報價為準。
+      </div>
+
+      <ul class="check">
+        <li><b>我的線條完全沒有粗細變化？</b>先確認型號。USB-C 版本來就沒有壓感，那不是故障。</li>
+        <li><b>要很用力才畫得出來？</b>先轉緊筆尖，再去 App 裡把壓力曲線 Reset 回預設。</li>
+        <li><b>只有一個 App 怪怪的？</b>那就是那個 App 的設定，筆是好的。</li>
+        <li><b>已經花了半小時還沒好？</b>停下來做隔離測試，別再繼續亂試——排查是有順序的，重複試同一層不會有新資訊。</li>
+      </ul>
+    </section>
+
+    <section id="honest">
+      <div class="sec-label" style="--c:var(--purple)">evidence</div>
+      <h2>07 · 這篇哪些是查過的、哪些是推論</h2>
+      <p>壓感這個題目有個麻煩：Apple 對它的技術細節講得非常少。與其用肯定的語氣把推論寫成事實，我們把等級直接標出來。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>說法</th><th>等級</th><th>依據</th></tr>
+          <tr>
+            <td>Apple Pencil（USB-C）沒有壓力感應</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>Apple 台灣官網比較表明列「不適用」</td>
+          </tr>
+          <tr>
+            <td>第 1 代有壓力感應，而且官方把它跟「筆尖」綁在一起講</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>Apple 台灣官方技術規格頁原文</td>
+          </tr>
+          <tr>
+            <td>第 2 代有壓力感應</td>
+            <td><span class="lv-tag infer">合理推論</span></td>
+            <td>Apple 第 2 代技術規格頁<strong>沒有逐項列出</strong>感測規格；依據是官方比較表只把「不適用」標給 USB-C 版，加上 Notability 官方文件明寫「只有 USB-C 版不支援壓力感應」</td>
+          </tr>
+          <tr>
+            <td>iPadOS 沒有全域筆壓曲線設定</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>iPadOS 26 官方使用手冊全章節無此項；唯一的力道滑桿被官方明文限定作用於「擠壓」動作</td>
+          </tr>
+          <tr>
+            <td>筆尖沒鎖緊會影響壓感</td>
+            <td><span class="lv-tag infer">合理推論</span></td>
+            <td>iFixit 拆解顯示筆尖為彈簧承載、壓力疑似由位移量測而來（拆解者用的是推測語氣）；官方無此說明</td>
+          </tr>
+          <tr>
+            <td>筆尖磨損會讓壓感數值失準</td>
+            <td><span class="lv-tag todo">待驗證</span></td>
+            <td>找不到官方或拆解依據。可確定的只有：磨到露金屬會刮螢幕、會改變觸感與起筆穩定度</td>
+          </tr>
+          <tr>
+            <td>筆尖套會干擾壓感</td>
+            <td><span class="lv-tag todo">待驗證</span></td>
+            <td>Apple 完全沒有說明，社群兩種說法都有，找不到可靠實測。排查時拆掉是最省事的做法</td>
+          </tr>
+          <tr>
+            <td>台灣保固外的 Apple Pencil 更換費用</td>
+            <td><span class="lv-tag todo">待驗證</span></td>
+            <td>Apple 台灣維修頁面未列 Apple Pencil，官網無公開費率</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">為什麼要把「待驗證」也寫出來</div>
+        因為這三格剛好是網路上被講得最斬釘截鐵的三件事。你在別的地方看到有人用肯定句寫它們的時候，可以回頭問一句：依據呢？<strong>我們寧可承認查不到，也不想讓你照著一個沒有依據的說法去花錢。</strong>
+      </div>
+    </section>
+
+    <section id="watch">
+      <div class="sec-label" style="--c:var(--teal)">videos</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p style="font-size:.9rem;color:var(--muted)">第 01 節講的「筆尖不只是一塊橡膠」，用看的比用讀的快。影片為第三方製作，技術細節仍以 Apple 官方說明為準。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=EYvey1Ow7Cw" target="_blank" rel="noopener" data-yt="EYvey1Ow7Cw" aria-label="播放：Apple Pencil 剖開來！居然不只是橡膠頭？">
+          <img loading="lazy" src="https://i.ytimg.com/vi/EYvey1Ow7Cw/sddefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/EYvey1Ow7Cw/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>Applepencil 剖開來！居然不只是橡膠頭？</b><small>頻道：Nuomi 諾米 · 繁體中文，3 分鐘。直接把筆尖剖開給你看裡面有什麼——看過這支就會理解，為什麼「筆尖有沒有鎖緊」不是小事，而是壓感訊號鏈的第一節。</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=yVTw3Y7_ATo" target="_blank" rel="noopener" data-yt="yVTw3Y7_ATo" aria-label="播放：iFixit 官方 Apple Pencil 拆解影片">
+          <img loading="lazy" src="https://i.ytimg.com/vi/yVTw3Y7_ATo/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/yVTw3Y7_ATo/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>Apple Pencil Teardown Review!</b><small>頻道：iFixit · 英文，看畫面就懂。本文第 01 節引用的拆解就是這一份——影片裡看得到彈簧承載的筆尖與內部那塊極小的電路板，也看得到為什麼他們給它可修復性 1 分。</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">本文的規格、官方步驟、售價與保固條款皆取自 Apple 官方頁面，技術結構部分取自 iFixit 拆解，查證日期 2026 年 7 月 29 日：</p>
+      <ul class="sources">
+        <li><a href="https://www.apple.com/tw/apple-pencil/">Apple 台灣官網 · Apple Pencil</a>（機型比較表：壓力感應「不適用於 Apple Pencil (USB-C)」、傾斜度與懸浮兩款皆適用）</li>
+        <li><a href="https://support.apple.com/zh-tw/111920">Apple Pencil（第 1 代）· 技術規格</a>（「靈敏感應筆尖的壓力與傾斜角度」、盒裝內含替換筆尖、相容機型）</li>
+        <li><a href="https://support.apple.com/zh-tw/111889">Apple Pencil（第 2 代）· 技術規格</a>（全頁未逐項列出壓力與傾斜規格，佐證第 07 節的證據等級說明）</li>
+        <li><a href="https://support.apple.com/zh-tw/121318">Apple Pencil（USB-C）· 技術規格</a>（懸浮功能的機型限制、系統需求 iPadOS 17.1.1、以 USB-C 線配對充電）</li>
+        <li><a href="https://support.apple.com/zh-tw/120123">Apple Pencil Pro · 技術規格</a>（相容機型封閉名單、系統需求 iPadOS 17.5、雙指按壓／側轉／觸覺回饋）</li>
+        <li><a href="https://support.apple.com/zh-tw/108788">如果你無法將 Apple Pencil 與 iPad 配對</a>（官方八步驟與「開始之前」三項；全文未提及筆尖；發佈日期 2026 年 1 月 15 日）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipada6b9b799/ipados">iPad 使用手冊（iPadOS 26）· 配對與充電 Apple Pencil Pro</a>（藍牙為充電前提、查看電量的兩個官方位置）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipad9a4d2e7d/ipados">iPad 使用手冊 · 調整 Apple Pencil 的點兩下和擠壓設定</a>（該頁可調項目僅擠壓力道滑桿、Extended Range、點兩下開關與速度；力道滑桿官方明文限定作用於「擠壓動作」，非筆壓）</li>
+        <li><a href="https://www.apple.com/tw/shop/product/mx763fe/a/apple-pencil-%E7%AD%86%E5%B0%96-4-%E4%BB%B6%E8%A3%9D">Apple 台灣官網 · Apple Pencil 筆尖 4 件裝</a>（NT$590、料號 MX763FE/A、四款 Apple Pencil 通用）</li>
+        <li><a href="https://www.ifixit.com/Teardown/Apple+Pencil+Teardown/52955">iFixit · Apple Pencil Teardown</a>（彈簧承載筆尖、三組對應接點與壓力量測推測、可修復性 1／10、電池不可更換；2015 年 11 月 19 日）</li>
+        <li><a href="https://www.apple.com/legal/warranty/products/accessory-warranty-traditional-chinese.html">Apple 一（1）年有限保固 · 配件（繁體中文）</a>（一年保固、「不涵蓋電池等消耗品零件的正常耗損」、維修／更換／退款三種處理方式）</li>
+        <li><a href="https://support.apple.com/zh-tw/repair">Apple 台灣 · 產品服務與維修資訊</a>（可查詢維修的十二類產品中未列 Apple Pencil，官網無公開保固外費率）</li>
+      </ul>
+      <p class="updated">介面文字與功能可能隨 iPadOS 版本調整，售價以 Apple 官網當下標示為準；標示為「合理推論」與「待驗證」的說法請見<a class="inline" href="#honest">第 07 節</a>。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
