@@ -741,7 +741,8 @@
         "q": "想要 120Hz 但預算有限，買舊的 iPad Pro 可以嗎？",
         "a": "可以，因為 120Hz 沒有進化空間——2018 年的 120Hz 和 2026 年的 120Hz 就是同一個 120Hz，它不像晶片一代比一代強。但要接受四個代價：電池是消耗品，年份越舊健康度越可能下降；Apple 會逐步讓舊機型停止更新到最新 iPadOS；不同年份支援的 Apple Pencil 不一樣，買前要確認手上那支能不能用；舊款是 LCD 螢幕，亮度與 HDR 表現比現售的 OLED 差不少。"
       }
-    ]
+    ],
+    "ogImage": "assets/og/promotion-120hz-who-feels-it-cover.png"
   },
   {
     "slug": "ipad-5g-wifi-vs-cellular",
