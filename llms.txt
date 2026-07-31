@@ -181,7 +181,7 @@
   - 本篇回答：Procreate 的傾斜設定沒反應，是筆壞了嗎？
   - 本篇回答：網路上的 Procreate 筆刷參數配方可以照抄嗎？
   - 本篇回答：Brush Studio 裡哪些設定要 Apple Pencil Pro 才有？
-- [Procreate 筆觸怪怪的？先反查是哪一頁](https://www.guoguo.tw/guide/articles/procreate-stroke-looks-wrong/)：打開 Brush Studio 看到 14 個分頁不知道從哪下手，別一頁一頁亂拉——先看症狀反查是哪一頁。附 14 列症狀對照表、五個最常中的兇手（含官方明說的傾斜死區與「不吃壓力」的 Dynamics），以及藏在筆刷外面、會壓過單支筆刷的四道全域天花板。（技巧、Apple Pencil、故障排除／2026-07-31）
+- [Procreate 筆觸怪怪的？先查看筆刷設定](https://www.guoguo.tw/guide/articles/procreate-stroke-looks-wrong/)：打開 Brush Studio 看到 14 個分頁不知道從哪下手，別一頁一頁亂拉——先看症狀反查是哪一頁。附 14 列症狀對照表、五個最常中的兇手（含官方明說的傾斜死區與「不吃壓力」的 Dynamics），以及藏在筆刷外面、會壓過單支筆刷的四道全域天花板。（技巧、Apple Pencil、故障排除／2026-07-31）
   - 本篇回答：Procreate 筆觸怪怪的，要先看哪一頁？
   - 本篇回答：Procreate 的傾斜設定完全沒反應是為什麼？
   - 本篇回答：Procreate 筆刷放大到最大還是很細，怎麼辦？
