@@ -25,6 +25,30 @@
   /* 影片卡的頻道名（共用檔沒有 .vlite .cap .ch） */
   .vlite .cap .ch { color: var(--navy); font-family: var(--mono); font-size: .68rem; }
 
+  /* 路徑匯流圖 merge（本檔情境專屬）
+     用途：讀者看完 A/B 比較表，最容易誤會「兩條路線是兩個不同的設定畫面」。
+     實際上設定路徑一模一樣，差別只在「你是對哪個帳號做」。
+     視覺結構＝Y 字形：兩個入口 → 匯流成同一條路 → 再分岔成兩種結果。 */
+  .merge { display: grid; gap: 8px; }
+  .merge .mrow { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .merge .mcard { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; background: #fff; text-align: center; }
+  .merge .mcard.a { border-color: #ecccc2; background: var(--red-bg); }
+  .merge .mcard.b { border-color: #c3e4cf; background: var(--green-bg); }
+  .merge .mcard .mtag { display: inline-block; font-family: var(--mono); font-size: .62rem; letter-spacing: .04em; padding: 2px 9px; border-radius: 999px; background: #fff; border: 1px solid var(--line); margin-bottom: 7px; }
+  .merge .mcard.a .mtag { color: var(--red); }
+  .merge .mcard.b .mtag { color: var(--green-deep); }
+  .merge .mcard b { display: block; font-size: .98rem; color: var(--ink); line-height: 1.4; }
+  .merge .mcard small { display: block; font-size: .78rem; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+  .merge .mjoin, .merge .msplit { text-align: center; font-family: var(--mono); font-size: .68rem; color: var(--muted); }
+  .merge .mjoin::before { content: '↘\00a0\00a0\00a0\00a0↙'; display: block; color: #b9c4d4; font-size: 1rem; margin-bottom: 2px; }
+  .merge .msplit::before { content: '↙\00a0\00a0\00a0\00a0↘'; display: block; color: #b9c4d4; font-size: 1rem; margin-bottom: 2px; }
+  .merge .mpath { border: 2px solid var(--navy); border-radius: 12px; overflow: hidden; background: #fff; }
+  .merge .mph { background: var(--navy); color: #fff; font-size: .84rem; font-weight: 700; padding: 9px 14px; text-align: center; }
+  .merge .msteps { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 5px 4px; padding: 13px 12px; }
+  .merge .msteps span { font-size: .79rem; background: var(--navy-bg); color: var(--navy); border-radius: 6px; padding: 4px 9px; white-space: nowrap; }
+  .merge .msteps i { color: var(--muted); font-style: normal; font-size: .8rem; }
+  @media (max-width: 560px) { .merge .mrow { grid-template-columns: 1fr; } }
+
   /* bigquote：本篇為置中極簡版＋綠色短線（共用檔為 navy 底色卡，需歸零其底色/內距） */
   .bigquote { background: none; padding: 0; margin: 32px 40px; text-align: center; }
   .bigquote .qm { font-size: 2.6rem; opacity: .2; }
@@ -51,7 +75,7 @@
   <a href="#concept">01 · 切區在改什麼</a>
   <a href="#route">02 · 兩條路線 A vs B</a>
   <div class="grp">實際動手</div>
-  <a href="#steps">03 · 操作步驟（路線 B）</a>
+  <a href="#steps">03 · 操作步驟</a>
   <a href="#payment">04 · 付款選「無」找不到</a>
   <a href="#apps">05 · 下載後怎麼用</a>
   <div class="grp">避坑</div>
@@ -85,7 +109,7 @@
       <p>動手前先對號入座。切大陸區有點折騰，但<strong>八成的人其實不用切</strong>：</p>
       <div class="grid">
         <div class="card" style="--c:var(--green)"><div class="c-tag">多數人 · 只是想剪片</div><h4>→ 直接用「CapCut」，免切區</h4><p>只是想剪影片、要上傳 YouTube／IG／FB？台灣 App Store 直接搜「CapCut」就能下載，繁體中文、免切區、免折騰。<strong>剪映和 CapCut 是同一家公司（字節跳動）做的</strong>，核心功能高度相似。</p></div>
-        <div class="card" style="--c:var(--navy)"><div class="c-tag">少數人 · 一定要大陸限定</div><h4>→ 才需要切大陸區，往下看</h4><p>你要的是「大陸版抖音」（看大陸的抖音內容），或「剪映大陸版」特有的模板／字型／特效？這些台灣商店沒有，那就照下面步驟切區。</p></div>
+        <div class="card" style="--c:var(--navy)"><div class="c-tag">少數人 · 一定要大陸限定</div><h4>→ 才需要切大陸區，往下看</h4><p>你要的是<strong>「大陸版抖音」</strong>（看大陸的抖音內容），或「剪映大陸版」特有的模板／字型／特效？這些台灣商店沒有，那就照下面步驟切區。</p></div>
       </div>
       <div class="callout" style="--c:var(--green)"><div class="ct">關鍵事實（幫你省時間）</div>在 iPhone／iPad 上，台灣 App Store <strong>只找得到 CapCut</strong>；手機版的「剪映」要切到大陸區才裝得到。所以如果你只是想剪片，<strong>用 CapCut 就好，別白忙一場</strong>。CapCut 的內建曲庫本來就是為國際平台設計，上傳 YouTube／IG 也比較安心。</div>
       <div class="callout" style="--c:var(--amber)"><div class="ct">多說一句真心話：兩款都有「付費牆」</div>CapCut 從 2025 年起把不少進階功能（4K 輸出、部分 AI 工具等）收進付費 Pro，基本剪輯（剪、切、字幕、1080p 輸出）仍然免費；而剪映大陸版<strong>同樣</strong>有自己的付費會員（SVIP），該收的它一樣收。所以<strong>「跨區拿剪映」並不會多省到錢</strong>——這也是我們覺得「只想剪片，用 CapCut 就很好」的另一個理由。</div>
@@ -114,42 +138,84 @@
 
     <section id="route">
       <div class="sec-label" style="--c:var(--purple)">two_routes</div>
-      <h2>02 · 兩條路線：改舊帳號 vs 另辦新帳號</h2>
-      <p>要下大陸 App，有兩條路。<strong>我們強烈推薦路線 B</strong>，因為它對你原本的一切「零影響」：</p>
+      <h2>02 · 兩條路線：你要一個帳號，還是兩個帳號？</h2>
+      <p>要下大陸 App，有兩條路——但先講最容易被誤會的一件事：<strong>兩條路做的事其實一模一樣，都是「把一個台灣帳號改成中國區」</strong>。差別只在你是拿<strong>用了好幾年的主帳號</strong>去改，還是<strong>另辦一個空帳號</strong>去改。（<strong>沒有「直接申請一個中國區帳號」這種選項</strong>——那條路 Apple 已經擋掉了。）</p><p>換句話說，你真正在決定的是：<strong>之後要維持「一個帳號」還是「兩個帳號」</strong>。這兩條路各有各的痛，<strong>沒有一條是全面勝出的</strong>——差別在於痛的時間點不一樣：<strong>路線 A 是一次痛完，路線 B 是每次都痛一點點。</strong></p>
       <table>
-        <tr><th>比較</th><th>路線 A：改現有台灣帳號地區</th><th>路線 B：另辦中國區新帳號（推薦）</th></tr>
-        <tr><td>前置清理</td><td class="bad">很麻煩：要花光餘額、取消所有訂閱、退出家人共享</td><td class="good">幾乎不用（全新帳號本來就乾淨）</td></tr>
-        <tr><td>對你的影響</td><td class="bad">大：台灣的 Apple Music／iCloud+／訂閱會中斷</td><td class="good">零：iCloud、照片、LINE、原帳號通通不動</td></tr>
-        <tr><td>每次下載</td><td>切過去、下載完再切回來</td><td class="good">只在 App Store 登入中國帳號即可</td></tr>
-        <tr><td>適合誰</td><td class="bad">幾乎沒人真的適合</td><td class="good">絕大多數人</td></tr>
+        <tr><th>比較</th><th>路線 A：一個帳號（拿現有的去改）</th><th>路線 B：兩個帳號（另辦一個去改）</th></tr>
+        <tr><td>一次性成本</td><td class="bad">看你的帳號有多滿：有餘額要花光、訂閱不只要取消還得<strong>等它到期</strong>、在家人共享群組裡可能直接改不了。<br><strong class="good">但如果是剛辦的全新帳號，這格幾乎是零。</strong></td><td class="good">輕鬆：辦帳號＋改地區，大約 10 分鐘</td></tr>
+        <tr><td><strong>日常負擔</strong></td><td class="good">零——從頭到尾只有一個帳號，不用切</td><td class="bad"><strong>每次更新剪映／抖音都要切帳號</strong>：登出主帳號 → 登入中國帳號 → 更新 → 再登回來。較新的 iPadOS 還把 App Store 裡的登出入口拿掉了，得走設定，約 7 個步驟</td></tr>
+        <tr><td>台灣的 App</td><td class="bad">下載不到——要下就得把地區<strong>改回台灣</strong>（又一輪清理）</td><td class="good">在 App Store 登回主帳號就有</td></tr>
+        <tr><td>買過的內容</td><td class="bad">Apple 官方明講：部分電影、書、App <strong>在新地區可能無法使用</strong>（新帳號沒買過東西則無此問題）</td><td class="good">完全不受影響（主帳號沒動過）</td></tr>
+        <tr><td>iCloud／訂閱</td><td class="bad">台灣的 Apple Music、iCloud+ 訂閱會中斷</td><td class="good">iCloud、照片、LINE、原帳號通通不動</td></tr>
+        <tr><td>90 天卡關風險</td><td class="good">沒有（只有一個帳號，不會換）</td><td class="bad">有：用另一個帳號在這台裝置上購買會<strong>建立裝置關聯</strong>，官方說可能要等<strong>最多 90 天</strong>才能換綁別的帳號</td></tr>
       </table>
-      <div class="callout" style="--c:var(--green)"><div class="ct">一句話讓你安心</div>路線 B 只動「<strong>App Store 那一格</strong>」——你的 iCloud、照片、聯絡人、LINE、原本的 Apple 帳號<strong>通通不受影響</strong>。下載完登回原帳號就好。</div>
+
+      <p>看完表格還是不知道選哪個？<strong>只要回答兩個問題</strong>：</p>
+      <div class="steps">
+        <div class="step" style="--c:var(--navy);--cbg:var(--navy-bg)"><div class="n">Q1</div><div>
+          <h4>這台 iPad 之後還需要下載「台灣的 App」嗎？</h4>
+          <p><strong>不需要</strong>（例如買來就是專門看抖音、剪片，或是家裡的第二台）→ <strong class="good">走路線 A</strong>。一個帳號最省事，設定完就再也不用切來切去。<br>
+          <strong>需要</strong> → 往下看 Q2。</p></div></div>
+        <div class="step" style="--c:var(--green);--cbg:var(--green-bg)"><div class="n">Q2</div><div>
+          <h4>你的主帳號現在有訂閱、餘額，或買過的 App 嗎？</h4>
+          <p><strong>有</strong> → <strong class="good">走路線 B</strong>，別動主帳號。清理很痛，而且買過的內容可能在新地區用不了。<br>
+          <strong>沒有</strong>（剛辦、第一次用 Apple）→ 兩條都可行。我們仍略偏向 B，因為主帳號遲早會累積訂閱和購買，到那時候要改回台灣就痛了。</p></div></div>
+      </div>
+
+      <figure class="fig">
+        <div class="merge">
+          <div class="mrow">
+            <div class="mcard a"><span class="mtag">路線 A</span><b>你現在用的帳號</b><small><b>台灣區</b>·用了好幾年、綁著 iCloud 那個</small></div>
+            <div class="mcard b"><span class="mtag">路線 B</span><b>另辦一個新帳號</b><small><b>台灣區</b>·剛辦好、裡面什麼都沒有</small></div>
+          </div>
+          <div class="mjoin">兩個都是台灣帳號，走同一個設定畫面改地區</div>
+          <div class="mpath">
+            <div class="mph">⚙️ 設定路徑完全一樣</div>
+            <div class="msteps">
+              <span>設定</span><i>›</i><span>點最上面你的名字</span><i>›</i><span>媒體與購買項目</span><i>›</i><span>檢視帳號</span><i>›</i><span>國家或地區</span><i>›</i><span>更改國家或地區</span>
+            </div>
+          </div>
+          <div class="msplit">但同一條路，兩種下場</div>
+          <div class="mrow">
+            <div class="mcard a"><span class="mtag">路線 A 的下場</span><b>卡在門口</b><small>餘額要花光、訂閱要取消還得等它到期、在家人共享群組裡可能直接改不了</small></div>
+            <div class="mcard b"><span class="mtag">路線 B 的下場</span><b>一路順暢</b><small>新帳號沒餘額、沒訂閱、沒家人共享——要清的東西一個都沒有</small></div>
+          </div>
+        </div>
+        <figcaption>最容易誤會的一點：<b>兩條路線不是兩個不同的設定畫面</b>，是同一條路。差別只在你把它用在<b>哪一個帳號</b>上——用在主帳號要先清一輪，用在新空帳號則什麼都不用清。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">兩條路各自的一句話</div><strong>路線 A</strong>：只有一個帳號，設定完就<strong>再也不用切</strong>——代價是這台之後下不到台灣的 App。<br><strong>路線 B</strong>：只動「<strong>App Store 那一格</strong>」，iCloud、照片、聯絡人、LINE 通通不受影響——代價是<strong>每次要更新剪映／抖音，都得再切回中國帳號一次</strong>。</div>
       <figure class="fig">
         <div class="flow">
-          <div class="box" style="--cbg:var(--red-bg)"><div class="bi">⚠️</div><div class="bt">路線 A · 改主帳號</div><div class="bv" style="color:var(--red)">動到一整片</div><small>iCloud・照片・台灣訂閱・家人共享都受影響</small></div>
+          <div class="box" style="--cbg:var(--red-bg)"><div class="bi">⚠️</div><div class="bt">路線 A · 拿主帳號去改</div><div class="bv" style="color:var(--red)">動到一整片</div><small>iCloud・照片・台灣訂閱・家人共享都受影響</small></div>
           <div class="arr">vs</div>
-          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">🛡️</div><div class="bt">路線 B · 另辦新帳號</div><div class="bv" style="color:var(--green-deep)">只動一格</div><small>只有「App Store 登入」那格切換，其餘全不動</small></div>
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">🛡️</div><div class="bt">路線 B · 另辦一個帳號去改</div><div class="bv" style="color:var(--green-deep)">只動一格</div><small>只有「App Store 登入」那格切換，其餘全不動</small></div>
         </div>
-        <figcaption>推薦路線 B 的理由，一張圖說完：<b>你的資料通通不受影響</b>，只是多登一個帳號來下載而已。</figcaption>
+        <figcaption>這張圖只講<b>一件事：影響範圍</b>。路線 B 動的範圍確實小很多——但這不是唯一的考量，它換來的是<b>每次更新都要切帳號</b>。要選哪條，還是回到上面那兩個問題。</figcaption>
       </figure>
-      <div class="callout" style="--c:var(--navy)"><div class="ct">破除心理障礙</div>「新辦中國帳號」<strong>不需要中國身分證，也不需要中國銀行卡</strong>！用你的台灣手機號就能辦。下一節教你怎麼做。</div>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">破除心理障礙——但順序不能反</div>
+        「另辦一個帳號去改」這條路<strong>不需要中國身分證，不需要中國銀行卡，連中國手機號都不用</strong>——你的台灣門號（+886）就能收驗證簡訊。
+        <br><br>但有個關鍵前提：<strong>不能一開始就選「中國大陸」註冊</strong>。那條路 Apple 現在會要求真實的 +86 手機收簡訊，台灣人過不了。正確順序是<strong>「先辦一個台灣區帳號 → 再把這個新帳號改成中國區」</strong>——所以你用得到的是台灣門號，不是中國門號。下一節一步一步帶你做。</div>
     </section>
 
     <div class="part-div">實際動手</div>
 
     <section id="steps">
       <div class="sec-label" style="--c:var(--green)">how_to</div>
-      <h2>03 · 操作步驟（推薦的路線 B）</h2>
-      <p>照這個順序做最順、最不會卡。重點是「<strong>先在台灣區把帳號辦好，再切成中國區</strong>」：</p>
+      <h2>03 · 操作步驟（以路線 B 為例）</h2>
+      <p>下面以<strong>路線 B（另辦一個帳號）</strong>示範，因為它步驟最完整。重點是「<strong>先在台灣區把帳號辦好，再切成中國區</strong>」：</p>
       <div class="steps">
         <div class="step" style="--c:var(--navy);--cbg:var(--navy-bg)"><div class="n">1</div><div><h4>先辦一個「新的 Apple 帳號」，國家先選台灣</h4><p>用你的<strong>台灣手機號（+886）</strong>收簡訊驗證完成建號。這步先用台灣區，通過率最高。</p></div></div>
-        <div class="step" style="--c:var(--teal);--cbg:var(--teal-bg)"><div class="n">2</div><div><h4>進設定改地區</h4><p>「設定」→ 點最上面你的名字 →「媒體與購買項目」→「查看帳號」→「國家或地區」→「更改國家或地區」→ 選「<strong>中國大陸</strong>」。</p></div></div>
+        <div class="step" style="--c:var(--teal);--cbg:var(--teal-bg)"><div class="n">2</div><div><h4>進設定改地區</h4><p>「設定」→ 點最上面你的名字 →「媒體與購買項目」→「檢視帳號」（部分版本顯示為「查看帳號」）→「國家或地區」→「更改國家或地區」→ 選「<strong>中國大陸</strong>」。</p></div></div>
         <div class="step" style="--c:var(--teal);--cbg:var(--teal-bg)"><div class="n">3</div><div><h4>同意條款，付款方式選「無 / None」</h4><p>剪映、抖音都是免費 App，選「無」就不用填任何卡片。（找不到「無」？看下一節。）</p></div></div>
         <div class="step" style="--c:var(--teal);--cbg:var(--teal-bg)"><div class="n">4</div><div><h4>地址、郵遞區號、電話填一個合理的</h4><p>系統只驗「格式對不對」，不查真假。地址可以 Google 一個真實存在的大陸地址（飯店、公家機關都行）填進去；<strong>電話欄隨意填一組 11 碼數字就好——它只是帳單用途，不會拿來收驗證碼</strong>。完成！</p></div></div>
         <div class="step" style="--c:var(--green);--cbg:var(--green-bg)"><div class="n">5</div><div><h4>去 App Store 登入這個中國帳號</h4><p>先登出主帳號、登入剛辦的中國帳號 → 搜尋「<strong>剪映</strong>」「<strong>抖音</strong>」下載。</p></div></div>
         <div class="step" style="--c:var(--green);--cbg:var(--green-bg)"><div class="n">6</div><div><h4>下載完，登回你的主帳號</h4><p>因為主帳號自始至終沒動過，連「改回台灣」都不用。日常照常用。</p></div></div>
       </div>
-      <div class="callout" style="--c:var(--amber)"><div class="ct">⚠️ 時效性提醒</div>「先辦台灣號、再切中國區」是因應 Apple 帳號審查的變通做法。<strong>2024 年底起 Apple 加強了中國區的風控</strong>——主要是把「直接在中國區註冊新帳號」那條路擋掉了（現在得有真實的中國 +86 手機收簡訊），這也正是我們帶你「先辦台灣號、再切區」的原因。過程中偶爾會遇到「目前無法建立帳號」，多半換個網路、隔一下再試就好；未來這個方法也可能被 Apple 調整。<strong>本文查證於 2026 年 7 月，實際以當下畫面為準。</strong></div>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">走路線 A 的人：跳過第 1、5、6 步</div>如果你決定<strong>拿現有帳號去改</strong>（Q1 答「不需要台灣 App」的人），流程更短：<strong>不用辦新帳號</strong>（跳過步驟 1）、<strong>不用切帳號</strong>（跳過步驟 5、6，因為你的主帳號本身就變成中國區了）。你要做的只有<strong>步驟 2～4</strong>。<br><br>但動手前<strong>務必先看下一節</strong>：現有帳號多半要先清餘額和訂閱，「無」才會出現。如果你的帳號是剛辦的、什麼都沒有，那就直接做，不會卡。</div>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">⚠️ 為什麼要繞這一圈？順便講清楚時效</div>
+        <strong>因為「一開始就選中國大陸」那條路已經被擋住了</strong>——現在直接用中國區註冊，Apple 會要求真實的 +86 手機收簡訊，台灣人辦不到。<strong>先辦台灣號、再切區</strong>之所以還通，是因為 Apple 對「已經存在的帳號改地區」走的是另一套審核。這也是為什麼上一節說「用台灣門號就能辦」——你用到的自始至終是 <strong>+886</strong>，不是中國門號。
+        <br><br><strong>這是變通做法，不是官方支援的流程</strong>，所以它隨時可能失效：過程中偶爾會跳「目前無法建立帳號」（多半換個網路、隔一陣再試就好），也有人卡在付款方式那一步（見下一節）。<strong>本文查證於 2026 年 8 月；Apple 這塊政策變動頻繁，實際以你當下看到的畫面為準。</strong></div>
     </section>
 
     <section id="payment">
@@ -157,12 +223,20 @@
       <h2>04 · 付款方式選不到「無」？先把帳號清乾淨</h2>
       <p>這是實際操作最常卡的一步。「無 / None」不出現，<strong>幾乎都是因為帳號還沒清乾淨</strong>。Apple 官方規定：改地區前必須先處理這些——</p>
       <ul class="styled">
-        <li><b>把帳號餘額花到 0</b>（有儲值金／禮品卡餘額就用掉）。</li>
-        <li><b>取消所有進行中的訂閱</b>（iCloud+、Apple Music、Apple TV+、Apple Arcade 等）。</li>
-        <li><b>退出「家人共享」群組</b>（在群組裡可能無法改地區）。</li>
+        <li><b>把帳號餘額花到 0</b>（儲值金／禮品卡餘額用掉；<a class="inline" href="#balance">餘額在哪裡看見下方</a>）。</li>
+        <li><b>取消會擋住改地區的訂閱，而且要等它到期</b>（iCloud+、Apple Music、Apple TV+、Apple Arcade 等）。官方要求不只「取消」，還要<b>等訂閱期限結束</b>——所以可能得等上一個月。</li>
+        <li><b>等其他項目結束</b>：會員資格、預訂項目、租借的電影、整季套票，以及還在處理中的退款。</li>
+        <li><b>「家人共享」</b>：官方寫的是「如果你是家人共享群組中的一員，<b>可能</b>無法更改國家或地區」——真的卡住才需要退出群組。</li>
       </ul>
+      <div class="callout" id="balance" style="--c:var(--teal)"><div class="ct">餘額到底在哪裡看？</div>
+        在 iPad 上打開 <strong>App Store</strong> → 點<strong>螢幕頂端你的照片或姓名縮寫</strong>（可能會要你登入）→ 有餘額的話，畫面上就會顯示金額。
+        <strong>沒看到金額，就代表你沒有餘額</strong>——不是你漏看了，這是官方的判斷方式。Mac 上則是打開 App Store，餘額會顯示在側邊欄你的姓名下方。
+        <br><br>這筆錢通常來自 <strong>Apple 禮品卡儲值</strong>或<strong>退款退回的金額</strong>。金額很小（例如剩 3 元）也一樣會擋住改地區，這時只能拿去買個便宜 App 花掉。</div>
       <div class="callout" style="--c:var(--green)"><div class="ct">這正是路線 B 更省事的原因</div>全新帳號<strong>沒有餘額、沒有訂閱、沒有家人共享</strong>，上面這些麻煩全部跳過，「無」自然就出現了。這就是我們不建議你亂改主帳號的原因。</div>
       <div class="callout" style="--c:var(--teal)"><div class="ct">看到「帳戶不在此店面」怎麼辦？</div>出現「帳戶不在此店面／此帳戶目前無法在此商店使用」之類的錯誤，多半就是<strong>餘額或訂閱沒清乾淨</strong>。先照上面清一遍再試。</div>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">清乾淨了還是沒有「無」？那可能真的不是你的問題</div>
+        2026 年有不少實測回報：即使帳號全新、什麼都沒有，改到中國大陸時<strong>「無 / None」還是可能不出現</strong>，系統直接要求綁支付寶、微信支付或中國銀聯卡。這是 Apple 對中國區審核收緊造成的，<strong>跟你有沒有清乾淨無關，目前也沒有穩定的解法</strong>。
+        <br><br>可以換個網路、隔一陣子再試；真的過不了，那就代表這條路現在對你不通。<strong>這時請回到第 00 節重新想一次</strong>——你要的東西，台灣區的剪映或 CapCut 是不是其實就夠用了？</div>
     </section>
 
     <section id="apps">
@@ -190,15 +264,16 @@
         <li><b>別被「定位工具」導購</b>——下載免費 App 不用買任何 VPN／改定位軟體（見第 01 節）。</li>
         <li><b>別一天到晚切來切去</b>——頻繁切換地區可能觸發帳號風控或要求額外驗證，切換之間隔久一點。</li>
         <li><b>更新 App 要用「當初下載它的帳號」</b>——用中國帳號下載的剪映／抖音，之後更新也要登回那個中國帳號。</li>
-        <li><b>一個帳號同時只能一個地區</b>——所以才推薦「另辦一個」，不要動你的主帳號。</li>
+        <li><b>一個帳號同時只能一個地區</b>——這就是為什麼要嘛「把現有帳號改過去」（路線 A），要嘛「另養一個帳號」（路線 B），沒有第三種可能。</li>
+        <li><b>換帳號購買，可能被「90 天」卡住</b>——Apple 官方規則：用某個帳號在這台裝置上購買（含免費取得），裝置就會與該帳號<b>建立關聯</b>；之後想把這台裝置換綁到另一個帳號，<b>可能要等最多 90 天</b>。這是<b>路線 B 才有的風險</b>（路線 A 只有一個帳號，不會遇到）。真的跳出「此裝置已與其他 Apple 帳號相關聯」，就只能等，沒有已知解法。</li>
       </ul>
-      <div class="bigquote"><div class="qm">"</div><p>只想剪片 → 用 CapCut，免切區。<br>非要大陸限定 → 走路線 B，另辦一個帳號最省心。</p><small>不確定自己屬於哪種、或操作卡住了，隨時找果果國際客服。買機教你用，終身售後諮詢。</small><div class="rule"></div></div>
+      <div class="bigquote"><div class="qm">"</div><p>只想剪片 → 用 CapCut，免切區。<br>非要大陸限定 → 這台還要下台灣 App 就走 B，不用就走 A。</p><small>不確定自己屬於哪種、或操作卡住了，隨時找果果國際客服。買機教你用，終身售後諮詢。</small><div class="rule"></div></div>
     </section>
 
     <section id="sources">
       <div class="sec-label" style="--c:var(--muted)">sources</div>
       <h2>來源、延伸影片與更新日期</h2>
-      <p class="updated">本文查證與撰寫：<b>2026 年 7 月</b>。Apple 帳號政策、抖音註冊與實名規則變動很快，若你看到的畫面與本文不同，請以當下實際畫面與下方官方來源為準，或直接問果果客服。</p>
+      <p class="updated">本文查證與撰寫：<b>2026 年 8 月</b>。Apple 帳號政策、抖音註冊與實名規則變動很快，若你看到的畫面與本文不同，請以當下實際畫面與下方官方來源為準，或直接問果果客服。</p>
       <p class="sources">主要查證來源：</p>
       <ul class="sources">
         <li>Apple 官方〈更改 Apple 帳號的國家或地區〉<a class="inline" href="https://support.apple.com/en-us/118283">support.apple.com/en-us/118283</a>（改區前置條件與步驟）</li>
