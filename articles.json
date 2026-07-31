@@ -104,14 +104,14 @@
   {
     "slug": "ipad-jianying-pencil-guide",
     "title": "剪片要不要買 Apple Pencil？",
-    "seoTitle": "iPad 剪映／CapCut 搭Apple Pencil，能提升剪片效率嗎？果果國際",
-    "summary": "用剪映／CapCut 剪片，搭 Apple Pencil 會更快嗎？誠實評估、附四款筆對照，幫你買對、不買貴。",
+    "seoTitle": "iPad 剪片要不要買 Apple Pencil？剪輯與手繪動畫差很多 · 果果國際",
+    "summary": "先分清楚你要「剪片」還是「做動畫」——這兩條路對筆的需求剛好相反。剪片手指就很順、副廠就夠；做動畫筆是核心工具，Pencil Pro 的側轉還能一邊移動一邊旋轉。",
     "category": "選購",
     "icon": "✏️",
     "url": "articles/ipad-jianying-pencil-guide/",
     "ogImage": "assets/og/ipad-apple-pencil-capcut-compare.png",
     "date": "2026-07-17",
-    "updated": "2026-07-17",
+    "updated": "2026-08-01",
     "tags": [
       "選購",
       "配件推薦",
@@ -141,6 +141,14 @@
       {
         "q": "想大幅提升剪片效率，最該投資什麼？",
         "a": "外接鍵盤加上快捷鍵，效益往往比買一支筆更大。對認真剪片的人來說，鍵盤能省下的時間比筆多得多。如果想更專業，Final Cut Pro for iPad 對 Apple Pencil 的整合和鍵盤快捷鍵，都比剪映和 CapCut 完整。"
+      },
+      {
+        "q": "Apple Pencil Pro 的「側轉」是什麼？做動畫真的用得到嗎？",
+        "a": "側轉是 Apple Pencil Pro 靠筆桿裡的陀螺儀偵測旋轉角度的功能，Apple 官方的說明是「轉動 Apple Pencil Pro，就可精準控制各式硬筆和筆刷工具」。在動畫 App 裡它的價值更明顯：Procreate Dreams 官方說明指出，使用 Performing 功能時可以一邊把物件拖過畫面、一邊轉動筆讓它跟著旋轉。想讓一片葉子一邊往下飄一邊打轉，以前要分成移動和旋轉兩道工，側轉讓你一隻手就同時完成。副廠筆沒有陀螺儀，做不到這件事。"
+      },
+      {
+        "q": "剪片用副廠 Apple Pencil 夠嗎？",
+        "a": "看你要做什麼。如果是用剪映或 CapCut 把拍好的素材剪成片，副廠磁吸觸控筆通常就夠用，價格常只要原廠的三分之一——剪片主要吃細筆尖、低延遲、防手掌誤觸，副廠現在大多做得到。但如果你要做的是手繪動畫，副廠就不行了：壓感、傾斜是基本盤，Apple Pencil Pro 的側轉更是副廠沒有的硬體功能。先確認自己走哪一條路，再決定買哪一支。"
       }
     ]
   },

@@ -34,13 +34,15 @@
   - 本篇回答：台灣人可以完成抖音的實名認證嗎？
   - 本篇回答：用中國帳號下載的 App，之後要怎麼更新？
   - 本篇回答：一定要另辦帳號嗎？直接把我現在的帳號改成中國區不行嗎？
-- [剪片要不要買 Apple Pencil？](https://www.guoguo.tw/guide/articles/ipad-jianying-pencil-guide/)：用剪映／CapCut 剪片，搭 Apple Pencil 會更快嗎？誠實評估、附四款筆對照，幫你買對、不買貴。（選購、配件推薦、Apple Pencil／2026-07-17）
+- [剪片要不要買 Apple Pencil？](https://www.guoguo.tw/guide/articles/ipad-jianying-pencil-guide/)：先分清楚你要「剪片」還是「做動畫」——這兩條路對筆的需求剛好相反。剪片手指就很順、副廠就夠；做動畫筆是核心工具，Pencil Pro 的側轉還能一邊移動一邊旋轉。（選購、配件推薦、Apple Pencil／2026-07-17，更新 2026-08-01）
   - 本篇回答：用 iPad 剪片，需要買 Apple Pencil 嗎？
   - 本篇回答：Apple Pencil 可以縮放剪輯時間軸嗎？
   - 本篇回答：剪片用副廠觸控筆夠嗎？還是一定要買原廠？
   - 本篇回答：剪片會用到 Apple Pencil 的壓力感應嗎？
   - 本篇回答：什麼情況下買 Apple Pencil 對剪片才真的划算？
   - 本篇回答：想大幅提升剪片效率，最該投資什麼？
+  - 本篇回答：Apple Pencil Pro 的「側轉」是什麼？做動畫真的用得到嗎？
+  - 本篇回答：剪片用副廠 Apple Pencil 夠嗎？
 - [iPad 越獄，一次搞懂](https://www.guoguo.tw/guide/articles/ipad-jailbreak-guide/)：越獄是什麼、現在還做得到嗎、值不值得？以及——為什麼網路上八成的「一鍵越獄」是詐騙。看完不踩雷。（觀念、防詐騙、越獄／2026-07-17，更新 2026-08-01）
   - 本篇回答：現在的 iPad 還能越獄嗎？
   - 本篇回答：想下載大陸版抖音、剪映需要越獄嗎？
