@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Procreate 沒有粗細變化？三層壓力設定與完整排除順序 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式 ── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 對照表：寬表格自己橫向捲，不撐破版面 */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 560px; }
+  td.y { color: var(--green-deep); font-weight: 700; text-align: center; }
+  td.n { color: var(--red); font-weight: 700; text-align: center; }
+  td.mid { color: var(--amber); text-align: center; }
+
+  /* 證據等級標籤 */
+  .lv-tag { display: inline-block; font-family: var(--mono); font-size: .58rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; vertical-align: middle; }
+  .lv-tag.ok { color: var(--green-deep); background: var(--green-bg); border: 1px solid #c3e4cf; }
+  .lv-tag.infer { color: var(--amber); background: var(--amber-bg); border: 1px solid #e6d3a6; }
+  .lv-tag.todo { color: var(--red); background: var(--red-bg); border: 1px solid #eec4b8; }
+
+  /* ── 原理示意圖（SVG）：由內部教材移植，改為亮色主題 ── */
+  figure.fig svg { width: 100%; height: auto; display: block; }
+  /* 圖裡沿用教材原本的 token 名稱，在這裡對應到站上的亮色配色 */
+  figure.fig { --head: var(--ink); --soft: var(--muted); --cyan: var(--teal); }
+  .fig-wide { overflow-x: auto; }
+  .fig-wide svg { min-width: 540px; }
+  svg .ax { stroke: var(--line); stroke-width: 1.2; }
+  svg .gl { stroke: var(--grid); stroke-width: 1; }
+  svg .cv { fill: none; }
+  svg .lbl   { font-family: var(--mono); font-size: 11px;  fill: var(--muted); }
+  svg .lbl-s { font-family: var(--mono); font-size: 9.5px; fill: var(--muted); }
+  svg .lbl-h { font-family: var(--mono); font-size: 11px;  fill: var(--ink); }
+  .svgcap { font-size: .86rem; color: var(--body); text-align: center; margin-top: 14px; }
+
+  /* 三格並排的小圖（壓力接到哪個屬性） */
+  .figs { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; margin: 20px 0; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .figs .pane { background: var(--panel); padding: 14px 12px 12px; }
+  .figs .pane .pt { font-family: var(--mono); font-size: .7rem; color: var(--c); margin-bottom: 4px; }
+  .figs .pane .pt::before { content: '● '; }
+  .figs .pane .pd { font-size: .82rem; color: var(--muted); margin-top: 8px; line-height: 1.6; }
+  .figs .pane svg { width: 100%; max-width: 320px; height: auto; display: block; margin: 0 auto; }
+  .figs { --head: var(--ink); --soft: var(--muted); }
+
+  /* 三層堆疊 */
+  .layers { display: grid; gap: 8px; margin: 22px 0; }
+  .lay { display: flex; gap: 13px; align-items: flex-start; background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 10px; padding: 13px 16px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .lay .ln { font-family: var(--mono); min-width: 30px; height: 26px; border-radius: 7px; background: var(--cbg); color: var(--c); font-weight: 800; font-size: .72rem; display: grid; place-items: center; flex: none; margin-top: 2px; }
+  .lay .lt { flex: 1; }
+  .lay .lt b { display: block; color: var(--ink); font-size: .94rem; }
+  .lay .lt small { display: block; color: var(--muted); font-size: .84rem; line-height: 1.55; margin-top: 3px; }
+  .lay .lw { font-family: var(--mono); font-size: .62rem; color: var(--muted); background: var(--panel2); padding: 4px 9px; border-radius: 999px; white-space: nowrap; align-self: center; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .figs { grid-template-columns: 1fr; }
+    .lay { flex-wrap: wrap; }
+    .lay .lw { margin-left: 43px; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>Procreate 沒有粗細變化</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#triage" class="active">00 · 30 秒分流</a>
+  <a href="#layers">01 · 壓力有三層</a>
+  <a href="#symptoms">02 · 三種症狀</a>
+  <div class="grp">最重要的翻案</div>
+  <a href="#reset">03 · 重置修好了什麼</a>
+  <div class="grp">動手</div>
+  <a href="#order">04 · 排除順序</a>
+  <a href="#stop">05 · 什麼時候停手</a>
+  <a href="#honest">06 · 查證等級</a>
+  <a href="#watch">延伸觀看</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>感壓求救單九成出在這個 App</span><span>官方手冊逐字對照</span><span>先別重置整台 iPad</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">Procreate / 疑難排解</div>
+    <h1>Procreate 沒有粗細變化？<br>先問一句「深淺有變嗎」</h1>
+    <p class="subtitle">同一支筆在備忘錄裡好好的，一進 Procreate 就畫不出粗細——這通常不是筆壞了，是三層壓力設定裡有一層被拉平了。</p>
+
+    <p class="lede">Procreate 畫不出粗細變化的時候，先看一件事就好：<strong>線的深淺有沒有跟著變？</strong>深淺會變，代表壓力訊號是通的，只是被接到了「不透明度」而不是「粗細」，改一個筆刷設定就會回來。深淺也完全不變，才需要往筆、配對、硬體去查。</p>
+
+    <p class="lede">會這樣分，是因為 Procreate 的壓力設定有三層，而且是相乘的關係——全域一層、每支筆刷一層、每個屬性再一層。任何一層被拉平，最後畫出來就是平的，另外兩層調得再漂亮也救不回來。</p>
+
+    <p class="lede">這篇按「花你多少時間」由低到高排出完整順序，最後告訴你什麼時候該停手。先講一個結論：不要做 iPadOS 的<strong>「重置所有設定」</strong>——它碰不到 Procreate 的任何一層壓力設定，第 03 節會解釋為什麼還是有人做完覺得好了。</p>
+
+    <p class="updated">本文查證：<b>2026 年 7 月 31 日</b>，Procreate 官方手冊與支援文件的內容會隨改版調整，選單位置以你機器上看到的為準。<a class="inline" href="#sources">來源列在文末</a>，<a class="inline" href="#honest">哪些是推論也標出來了</a>。</p>
+
+    <section id="triage">
+      <div class="sec-label" style="--c:var(--navy)">triage</div>
+      <h2>00 · 先做 30 秒分流</h2>
+      <p>先別急著調設定。拿起筆，在畫布上輕輕畫一筆、再用力畫一筆，然後只回答兩個問題：粗細有沒有差？<strong>深淺有沒有差？</strong></p>
+
+      <div class="figs">
+        <div class="pane" style="--c:var(--green)">
+          <div class="pt">壓力 → Size</div>
+          <svg viewBox="0 0 200 250" role="img" aria-label="壓力接到 Size，筆觸粗細會變化">
+            <rect x="10" y="70" width="46" height="30" rx="4" fill="var(--panel2)" stroke="var(--green)"/>
+            <text class="lbl-s" x="20" y="89" fill="var(--green)">壓力</text>
+            <path d="M56,85 L104,52" stroke="var(--green)" stroke-width="2"/>
+            <path d="M104,52 l-8,1 l3,5 z" fill="var(--green)"/>
+            <rect x="104" y="38" width="82" height="28" rx="4" fill="var(--green-bg)" stroke="var(--green)"/>
+            <text class="lbl-s" x="116" y="56" fill="var(--green)">Size 粗細</text>
+            <rect x="104" y="76" width="82" height="28" rx="4" fill="var(--panel2)" stroke="var(--line)"/>
+            <text class="lbl-s" x="116" y="94">Opacity</text>
+            <rect x="104" y="114" width="82" height="28" rx="4" fill="var(--panel2)" stroke="var(--line)"/>
+            <text class="lbl-s" x="116" y="132">Flow</text>
+            <text class="lbl-h" x="52" y="208">畫出來長這樣</text>
+            <path d="M20,229 L180,218 L180,242 L20,231 Z" fill="var(--green)" opacity=".85"/>
+          </svg>
+          <div class="pd">正常。粗細跟著手勁走，這是大多數人期待的行為。</div>
+        </div>
+        <div class="pane" style="--c:var(--purple)">
+          <div class="pt">壓力 → Opacity</div>
+          <svg viewBox="0 0 200 250" role="img" aria-label="壓力接到 Opacity，粗細不變但深淺會變化">
+            <rect x="10" y="70" width="46" height="30" rx="4" fill="var(--panel2)" stroke="var(--purple)"/>
+            <text class="lbl-s" x="20" y="89" fill="var(--purple)">壓力</text>
+            <path d="M56,85 L104,90" stroke="var(--purple)" stroke-width="2"/>
+            <path d="M104,90 l-8,-3 l-1,6 z" fill="var(--purple)"/>
+            <rect x="104" y="38" width="82" height="28" rx="4" fill="var(--panel2)" stroke="var(--line)"/>
+            <text class="lbl-s" x="116" y="56">Size 粗細</text>
+            <rect x="104" y="76" width="82" height="28" rx="4" fill="var(--purple-bg)" stroke="var(--purple)"/>
+            <text class="lbl-s" x="116" y="94" fill="var(--purple)">Opacity</text>
+            <rect x="104" y="114" width="82" height="28" rx="4" fill="var(--panel2)" stroke="var(--line)"/>
+            <text class="lbl-s" x="116" y="132">Flow</text>
+            <text class="lbl-h" x="52" y="208">畫出來長這樣</text>
+            <rect x="20" y="222" width="20" height="16" fill="var(--purple)" opacity=".14"/>
+            <rect x="40" y="222" width="20" height="16" fill="var(--purple)" opacity=".26"/>
+            <rect x="60" y="222" width="20" height="16" fill="var(--purple)" opacity=".38"/>
+            <rect x="80" y="222" width="20" height="16" fill="var(--purple)" opacity=".5"/>
+            <rect x="100" y="222" width="20" height="16" fill="var(--purple)" opacity=".62"/>
+            <rect x="120" y="222" width="20" height="16" fill="var(--purple)" opacity=".74"/>
+            <rect x="140" y="222" width="20" height="16" fill="var(--purple)" opacity=".86"/>
+            <rect x="160" y="222" width="20" height="16" fill="var(--purple)" opacity="1"/>
+          </svg>
+          <div class="pd">粗細完全不變，變的是深淺。很多人會說「沒有感壓」，但感壓其實好得很。</div>
+        </div>
+        <div class="pane" style="--c:var(--red)">
+          <div class="pt">壓力 → 沒接</div>
+          <svg viewBox="0 0 200 250" role="img" aria-label="壓力沒有接到任何屬性，筆觸完全沒有變化">
+            <rect x="10" y="70" width="46" height="30" rx="4" fill="var(--panel2)" stroke="var(--red)"/>
+            <text class="lbl-s" x="20" y="89" fill="var(--red)">壓力</text>
+            <path d="M56,85 L84,85" stroke="var(--red)" stroke-width="2" stroke-dasharray="4 3"/>
+            <text class="lbl-s" x="86" y="89" fill="var(--red)">✗</text>
+            <rect x="104" y="38" width="82" height="28" rx="4" fill="var(--panel2)" stroke="var(--line)"/>
+            <text class="lbl-s" x="116" y="56">Size 粗細</text>
+            <rect x="104" y="76" width="82" height="28" rx="4" fill="var(--panel2)" stroke="var(--line)"/>
+            <text class="lbl-s" x="116" y="94">Opacity</text>
+            <rect x="104" y="114" width="82" height="28" rx="4" fill="var(--panel2)" stroke="var(--line)"/>
+            <text class="lbl-s" x="116" y="132">Flow</text>
+            <text class="lbl-h" x="52" y="208">畫出來長這樣</text>
+            <rect x="20" y="222" width="160" height="16" rx="3" fill="var(--red)" opacity=".85"/>
+          </svg>
+          <div class="pd">粗細、深淺全都不變。這才是真正的「這支筆刷沒吃壓力」。</div>
+        </div>
+      </div>
+      <p class="svgcap">同樣一句「沒有感壓」，中間那格其實訊號好好的——<b>它只是被接到了深淺，而不是粗細</b>。</p>
+
+      <p>對照完之後，照下面三條路走就好。三條路的成本差很多，走錯會白花半小時。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--purple)">
+          <div class="ct">A · 深淺會變，粗細不變</div>
+          壓力鏈是通的，問題只在「壓力接到了哪個屬性」。跳到<a class="inline" href="#order">第 04 節</a>的第 7 步，檢查那支筆刷的壓力設定就好，不用碰筆也不用重開機。
+        </div>
+        <div class="callout" style="--c:var(--amber)">
+          <div class="ct">B · 粗細、深淺都完全不變</div>
+          可能是三層裡有一層被拉平，也可能是筆或連線出事。從<a class="inline" href="#order">第 04 節</a>第 1 步的「兩支筆刷試紙法」開始，30 秒就能分開是筆還是 App。
+        </div>
+        <div class="callout" style="--c:var(--red)">
+          <div class="ct">C · 完全畫不出來，一筆都沒留下</div>
+          先別當成壓感問題。最常見的原因是 Apple Pencil 被指派成了「擦除」，詳見<a class="inline" href="#symptoms">第 02 節</a>。
+        </div>
+        <div class="callout" style="--c:var(--teal)">
+          <div class="ct">D · 換去備忘錄也一樣不對</div>
+          那就不是 Procreate 的事，是筆或 iPad 這一端的問題，這篇幫不上忙。先從筆尖與重新配對查起。
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)">
+        <div class="ct">為什麼第一句要問「深淺」而不是「感壓」</div>
+        這是我們在客服現場學到的。問顧客「感壓有沒有問題」，得到的答案永遠是「就是有問題啊」——因為那不是一個可觀察的現象。
+        改問「深淺有沒有變」，顧客低頭看一眼就能回答，而這一眼剛好把「訊號通不通」跟「接到哪裡」切開，等於一句話省掉一半的排查。
+      </div>
+    </section>
+
+    <section id="layers">
+      <div class="sec-label" style="--c:var(--purple)">how_it_works</div>
+      <h2>01 · 為什麼偏偏是 Procreate？因為壓力有三層</h2>
+      <p>依我們處理感壓求救單的經驗，大約<strong>九成</strong>發生在 Procreate，其他筆記、繪圖 App 加起來只有一成。這不是因為 Procreate 比較容易壞，而是因為它可以調的東西比別人多太多。</p>
+      <p>別的 App 通常只有一個「壓感開關」，開或關；Procreate 有三層各自獨立、而且會互相相乘的設定。三層都是官方功能，不是 bug。</p>
+
+      <div class="layers">
+        <div class="lay" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="ln">L1</div>
+          <div class="lt"><b>App Pressure Sensitivity · 全域壓力曲線</b><small>位置：Actions（扳手）→ Prefs → Pressure &amp; Smoothing。整個 App 共用一條，官方預設是一條直斜線，最多可以點出六個控制點。</small></div>
+          <div class="lw">全 App</div>
+        </div>
+        <div class="lay" style="--c:var(--purple);--cbg:var(--purple-bg)">
+          <div class="ln">L2</div>
+          <div class="lt"><b>Pressure Graph · 這支筆刷的壓力圖</b><small>位置：Brush Studio → Apple Pencil。官方寫明它調的是「這一支筆刷內所有設定」的整體壓力，最多可以加四個節點。</small></div>
+          <div class="lw">單支筆刷</div>
+        </div>
+        <div class="lay" style="--c:var(--teal);--cbg:var(--teal-bg)">
+          <div class="ln">L3</div>
+          <div class="lt"><b>Pressure Curve · 單一設定項的曲線</b><small>位置：Brush Studio → 點 Size／Opacity 等項目的數值欄 → Pressure 按鈕。每個屬性各有一條，官方寫明它「會遵從整體的 pressure graph」。</small></div>
+          <div class="lw">單一屬性</div>
+        </div>
+      </div>
+
+      <h3>「相乘」是什麼意思？想成三個串在一起的音量旋鈕</h3>
+      <p>把這三層想成三個串在同一條線路上的音量旋鈕。你把第一個轉到最大、第三個也轉到最大，但只要中間那個被轉到 0，喇叭就是沒聲音——前後兩個轉得再滿都沒用。</p>
+      <p>壓力也是一樣。下面這張圖把同一個人的「輕」與「重」兩種手勁，各走一次三層生產線：上排是三層都正常，下排只有 L2 被拉平。</p>
+
+      <figure class="fig fig-wide">
+        <svg viewBox="0 0 700 300" role="img" aria-label="三層串聯示意圖：正常時輕重兩種手勁輸出不同粗細，L2 被拉平時輸出變成一樣粗">
+          <text class="lbl-h" x="14" y="16">你的手勁</text>
+          <text class="lbl-h" x="150" y="16">L1 全域曲線</text>
+          <text class="lbl-h" x="290" y="16">L2 筆刷壓力圖</text>
+          <text class="lbl-h" x="430" y="16">L3 Size 滑桿</text>
+          <text class="lbl-h" x="580" y="16">畫布上的筆觸</text>
+          <text class="lbl" x="14" y="52" fill="var(--green)">正常</text>
+          <text class="lbl-s" x="14" y="76">輕 ‥‥‥▸</text>
+          <text class="lbl-s" x="14" y="112">重 ━━━▸</text>
+          <rect x="150" y="44" width="86" height="86" rx="5" fill="var(--panel2)" stroke="var(--line)"/>
+          <line class="ax" x1="160" y1="122" x2="228" y2="122"/><line class="ax" x1="160" y1="52" x2="160" y2="122"/>
+          <path class="cv" stroke="var(--green)" stroke-width="2" d="M160,122 L228,54"/>
+          <rect x="290" y="44" width="86" height="86" rx="5" fill="var(--panel2)" stroke="var(--line)"/>
+          <line class="ax" x1="300" y1="122" x2="368" y2="122"/><line class="ax" x1="300" y1="52" x2="300" y2="122"/>
+          <path class="cv" stroke="var(--green)" stroke-width="2" d="M300,122 L368,54"/>
+          <rect x="430" y="44" width="86" height="86" rx="5" fill="var(--panel2)" stroke="var(--line)"/>
+          <rect x="442" y="82" width="62" height="6" rx="3" fill="var(--bg)" stroke="var(--line)"/>
+          <rect x="442" y="82" width="62" height="6" rx="3" fill="var(--green)"/>
+          <circle cx="504" cy="85" r="6" fill="var(--green)"/>
+          <text class="lbl-s" x="452" y="108" fill="var(--green)">100%</text>
+          <path d="M100,72 L146,72" stroke="var(--soft)" stroke-width="1.2" stroke-dasharray="3 3"/>
+          <path d="M100,108 L146,108" stroke="var(--head)" stroke-width="2"/>
+          <path d="M240,87 L286,87" stroke="var(--soft)" stroke-width="1.2"/><path d="M380,87 L426,87" stroke="var(--soft)" stroke-width="1.2"/><path d="M520,87 L562,87" stroke="var(--soft)" stroke-width="1.2"/>
+          <rect x="570" y="68" width="112" height="4" rx="2" fill="var(--green)" opacity=".9"/>
+          <rect x="570" y="98" width="112" height="20" rx="3" fill="var(--green)" opacity=".9"/>
+          <text class="lbl-s" x="570" y="136" fill="var(--green)">兩種手勁 → 兩種粗細 ✓</text>
+          <line class="gl" x1="14" y1="166" x2="686" y2="166"/>
+          <text class="lbl" x="14" y="200" fill="var(--red)">L2 壞</text>
+          <text class="lbl-s" x="14" y="224">輕 ‥‥‥▸</text>
+          <text class="lbl-s" x="14" y="260">重 ━━━▸</text>
+          <rect x="150" y="192" width="86" height="86" rx="5" fill="var(--panel2)" stroke="var(--line)"/>
+          <line class="ax" x1="160" y1="270" x2="228" y2="270"/><line class="ax" x1="160" y1="200" x2="160" y2="270"/>
+          <path class="cv" stroke="var(--green)" stroke-width="2" d="M160,270 L228,202"/>
+          <rect x="290" y="192" width="86" height="86" rx="5" fill="var(--panel2)" stroke="var(--red)"/>
+          <line class="ax" x1="300" y1="270" x2="368" y2="270"/><line class="ax" x1="300" y1="200" x2="300" y2="270"/>
+          <path class="cv" stroke="var(--red)" stroke-width="2" d="M300,240 L368,240"/>
+          <rect x="430" y="192" width="86" height="86" rx="5" fill="var(--panel2)" stroke="var(--line)"/>
+          <rect x="442" y="230" width="62" height="6" rx="3" fill="var(--bg)" stroke="var(--line)"/>
+          <rect x="442" y="230" width="62" height="6" rx="3" fill="var(--soft)"/>
+          <circle cx="504" cy="233" r="6" fill="var(--soft)"/>
+          <text class="lbl-s" x="452" y="256" fill="var(--soft)">100%</text>
+          <path d="M100,220 L146,220" stroke="var(--soft)" stroke-width="1.2" stroke-dasharray="3 3"/>
+          <path d="M100,256 L146,256" stroke="var(--head)" stroke-width="2"/>
+          <path d="M240,235 L286,235" stroke="var(--soft)" stroke-width="1.2"/><path d="M380,235 L426,235" stroke="var(--red)" stroke-width="1.2"/><path d="M520,235 L562,235" stroke="var(--red)" stroke-width="1.2"/>
+          <rect x="570" y="218" width="112" height="9" rx="2" fill="var(--red)" opacity=".9"/>
+          <rect x="570" y="243" width="112" height="9" rx="2" fill="var(--red)" opacity=".9"/>
+          <text class="lbl-s" x="570" y="272" fill="var(--red)">兩種手勁 → 一樣粗 ✗</text>
+        </svg>
+        <figcaption>下排的 L1 和 L3 完全正常，但 <b>L2 一被拉平，輕和重就再也分不出來了</b>。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">這張圖解掉的另一個困惑：為什麼「有些筆刷有感壓、有些沒有」</div>
+        因為 L2 和 L3 是<strong>存在筆刷裡面</strong>的。官方手冊寫明 Pressure Graph 調的是「這一支筆刷內所有設定」——換一支筆刷，就換了一整組壓力設定。
+        所以同一台 iPad、同一支筆，A 筆刷正常、B 筆刷沒反應，這完全可能是設計如此，不是故障。
+      </div>
+
+      <h3>順便記一下曲線的兩個軸，之後看設定不會霧煞煞</h3>
+      <p>三層都是同一種曲線圖，軸的意思也一樣。官方手冊講得很清楚，照抄如下：</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>軸</th><th>代表什麼</th><th>往這邊拉會怎樣</th></tr>
+          <tr><td>橫軸（左右）</td><td>你施加的壓力</td><td>往左＝更輕的力就有反應；往右＝要壓更重才有反應</td></tr>
+          <tr><td>縱軸（上下）</td><td>輸出的值</td><td>最上＝100% 的粗度或不透明度；往下＝更細或更透明</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">曲線形狀 → 筆觸長相，是幾何推論不是官方說法</div>
+        官方只定義了兩個軸的意思。「曲線被壓平在下面，所以線會細到看不見」這種對應關係，是我們從軸的定義推出來的幾何結果，方向可靠，但官方沒有逐句這樣寫。
+        你可以放心拿它當判斷依據，只是別把它當成 Procreate 的官方保證。
+      </div>
+    </section>
+
+    <section id="symptoms">
+      <div class="sec-label" style="--c:var(--amber)">symptoms</div>
+      <h2>02 · 三種症狀，各自的兇手</h2>
+      <p>顧客最常講的三句話是「沒有粗細變化」「有些筆刷有有些沒有」「根本寫不出來」。它們聽起來很像，兇手卻完全不同。先用這張圖對號入座：</p>
+
+      <figure class="fig fig-wide">
+        <svg viewBox="0 0 700 234" role="img" aria-label="四種筆觸外觀對照：正常有粗細變化、從頭到尾一樣粗、細到看不見、完全空白">
+          <text class="lbl-h" x="10" y="18">正常</text>
+          <path d="M96,30 L620,22 L620,50 L96,38 Z" fill="var(--green)" opacity=".85"/>
+          <text class="lbl-s" x="636" y="42" fill="var(--green)">✓</text>
+          <text class="lbl-s" x="96" y="62">起筆細 → 收筆粗，有筆鋒</text>
+          <line class="gl" x1="10" y1="76" x2="690" y2="76"/>
+          <text class="lbl-h" x="10" y="102">症狀 A</text>
+          <rect x="96" y="88" width="524" height="22" rx="3" fill="var(--amber)" opacity=".85"/>
+          <text class="lbl-s" x="636" y="104" fill="var(--amber)">✗</text>
+          <text class="lbl-s" x="96" y="126">從頭到尾一樣粗 → 曲線被拉平在上面</text>
+          <line class="gl" x1="10" y1="138" x2="690" y2="138"/>
+          <text class="lbl-h" x="10" y="160">症狀 C-1</text>
+          <rect x="96" y="152" width="524" height="3" rx="1.5" fill="var(--red)" opacity=".85"/>
+          <text class="lbl-s" x="636" y="160" fill="var(--red)">✗</text>
+          <text class="lbl-s" x="96" y="176">細到幾乎看不見 → 顧客會說「寫不出來」，但其實有畫到</text>
+          <text class="lbl-h" x="10" y="204">症狀 C-2</text>
+          <rect x="96" y="192" width="524" height="16" rx="3" fill="none" stroke="var(--red)" stroke-dasharray="5 4" opacity=".7"/>
+          <text class="lbl-s" x="636" y="205" fill="var(--red)">✗</text>
+          <text class="lbl-s" x="96" y="226" fill="var(--soft)">完全空白，一筆都沒留下 → 多半被指派成「擦除」，或圖層／選取的問題</text>
+        </svg>
+        <figcaption>C-1 和 C-2 顧客都會說「寫不出來」，但<b>一個是有畫到、一個是真的沒有</b>——先分清楚，才不會白查。</figcaption>
+      </figure>
+
+      <h3>症狀 C-2 的頭號嫌犯：Apple Pencil 被指派成了「擦除」</h3>
+      <p>這一條最反直覺，也最常被誤判成硬體壞掉。Procreate 的手勢設定裡有三個類別可以綁 Apple Pencil：塗抹（Smudge）、擦除（Erase）、繪圖輔助（Assisted Drawing）。</p>
+      <p>官方手冊對「擦除」的措辭是：只要這個選項是開的，用那種方式畫出來的筆畫<strong>永遠都會是擦除</strong>，無論你選的是哪個工具。也就是說，你以為在畫線，其實一直在擦一張空白圖層。</p>
+
+      <div class="callout" style="--c:var(--red)">
+        <div class="ct">官方另外還有一句更狠的</div>
+        手冊在同一段標了提醒：把 Apple Pencil 的快捷指派給這三個類別的任何一個，都會<strong>覆蓋掉 Apple Pencil 原本被指派的工具</strong>。
+        所以這不是「有時候會影響」，是「一定蓋過去」。驗證方法在<a class="inline" href="#order">第 04 節</a>第 3 步，30 秒可以做完。
+      </div>
+
+      <h3>三種症狀的完整對照</h3>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你看到的</th><th>最可能的兇手</th><th>先做哪一步</th></tr>
+          <tr><td>有畫出來，但粗細不變、深淺會變</td><td>L3 把壓力接到了 Opacity，沒接 Size</td><td class="good">第 04 節第 7 步</td></tr>
+          <tr><td>有畫出來，粗細和深淺都不變</td><td>三層裡有一層被拉平，或筆／連線出事</td><td class="good">第 04 節第 1 步</td></tr>
+          <tr><td>只有某幾支筆刷沒感壓</td><td>L2／L3 存在筆刷裡，換筆刷就換一組設定</td><td class="good">第 04 節第 7 步</td></tr>
+          <tr><td>線細到幾乎看不見（C-1）</td><td>曲線被壓平在下緣，或筆刷 Size 上限太小</td><td class="good">第 04 節第 5 步</td></tr>
+          <tr><td>完全空白，一筆都沒留下（C-2）</td><td>被指派成「擦除」，或圖層被鎖／隱藏、有選取範圍</td><td class="bad">第 04 節第 3 步</td></tr>
+        </table>
+      </div>
+
+      <details>
+        <summary>還有哪些「不是故障」的合法解釋？</summary>
+        <ul class="styled">
+          <li><b>筆刷本身的 Size 上限就很小</b>——壓力有在作用，只是可變動的範圍太窄，看起來像沒變。</li>
+          <li><b>顏色跟背景太接近</b>，或側邊的尺寸／不透明度滑桿被拉到很低。官方排錯清單特別提醒要檢查這兩件事。</li>
+          <li><b>用的是 Apple Pencil（USB-C 版）</b>——它從出廠就沒有壓力感應，那是規格不是故障。</li>
+          <li><b>畫在鎖定或隱藏的圖層上</b>，或畫布上還留著一個你忘記取消的選取範圍。</li>
+        </ul>
+      </details>
+    </section>
+
+    <section id="reset">
+      <div class="sec-label" style="--c:var(--red)">myth_busting</div>
+      <h2>03 · 那些「重置一下就好了」，其實修好了什麼</h2>
+      <p>網路上關於這題最常見的建議是「去設定做重置所有設定」。而且真的有一批人做完就好了——所以這個說法一直流傳。</p>
+      <p>但它的因果關係被搞反了。Apple 官方列出「重置所有設定」會移除的項目時，把「App 和 App 資料」放在<strong>「不會刪除」</strong>那一欄，同一頁還寫了「系統不會刪除任何資料或媒體」。</p>
+
+      <p>而 Procreate 的三層壓力設定，就住在 App 資料裡。所以那個動作從物理上就碰不到它——不是「效果不好」，是「根本沒經過」。</p>
+
+      <figure class="fig fig-wide">
+        <svg viewBox="0 0 700 330" role="img" aria-label="對照圖：強制重啟只碰執行狀態；重置所有設定會清藍牙配對與全機設定，但碰不到 Procreate 設定；Procreate 內的 Reset all 只碰 Procreate 設定">
+          <text class="lbl-h" x="176" y="20">① 記憶體裡的</text><text class="lbl-h" x="176" y="34">執行狀態</text>
+          <text class="lbl-h" x="316" y="20">② 藍牙</text><text class="lbl-h" x="316" y="34">配對</text>
+          <text class="lbl-h" x="446" y="20">③ 全機</text><text class="lbl-h" x="446" y="34">設定</text>
+          <text class="lbl-h" x="576" y="20">④ Procreate</text><text class="lbl-h" x="576" y="34">的設定</text>
+          <text class="lbl-h" x="10" y="72">強制重啟</text>
+          <text class="lbl-s" x="10" y="88" fill="var(--green)">成本極低</text>
+          <rect x="170" y="52" width="120" height="44" rx="5" fill="var(--green-bg)" stroke="var(--green)"/>
+          <text class="lbl-s" x="206" y="79" fill="var(--green)">✓ 清掉</text>
+          <rect x="300" y="52" width="120" height="44" rx="5" fill="var(--panel2)" stroke="var(--line)"/>
+          <text class="lbl-s" x="342" y="79">✗ 沒碰</text>
+          <rect x="430" y="52" width="120" height="44" rx="5" fill="var(--panel2)" stroke="var(--line)"/>
+          <text class="lbl-s" x="472" y="79">✗ 沒碰</text>
+          <rect x="560" y="52" width="120" height="44" rx="5" fill="var(--panel2)" stroke="var(--line)"/>
+          <text class="lbl-s" x="602" y="79">✗ 沒碰</text>
+          <text class="lbl-h" x="10" y="152">重置所有設定</text>
+          <text class="lbl-s" x="10" y="168" fill="var(--red)">成本很高</text>
+          <rect x="170" y="132" width="120" height="44" rx="5" fill="var(--green-bg)" stroke="var(--green)"/>
+          <text class="lbl-s" x="192" y="159" fill="var(--green)">✓ 順便重開</text>
+          <rect x="300" y="132" width="120" height="44" rx="5" fill="var(--amber-bg)" stroke="var(--amber)"/>
+          <text class="lbl-s" x="330" y="159" fill="var(--amber)">✓ 全部清掉</text>
+          <rect x="430" y="132" width="120" height="44" rx="5" fill="var(--amber-bg)" stroke="var(--amber)"/>
+          <text class="lbl-s" x="460" y="159" fill="var(--amber)">✓ 全部重設</text>
+          <rect x="560" y="132" width="120" height="44" rx="5" fill="var(--red-bg)" stroke="var(--red)" stroke-width="2"/>
+          <text class="lbl-s" x="592" y="153" fill="var(--red)">✗ 碰不到</text>
+          <text class="lbl-s" x="580" y="168" fill="var(--red)">官方明列不刪</text>
+          <text class="lbl-h" x="10" y="232">Procreate 內</text>
+          <text class="lbl-h" x="10" y="248">Reset all</text>
+          <text class="lbl-s" x="10" y="264" fill="var(--green)">成本極低</text>
+          <rect x="170" y="212" width="120" height="44" rx="5" fill="var(--panel2)" stroke="var(--line)"/>
+          <text class="lbl-s" x="212" y="239">✗ 沒碰</text>
+          <rect x="300" y="212" width="120" height="44" rx="5" fill="var(--panel2)" stroke="var(--line)"/>
+          <text class="lbl-s" x="342" y="239">✗ 沒碰</text>
+          <rect x="430" y="212" width="120" height="44" rx="5" fill="var(--panel2)" stroke="var(--line)"/>
+          <text class="lbl-s" x="472" y="239">✗ 沒碰</text>
+          <rect x="560" y="212" width="120" height="44" rx="5" fill="var(--green-bg)" stroke="var(--green)" stroke-width="2"/>
+          <text class="lbl-s" x="596" y="239" fill="var(--green)">✓ 只清這格</text>
+          <line class="gl" x1="10" y1="282" x2="690" y2="282"/>
+          <text class="lbl" x="170" y="304" fill="var(--cyan)">↑ 這兩格壞 → 重啟／重置有效</text>
+          <text class="lbl" x="470" y="304" fill="var(--red)">↑ 這格壞 → 只有最下面那招有效</text>
+        </svg>
+        <figcaption>三個動作碰到的格子完全不同。<b>只有最右下角那一格，才是 Procreate 的壓力設定。</b></figcaption>
+      </figure>
+
+      <p>看懂這張圖，那批「重置完就好了」的人身上發生的事就很清楚了：他們的病灶其實在第 ② 格。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)">
+          <div class="ct">真正被修好的是「藍牙配對」</div>
+          Apple 官方的清單裡，<strong>藍牙配對是會被清掉的項目之一</strong>。重置完 Apple Pencil 要重新配一次，於是那條有問題的連線也跟著被重建了。壓力設定從頭到尾沒被動過。
+        </div>
+        <div class="callout" style="--c:var(--red)">
+          <div class="ct">但你付出的代價大得多</div>
+          同一份清單裡還有 Wi-Fi 密碼、Apple Pay 卡片、Face ID／Touch ID、主畫面佈局、先前信任的電腦。為了重建一個藍牙配對，把這些全部賠進去，並不划算。
+        </div>
+      </div>
+
+      <div class="bigquote">
+        <div class="qm">“</div>
+        <p>要重建配對，「忘記此裝置 → 重新配對」就夠了</p>
+        <small>同樣的效果，成本低一個數量級——而且不用重設 Wi-Fi 密碼。這一步就寫在第 04 節的第 11 步。</small>
+      </div>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">這個分流本身就是診斷工具</div>
+        「重啟就好、過幾天又壞」→ 病灶在連線層或執行狀態，別去改設定，改了也是白改。<br>
+        「重啟完全沒差」→ 病灶在設定層，那就直接跳到 Procreate 裡面調，重置整台 iPad 一定無效。<br>
+        用「重啟有沒有效」當分岔點，比從頭試一遍快得多。
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">誠實補一句：Procreate 官方自己的排錯清單裡，也沒有「重置所有設定」</div>
+        官方那份 9 步清單從重置壓力設定開始，一路到強制重啟、拔充電線，<strong>整份都沒有提到 iPadOS 的重置</strong>。這不是我們的意見，是照著官方順序念出來的結果。
+      </div>
+    </section>
+
+    <section id="order">
+      <div class="sec-label" style="--c:var(--green)">order</div>
+      <h2>04 · 排除順序：從最便宜的做起</h2>
+      <p>下面照「花你多少時間、要付出什麼代價」由低到高排。多數人在前四步就結束了，不用全部做完。</p>
+
+      <h3>第一輪 · 30 秒就能做完的四步</h3>
+      <div class="steps">
+        <div class="step" style="--c:var(--green)"><div class="n">1</div><div><h4>兩支筆刷試紙法（官方建議的第一招）</h4><p>用「書法 → Monoline」畫一筆，再用「上墨 → Round Brush」用力畫一筆。官方的判讀是：如果 Monoline 正常、Round Brush 卻怎麼壓都還是透明的，那很可能是 Apple Pencil 本身的壓力問題，不是 Procreate 的設定。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">2</div><div><h4>換去「備忘錄」畫一筆</h4><p>內建 App 沒有壓感設定可以調，是最乾淨的對照組。記得選鋼筆或麥克筆，選到原子筆本來就沒有粗細變化。備忘錄正常＝可以先把筆和連線的嫌疑放一邊。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">3</div><div><h4>完全寫不出來的話，先驗是不是在「擦除」</h4><p>新開一個圖層，在底下那層先塗滿顏色，然後在上層畫一筆。如果底下那層被擦出一道白痕，答案就出來了——去 Actions → Prefs → 手勢控制，把 Erase 底下的 Apple Pencil 選項關掉。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">4</div><div><h4>把 Procreate 完全關掉再打開</h4><p>不是切到背景，是從 App 切換器上滑關掉。這一步只修「這一次的執行狀態」，成本近乎零，但意外地常有效。做完沒改善就繼續往下。</p></div></div>
+      </div>
+
+      <h3>第二輪 · 進 Procreate 調設定（免費，但會蓋掉你調過的東西）</h3>
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">動手之前先知道這件事</div>
+        Procreate 官方在說明文件裡標了警告：除非真的需要，一般<strong>不建議調整全域壓力設定</strong>，調曲線可能造成非預期的結果。所以下面第 5 步是「重置回預設」，不是「自己拉一條」——拉曲線是等你確定沒壞、只是手感不合的時候才做的事。
+      </div>
+      <div class="steps">
+        <div class="step" style="--c:var(--amber)"><div class="n">5</div><div><h4>重置 L1 全域壓力與平滑</h4><p>Actions（扳手）→ Prefs → Pressure &amp; Smoothing，往下捲到底，點 <b>Reset all</b>。官方寫明這一鍵只還原這個區塊的全域設定，不會動到你的筆刷或作品。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">6</div><div><h4>重置手勢控制</h4><p>同樣在 Prefs 裡，手勢控制 → 一般 → 重置為預設值。如果你的問題是第 3 步驗出來的「擦除」，這一步會一次清乾淨。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">7</div><div><h4>檢查那支筆刷自己的壓力設定（L2 與 L3）</h4><p>點兩下筆刷開 Brush Studio → 左欄 Apple Pencil。先看 Pressure Graph 是不是被拉平了，再看下面 Size 那一格——壓力接到 Opacity 卻沒接 Size，就是第 00 節那種「深淺會變、粗細不變」。要整支還原就用 <b>Reset all Brush Settings</b>，官方註明它只影響目前這支筆刷。</p></div></div>
+      </div>
+
+      <h3>第三輪 · 回到筆與 iPad（開始要動手拆東西了）</h3>
+      <div class="steps">
+        <div class="step" style="--c:var(--teal)"><div class="n">8</div><div><h4>拔掉充電線，拆掉保護殼與保護貼再測</h4><p>官方排錯清單裡有這兩條。老實說，Apple 和 Procreate 都沒有解釋為什麼拔充電線會有效——我們也不打算替它編一個理由，但既然官方寫了、做起來又不花錢，就照做。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">9</div><div><h4>檢查筆尖：乾淨、沒破損、鎖緊</h4><p>官方的要求就是這三件事。筆尖是旋上去的，用手指轉緊到轉不動就好，不要硬扭。磨到露出中間金屬芯就該換一顆了。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">10</div><div><h4>關掉 iPadOS 的 AssistiveTouch 與觸控輔助</h4><p>設定 → 輔助使用 → 觸控，確認這兩個是關的。這一步是 Procreate 官方清單裡明列的，二手 iPad 特別要看——前一手打開過的設定會跟著機器一起過來。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">11</div><div><h4>忘記此裝置 → 重新配對 Apple Pencil</h4><p>設定 → 藍牙 → 點 Apple Pencil 右邊的 ⓘ → 忘記此裝置，然後重新吸上或插上去配對。這就是第 03 節說的那一步：它能達成「重置所有設定」真正有效的那部分，但不用賠上 Wi-Fi 密碼。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">12</div><div><h4>強制重新啟動 iPad</h4><p>官方清單的最後幾步之一。它只清掉記憶體裡的執行狀態，不會刪任何資料，也碰不到 Procreate 的設定——做完仍然沒改善，就代表病灶在設定層或硬體。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">果果售後的兩個提醒</div>
+        <b>一、順序不要跳。</b>我們最常看到的無效排查，是顧客一發現不對就先重灌 App——結果筆刷全部不見（自訂筆刷可能存在 iCloud，也可能只存在機器裡），問題卻還在。<br>
+        <b>二、一次只改一件事。</b>同時重置曲線又換筆刷又重新配對，就算好了你也不知道是哪一步救的，下次還會再遇到同一件事。
+      </div>
+    </section>
+
+    <section id="stop">
+      <div class="sec-label" style="--c:var(--red)">stop_here</div>
+      <h2>05 · 什麼時候該停手</h2>
+      <p>排查最怕的不是做不完，是不知道什麼時候該收。以下幾種情況，繼續自己試不會有新資訊。</p>
+
+      <ul class="flags">
+        <li><b>十二步走完，症狀完全沒變</b>——回報給 Procreate，別再繼續重置。官方的終點是填支援表單，並附上一段外部錄影（用另一支手機拍你畫 Round Brush 和 Studio Pen 的過程）。</li>
+        <li><b>借另一支 Apple Pencil 一測就正常</b>——那是筆的問題，不是 Procreate。這是唯一能乾淨切開「筆」與「App」的測試，借得到就一定要做。</li>
+        <li><b>連在備忘錄裡都不對勁</b>——問題在筆或 iPad 這一端，Procreate 這邊怎麼調都是白工。</li>
+        <li><b>是摔過之後才開始的</b>——壓感結構是機械式的，撞擊之後跑掉就是跑掉了，別再花時間試軟體。</li>
+        <li><b>看到任何「一鍵修復筆壓」的 App 或捷徑</b>——Procreate 的壓力設定只存在 App 內部，外面的東西改不到它。</li>
+      </ul>
+
+      <ul class="check">
+        <li><b>我到底該不該做「重置所有設定」？</b>這一題不用。它碰不到 Procreate 的壓力設定，而它真正有效的那部分（重建藍牙配對），第 11 步就能做到。</li>
+        <li><b>我把曲線拉歪了，回不去怎麼辦？</b>Prefs → Pressure &amp; Smoothing 底部有 Reset all，筆刷那層有 Reset all Brush Settings，兩個各自還原、互不影響。</li>
+        <li><b>要不要乾脆重灌 Procreate？</b>先確認你的自訂筆刷存在哪裡再說。這一步的風險遠比它能解決的問題大。</li>
+        <li><b>已經弄一個小時了？</b>停下來，先做「借另一支筆」的交叉測試。重複試同一層不會有新資訊。</li>
+      </ul>
+    </section>
+
+    <section id="honest">
+      <div class="sec-label" style="--c:var(--purple)">evidence</div>
+      <h2>06 · 這篇哪些是查過的、哪些是推論</h2>
+      <p>感壓這個題目網路上的說法特別多，而且常常寫得很肯定。我們把每一條的證據等級直接標出來，你可以自己判斷要信到什麼程度。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>說法</th><th>等級</th><th>依據</th></tr>
+          <tr>
+            <td>Procreate 的壓力是三層，而且下層會遵從上層</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>官方手冊兩處明文：Pressure Graph 旁註明它仍會遵從 Prefs 裡的全域設定；單一設定項的曲線「會遵從整體的 pressure graph」</td>
+          </tr>
+          <tr>
+            <td>L2 Pressure Graph 只影響單一筆刷</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>官方手冊逐字：它調的是「這一支筆刷內所有設定」的整體壓力</td>
+          </tr>
+          <tr>
+            <td>控制點上限：全域六個、筆刷壓力圖四個</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>兩個數字出自<strong>兩份不同的官方頁面</strong>，別互相套用</td>
+          </tr>
+          <tr>
+            <td>Apple Pencil 被指派成「擦除」會蓋過所有工具</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>官方手冊逐字：該選項開啟時，用那種方式畫出的筆畫永遠會是擦除，無論選了哪個工具</td>
+          </tr>
+          <tr>
+            <td>iPadOS「重置所有設定」碰不到 Procreate 的壓力設定</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>Apple 官方清單把「App 和 App 資料」列在不會刪除那一欄，同頁寫明「系統不會刪除任何資料或媒體」</td>
+          </tr>
+          <tr>
+            <td>「重置所有設定」會清掉藍牙配對</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>藍牙配對在 Apple 官方那份會被移除的項目清單裡</td>
+          </tr>
+          <tr>
+            <td>感壓求救單約九成發生在 Procreate</td>
+            <td><span class="lv-tag todo">我們的經驗</span></td>
+            <td>果果客服的處理經驗，<strong>不是官方統計、也沒有公開樣本</strong>。當成「這個方向值得先查」看待就好</td>
+          </tr>
+          <tr>
+            <td>曲線被壓平在下緣 → 線會細到看不見</td>
+            <td><span class="lv-tag infer">合理推論</span></td>
+            <td>官方只定義了兩個軸的意思，這是從軸定義推出來的幾何結果，官方沒有逐句這樣寫</td>
+          </tr>
+          <tr>
+            <td>拔掉充電線為什麼會有效</td>
+            <td><span class="lv-tag todo">查不到</span></td>
+            <td>官方把它列進排錯步驟，但<strong>完全沒有解釋機制</strong>。網路上那些電流干擾的說法我們查不到出處，所以不寫</td>
+          </tr>
+          <tr>
+            <td>在備忘錄有感壓，所以一定是 Procreate 的設定壞了</td>
+            <td><span class="lv-tag infer">要加限定詞</span></td>
+            <td>這句話只排除得掉硬體與連線，<strong>排除不掉 Procreate 當下的執行狀態</strong>（那種把 App 完全關掉再開就會好）</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">為什麼要把「查不到」也寫出來</div>
+        因為那幾格剛好是網路上被講得最斬釘截鐵的地方。你在別處看到有人用肯定句解釋「拔充電線的原理」時，可以回頭問一句：依據呢？
+        我們寧可承認查不到，也不想讓你照著一個沒有出處的說法去操作。
+      </div>
+    </section>
+
+    <section id="watch">
+      <div class="sec-label" style="--c:var(--teal)">videos</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p style="font-size:.9rem;color:var(--muted)">三層設定的位置用看的比用讀的快。影片為第三方製作，介面可能因 Procreate 版本不同而有差異，技術細節仍以官方手冊為準。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=KrfCJdaIrzI" target="_blank" rel="noopener" data-yt="KrfCJdaIrzI" aria-label="播放：Procreate 製作筆刷｜設定參數霧煞煞｜10 分鐘內讓你搞明白">
+          <img loading="lazy" src="https://i.ytimg.com/vi/KrfCJdaIrzI/sddefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/KrfCJdaIrzI/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>Procreate製作筆刷｜設定參數霧煞煞｜10分鐘內讓你搞明白</b><small>頻道：Vera生活那些事 · 繁體中文。整支在講 Brush Studio 裡的參數怎麼看——也就是本文 L2 與 L3 的所在地。第 04 節第 7 步要你去看的畫面，這支會帶你走一遍。</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=fiSN-shZfz8" target="_blank" rel="noopener" data-yt="fiSN-shZfz8" aria-label="播放：Master Pressure Sensitivity in Procreate iPad">
+          <img loading="lazy" src="https://i.ytimg.com/vi/fiSN-shZfz8/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/fiSN-shZfz8/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>Master Pressure Sensitivity in Procreate iPad</b><small>頻道：Esther Nariyoshi Illustration · 英文，畫面很清楚。專講筆刷這一層的壓力設定怎麼影響筆觸，看畫面就能對上本文第 01 節那張「三層生產線」的中間那格。</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=eAe9vLL5a48" target="_blank" rel="noopener" data-yt="eAe9vLL5a48" aria-label="播放：Understanding The Pressure Curve In Procreate">
+          <img loading="lazy" src="https://i.ytimg.com/vi/eAe9vLL5a48/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/eAe9vLL5a48/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>Understanding The Pressure Curve In Procreate</b><small>頻道：Ghost Paper · 英文。專講全域壓力曲線（本文的 L1）拉不同形狀會怎樣。年份較早、介面與現行版有差異，看「曲線形狀 → 筆觸長相」的示範就好。</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">本文的功能名稱、選單位置與排錯步驟取自 Procreate 官方手冊與支援文件；「重置所有設定」的範圍取自 Apple 官方頁面。以下每一條都在 2026 年 7 月 31 日重新逐字核對過：</p>
+      <ul class="sources">
+        <li><a href="https://help.procreate.com/procreate/handbook/actions/actions-preferences">Procreate 官方手冊 · Preferences</a>（L1 全域壓力曲線的位置與 Reset all；預設為直斜線、最多六個控制點；橫軸＝壓力、縱軸＝輸出值的逐字定義；手勢控制中 Smudge／Erase／Assisted Drawing 三個類別會覆蓋 Apple Pencil 原本指派的工具）</li>
+        <li><a href="https://help.procreate.com/procreate/handbook/brushes/brush-studio-settings">Procreate 官方手冊 · Brush Studio Settings</a>（L2 Pressure Graph 調的是「這一支筆刷內所有設定」、最多四個節點；Heads Up 註明它仍遵從 Prefs 的全域設定；L3 單一設定項的曲線「會遵從整體的 pressure graph」）</li>
+        <li><a href="https://help.procreate.com/procreate/handbook/brushes/brush-studio">Procreate 官方手冊 · Brush Studio</a>（Reset all Brush Settings 註明「只適用於目前這支筆刷」）</li>
+        <li><a href="https://help.procreate.com/articles/zpbmke-cant-paint-on-canvas">Procreate 支援 · Why can’t I paint, smudge, or erase on my canvas?</a>（兩支筆刷試紙法的官方判讀；9 步排錯順序，含檢查筆尖、重新配對、關閉 AssistiveTouch 與 Touch Accommodations、強制重啟、拔掉充電線；終點為支援表單與外部錄影）</li>
+        <li><a href="https://help.procreate.com/articles/tIdR13-apple-pencil-pressure-and-smoothing">Procreate 支援 · Apple Pencil, Pressure and Smoothing</a>（官方警告：預設曲線是為多數情況設計的，調整曲線可能造成非預期的結果）</li>
+        <li><a href="https://help.procreate.com/articles/zlerwn-adjusting-apple-pencil-pressure">Procreate 支援 · The Apple Pencil requires too much or too little pressure</a>（Pressure &amp; Smoothing 的進入路徑：Actions → Prefs 分頁 → Pressure and Smoothing）</li>
+        <li><a href="https://support.apple.com/zh-tw/126643">Apple 支援 · 重置所有設定會移除哪些項目</a>（會被移除的項目含藍牙配對、Wi-Fi 密碼、Apple Pay 卡片、Face ID／Touch ID 設定；明列不會刪除「App 和 App 資料」，並寫明「系統不會刪除任何資料或媒體」）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipad9a74dc01/ipados">iPad 使用手冊 · 將 iPad 設定重置為預設值</a>（「重置所有設定：所有設定…都將被移除，或是回復為預設值。資料或媒體將不會被刪除」）</li>
+        <li><a href="https://www.apple.com/tw/apple-pencil/">Apple 台灣官網 · Apple Pencil</a>（機型比較表：壓力感應「不適用於 Apple Pencil (USB-C)」）</li>
+      </ul>
+      <p class="updated">Procreate 改版時常調整選單位置與名稱，本文的路徑以查證日的版本為準；操作前請以你 iPad 上實際看到的字為準。標示為「合理推論」「我們的經驗」與「查不到」的說法請見<a class="inline" href="#honest">第 06 節</a>。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
