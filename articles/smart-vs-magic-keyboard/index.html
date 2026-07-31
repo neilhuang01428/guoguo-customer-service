@@ -15,6 +15,102 @@
   .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
   .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
 
+  /* 鍵盤俯視示意 kb（本檔情境專屬）
+     用途：正面回應本篇最大的痛點——「以為都長差不多」。
+     觸控板的有無是兩個家族最大的外觀差異，文字說「沒有觸控板」讀者得自己想像，
+     畫出來一眼就分得開。純 CSS，零圖檔。 */
+  .kbwrap { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0 6px; }
+  .kbcard { border: 1px solid var(--line); border-radius: 12px; padding: 14px 14px 12px; background: var(--panel); box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .kbcard .kbt { font-family: var(--mono); font-size: .66rem; color: var(--c); margin-bottom: 9px; }
+  .kbcard .kbt::before { content: '▸ '; }
+  .kb { border: 2px solid var(--c); border-radius: 9px; background: #fff; padding: 7px 7px 9px; }
+  .kb .row { display: flex; gap: 3px; margin-bottom: 3px; }
+  .kb .row i { display: block; flex: 1; height: 9px; border-radius: 2px; background: var(--navy-bg); }
+  .kb .row i.sp { flex: 3.2; }
+  .kb .pad { height: 54px; width: 46%; margin: 7px auto 0; border-radius: 5px; border: 1.5px solid #c8d3e2; background: var(--panel2); }
+  .kb .nopad { height: 54px; margin: 7px auto 0; display: grid; place-items: center; font-family: var(--mono); font-size: .62rem; color: var(--muted); border: 1.5px dashed var(--line); border-radius: 5px; }
+  .kbcard .kbd { font-size: .82rem; color: var(--body); margin-top: 10px; line-height: 1.6; }
+  .kbcard .kbd b { color: var(--ink); }
+  @media (max-width: 560px) { .kbwrap { grid-template-columns: 1fr; } }
+
+  /* 厚度階梯 steps3（本檔情境專屬）：三個數字的遞增關係，圖比表直觀 */
+  .thick { display: grid; gap: 0; margin: 20px 0; }
+  .thick .lv { display: flex; align-items: center; gap: 14px; padding: 13px 16px; border: 1px solid var(--line); background: var(--panel); }
+  .thick .lv:first-child { border-radius: 10px 10px 0 0; }
+  .thick .lv:last-child { border-radius: 0 0 10px 10px; }
+  .thick .lv + .lv { border-top: 0; }
+  .thick .mm { font-family: var(--mono); font-size: 1.12rem; font-weight: 800; color: var(--c); min-width: 74px; }
+  .thick .who { font-size: .9rem; color: var(--ink); font-weight: 600; }
+  .thick .note { font-size: .8rem; color: var(--muted); margin-top: 2px; }
+  .thick .gap { font-family: var(--mono); font-size: .68rem; color: var(--muted); text-align: center; padding: 3px 0; background: var(--panel2); border-left: 1px solid var(--line); border-right: 1px solid var(--line); }
+
+  /* 雙面夾兩件式示意 folio（本檔情境專屬）
+     側視圖：立架撐著 iPad，鍵盤平放在前方。右圖把鍵盤拿掉——重點是「背板的立架還在，照樣立得住」，
+     這正是 Apple 說的 with or without the keyboard。 */
+  .folios { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0 4px; }
+  .focard { border: 1px solid var(--line); border-radius: 11px; background: #fff; padding: 12px 12px 10px; text-align: center; }
+  .fofig { position: relative; height: 96px; max-width: 158px; margin: 0 auto; }
+  .fofig .desk { position: absolute; left: 2px; right: 2px; bottom: 12px; height: 2px; border-radius: 2px; background: var(--line); }
+  /* iPad 往「後」倒（頂部朝右），立架從後方往右下撐 → 兩者呈 Λ 形，才是立架的樣子。
+     鍵盤右緣緊貼 iPad 底部，因為它是磁吸在 iPad 邊緣的聰穎接點上，兩者相連。 */
+  .fofig .pad { position: absolute; right: 52px; bottom: 13px; width: 8px; height: 60px; border-radius: 3px; background: var(--c); transform-origin: bottom center; transform: rotate(15deg); }
+  .fofig .pad::after { content: ''; position: absolute; inset: 1.5px 1.5px 1.5px 2.5px; border-radius: 2px; background: rgba(255,255,255,.82); }
+  .fofig .stand { position: absolute; right: 26px; bottom: 13px; width: 4px; height: 46px; border-radius: 2px; background: var(--c); opacity: .4; transform-origin: bottom center; transform: rotate(-26deg); }
+  .fofig .kbd { position: absolute; right: 60px; bottom: 13px; width: 66px; height: 7px; border-radius: 2px 1px 1px 2px; background: var(--c); }
+  .fofig .kbd.gone { background: transparent; border: 1.5px dashed var(--line); height: 9px; bottom: 12px; }
+  .fofig .lbl { position: absolute; font-family: var(--mono); font-size: .54rem; color: var(--muted); white-space: nowrap; }
+  .fofig .lbl.l1 { right: 0; top: 2px; }
+  .fofig .lbl.l2 { right: 62px; bottom: -1px; }
+  .focard .fot { font-size: .9rem; font-weight: 700; color: var(--ink); margin-top: 8px; }
+  .focard .fod { font-size: .8rem; color: var(--muted); margin-top: 4px; line-height: 1.55; }
+  @media (max-width: 560px) { .folios { grid-template-columns: 1fr; } }
+
+  /* 聰穎接點示意 pins（本檔情境專屬）
+     用途：emoji 說不出「接點在哪、長什麼樣」。這裡把整台 iPad 與整台鍵盤畫出來，
+     再把三個金屬點標在各自的實際位置上——兩張圖的點刻意畫在對應高度，一眼看出「吸上去就對位」。 */
+  .pins { display: grid; place-items: center; min-height: 96px; }
+  .pins .ipad { position: relative; width: 122px; height: 88px; border: 2px solid var(--c); border-radius: 9px; background: #fff; }
+  .pins .ipad .cam { position: absolute; bottom: 9px; left: 9px; width: 15px; height: 15px; border-radius: 4px; border: 2px solid var(--c); opacity: .45; }
+  .pins .kb .lid .cam { position: absolute; top: 8px; left: 9px; width: 14px; height: 14px; border-radius: 4px; border: 2px solid var(--c); opacity: .45; }
+  .pins .kb { width: 122px; }
+  .pins .kb .lid { position: relative; height: 47px; border: 2px solid var(--c); border-bottom: 0; border-radius: 8px 8px 2px 2px; background: #fff; }
+  .pins .kb .hng { height: 3px; margin: 0 7%; background: var(--c); opacity: .3; }
+  .pins .kb .deck { height: 38px; border: 2px solid var(--c); border-top: 0; border-radius: 2px 2px 8px 8px; background: var(--panel2); padding: 5px 6px; }
+  .pins .kb .deck i { display: block; height: 4px; border-radius: 1.5px; background: #d5dce7; margin-bottom: 3px; }
+  .pins .kb .deck .tpad { width: 36%; height: 11px; margin: 3px auto 0; border-radius: 2px; border: 1px solid #ccd6e4; background: #fff; }
+  /* 接點在機身「右側邊緣」，三點垂直排列（iPad 橫放裝上鍵盤時的實際位置） */
+  .pins .dots { position: absolute; display: flex; flex-direction: column; gap: 5px; right: 10px; top: 50%; transform: translateY(-50%); }
+  .pins .dots u { display: block; width: 7px; height: 7px; border-radius: 50%; background: linear-gradient(145deg,#cfd4dc,#7f8794); box-shadow: inset 0 .5px .5px rgba(255,255,255,.75), 0 1px 1.5px rgba(20,39,68,.28); }
+  .pins .tag { font-family: var(--mono); font-size: .54rem; color: var(--muted); margin-top: 5px; text-align: center; }
+
+  /* 鏡頭開孔判斷 hole（本檔情境專屬）
+     用途：果果實測歸納出的辨識法——看鍵盤背板的鏡頭開孔形狀，就知道它能配哪些 iPad。
+     方孔比單孔大，所以方孔通吃、單孔不能反過來用。這是單向相容，畫出來最好懂。 */
+  .holes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0; }
+  .holecard { border: 1px solid var(--line); border-radius: 12px; padding: 14px; background: var(--panel); text-align: center; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .holecard .ht { font-family: var(--mono); font-size: .66rem; color: var(--c); margin-bottom: 10px; }
+  /* 打開的鍵盤（正面視角、尚未裝上 iPad）
+     上半＝吸附 iPad 的背板，鏡頭開孔就在它的左上角；下半＝鍵盤本體與觸控板。
+     兩張圖的外框尺寸刻意相同，只有孔的大小不同——那正是「方孔通吃」的物理原因。 */
+  /* 上下兩片等高（實機打開時，iPad 那片與鍵盤本體的深度本來就接近） */
+  .holecard .kbopen { width: 100%; max-width: 124px; margin: 0 auto; }
+  .holecard .back { position: relative; height: 84px; border: 2px solid var(--c); border-bottom: 0; border-radius: 10px 10px 2px 2px; background: var(--panel2); }
+  .holecard .hinge { height: 5px; background: var(--c); opacity: .35; margin: 0 6%; border-radius: 0 0 3px 3px; }
+  .holecard .base { height: 84px; border: 2px solid var(--c); border-top: 0; border-radius: 2px 2px 10px 10px; background: #fff; padding: 8px 7px; display: flex; flex-direction: column; justify-content: center; }
+  .holecard .base .krow { display: flex; gap: 2px; margin-bottom: 2px; }
+  .holecard .base .krow i { display: block; flex: 1; height: 5px; border-radius: 1.5px; background: var(--navy-bg); }
+  .holecard .base .krow i.sp { flex: 3; }
+  .holecard .base .tp { width: 42%; height: 19px; margin: 6px auto 0; border-radius: 4px; border: 1px solid #ccd6e4; background: var(--panel2); }
+  .holecard .sq { position: absolute; top: 11%; left: 9%; width: 24px; height: 24px; border-radius: 8px; background: #fff; border: 2.5px solid var(--c); box-shadow: inset 0 0 0 3px var(--panel2); }
+  .holecard .ci { position: absolute; top: 13%; left: 9%; width: 22px; height: 12px; border-radius: 999px; background: #fff; border: 2.5px solid var(--c); }
+  .holecard .vw { font-family: var(--mono); font-size: .56rem; color: var(--muted); letter-spacing: .05em; margin-top: 8px; }
+  .holecard .hn { font-size: .95rem; font-weight: 700; color: var(--ink); margin-top: 10px; }
+  .holecard .hd { font-size: .82rem; color: var(--body); margin-top: 6px; line-height: 1.6; }
+  .holecard .verdict { margin-top: 10px; padding-top: 9px; border-top: 1px dashed var(--line); font-size: .82rem; }
+  .holecard .verdict b { display: block; }
+  .yes { color: var(--green-deep); } .no { color: var(--red); }
+  @media (max-width: 560px) { .holes { grid-template-columns: 1fr; } }
+
   /* 家族定位卡：三族系並排 */
   .fam { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
   .fam .f { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 12px; padding: 16px 18px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
@@ -63,6 +159,8 @@
   <a href="#table">01 · 每款差在哪</a>
   <a href="#lookup">02 · 你的 iPad 配哪款</a>
   <div class="grp">原理</div>
+  <a href="#reverse">02.5 · 手上的鍵盤配不配</a>
+  <a href="#thickness">02.6 · 闔不起來是真的嗎</a>
   <a href="#connector">03 · 為什麼不用充電</a>
   <div class="grp">避坑</div>
   <a href="#mistakes">04 · 三個常見買錯</a>
@@ -101,6 +199,30 @@
       </div>
     </div>
 
+    <div class="kbwrap">
+      <div class="kbcard" style="--c:var(--teal)">
+        <div class="kbt">聰穎 Smart</div>
+        <div class="kb">
+          <div class="row"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="row"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="row"><i></i><i></i><i class="sp"></i><i></i><i></i></div>
+          <div class="nopad">沒有觸控板</div>
+        </div>
+        <div class="kbd">打字可以，<b>但游標得伸手戳螢幕</b>。布面、輕薄、沒背光。</div>
+      </div>
+      <div class="kbcard" style="--c:var(--navy)">
+        <div class="kbt">巧控 Magic</div>
+        <div class="kb">
+          <div class="row"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="row"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="row"><i></i><i></i><i class="sp"></i><i></i><i></i></div>
+          <div class="pad"></div>
+        </div>
+        <div class="kbd">多了這一塊<b>觸控板</b>，手不用離開鍵盤——這就是「半台筆電」的由來。</div>
+      </div>
+    </div>
+    <p style="font-size:.86rem;color:var(--muted);text-align:center;margin:2px 0 22px">兩個家族最大的差別就在<b>下面那一塊</b>：一個有、一個沒有。</p>
+
     <div class="callout" style="--c:var(--red)">
       <div class="ct">最多人買錯的原因</div>
       不是分不出貴或便宜，而是以為「都長差不多」——實際上背光、觸控板、功能鍵列每款都不一樣，而且<strong>每一款只支援特定幾代 iPad</strong>。
@@ -108,7 +230,7 @@
 
     <p class="lede">下面兩張表一次對齊：先看每款差在哪，再反查你手上那台能用哪一款。</p>
 
-    <p class="updated">本文查證：<b>2026 年 7 月</b>，規格與相容清單以 Apple 官方最新公告為準。<a class="inline" href="#sources">來源列在文末</a>。</p>
+    <p class="updated">本文查證：<b>2026 年 8 月</b>，規格與相容清單以 Apple 官方最新公告為準；<b>型號相容範圍另有果果國際的庫存實測</b>（見 <a class="inline" href="#reverse">02.5 節</a>）。<a class="inline" href="#sources">來源列在文末</a>。</p>
 
     <section id="family">
       <div class="sec-label" style="--c:var(--navy)">families</div>
@@ -125,7 +247,7 @@
         <div class="f" style="--c:var(--teal)">
           <div class="nm">巧控鍵盤雙面夾</div>
           <div class="en">Magic Keyboard Folio</div>
-          <div class="one">兩件式（背板＋可拆鍵盤），有觸控板與 14 鍵功能鍵列，但<strong>沒有背光</strong>。給一般 iPad。</div>
+          <div class="one"><strong>兩件式設計——鍵盤可以整個拆掉</strong>。有觸控板與 14 鍵功能鍵列，但<strong>沒有背光</strong>。給一般 iPad。</div>
           <span class="st on">現正販售</span>
         </div>
         <div class="f" style="--c:var(--muted)">
@@ -141,10 +263,42 @@
         「<strong>巧控鍵盤雙面夾</strong>」和「<strong>鍵盤式聰穎雙面夾</strong>」只差兩個字，卻是完全不同的東西——前者有觸控板、現正販售；後者沒有觸控板、官網已下架。查資料時看到「雙面夾」三個字，一定要看清楚前面是「巧控」還是「聰穎」。
       </div>
 
+      <div class="callout" style="--c:var(--green)"><div class="ct">很多人不知道：巧控鍵盤雙面夾的鍵盤，是可以拆掉的</div>
+        它跟其他款最大的不同，是<strong>兩件式設計</strong>——Apple 官方寫得很清楚：
+        「採用兩件式設計，靈活多用，包含<strong>可拆卸式鍵盤</strong>和具備保護作用的背板，<strong>兩者都能透過磁力吸附 iPad</strong>」。<br><br>
+        白話講：<strong>要打字時把鍵盤吸上去，不打字就整個拿掉</strong>，背板留著當保護殼和立架用。
+        看影片、追劇、拿 Apple Pencil 畫畫的時候，不必扛著整組鍵盤的重量——
+        這是其他幾款（鍵盤和背板連在一起）做不到的事。</div>
+
+      <div class="folios">
+        <div class="focard" style="--c:var(--navy)">
+          <div class="fofig">
+            <span class="lbl l1">背板＋立架</span>
+            <div class="stand"></div><div class="pad"></div>
+            <div class="kbd"></div><span class="lbl l2">鍵盤吸上去</span>
+            <div class="desk"></div>
+          </div>
+          <div class="fot">要打字的時候</div>
+          <div class="fod">鍵盤磁吸在 iPad 邊緣的聰穎接點上，就是一台小筆電。</div>
+        </div>
+        <div class="focard" style="--c:var(--green-deep)">
+          <div class="fofig">
+            <span class="lbl l1">背板＋立架</span>
+            <div class="stand"></div><div class="pad"></div>
+            <div class="kbd gone"></div><span class="lbl l2">鍵盤整個拿掉</span>
+            <div class="desk"></div>
+          </div>
+          <div class="fot">不打字的時候</div>
+          <div class="fod"><strong>立架還在，照樣立得住。</strong>少了鍵盤的重量，看影片、畫畫都輕鬆。</div>
+        </div>
+      </div>
+      <p style="font-size:.84rem;color:var(--muted);text-align:center;margin:2px 0 20px">背板和鍵盤是<b>各自獨立</b>磁吸上去的——所以拿掉鍵盤，保護殼與立架的功能完全不受影響。</p>
+
       <h3>現在官網買得到的，只剩五款</h3>
       <p>截至 2026 年 7 月，Apple 台灣官網 iPad 鍵盤分類頁上的 Apple 原廠鍵盤如下。聰穎系列<strong>整頁一個字都沒有出現</strong>——想要的話只能找二手或通路庫存。</p>
       <div class="price">
-        <div class="p"><b>巧控鍵盤 · 11 吋 iPad Pro (M5)</b><div class="amt">NT$9,890</div><small>白／黑</small></div>
+        <div class="p"><b>巧控鍵盤 · 11 吋 iPad Pro (M5)</b><div class="amt">NT$9,890</div>
+<small>白／黑</small></div>
         <div class="p"><b>巧控鍵盤 · 13 吋 iPad Pro (M5)</b><div class="amt">NT$11,690</div><small>白／黑</small></div>
         <div class="p"><b>巧控鍵盤 · 11 吋 iPad Air (M4)</b><div class="amt">NT$9,490</div><small>—</small></div>
         <div class="p"><b>巧控鍵盤 · 13 吋 iPad Air (M4)</b><div class="amt">NT$9,890</div><small>—</small></div>
@@ -188,7 +342,7 @@
             <td>懸臂式浮起</td>
           </tr>
           <tr>
-            <td>巧控鍵盤雙面夾<small>一般 iPad 用</small></td>
+            <td>巧控鍵盤雙面夾<small>一般 iPad 用・<strong>鍵盤可拆</strong></small></td>
             <td class="y">有<small>14 鍵</small></td>
             <td class="n">沒有</td>
             <td class="y">有</td>
@@ -276,7 +430,7 @@
           <tr>
             <td>iPad 第 10 代<br>iPad (A16)</td>
             <td>巧控鍵盤雙面夾</td>
-            <td>需 iPadOS 18.3 以上。這是目前一般 iPad 唯一的原廠觸控板鍵盤。</td>
+            <td>需 iPadOS 18.3 以上。這是目前一般 iPad 唯一的原廠觸控板鍵盤，而且<strong>鍵盤可以拆下來</strong>。</td>
           </tr>
           <tr>
             <td>iPad 第 7／8／9 代<br>iPad mini 全系列</td>
@@ -297,6 +451,148 @@
       </div>
     </section>
 
+    <section id="reverse">
+      <div class="sec-label" style="--c:var(--purple)">reverse_lookup</div>
+      <h2>02.5 · 反過來：手上有一支鍵盤，怎麼知道配不配得上？</h2>
+      <p>上一節是「<strong>你的 iPad → 該買哪款</strong>」。但買二手的人常常是<strong>反過來</strong>——看到一支寫著「A1998」的鍵盤，不知道自己那台 iPad 裝不裝得上。這一節給你三個步驟，看完你自己就會判斷。</p>
+
+      <h3>第 1 步 · 先看尺寸，但別被名字騙了</h3>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">Apple 改過命名，機身其實沒變</div>
+        <strong>10.9 吋和 11 吋是同一個尺寸；12.9 吋和 13 吋也是同一個尺寸。</strong>
+        Apple 後來把「iPad Air 10.9 吋」改叫「11 吋」、把 13 吋 Air 拿來對應原本 12.9 吋的位置——
+        <strong>名字換了，機身大小沒換</strong>。所以看到「12.9 吋鍵盤」不要以為它跟 13 吋 Air 無關。</div>
+
+      <h3>第 2 步 · 看背板上的鏡頭開孔（最快的一招）</h3>
+      <p>把鍵盤打開、先不要裝 iPad——你會看到吸附 iPad 的那片背板，<strong>左上角有一個給鏡頭用的開孔</strong>。它的形狀就是答案：</p>
+      <div class="holes">
+        <div class="holecard" style="--c:var(--navy)">
+          <div class="ht">方孔</div>
+          <div class="kbopen"><div class="back"><div class="sq"></div></div><div class="hinge"></div><div class="base"><div class="krow"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="krow"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="krow"><i></i><i></i><i class="sp"></i><i></i><i></i></div><div class="tp"></div></div></div><div class="vw">打開的樣子・正面看</div>
+          <div class="hn">給「方形鏡頭模組」的 iPad</div>
+          <div class="hd">也就是 iPad Pro 那種多鏡頭機型。開孔比較大。</div>
+          <div class="verdict"><b class="yes">✓ 方鏡頭 iPad 可以</b><b class="yes">✓ 單鏡頭 iPad 也可以</b></div>
+        </div>
+        <div class="holecard" style="--c:var(--teal)">
+          <div class="ht">單孔</div>
+          <div class="kbopen"><div class="back"><div class="ci"></div></div><div class="hinge"></div><div class="base"><div class="krow"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="krow"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="krow"><i></i><i></i><i class="sp"></i><i></i><i></i></div><div class="tp"></div></div></div><div class="vw">打開的樣子・正面看</div>
+          <div class="hn">給「單顆鏡頭」的 iPad</div>
+          <div class="hd">也就是 iPad Air 那種。開孔是<strong>橫向的橢圓</strong>，比方孔小一圈。</div>
+          <div class="verdict"><b class="yes">✓ 單鏡頭 iPad 可以</b><b class="no">✗ 方鏡頭 iPad 裝不下</b></div>
+        </div>
+      </div>
+      <div class="callout" style="--c:var(--green)"><div class="ct">記一句話就好</div>
+        <strong>方孔通吃，單孔挑機。</strong>因為方孔比較大，塞得下單顆鏡頭；反過來，單孔容不下 iPad Pro 那塊方形鏡頭模組。
+        <strong>這是單向的，不能互換。</strong></div>
+
+      <h3>第 3 步 · 確認不是「有自己專屬鍵盤」的那幾台</h3>
+      <div class="callout" style="--c:var(--red)"><div class="ct">這幾款不跟別人共用，直接跳過上面兩步</div>
+        <strong>iPad Pro M4／M5</strong>（2024 年起）和 <strong>iPad 第 10 代／iPad (A16)</strong> 都有各自專屬的鍵盤，
+        機構設計不同，<strong>不能跟 2018–2022 那批共用</strong>。</div>
+
+      <h3>套用結果：果果實測的相容範圍</h3>
+      <p>把上面三步套用在最常見的三支型號上，就是下面這張表。<strong>這是我們用庫存平板實際裝過的結果</strong>，不是照抄包裝標示：</p>
+      <div class="tbl-wrap">
+      <table>
+        <tr><th>鍵盤型號</th><th>尺寸</th><th>鏡頭孔</th><th>實測可用於</th></tr>
+        <tr>
+          <td><strong>A1998</strong>（2020）<br><strong>A2480</strong>（2021）</td>
+          <td>12.9 吋級</td><td>方孔</td>
+          <td class="good">iPad Pro 12.9"　2018–2022（三～六代）<br>iPad Air 13"　M2／M3／M4</td>
+        </tr>
+        <tr>
+          <td><strong>A2261</strong>（2020）</td>
+          <td>11 吋級</td><td>方孔</td>
+          <td class="good">iPad Pro 11"　2018–2022（一～四代）<br>iPad Air 10.9"　第 4／5 代<br>iPad Air 11"　M2／M3／M4</td>
+        </tr>
+        <tr>
+          <td><strong>A2038</strong>（11"）<br><strong>A2039</strong>（12.9"）<br><small>聰穎鍵盤雙面夾</small></td>
+          <td>各自對應</td><td>方孔</td>
+          <td class="good">同尺寸的 iPad Pro 2018–2022 與 iPad Air，<strong>邏輯與上面兩款一致</strong></td>
+        </tr>
+      </table>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">A1998 和 A2480 差在哪？答案是「盒子」</div>
+        這兩支<strong>實際相容範圍完全一樣</strong>，我們用庫存平板逐台測過。
+        會有人以為它們不同，是因為<strong>盒子上印的機型清單不一樣</strong>——A1998 賣得早、A2480 晚一年，
+        兩者的包裝各自停在自己上市那一刻。</div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">所以：盒子沒寫，不代表不能用</div>
+        <strong>包裝上的相容清單，是「出廠那一刻市面上有的 iPad」——後來才出的新機型，不會回頭印到舊包裝上。</strong>
+        最好的例子就是 A1998：它是 2020 年的產品，盒子上<strong>不可能</strong>印著 2024 年才誕生的 iPad Air 13"，
+        但實際裝上去就是能用。<br><br>
+        <strong>連大型賣場都會標錯</strong>——我們查證時發現 Amazon、eBay 甚至部分維基站，都把 A1998 標成「聰穎鍵盤」，
+        但 <a class="inline" href="https://support.apple.com/zh-tw/111936" target="_blank" rel="noopener">Apple 官方技術規格頁</a>寫得很清楚，它是巧控鍵盤。
+        <strong>賣場頁面的標示，不能當成判斷依據。</strong></div>
+
+      <div class="callout" style="--c:var(--teal)"><div class="ct">補充：同一支鍵盤，有兩組編號</div>
+        <strong>型號</strong>（像 <code>A1998</code>）印在<strong>產品本體</strong>上；<strong>零售編號</strong>（像 <code>MXQU2LL/A</code>）印在<strong>包裝盒</strong>和發票上，而且會依顏色、鍵盤語言分成不同組。<br>
+        賣家拍包裝、你查到的是本體型號，兩邊對不起來，就容易誤以為是不同東西。<strong>看到陌生編號先別急著否定，兩組編號指的可能是同一支。</strong></div>
+      <p class="updated">相容範圍為<b>果果國際以庫存 iPad 實機測試</b>所得，與「Apple 官方相容清單」分開標示；官方清單見上一節。實測於 <b>2026 年 8 月</b>。</p>
+    </section>
+
+    <section id="thickness">
+      <div class="sec-label" style="--c:var(--amber)">thickness</div>
+      <h2>02.6 · 網路上說「闔不起來」，是真的嗎？</h2>
+      <p>如果你查過 A1998，很可能會撞到一堆 2021 年的文章與影片，在討論「舊鍵盤配新 iPad 會不會關不上」。這件事有真實的來由，但<strong>結論跟你想的可能不一樣</strong>。先看數字：</p>
+
+      <div class="thick">
+        <div class="lv" style="--c:var(--green-deep)">
+          <div class="mm">5.9 mm</div>
+          <div><div class="who">iPad Pro 12.9"　第 3／4 代（2018／2020）</div><div class="note">鍵盤當初就是照這個厚度設計的</div></div>
+        </div>
+        <div class="gap">↓ 厚 0.2 mm</div>
+        <div class="lv" style="--c:var(--navy)">
+          <div class="mm">6.1 mm</div>
+          <div><div class="who">iPad Air 13"　M2／M3／M4</div><div class="note">2024 年後才出現——當年那些文章完全沒討論到這一層</div></div>
+        </div>
+        <div class="gap">↓ 再厚 0.3 mm</div>
+        <div class="lv" style="--c:var(--amber)">
+          <div class="mm">6.4 mm</div>
+          <div><div class="who">iPad Pro 12.9"　第 5／6 代（M1／M2）</div><div class="note">當年吵翻天的，就是這多出來的 0.5 mm</div></div>
+        </div>
+      </div>
+
+      <p>事情的起點是 2021 年 4 月，Apple 官方為了第 5 代 12.9 吋（改用 mini-LED、機身厚了 0.5 mm）發過一句聲明：舊款巧控鍵盤<strong>「功能上相容，但闔上時可能無法精準密合，尤其裝有螢幕保護貼時」</strong>。這句話被大量轉載，於是「舊鍵盤配新 iPad 有問題」就傳開了。</p>
+      <p><strong>但這件事後來證明是虛驚一場。</strong>先看 Apple 那句話的用字——「<strong>可能</strong>無法精準密合」。它講的是<strong>闔起來時的貼合程度</strong>，不是裝不上、更不是會弄壞你的 iPad。接下來一個月，實測影片一支一支冒出來，大家實際裝上去、開合、打字，得到的結論都一樣：<strong>就是正常在用</strong>。</p>
+      <p>這種事情，文字再怎麼描述都不如親眼看一次。下面三支影片剛好各自回答了不同的一段，<strong>建議你直接點開，看他們怎麼裝、怎麼闔</strong>——你會發現這件事比傳言小得多：</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=Jhh6VK9P0Ws" target="_blank" rel="noopener" data-yt="Jhh6VK9P0Ws" aria-label="播放：2021 M1 12.9 吋 iPad Pro 上手與安裝，到底合不合">
+          <img loading="lazy" src="https://i.ytimg.com/vi/Jhh6VK9P0Ws/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/Jhh6VK9P0Ws/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>2021 M1 12.9" iPad Pro Hands-On &amp; Step-by-Step Setup | Does It Fit</b><small>頻道：Tech4Baba · 2021/05 · 回答「<b>舊鍵盤（A1998）配 12.9 五代</b>」——也就是厚 0.5mm 那一段。<b>看他從裝上到闔起來的全程</b> · 英文</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=WjMnXZr0wd0" target="_blank" rel="noopener" data-yt="WjMnXZr0wd0" aria-label="播放：12.9 吋 iPad Pro 2021 巧控鍵盤該不該買">
+          <img loading="lazy" src="https://i.ytimg.com/vi/WjMnXZr0wd0/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/WjMnXZr0wd0/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>Magic Keyboard for 12.9 iPad Pro 2021: Should You Buy It?</b><small>頻道：Michael Caputo · 2021/05 · Apple 聲明後 4 天發布，正是議論最熱的時候。回答的是<b>反方向</b>：新鍵盤（A2480）配舊 iPad 會怎樣 · 英文</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=lAilnbZFAMI" target="_blank" rel="noopener" data-yt="lAilnbZFAMI" aria-label="播放：新舊世代巧控鍵盤對比">
+          <img loading="lazy" src="https://i.ytimg.com/vi/lAilnbZFAMI/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/lAilnbZFAMI/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>New iPad Pro 11 inch Magic Keyboard vs Old iPad Magic Keyboard</b><small>頻道：HotshotTek · 2024/05 · 三支裡唯一不是 2021 年的，比的是 <b>M4 世代的全新鍵盤</b>跟舊款差在哪 · 英文</small></div>
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">三支影片都沒回答的那一格，我們補上了</div>
+        它們談的都是 2021 年的機型。而 <strong>iPad Air 13"（6.1 mm）是 2024 年才出現的</strong>——比爭議機型還薄 0.3 mm，
+        <strong>連 6.4 mm 都闔得起來，6.1 mm 自然更沒問題</strong>。這也和我們庫存實測的結果一致。</div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">結論：需要為此換新鍵盤嗎？</div>
+        <strong>不用。</strong>當年所有實測與媒體測試的共同結論都是這句——唯一的例外是<strong>貼了很厚的玻璃保護貼</strong>，
+        那確實會讓闔起來變得勉強。<br><br>
+        所以買二手的時候，<strong>不必因為「這支是舊款」就卻步</strong>；同樣地，如果賣家拿這件事當賣點或當殺價理由，
+        你現在知道它的實際份量有多少了。<strong>先確認尺寸和鏡頭孔對不對，比糾結年份實在得多。</strong></div>
+      <p class="updated">厚度數字取自 <b>Apple 官方技術規格</b>；上列影片為 2021／2024 年的第三方實測，<b>當時的機型與現況可能已有差異</b>，請以自己實機為準。</p>
+    </section>
+
     <section id="connector">
       <div class="sec-label" style="--c:var(--purple)">how_it_works</div>
       <h2>03 · 為什麼原廠鍵盤不用充電、也不用配對</h2>
@@ -304,13 +600,33 @@
 
       <figure class="fig">
         <div class="flow">
-          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">📱</div><div class="bt">iPad 這一側</div><div class="bv">三個磁性接點</div></div>
+          <div class="box" style="--cbg:var(--navy-bg)">
+            <div class="pins" style="--c:var(--navy)">
+              <div>
+                <div class="ipad"><span class="cam"></span><div class="dots"><u></u><u></u><u></u></div></div>
+                <div class="tag">iPad 背面 · 右側邊緣</div>
+              </div>
+            </div>
+            <div class="bt">iPad 這一側</div><div class="bv">三個小金屬點</div>
+          </div>
           <div class="arr">＋</div>
-          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">⌨️</div><div class="bt">鍵盤這一側</div><div class="bv">對應的接點</div></div>
+          <div class="box" style="--cbg:var(--green-bg)">
+            <div class="pins" style="--c:var(--green-deep)">
+              <div>
+                <div class="kb">
+                  <div class="lid"><span class="cam"></span><div class="dots"><u></u><u></u><u></u></div></div>
+                  <div class="hng"></div>
+                  <div class="deck"><i></i><i></i><div class="tpad"></div></div>
+                </div>
+                <div class="tag">鍵盤背板 · 右側邊緣</div>
+              </div>
+            </div>
+            <div class="bt">鍵盤這一側</div><div class="bv">位置完全對應</div>
+          </div>
           <div class="arr">＝</div>
-          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">⚡</div><div class="bt">吸上去就好</div><div class="bv">供電＋傳資料</div></div>
+          <div class="box" style="--cbg:var(--amber-bg);display:flex;flex-direction:column;justify-content:center"><div class="bi">⚡</div><div class="bt">吸上去就好</div><div class="bv">供電＋傳資料</div></div>
         </div>
-        <figcaption>Apple 官方說明：聰穎接點<b>能為鍵盤提供電力和資料，因此無需另外充電或配對</b>。</figcaption>
+        <figcaption>三個小金屬點在 iPad 與鍵盤上<b>位於相同位置</b>——把 iPad 放上去，磁力會自動把它們對準。<br>Apple 官方說明：聰穎接點<b>能為鍵盤提供電力和資料，因此無需另外充電或配對</b>。</figcaption>
       </figure>
 
       <p>所以原廠鍵盤<strong>沒有電池、沒有開關、沒有配對按鈕</strong>。iPad 直接透過那三個金屬點供電給鍵盤，訊號也走同一條路。這帶來一個很實際的結論：</p>
@@ -410,7 +726,7 @@
       </div>
 
       <h3 id="sources">資料來源</h3>
-      <p class="sources">本文的規格、相容清單、系統需求與售價，皆取自 Apple 官方頁面，查證日期 2026 年 7 月 26 日：</p>
+      <p class="sources">本文的規格、相容清單、系統需求與售價，皆取自 Apple 官方頁面，查證日期 2026 年 8 月 1 日：</p>
       <ul class="sources">
         <li><a href="https://www.apple.com/tw/shop/ipad/accessories/keyboards">Apple 台灣官網 · iPad 鍵盤</a>（現售款式與定價）</li>
         <li><a href="https://support.apple.com/zh-tw/111910">適用於 iPad（11 英寸）的巧控鍵盤 · 技術規格</a>（舊版 11 吋相容清單、背光、USB-C）</li>
