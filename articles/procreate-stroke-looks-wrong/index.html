@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Procreate 筆觸怪怪的？症狀反查 Brush Studio 哪一頁 · 果果國際</title>
+<title>Procreate 筆觸怪怪的？筆刷設定症狀反查表 · 果果國際</title>
 <link rel="stylesheet" href="../../assets/style.css">
 <style>
   /* ── 本篇特有樣式 ── */
@@ -19,6 +19,19 @@
   .tbl-wrap { overflow-x: auto; margin: 20px 0; }
   .tbl-wrap table { margin: 0; min-width: 580px; }
   td small { display: block; color: var(--muted); font-size: .82em; margin-top: 2px; }
+
+  /* 導言：四頁速覽卡（把「哪一頁管什麼」從文字串改成可掃的卡） */
+  .pgrid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin: 22px 0; }
+  .pcard { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 10px; padding: 13px 14px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .pcard b { display: block; font-family: var(--mono); font-size: .76rem; color: var(--c); }
+  .pcard span { display: block; font-size: .95rem; color: var(--ink); font-weight: 700; margin-top: 5px; }
+  .pcard small { display: block; font-size: .8rem; color: var(--muted); margin-top: 7px; line-height: 1.55; }
+
+  /* 導言：迷你目錄（窄螢幕沒有左側 nav，這排就是導覽） */
+  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0 24px; }
+  .toc a { display: flex; align-items: baseline; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 14px; text-decoration: none; color: var(--ink); font-size: .93rem; transition: .12s; }
+  .toc a:hover { border-color: var(--navy); background: var(--navy-bg); }
+  .toc a i { font-family: var(--mono); font-style: normal; font-size: .72rem; color: var(--navy); font-weight: 700; flex: none; }
 
   /* 證據等級標籤 */
   .lv-tag { display: inline-block; font-family: var(--mono); font-size: .58rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; vertical-align: middle; white-space: nowrap; }
@@ -49,9 +62,11 @@
   @media (max-width: 860px) {
     .masthead { padding-left: 20px; padding-right: 20px; }
     .figs { grid-template-columns: 1fr 1fr; }
+    .pgrid { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 560px) {
     .figs, .figs.f2 { grid-template-columns: 1fr; }
+    .pgrid, .toc { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -92,16 +107,36 @@
 
   <div class="inner">
     <div class="kicker">Procreate / 筆刷除錯</div>
-    <h1>Procreate 筆觸怪怪的？<br>先反查是哪一頁</h1>
+    <h1>Procreate 筆觸怪怪的？<br>先查看筆刷設定</h1>
     <p class="subtitle">打開 Brush Studio 看到十幾個分頁不知道從哪下手，別一頁一頁亂拉——先看症狀，通常兩三頁之內就抓得到兇手。</p>
 
-    <p class="lede">Procreate 筆觸怪怪的，多數時候不是筆刷壞了，是某個設定正在做它該做的事，只是你不知道是哪一個。Brush Studio 有 <strong>14 個可調分頁</strong>，但真正常出事的只有幾頁：Stroke Path 管印章間距、Apple Pencil 管壓力與傾斜、Dynamics 管速度與隨機、Properties 管上下限。</p>
+    <p class="lede">Procreate 筆觸怪怪的，多數時候不是筆刷壞了，是某個設定正在做它該做的事，只是你不知道是哪一個。Brush Studio 有 <strong>14 個可調分頁</strong>，但真正常出事的只有下面這四頁——先用症狀認出是哪一頁，比從第一頁開始翻快得多。</p>
 
-    <p class="lede">其中 Dynamics 那一整頁，官方手冊明講不吃壓力也不吃傾斜——所以「這支筆刷好像沒感壓」有時候是規格，不是故障。</p>
+    <div class="pgrid">
+      <div class="pcard" style="--c:var(--teal)"><b>Stroke Path</b><span>管印章間距</span><small>線有縫、看得到一顆一顆</small></div>
+      <div class="pcard" style="--c:var(--navy)"><b>Apple Pencil</b><span>管壓力與傾斜</span><small>側鋒沒反應、粗細不隨手勁變</small></div>
+      <div class="pcard" style="--c:var(--amber)"><b>Dynamics</b><span>管速度與隨機</span><small>畫快畫慢粗細自己在變</small></div>
+      <div class="pcard" style="--c:var(--red)"><b>Properties</b><span>管尺寸與濃度上下限</span><small>放大到底還是很細</small></div>
+    </div>
 
-    <p class="lede">所以這頁的用法是反過來的：不從第一頁開始翻，而是先看你眼睛看到的症狀，再直接跳到那一頁。這樣比順著翻快，也比較不會落到「越調越亂、還回不去原本的樣子」。</p>
+    <div class="callout" style="--c:var(--purple)">
+      <div class="ct">先講一個最容易被誤會成故障的</div>
+      四頁裡的 Dynamics 那一整頁，官方手冊明講<strong>不吃壓力也不吃傾斜</strong>——它靠的是筆畫速度與隨機。所以「這支筆刷好像沒感壓」有時候是規格，不是故障。
+    </div>
 
-    <p class="lede">往下會給你一張症狀反查表、五個最常中的兇手、四個藏在 Brush Studio 外面的全域設定，以及調壞了怎麼還原。想從頭學筆刷怎麼調，請先看<a class="inline" href="../procreate-brush-studio-basics/">〈Procreate 筆刷怎麼調成自己要的手感？〉</a>；如果是<strong>粗細完全不隨手勁變</strong>，那是壓力鏈的問題，走<a class="inline" href="../procreate-pressure-not-working/">〈Procreate 沒有粗細變化？先問深淺〉</a>。</p>
+    <p class="lede">往下有四樣東西，最後一樣是留給已經「越調越亂、回不去原本樣子」的人。急的話直接跳：</p>
+
+    <div class="toc">
+      <a href="#lookup"><i>01</i>14 列症狀反查表</a>
+      <a href="#culprits"><i>02</i>五個最常中的兇手</a>
+      <a href="#global"><i>03</i>藏在筆刷外面的四道天花板</a>
+      <a href="#undo"><i>04</i>調壞了怎麼還原</a>
+    </div>
+
+    <div class="cgrid">
+      <div class="callout" style="--c:var(--navy)"><div class="ct">還沒學過怎麼調？</div>這篇預設你認得那些滑桿。想從頭學，先看它的前置篇：<a class="inline" href="../procreate-brush-studio-basics/">〈Procreate 筆刷怎麼調成自己要的手感？〉</a></div>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">粗細完全不隨手勁變？</div>那是壓力鏈的問題，不是筆刷設定，怎麼查在另一篇：<a class="inline" href="../procreate-pressure-not-working/">〈Procreate 沒有粗細變化？先問深淺〉</a></div>
+    </div>
 
     <p class="updated">本文查證：<b>2026 年 7 月 31 日</b>，分頁名稱、設定定義與各項限制逐條對照 Procreate 官方手冊原文。Brush Studio 是全 App 最常改版的地方，選單位置與名稱以你機器上看到的為準。<a class="inline" href="#sources">來源列在文末</a>，<a class="inline" href="#evidence">哪些是推論也標出來了</a>。</p>
 
