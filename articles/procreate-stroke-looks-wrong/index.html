@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Procreate 筆觸怪怪的？症狀反查 Brush Studio 哪一頁 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式 ── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 寬表格自己橫向捲，不撐破版面 */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 580px; }
+  td small { display: block; color: var(--muted); font-size: .82em; margin-top: 2px; }
+
+  /* 證據等級標籤 */
+  .lv-tag { display: inline-block; font-family: var(--mono); font-size: .58rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; vertical-align: middle; white-space: nowrap; }
+  .lv-tag.ok { color: var(--green-deep); background: var(--green-bg); border: 1px solid #c3e4cf; }
+  .lv-tag.infer { color: var(--amber); background: var(--amber-bg); border: 1px solid #e6d3a6; }
+
+  /* ── 示意圖（SVG）：亮色主題 ── */
+  figure.fig svg { width: 100%; height: auto; display: block; }
+  figure.fig, .figs { --soft: var(--muted); }   /* SVG 內沿用的次要文字色別名 */
+  .fig-wide { overflow-x: auto; }
+  .fig-wide svg { min-width: 460px; }
+  svg .ax { stroke: var(--line); stroke-width: 1.2; }
+  svg .gl { stroke: var(--grid); stroke-width: 1; }
+  svg .lbl   { font-family: var(--mono); font-size: 11px;  fill: var(--muted); }
+  svg .lbl-s { font-family: var(--mono); font-size: 9.5px; fill: var(--muted); }
+  svg .lbl-h { font-family: var(--mono); font-size: 11px;  fill: var(--ink); }
+  .svgcap { font-size: .86rem; color: var(--body); text-align: center; margin: 14px 0 22px; }
+
+  /* 兩／三欄比較卡 */
+  .figs { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; margin: 20px 0; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .figs.f2 { grid-template-columns: 1fr 1fr; }
+  .figs .pane { background: var(--panel); padding: 14px 12px 12px; }
+  .figs .pane .pt { font-family: var(--mono); font-size: .7rem; color: var(--c); margin-bottom: 4px; }
+  .figs .pane .pt::before { content: '● '; }
+  .figs .pane .pd { font-size: .82rem; color: var(--muted); margin-top: 8px; line-height: 1.6; }
+  .figs .pane svg { width: 100%; max-width: 320px; height: auto; display: block; margin: 0 auto; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .figs { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .figs, .figs.f2 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>筆觸症狀反查</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#triage" class="active">00 · 30 秒分流</a>
+  <div class="grp">反查</div>
+  <a href="#lookup">01 · 症狀反查表</a>
+  <a href="#culprits">02 · 五個常見兇手</a>
+  <a href="#global">03 · 筆刷之上那一層</a>
+  <div class="grp">收尾</div>
+  <a href="#guoguo">04 · 不是設定的那些</a>
+  <a href="#undo">05 · 調壞了怎麼還原</a>
+  <a href="#evidence">06 · 查證等級</a>
+  <a href="#watch">延伸觀看</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>症狀 → 分頁反查表</span><span>官方手冊逐字對照</span><span>含 4 道全域天花板</span><span>調壞了怎麼還原</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">Procreate / 筆刷除錯</div>
+    <h1>Procreate 筆觸怪怪的？<br>先反查是哪一頁</h1>
+    <p class="subtitle">打開 Brush Studio 看到十幾個分頁不知道從哪下手，別一頁一頁亂拉——先看症狀，通常兩三頁之內就抓得到兇手。</p>
+
+    <p class="lede">Procreate 筆觸怪怪的，多數時候不是筆刷壞了，是某個設定正在做它該做的事，只是你不知道是哪一個。Brush Studio 有 <strong>14 個可調分頁</strong>，但真正常出事的只有幾頁：Stroke Path 管印章間距、Apple Pencil 管壓力與傾斜、Dynamics 管速度與隨機、Properties 管上下限。</p>
+
+    <p class="lede">其中 Dynamics 那一整頁，官方手冊明講不吃壓力也不吃傾斜——所以「這支筆刷好像沒感壓」有時候是規格，不是故障。</p>
+
+    <p class="lede">所以這頁的用法是反過來的：不從第一頁開始翻，而是先看你眼睛看到的症狀，再直接跳到那一頁。這樣比順著翻快，也比較不會落到「越調越亂、還回不去原本的樣子」。</p>
+
+    <p class="lede">往下會給你一張症狀反查表、五個最常中的兇手、四個藏在 Brush Studio 外面的全域設定，以及調壞了怎麼還原。想從頭學筆刷怎麼調，請先看<a class="inline" href="../procreate-brush-studio-basics/">〈Procreate 筆刷怎麼調成自己要的手感？〉</a>；如果是<strong>粗細完全不隨手勁變</strong>，那是壓力鏈的問題，走<a class="inline" href="../procreate-pressure-not-working/">〈Procreate 沒有粗細變化？先問深淺〉</a>。</p>
+
+    <p class="updated">本文查證：<b>2026 年 7 月 31 日</b>，分頁名稱、設定定義與各項限制逐條對照 Procreate 官方手冊原文。Brush Studio 是全 App 最常改版的地方，選單位置與名稱以你機器上看到的為準。<a class="inline" href="#sources">來源列在文末</a>，<a class="inline" href="#evidence">哪些是推論也標出來了</a>。</p>
+
+    <section id="triage">
+      <div class="sec-label" style="--c:var(--navy)">triage</div>
+      <h2>00 · 先花 30 秒，確認你在哪一條路上</h2>
+      <p>「筆觸怪怪的」其實是三種完全不同的毛病，修法也完全不同。走錯路會白花很多時間，所以先分流。</p>
+
+      <figure class="fig fig-wide">
+<svg viewBox="0 0 700 210" role="img" aria-label="三條分流：深淺也沒變走感壓那篇、深淺有變但形狀不對走本篇、沒壞只是想學走基礎那篇">
+        <rect x="16" y="16" width="668" height="40" rx="8" fill="var(--navy-bg)" stroke="var(--line)"/>
+        <text class="lbl-h" x="42" y="41">先做一件事：用力畫一筆、再輕輕畫一筆，看「深淺」有沒有變</text>
+        <line class="gl" x1="350" y1="56" x2="350" y2="74"/>
+        <line class="gl" x1="130" y1="74" x2="570" y2="74"/>
+        <line class="gl" x1="130" y1="74" x2="130" y2="92"/>
+        <line class="gl" x1="350" y1="74" x2="350" y2="92"/>
+        <line class="gl" x1="570" y1="74" x2="570" y2="92"/>
+        <rect x="24" y="92" width="212" height="96" rx="9" fill="var(--red-bg)" stroke="var(--red)"/>
+        <text x="44" y="118" font-size="19">🖊</text>
+        <text class="lbl-s" x="72" y="116" fill="var(--red)">深淺也沒變</text>
+        <text class="lbl-s" x="44" y="140" fill="var(--ink)">壓力整條鏈路壞掉</text>
+        <text class="lbl-s" x="44" y="158" fill="var(--soft)">先去查壓力，不是查筆刷</text>
+        <text class="lbl-s" x="44" y="176" fill="var(--soft)">→ 走「感壓」那篇</text>
+        <rect x="244" y="92" width="212" height="96" rx="9" fill="var(--green-bg)" stroke="var(--green)"/>
+        <text x="264" y="118" font-size="19">🎨</text>
+        <text class="lbl-s" x="292" y="116" fill="var(--green)">深淺有變、但長相不對</text>
+        <text class="lbl-s" x="264" y="140" fill="var(--ink)">壓力是好的</text>
+        <text class="lbl-s" x="264" y="158" fill="var(--soft)">問題在筆刷某一頁的設定</text>
+        <text class="lbl-s" x="264" y="176" fill="var(--soft)">→ 就是這一篇</text>
+        <rect x="464" y="92" width="212" height="96" rx="9" fill="var(--navy-bg)" stroke="var(--navy)"/>
+        <text x="484" y="118" font-size="19">📘</text>
+        <text class="lbl-s" x="512" y="116" fill="var(--navy)">沒壞，只是想學</text>
+        <text class="lbl-s" x="484" y="140" fill="var(--ink)">想做出某種效果</text>
+        <text class="lbl-s" x="484" y="158" fill="var(--soft)">要的是概念不是除錯</text>
+        <text class="lbl-s" x="484" y="176" fill="var(--soft)">→ 走「怎麼調」那篇</text>
+      </svg>
+<figcaption>分流的那一問是<b>「深淺」有沒有變</b>——深淺沒變代表壓力沒進來，那跟筆刷設定無關。</figcaption>
+</figure>
+
+      <div class="grid g3">
+        <div class="card" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="c-tag">路線 A</div>
+          <h4>深淺也沒變</h4>
+          <p>用力畫跟輕輕畫看起來一模一樣。這是壓力沒有傳進來，跟你調哪一頁沒關係。</p>
+          <p style="margin-top:8px"><a class="inline" href="../procreate-pressure-not-working/">走〈沒有粗細變化？先問深淺〉</a></p>
+        </div>
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">路線 B</div>
+          <h4>深淺有變，形狀不對</h4>
+          <p>線有縫、斜著畫沒反應、越畫越淡、放大到底還是很細——這些都是設定，往下看反查表。</p>
+          <p style="margin-top:8px" class="updated">你現在就在這一篇</p>
+        </div>
+        <div class="card" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="c-tag">路線 C</div>
+          <h4>其實沒壞，是想學</h4>
+          <p>想做出鉛筆、水彩、草叢那種筆刷。那是正向教學，不是除錯，另一篇比較適合你。</p>
+          <p style="margin-top:8px"><a class="inline" href="../procreate-brush-studio-basics/">走〈筆刷怎麼調成自己要的手感〉</a></p>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">還有一種情況，連筆刷都還沒輪到</div>
+        筆完全畫不出東西、或畫出來是白色的——那多半是圖層被鎖住、選取範圍還在、Alpha 鎖定開著、或顏色剛好跟底色一樣。這一層跟 Brush Studio 無關，文末的第一支影片講得很完整，先把這層排除掉再往下。
+      </div>
+    </section>
+
+    <section id="lookup">
+      <div class="sec-label" style="--c:var(--teal)">lookup_table</div>
+      <h2>01 · 症狀反查表：你看到什麼，就先去哪一頁</h2>
+      <p>下面這張表是本篇的主體。左邊找你眼睛看到的現象，右邊就是該去翻的分頁——不用整本讀完，找到那一列直接跳。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你看到的症狀</th><th>先去這一頁</th><th>為什麼會這樣</th></tr>
+          <tr><td>放大到最大還是很細<small>或不透明度拉滿還是半透明</small></td><td>Properties → Brush Behavior</td><td>Maximum／Minimum 的尺寸與不透明度會直接夾住側邊欄那兩根滑桿</td></tr>
+          <tr><td>傾斜、側鋒完全沒反應</td><td>Apple Pencil → Tilt Graph</td><td>觸發點若設在 0–15 度，官方明說那個範圍筆尖根本沒碰到畫布</td></tr>
+          <tr><td>線有縫、看得到一顆一顆</td><td>Stroke Path → Spacing</td><td>間距太大；另外間距有最小值，設 0% 也不會完全沒有</td></tr>
+          <tr><td>畫快畫慢粗細自己在變</td><td>Dynamics → Speed</td><td>Size 設 −100% 是慢＝細、+100% 反過來，0% 才是均勻</td></tr>
+          <tr><td>大小或濃淡隨機亂跳</td><td>Dynamics → Jitter</td><td>這一組就是隨機，跟速度、壓力、傾斜都無關</td></tr>
+          <tr><td>越畫越淡，抬筆重畫就恢復</td><td>Wet Mix → Charge</td><td>顏料會用完；官方說抬筆再下筆等於重新沾回調色盤的顏色</td></tr>
+          <tr><td>越畫越淡，抬筆重畫還是淡</td><td>Stroke Path → Fall Off</td><td>這是「一筆之內淡出」，關掉就完全不淡</td></tr>
+          <tr><td>顏色自己在變</td><td>Color Dynamics</td><td>Stamp 是每顆印章換色、Stroke 是每一筆換色，兩種來源不同</td></tr>
+          <tr><td>線太抖，或反過來太死板</td><td>Stabilization</td><td>StreamLine、Stabilization、Motion Filtering 是三個不同東西，也可能被全域設定影響</td></tr>
+          <tr><td>邊緣鋸齒，或糊掉沒細節</td><td>Shape Filtering／Grain Filtering</td><td>抗鋸齒三選一：No 完全不柔化、Classic 是舊版做法、Improved 是新版</td></tr>
+          <tr><td>圖樣、格線筆刷接不起來</td><td>Grain → Offset Jitter</td><td>官方以內建 Grid 筆刷舉例：要做連續圖樣就得把它關掉</td></tr>
+          <tr><td>形狀不跟著筆畫轉，或亂轉</td><td>Shape → Rotation／Scatter</td><td>Rotation 0% 是完全不轉、100% 跟著筆畫轉；Scatter 是每次隨機轉</td></tr>
+          <tr><td>點一下蓋出一撮而不是一顆</td><td>Shape → Count／Count Jitter</td><td>Count 讓同一點蓋最多 16 次；Jitter 100% 時會在 1 到上限之間隨機</td></tr>
+          <tr><td>紋理拖不動、或反而糊成一片</td><td>Grain → Moving／Texturized</td><td>Moving 是紋理跟著筆拖，Texturized 是紋理定在底下不動</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">用這張表的兩個習慣，可以少走很多冤枉路</div>
+        一、<strong>一次只改一個滑桿</strong>，改完就在上面的塗鴉板畫一筆。同時動三個，出問題也不知道是誰造成的。<br>
+        二、動手前先存一個還原點（第 05 節有講在哪）。免費的保險，不買很可惜。
+      </div>
+    </section>
+
+    <section id="culprits">
+      <div class="sec-label" style="--c:var(--amber)">top_5</div>
+      <h2>02 · 五個最常中的兇手，逐個拆給你看</h2>
+      <p>表上那十幾列裡，有五個特別常中。它們有一個共同點：看起來都像故障，其實是<strong>設定在正常運作</strong>，只是你沒發現是哪一個在動。</p>
+
+      <h3>兇手一：放大到底還是很細，因為滑桿被夾住了</h3>
+      <p>這是最容易被誤會成「這支筆刷爛」的一個。你把側邊欄的尺寸滑桿拉到最頂，線還是細得可憐。</p>
+      <p>原因在 Properties 這一頁。官方對 Brush Behavior 的說明是：這裡的設定控制 Procreate 側邊欄尺寸與不透明度滑桿的<strong>上下限</strong>。也就是說，側邊欄那根滑桿的 100%，其實是「這支筆刷允許的 100%」。</p>
+
+      <figure class="fig fig-wide">
+<svg viewBox="0 0 700 200" role="img" aria-label="滑桿被上限夾住的示意：一般筆刷可用到滿，被設了最大尺寸的筆刷拉到底只到六成">
+        <text class="lbl-h" x="20" y="30">一般筆刷：側邊欄拉到底 ＝ 這支筆刷的最大</text>
+        <rect x="20" y="42" width="640" height="16" rx="8" fill="var(--panel)" stroke="var(--line)"/>
+        <rect x="20" y="42" width="640" height="16" rx="8" fill="var(--green)" opacity=".55"/>
+        <circle cx="656" cy="50" r="11" fill="#fff" stroke="var(--green)" stroke-width="2"/>
+        <text class="lbl-s" x="20" y="76" fill="var(--soft)">0%</text>
+        <text class="lbl-s" x="628" y="76" fill="var(--green)">拉到底＝100%</text>
+
+        <text class="lbl-h" x="20" y="118">被 Maximum Size 夾住的筆刷：拉到底也只到那條線</text>
+        <rect x="20" y="130" width="640" height="16" rx="8" fill="var(--panel)" stroke="var(--line)"/>
+        <rect x="20" y="130" width="384" height="16" rx="8" fill="var(--amber)" opacity=".55"/>
+        <rect x="404" y="130" width="256" height="16" fill="var(--red-bg)"/>
+        <line x1="404" y1="122" x2="404" y2="154" stroke="var(--red)" stroke-width="2"/>
+        <circle cx="400" cy="138" r="11" fill="#fff" stroke="var(--amber)" stroke-width="2"/>
+        <text class="lbl-s" x="20" y="164" fill="var(--soft)">0%</text>
+        <text class="lbl-s" x="412" y="168" fill="var(--red)">Maximum Size 設在這裡 → 右邊這段你永遠拉不到</text>
+        <text class="lbl-s" x="628" y="164" fill="var(--soft)">100%</text>
+      </svg>
+<figcaption>側邊欄滑桿不是絕對尺寸，是<b>「這支筆刷允許範圍」裡的百分比</b>。上限被調低，拉到底當然還是細。</figcaption>
+</figure>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">同一頁還有一個雙胞胎症狀</div>
+        「不透明度明明拉到 100%，畫出來還是半透明」也是同一個地方——<strong>Maximum Opacity</strong> 被調低了。兩個一起檢查，不要只看尺寸。
+      </div>
+
+      <h3>兇手二：傾斜完全沒反應，因為觸發點設在死區</h3>
+      <p>你把某個效果接到傾斜上，結果怎麼斜都沒事發生。官方手冊對 Tilt 的說明把原因寫得很白，而且這段幾乎沒有中文教學會提。</p>
+      <p>官方原文的意思是：Apple Pencil 的傾斜可以從 0 到 90 度，但在 0 到 15 度之間，<strong>筆尖並沒有實際碰到畫布</strong>，設在這個範圍裡的數值不會有任何效果；16 到 30 度之間，回報可能不準；30 到 90 度才是官方建議的觸發範圍。</p>
+
+      <figure class="fig fig-wide">
+<svg viewBox="0 0 700 230" role="img" aria-label="三種握筆角度對照：10度是死區、25度可能不準、55度是建議範圍">
+        <line class="ax" x1="20" y1="150" x2="680" y2="150"/>
+        <text class="lbl-s" x="20" y="168" fill="var(--soft)">畫布</text>
+
+        <line x1="60" y1="150" x2="149" y2="134" stroke="var(--red)" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="60" cy="150" r="4" fill="var(--red)"/>
+        <text class="lbl-s" x="56" y="188" fill="var(--red)">約 10°：死區</text>
+        <text class="lbl-s" x="56" y="204" fill="var(--soft)">筆尖沒碰到畫布</text>
+        <text class="lbl-s" x="56" y="220" fill="var(--soft)">設在這裡＝完全無效</text>
+
+        <line x1="270" y1="150" x2="352" y2="112" stroke="var(--amber)" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="270" cy="150" r="4" fill="var(--amber)"/>
+        <text class="lbl-s" x="266" y="188" fill="var(--amber)">約 25°：灰色地帶</text>
+        <text class="lbl-s" x="266" y="204" fill="var(--soft)">官方說回報可能不準</text>
+
+        <line x1="480" y1="150" x2="532" y2="76" stroke="var(--green)" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="480" cy="150" r="4" fill="var(--green)"/>
+        <text class="lbl-s" x="476" y="188" fill="var(--green)">約 55°：建議範圍</text>
+        <text class="lbl-s" x="476" y="204" fill="var(--soft)">30–90° 才對得上真人握筆</text>
+
+        <rect x="20" y="20" width="110" height="26" rx="5" fill="var(--red-bg)" stroke="var(--red)"/>
+        <rect x="130" y="20" width="110" height="26" rx="5" fill="var(--amber-bg)" stroke="var(--amber)"/>
+        <rect x="240" y="20" width="440" height="26" rx="5" fill="var(--green-bg)" stroke="var(--green)"/>
+        <text class="lbl-s" x="34" y="37" fill="var(--red)">0°–15° 無效</text>
+        <text class="lbl-s" x="144" y="37" fill="var(--amber)">16°–30° 可能不準</text>
+        <text class="lbl-s" x="380" y="37" fill="var(--green)">30°–90° 官方建議</text>
+      </svg>
+<figcaption>傾斜設定沒反應，先看觸發點落在哪一段。<b>設在 0–15 度那段，是永遠不會被觸發的。</b></figcaption>
+</figure>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">反過來想，這條也是做鉛筆筆刷的關鍵</div>
+        官方在同一段給了一個 Pro Tip：用傾斜圖表可以做出「立起來畫是尖的、斜下去變成寬面上陰影」的石墨鉛筆效果。前提就是<strong>觸發點要設在 30 度以上</strong>，不然你斜再多也不會切換。
+      </div>
+
+      <h3>兇手三：「這支筆刷沒感壓」——先確認是不是 Dynamics 在做事</h3>
+      <p>有些筆刷的粗細變化看起來很隨機，跟你用力沒關係。你以為是感壓壞了，其實那個變化根本不是壓力做的。</p>
+      <p>官方在 Dynamics 這一頁開頭就寫明：這一頁的設定<strong>不依賴壓力與傾斜</strong>，並且建議用手指畫圖的人多用這一頁做出變化。換句話說，Dynamics 做出來的粗細差異，是速度和隨機造成的，跟你用多大力氣完全無關。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">✍️</div><div class="bt">你用力 / 你斜著畫</div><div class="bv">Apple Pencil 頁</div></div>
+          <div class="arr">｜</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">💨</div><div class="bt">你畫得快 / 慢</div><div class="bv">Dynamics → Speed</div></div>
+          <div class="arr">｜</div>
+          <div class="box" style="--cbg:var(--red-bg)"><div class="bi">🎲</div><div class="bt">誰都沒動，它自己變</div><div class="bv">Dynamics → Jitter</div></div>
+        </div>
+        <figcaption>粗細會變不代表有感壓。<b>先問「是我用力造成的，還是我畫快造成的」</b>，答案不同，該去的頁就不同。</figcaption>
+      </figure>
+
+      <details>
+        <summary>一個不用打開設定就能快篩的方法（以及它的兩個但書）</summary>
+        <p>官方說明筆刷庫裡每支筆刷旁邊那條預覽線，是「一筆由左到右、壓力逐漸增加、最後再放掉」的示範筆畫，而且任何綁在壓力上的效果<strong>都會在預覽裡被示範出來</strong>。所以那條線如果從頭到尾一樣粗，這支筆刷多半沒把壓力接到粗細上。</p>
+        <p>但書一：Properties 與 Preview 都有「用印章預覽」的開關，打開之後預覽會變成單一印章，就看不出來了。但書二：Preview 這頁有個 Pressure Minimum，官方說它<strong>拉到最大時，預覽會呈現整筆均勻的壓力</strong>——那條線也會變得平平的。</p>
+        <p>所以這招當快篩可以，別當結論。而且「預覽沒變化就一定沒接壓力」是我們從官方那句話反推的，官方沒有直接這樣說。</p>
+      </details>
+
+      <h3>兇手四：線有縫、一顆一顆，而且間距關不掉</h3>
+      <p>Procreate 的一筆線，本質是同一個形狀沿著你的路徑蓋很多次章。間距一拉開，那些印章就分家了，線就變成一串點。</p>
+      <p>這裡有個看起來像 bug 的行為：官方說明過，當間距抖動設得高時，就算基礎間距是 0%，你還是會看到間距在變，因為<strong>間距有一個最小值</strong>。看到這個不用懷疑筆刷壞了。</p>
+
+      <figure class="fig fig-wide">
+<svg viewBox="0 0 700 190" role="img" aria-label="間距對照：正常間距印章疊成連續線，間距拉大變成一串分開的點">
+        <text class="lbl-h" x="20" y="30">間距正常：印章疊在一起，看起來就是一條線</text>
+        <g fill="var(--navy)">
+          <circle cx="40" cy="58" r="13"/><circle cx="58" cy="58" r="13"/><circle cx="76" cy="58" r="13"/><circle cx="94" cy="58" r="13"/><circle cx="112" cy="58" r="13"/><circle cx="130" cy="58" r="13"/><circle cx="148" cy="58" r="13"/><circle cx="166" cy="58" r="13"/><circle cx="184" cy="58" r="13"/><circle cx="202" cy="58" r="13"/><circle cx="220" cy="58" r="13"/><circle cx="238" cy="58" r="13"/><circle cx="256" cy="58" r="13"/><circle cx="274" cy="58" r="13"/><circle cx="292" cy="58" r="13"/><circle cx="310" cy="58" r="13"/><circle cx="328" cy="58" r="13"/><circle cx="346" cy="58" r="13"/><circle cx="364" cy="58" r="13"/><circle cx="382" cy="58" r="13"/><circle cx="400" cy="58" r="13"/><circle cx="418" cy="58" r="13"/><circle cx="436" cy="58" r="13"/><circle cx="454" cy="58" r="13"/><circle cx="472" cy="58" r="13"/><circle cx="490" cy="58" r="13"/>
+        </g>
+        <text class="lbl-h" x="20" y="118">間距拉大：同一支筆刷，同一個形狀，只是印章分家了</text>
+        <g fill="var(--amber)">
+          <circle cx="40" cy="148" r="13"/><circle cx="90" cy="148" r="13"/><circle cx="140" cy="148" r="13"/><circle cx="190" cy="148" r="13"/><circle cx="240" cy="148" r="13"/><circle cx="290" cy="148" r="13"/><circle cx="340" cy="148" r="13"/><circle cx="390" cy="148" r="13"/><circle cx="440" cy="148" r="13"/><circle cx="490" cy="148" r="13"/>
+        </g>
+        <text class="lbl-s" x="524" y="62" fill="var(--soft)">← 這是你以為的「一條線」</text>
+        <text class="lbl-s" x="524" y="152" fill="var(--soft)">← 這是它真正的樣子</text>
+      </svg>
+<figcaption>「線有縫」不是筆刷破掉，是<b>間距把印章拉開了</b>。想確認就把間距拉到更大，縫會等比例變大。</figcaption>
+</figure>
+
+      <div class="callout" style="--c:var(--teal)">
+        <div class="ct">還有一個少見但很難猜的來源</div>
+        Dynamics 那一頁也有一個間距——官方說明它是「依筆畫速度調整間距，畫越快間距越大」。所以如果你的縫<strong>只在畫快的時候出現</strong>，去 Dynamics 找，不要在 Stroke Path 一直拉。
+      </div>
+
+      <h3>兇手五：越畫越淡——兩個兇手，抬一次筆就分得出來</h3>
+      <p>「一筆拉長就越來越淡」有兩個完全不同的來源，而且藏在不同頁。好消息是分辨方法只要一個動作：<strong>抬筆，重新畫一段</strong>。</p>
+
+      <div class="figs f2">
+        <div class="pane" style="--c:var(--red)">
+          <div class="pt">抬筆重畫，還是淡 → Fall Off</div>
+          <svg viewBox="0 0 300 130" role="img" aria-label="Fall Off：第一筆漸淡，抬筆後第二筆一樣漸淡">
+            <g fill="var(--red)">
+              <circle cx="24" cy="36" r="11" opacity="1"/><circle cx="48" cy="36" r="11" opacity=".85"/><circle cx="72" cy="36" r="11" opacity=".7"/><circle cx="96" cy="36" r="11" opacity=".55"/><circle cx="120" cy="36" r="11" opacity=".4"/><circle cx="144" cy="36" r="11" opacity=".26"/><circle cx="168" cy="36" r="11" opacity=".14"/>
+              <circle cx="24" cy="90" r="11" opacity="1"/><circle cx="48" cy="90" r="11" opacity=".85"/><circle cx="72" cy="90" r="11" opacity=".7"/><circle cx="96" cy="90" r="11" opacity=".55"/><circle cx="120" cy="90" r="11" opacity=".4"/><circle cx="144" cy="90" r="11" opacity=".26"/><circle cx="168" cy="90" r="11" opacity=".14"/>
+            </g>
+            <text class="lbl-s" x="196" y="40" fill="var(--soft)">第一筆</text>
+            <text class="lbl-s" x="196" y="94" fill="var(--soft)">第二筆</text>
+          </svg>
+          <div class="pd">兩筆長得一模一樣。這是 Stroke Path 的 Fall Off——它管的是「一筆之內淡出」，跟顏料多寡無關，關掉就完全不淡。</div>
+        </div>
+        <div class="pane" style="--c:var(--green)">
+          <div class="pt">抬筆重畫，濃度回來 → Charge</div>
+          <svg viewBox="0 0 300 130" role="img" aria-label="Wet Mix Charge：第一筆畫到沒色，抬筆後第二筆恢復濃度">
+            <g fill="var(--green)">
+              <circle cx="24" cy="36" r="11" opacity="1"/><circle cx="48" cy="36" r="11" opacity=".8"/><circle cx="72" cy="36" r="11" opacity=".6"/><circle cx="96" cy="36" r="11" opacity=".42"/><circle cx="120" cy="36" r="11" opacity=".26"/><circle cx="144" cy="36" r="11" opacity=".14"/><circle cx="168" cy="36" r="11" opacity=".07"/>
+              <circle cx="24" cy="90" r="11" opacity="1"/><circle cx="48" cy="90" r="11" opacity=".95"/><circle cx="72" cy="90" r="11" opacity=".85"/><circle cx="96" cy="90" r="11" opacity=".7"/><circle cx="120" cy="90" r="11" opacity=".55"/><circle cx="144" cy="90" r="11" opacity=".38"/><circle cx="168" cy="90" r="11" opacity=".22"/>
+            </g>
+            <text class="lbl-s" x="196" y="40" fill="var(--soft)">第一筆</text>
+            <text class="lbl-s" x="196" y="94" fill="var(--soft)">第二筆・重沾</text>
+          </svg>
+          <div class="pd">第二筆明顯比較濃。這是 Wet Mix 的 Charge——官方說抬筆再下筆，等於把筆重新沾回調色盤的顏色。</div>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)">
+        <div class="ct">把這句記起來，以後不用查表</div>
+        <strong>抬筆會恢復的是顏料，抬筆不會恢復的是設定。</strong>顏料歸 Wet Mix 管，淡出歸 Stroke Path 管。官方還補了一句：Charge 的效果在高稀釋度時最明顯。
+      </div>
+    </section>
+
+    <section id="global">
+      <div class="sec-label" style="--c:var(--purple)">above_the_brush</div>
+      <h2>03 · 你翻遍 14 頁都找不到？因為它不在筆刷裡</h2>
+      <p>有一類問題最折磨人：你把 Brush Studio 從頭翻到尾，該關的都關了，症狀還在。那通常代表兇手根本不在筆刷裡，而是在它<strong>上面那一層</strong>。</p>
+      <p>Procreate 的偏好設定裡有四個開關，會直接壓過單支筆刷的設定。我們把它叫做「筆刷之上的四道天花板」——它們的共同特徵是：你在筆刷裡設了，但它不生效，而且筆刷裡完全看不出原因。</p>
+
+      <figure class="fig fig-wide">
+<svg viewBox="0 0 700 230" role="img" aria-label="三層結構示意：最上層是偏好設定的全域天花板、中間是單支筆刷的設定、最下層是側邊欄滑桿">
+        <rect x="60" y="18" width="580" height="52" rx="9" fill="var(--purple-bg)" stroke="var(--purple)"/>
+        <text class="lbl-h" x="80" y="42" fill="var(--purple)">第一層 · Actions → Prefs（全域，管所有筆刷）</text>
+        <text class="lbl-s" x="80" y="60" fill="var(--soft)">壓力曲線 · 穩定與動態濾鏡 · 游標外框 · 筆刷縮放</text>
+        <path d="M350,70 L350,92" stroke="var(--purple)" stroke-width="2"/>
+        <path d="M344,86 L350,96 L356,86 Z" fill="var(--purple)"/>
+        <text class="lbl-s" x="362" y="88" fill="var(--purple)">壓過下面</text>
+
+        <rect x="60" y="96" width="580" height="52" rx="9" fill="var(--navy-bg)" stroke="var(--navy)"/>
+        <text class="lbl-h" x="80" y="120" fill="var(--navy)">第二層 · Brush Studio（只管你現在編輯的這一支筆刷）</text>
+        <text class="lbl-s" x="80" y="138" fill="var(--soft)">14 個分頁全部都在這一層</text>
+        <path d="M350,148 L350,170" stroke="var(--navy)" stroke-width="2"/>
+        <path d="M344,164 L350,174 L356,164 Z" fill="var(--navy)"/>
+        <text class="lbl-s" x="362" y="166" fill="var(--navy)">決定範圍</text>
+
+        <rect x="60" y="174" width="580" height="44" rx="9" fill="var(--green-bg)" stroke="var(--green)"/>
+        <text class="lbl-h" x="80" y="196" fill="var(--green-deep)">第三層 · 側邊欄滑桿（你畫這一筆當下的尺寸與不透明度）</text>
+        <text class="lbl-s" x="80" y="212" fill="var(--soft)">它的 0–100%，是第二層允許的範圍</text>
+      </svg>
+<figcaption>看到「我設了但沒反應」，往上找一層通常就中。<b>越上面的層級，權力越大。</b></figcaption>
+</figure>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>天花板</th><th>它會壓過什麼</th><th>你會看到的症狀</th></tr>
+          <tr><td>Prefs → 壓力與平滑<small>App 壓力靈敏度曲線</small></td><td>整個 App 的壓力反應</td><td>筆刷裡的壓力圖表調了效果不如預期。官方在筆刷的壓力圖表旁註明：它仍然會遵守 Actions 選單裡的全域設定</td></tr>
+          <tr><td>Prefs → 壓力與平滑<small>穩定與動態濾鏡</small></td><td>所有筆刷的線條穩定</td><td>換了筆刷線還是一樣被拉直。官方說穩定可以全域套用，也可以只套用在單支筆刷</td></tr>
+          <tr><td>Prefs → 進階游標<small>筆刷外框樣式</small></td><td>筆刷裡的游標外框設定</td><td>在筆刷裡設了外框卻沒顯示。官方說要選「Per brush」才會啟用筆刷裡那組設定，否則被全域覆蓋</td></tr>
+          <tr><td>Prefs → 筆刷縮放</td><td>筆刷在畫布上的實際大小</td><td>放大縮小畫布時筆刷大小怪怪的、跟教學影片對不起來。官方 Pro Tip：縮放行為不如預期就改成「相對於畫布」</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">一句話帶走</div>
+        在 Procreate 裡看到<strong>「我明明設了，可是沒反應」</strong>，先別懷疑自己——去 Actions → Prefs 看一眼，那裡通常有一個開關正壓在你的筆刷上面。
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">誠實說：第四道那條我們沒有實測到底</div>
+        「筆刷縮放」的兩種模式（相對於畫布／相對於螢幕）官方只寫了行為與建議，沒有給每種筆刷的對照。所以我們只寫到「不如預期就切回相對於畫布」這一層，<strong>再細的差異請你自己在同一張畫布上切換比較</strong>，別照抄任何人的絕對說法。
+      </div>
+    </section>
+
+    <section id="guoguo">
+      <div class="sec-label" style="--c:var(--green)">from_our_desk</div>
+      <h2>04 · 果果視角：有些症狀，怎麼調都不會好</h2>
+      <p>客服信箱裡「筆刷怪怪的」是常客。實際查下來，大致落在三類：設定被夾住、被全域壓過，還有第三類——你手上那支<strong>筆本來就做不到</strong>。</p>
+      <p>第三類最需要先講清楚，因為它是唯一「在 App 裡怎麼調都不會好」的一種。我們架上 2018 到 2026 年的 iPad 與各代 Apple Pencil 都在，所以很清楚同一支筆刷換一支筆，結果會差多少。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>症狀</th><th>可能不是設定，是筆做不到</th><th>換一支原廠筆會不會好</th></tr>
+          <tr><td>粗細完全不隨手勁變</td><td>USB-C 版的 Apple Pencil 沒有壓力感應</td><td class="good">會。第 1 代、第 2 代與 Pro 都有壓力</td></tr>
+          <tr><td>斜著畫沒有側鋒</td><td>多數平價副廠筆不回報傾斜</td><td class="good">會。原廠各代都有傾斜</td></tr>
+          <tr><td>轉筆桿沒作用</td><td>轉筆桿只有 Apple Pencil Pro 有。官方註明：選了「方位角與轉筆桿」但筆不支援時，會自動退回只用方位角</td><td class="bad">只有 Pro 有，其他代換了也沒有</td></tr>
+          <tr><td>筆還沒碰到螢幕就想看到預覽</td><td>懸浮要 iPad 與筆都支援</td><td class="bad">看組合，不是換筆就一定有</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--red)">
+        <div class="ct">懸浮那一列，我們刻意不列機型清單</div>
+        懸浮支援與否同時看 iPad 機型和 Pencil 世代，組合多、又會隨新機型變動。這種表最容易過期，過期又最容易害人買錯。<br>
+        要確認就去 Apple 官網的 Apple Pencil 比較表對一次，那是唯一會跟著更新的來源。
+      </div>
+
+      <h3>買二手筆或副廠筆之前，先確認這三件事</h3>
+      <ul class="check">
+        <li><b>你要的效果吃不吃壓力？</b>要做鉛筆、水彩那種手勁變化，壓力是必要條件，USB-C 版做不到。</li>
+        <li><b>你要不要側鋒？</b>要斜著打陰影就需要傾斜，這是原廠筆與多數副廠筆最大的分水嶺。</li>
+        <li><b>賣家有沒有講清楚是哪一代？</b>「Apple Pencil」不是一個型號而是一個系列，能力差很多。看到只寫「Apple 觸控筆」的敘述，先問清楚再說。</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">我們的立場</div>
+        我們自己賣二手與福利機，所以更要把話說在前面：<strong>筆的世代差異是規格，不是瑕疵，也不是調設定能補的</strong>。買之前先對清楚你要的效果需要哪些能力，比買回來才發現「原來這支做不到」好得多。
+      </div>
+    </section>
+
+    <section id="undo">
+      <div class="sec-label" style="--c:var(--teal)">undo</div>
+      <h2>05 · 已經越調越亂了，怎麼還原？</h2>
+      <p>反查是為了少調幾下，但很多人是「已經亂調完才來找答案」。Procreate 有三種還原，管的範圍不一樣，用錯會白忙。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>還原方式</th><th>在哪裡</th><th>會還原到哪裡</th></tr>
+          <tr><td>重置所有筆刷設定</td><td>塗鴉板左上角的設定</td><td>把<strong>目前這一支</strong>筆刷的設定重置。官方明白註明：只適用於目前這支筆刷，不會動到其他筆刷</td></tr>
+          <tr><td>建立還原點</td><td>About this Brush</td><td>你自己存的存檔點。官方註明<strong>每支筆刷同時只能有一個</strong>，存新的會蓋掉舊的</td></tr>
+          <tr><td>重置筆刷</td><td>About this Brush</td><td>回到你設的還原點；官方說<strong>如果沒設過還原點，會回到這支筆刷建立或匯入當下的狀態</strong></td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">下次動手前，先做這個免費的保險</div>
+        官方自己的建議是：<strong>要做多個變體，就先複製筆刷</strong>，讓每支變體各自帶自己的還原點。<br>
+        因為還原點一支只能有一個，你想同時保留「原始」「調到一半」「最終版」三個狀態時，靠還原點是做不到的——靠複製才行。
+      </div>
+
+      <ul class="flags">
+        <li><b>以為還原點可以存很多個</b>——官方明講每支筆刷同時只有一個，存新的就蓋掉舊的。</li>
+        <li><b>直接改原廠筆刷</b>——雖然重置筆刷會回到「建立或匯入當下」，但你的每一個變體都會擠在同一支上。複製一支再改，心理負擔小很多。</li>
+        <li><b>想在 Brush Studio 裡改名字</b>——官方說自 Procreate 5.4 起這裡改不了了，要回筆刷選單長按筆刷、選「重新命名」。</li>
+        <li><b>照抄別人的數值卻沒換形狀</b>——同一組數字配不同形狀，結果差很多，抄了通常不像。</li>
+      </ul>
+    </section>
+
+    <section id="evidence">
+      <div class="sec-label" style="--c:var(--purple)">evidence</div>
+      <h2>06 · 這篇哪些是官方說的、哪些是我們推的</h2>
+      <p>筆刷設定這種題目，網路上很多說法查不到出處。我們把等級標出來，你可以自己決定要信到什麼程度。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>說法</th><th>等級</th><th>依據</th></tr>
+          <tr><td>Brush Studio 共 14 個可調分頁</td><td><span class="lv-tag ok">已確認</span></td><td>官方手冊該頁開頭逐字，且分頁清單可逐項對上</td></tr>
+          <tr><td>Dynamics 整頁不依賴壓力與傾斜</td><td><span class="lv-tag ok">已確認</span></td><td>官方逐字，並建議用手指畫的人多用這頁</td></tr>
+          <tr><td>傾斜 0–15 度無效、16–30 度可能不準</td><td><span class="lv-tag ok">已確認</span></td><td>官方對 Tilt 的逐字說明，含「30–90 度才是最佳觸發範圍」</td></tr>
+          <tr><td>最大尺寸／不透明度會夾住側邊欄滑桿</td><td><span class="lv-tag ok">已確認</span></td><td>官方對 Brush Behavior 的說明：控制側邊欄兩根滑桿的上下限</td></tr>
+          <tr><td>間距設 0% 仍看得到間距變化</td><td><span class="lv-tag ok">已確認</span></td><td>官方說明間距有一個最小值</td></tr>
+          <tr><td>抬筆重新下筆等於重新沾色</td><td><span class="lv-tag ok">已確認</span></td><td>官方對 Charge 的逐字說明，並指出高稀釋度時最明顯</td></tr>
+          <tr><td>四道全域設定會壓過單支筆刷</td><td><span class="lv-tag ok">已確認</span></td><td>官方分別在壓力圖表、穩定、進階游標、筆刷縮放四處各自寫明</td></tr>
+          <tr><td>還原點每支只有一個；重置筆刷會回到建立或匯入當下</td><td><span class="lv-tag ok">已確認</span></td><td>官方對 Reset Point 與 Reset brush 的逐字說明</td></tr>
+          <tr><td>轉筆桿只有 Apple Pencil Pro；不支援時退回方位角</td><td><span class="lv-tag ok">已確認</span></td><td>官方 Input style 的說明與其 Heads Up 註記</td></tr>
+          <tr><td>「抬筆會恢復＝顏料、不會恢復＝設定」這個分辨法</td><td><span class="lv-tag infer">合理推論</span></td><td>由官方對 Charge 與 Fall Off 各自的定義推出，官方沒有直接把兩者放在一起比較</td></tr>
+          <tr><td>預覽線沒有粗細變化 → 這支筆刷沒接壓力</td><td><span class="lv-tag infer">合理推論</span></td><td>官方只說「綁在壓力上的效果會在預覽裡被示範」，反推是我們的判斷，且有印章預覽與壓力最小值兩個但書</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)">
+        <div class="ct">為什麼要標這個</div>
+        因為除錯類的內容最怕「聽起來很合理但其實沒人查過」。查得到出處的，我們寫出處；我們自己推的，就說是推的——你才知道哪幾條可以直接照做，哪幾條要自己再驗一次。
+      </div>
+    </section>
+
+    <section id="watch">
+      <div class="sec-label" style="--c:var(--teal)">videos</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p style="font-size:.9rem;color:var(--muted)">滑桿實際拉動的樣子，用看的比用讀的快。影片為第三方製作，介面可能因 Procreate 版本不同而有差異，設定說明仍以官方手冊為準。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=l9ojEsGeNN0" target="_blank" rel="noopener" data-yt="l9ojEsGeNN0" aria-label="播放：Procreate教學 筆突然畫不出來 新手常見8大問題解析">
+          <img loading="lazy" src="https://i.ytimg.com/vi/l9ojEsGeNN0/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/l9ojEsGeNN0/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>Procreate教學 | 筆突然畫不出來!? 新手常見8大問題解析</b><small>頻道：檸檬酸姐姐 · <strong>繁體中文</strong>。推薦它是因為它剛好補上本文第 00 節說的「比筆刷更前面那一層」——筆畫不出來、畫筆變成橡皮擦、填色溢滿、選取範圍跳掉。這些都不是 Brush Studio 的問題，先看這支把它們排除掉。</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=7J7NXCmiQ90" target="_blank" rel="noopener" data-yt="7J7NXCmiQ90" aria-label="播放：PROCREATE BRUSH PROBLEMS 7 easy fixes you need to know">
+          <img loading="lazy" src="https://i.ytimg.com/vi/7J7NXCmiQ90/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/7J7NXCmiQ90/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>PROCREATE BRUSH PROBLEMS (7 easy fixes you need to know!)</b><small>頻道：Color with Kendi · 英文。三支裡最貼本文的一支——它的章節幾乎是本文反查表的影片版：壓力曲線、筆畫中間跳掉、傾斜設定失效、重置筆刷、意外的半透明。看得到滑桿拉動當下的變化。</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=hQQ65mHzM8o" target="_blank" rel="noopener" data-yt="hQQ65mHzM8o" aria-label="播放：Why Your Procreate Brush Size Is Wrong">
+          <img loading="lazy" src="https://i.ytimg.com/vi/hQQ65mHzM8o/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/hQQ65mHzM8o/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>Why Your Procreate Brush Size Is Wrong</b><small>頻道：James Julier · 英文、2026 年 6 月上片。專講第 03 節的第四道天花板「筆刷縮放」：為什麼你的筆刷大小老是跟教學影片對不起來，以及兩種模式差在哪。這一條在中文內容裡幾乎沒人講。</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">本文的分頁名稱、設定定義、各項限制與還原行為，全部取自 Procreate 官方手冊；Apple Pencil 各代能力差異取自 Apple 官方頁面。以下每一條都在 2026 年 7 月 31 日重新逐字核對過：</p>
+      <ul class="sources">
+        <li><a href="https://help.procreate.com/procreate/handbook/brushes/brush-studio-settings">Procreate 官方手冊 · Brush Studio Settings</a>（本篇主要來源：14 個分頁的名稱與順序；Spacing 的最小值；Fall Off 的定義；Dynamics「不依賴壓力與傾斜」與 Speed、Jitter 的差別；Tilt 的 0–15／16–30／30–90 度分區與鉛筆 Pro Tip；Wet Mix 的 Charge 與重新沾色；Shape 的 Rotation、Scatter、Count 上限 16；Grain 的 Moving／Texturized 與 Offset Jitter；Shape 與 Grain 的三種抗鋸齒；Properties 的最大／最小尺寸與不透明度會限制側邊欄滑桿；游標外框需設為 Per brush；壓力圖表仍受全域設定約束；Input style 與轉筆桿的退回行為；預覽是壓力漸增的示範筆畫、Pressure Minimum 拉滿會呈現均勻壓力；還原點每支只有一個、重置筆刷的回復點；Brush Title 自 5.4 起不能在此修改）</li>
+        <li><a href="https://help.procreate.com/procreate/handbook/brushes/brush-studio">Procreate 官方手冊 · Brush Studio</a>（Brush Studio 的三塊版面；塗鴉板設定裡的「重置所有筆刷設定」註明只適用於目前這支筆刷）</li>
+        <li><a href="https://help.procreate.com/procreate/handbook/actions/actions-preferences">Procreate 官方手冊 · Preferences</a>（第 03 節四道全域天花板的依據：App 壓力靈敏度曲線、全域穩定與動態濾鏡、進階游標的 Per brush 選項、筆刷縮放的兩種模式與官方 Pro Tip）</li>
+        <li><a href="https://www.apple.com/tw/apple-pencil/">Apple 台灣官網 · Apple Pencil</a>（各代比較表：壓力感應不適用於 Apple Pencil (USB-C)、傾斜度與懸浮的支援範圍——第 04 節那張表的依據）</li>
+      </ul>
+      <p class="updated">Brush Studio 是 Procreate 改版時最常變動的地方，新增或移除設定、搬動選單都可能發生；本文的分頁名稱與位置以查證日的版本為準，操作前請以你 iPad 上實際看到的字為準。標示為「合理推論」的說法請見<a class="inline" href="#evidence">第 06 節</a>。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
