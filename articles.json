@@ -891,6 +891,7 @@
         "q": "Apple Pencil USB-C 版在 Procreate 沒有粗細變化？",
         "a": "不是，那一款本來就沒有壓力感應。Apple 台灣官網的機型比較表把「壓力感應」這一列標成「不適用於 Apple Pencil (USB-C)」。它有傾斜感應、有懸浮，就是沒有筆壓，所以線永遠一樣粗是設計如此，換筆尖或重灌 App 都不會改變。想在 Procreate 用筆壓，要用第 1 代、第 2 代或 Apple Pencil Pro。"
       }
-    ]
+    ],
+    "ogImage": "assets/og/procreate-pressure-not-working-cover.png"
   }
 ]
