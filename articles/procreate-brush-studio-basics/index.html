@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Procreate 筆刷怎麼調？Brush Studio 14 頁白話圖解 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式 ── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 寬表格自己橫向捲，不撐破版面 */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 560px; }
+  td.y { color: var(--green-deep); font-weight: 700; text-align: center; }
+  td.n { color: var(--red); font-weight: 700; text-align: center; }
+
+  /* 證據等級標籤 */
+  .lv-tag { display: inline-block; font-family: var(--mono); font-size: .58rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; vertical-align: middle; }
+  .lv-tag.ok { color: var(--green-deep); background: var(--green-bg); border: 1px solid #c3e4cf; }
+  .lv-tag.infer { color: var(--amber); background: var(--amber-bg); border: 1px solid #e6d3a6; }
+
+  /* ── 示意圖（SVG）：由內部教材移植，改為亮色主題 ── */
+  figure.fig svg { width: 100%; height: auto; display: block; }
+  figure.fig, .figs { --head: var(--ink); --soft: var(--muted); --cyan: var(--teal); }
+  .fig-wide { overflow-x: auto; }
+  .fig-wide svg { min-width: 460px; }
+  svg .ax { stroke: var(--line); stroke-width: 1.2; }
+  svg .gl { stroke: var(--grid); stroke-width: 1; }
+  svg .cv { fill: none; }
+  svg .lbl   { font-family: var(--mono); font-size: 11px;  fill: var(--muted); }
+  svg .lbl-s { font-family: var(--mono); font-size: 9.5px; fill: var(--muted); }
+  svg .lbl-h { font-family: var(--mono); font-size: 11px;  fill: var(--ink); }
+  .svgcap { font-size: .86rem; color: var(--body); text-align: center; margin: 14px 0 22px; }
+
+  /* 三欄比較卡 */
+  .figs { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; margin: 20px 0; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .figs.f2 { grid-template-columns: 1fr 1fr; }
+  .figs .pane { background: var(--panel); padding: 14px 12px 12px; }
+  .figs .pane .pt { font-family: var(--mono); font-size: .7rem; color: var(--c); margin-bottom: 4px; }
+  .figs .pane .pt::before { content: '● '; }
+  .figs .pane .pd { font-size: .82rem; color: var(--muted); margin-top: 8px; line-height: 1.6; }
+  .figs .pane svg { width: 100%; max-width: 300px; height: auto; display: block; margin: 0 auto; }
+
+  /* 三個底層概念 */
+  .cores { display: grid; gap: 10px; margin: 22px 0; }
+  .core { display: flex; gap: 14px; align-items: flex-start; background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 10px; padding: 14px 17px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .core .ci { font-size: 1.6rem; line-height: 1.2; flex: none; }
+  .core .ct2 b { display: block; color: var(--ink); font-size: .98rem; }
+  .core .ct2 small { display: block; color: var(--muted); font-size: .86rem; line-height: 1.6; margin-top: 3px; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .figs, .figs.f2 { grid-template-columns: 1fr 1fr; }
+    .core { flex-wrap: wrap; }
+  }
+  @media (max-width: 560px) {
+    .figs, .figs.f2 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>Brush Studio 白話圖解</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#basics" class="active">00 · 三個概念</a>
+  <div class="grp">一筆是怎麼組成的</div>
+  <a href="#path">01 · 路徑與間距</a>
+  <a href="#shapegrain">02 · 形狀與紋理</a>
+  <div class="grp">調出手感</div>
+  <a href="#feel">03 · 收筆・穩定・速度</a>
+  <a href="#paint">04 · 顏料的行為</a>
+  <a href="#pencil">05 · 接上你的筆</a>
+  <div class="grp">實作</div>
+  <a href="#recipes">06 · 六道食譜</a>
+  <a href="#pitfalls">07 · 雷區與還原</a>
+  <a href="#honest">08 · 查證等級</a>
+  <a href="#watch">延伸觀看</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>35 張圖解不用背設定</span><span>官方手冊逐字對照</span><span>哪代筆有哪些功能都標了</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">Procreate / 筆刷客製</div>
+    <h1>Procreate 筆刷怎麼調成<br>自己要的手感？</h1>
+    <p class="subtitle">Brush Studio 有 14 個分頁、上百個滑桿，但你不用背——先懂一件事，剩下的幾乎都推得出來。</p>
+
+    <p class="lede">想把 Procreate 筆刷調成自己要的手感，先記住一句話就好：一筆線其實是「同一個形狀<strong>沿著你的路徑蓋很多次章</strong>」。這不是比喻，是官方對 Stroke Path 的定義原文。知道這件事之後，間距、抖動、散佈、數量這些滑桿全部同時變得可以推理，不用一個一個死背。</p>
+
+    <p class="lede">遇到看不懂的滑桿還有第二招，而且是 Procreate 官方自己在手冊裡教的：把 Stroke Path 的 <strong>Spacing 拉高</strong>，一筆就會散成一顆顆分開的印章，那個設定到底在動什麼就看得見了。官方還補了一句——就算你之後把間距調回正常，這個畫面也會一直幫你想像每個設定在做什麼。</p>
+
+    <p class="lede">這篇用 35 張對照圖把 14 個分頁走一遍，最後給六道食譜（想做鉛筆、水彩、草叢該動哪幾頁），並標出哪些設定要<strong>哪一代 Pencil</strong> 才有。不會叫你照抄數字——因為官方也沒給過數字。</p>
+
+    <p class="updated">本文查證：<b>2026 年 7 月 31 日</b>，內容依 Procreate 官方手冊逐項核對。Brush Studio 是全 App 最常改版的地方，選單位置與名稱以你機器上看到的為準。<a class="inline" href="#sources">來源列在文末</a>，<a class="inline" href="#honest">哪些是推論也標出來了</a>。</p>
+
+    <section id="basics">
+      <div class="sec-label" style="--c:var(--navy)">core_concepts</div>
+      <h2>00 · 先懂三個概念，其他都好講</h2>
+      <p>Brush Studio 第一次打開真的很嚇人。但那十幾頁不是十幾個獨立知識——它們全部圍著三件事轉。</p>
+
+      <div class="cores">
+        <div class="core" style="--c:var(--navy)">
+          <div class="ci">🔨</div>
+          <div class="ct2"><b>一、一筆 ＝ 沿著路徑蓋很多次章</b><small>官方原文寫得很白：Procreate 是「沿著你手指或 Apple Pencil 移動的路徑，畫上很多個點」來組成一筆。所以「線」不是連續的，是密集的印章疊出來的錯覺。</small></div>
+        </div>
+        <div class="core" style="--c:var(--green)">
+          <div class="ci">🫙</div>
+          <div class="ct2"><b>二、Shape 是容器，Grain 是紋理</b><small>Shape 管印章的「輪廓長什麼樣」（圓的、扁的、葉子形的），Grain 管印章「表面的質感」（粗糙的紙、噴點、布紋）。兩個完全獨立，可以自由組合。</small></div>
+        </div>
+        <div class="core" style="--c:var(--teal)">
+          <div class="ci">🧻</div>
+          <div class="ct2"><b>三、Grain 像油漆滾筒</b><small>滾筒鎖住不轉，花紋會被拖成一道；滾筒放開會轉，花紋就一段一段印上去。Procreate 把這兩種行為叫 Moving 和 Texturized，第 02 節有圖。</small></div>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">官方自己教的偵錯神技，學會這招就能自學</div>
+        手冊裡有一段 Pro Tip：想看清楚某個設定在做什麼，就去 <strong>Stroke Path 把 Spacing 滑桿往上拉</strong>，筆畫會從「糊在一起的一條線」變成「一顆顆看得見的印章」。<br>
+        官方還加了一句很體貼的話：<strong>就算你之後把間距調回正常，這個畫面也會一直幫你想像每個設定在做什麼。</strong>本篇大部分的圖，就是照這個邏輯畫的。
+      </div>
+
+      <h3>先認識版面：其實只有三塊</h3>
+      <figure class="fig fig-wide">
+<svg viewBox="0 0 700 250" role="img" aria-label="Brush Studio 版面示意：上方是塗鴉板，左欄是設定分頁清單，右邊是該分頁的設定">
+        <rect x="14" y="14" width="672" height="222" rx="10" fill="var(--panel2)" stroke="var(--line)"/>
+        <rect x="26" y="26" width="648" height="46" rx="6" fill="var(--bg)" stroke="var(--line)"/>
+        <path d="M60,54 Q160,32 260,50 T460,44" stroke="var(--head)" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <text class="lbl-s" x="500" y="53" fill="var(--soft)">Drawing Pad · 邊調邊畫</text>
+        <line class="gl" x1="186" y1="84" x2="186" y2="224"/>
+        <text class="lbl-s" x="30" y="102" fill="var(--soft)">Stroke Path</text>
+        <text class="lbl-s" x="30" y="122" fill="var(--soft)">Stabilization</text>
+        <text class="lbl-s" x="30" y="142" fill="var(--soft)">Taper</text>
+        <text class="lbl-s" x="30" y="162" fill="var(--soft)">Shape</text>
+        <text class="lbl-s" x="30" y="182" fill="var(--soft)">Grain</text>
+        <text class="lbl-s" x="30" y="202" fill="var(--soft)">⋮ 共 14 個分頁</text>
+        <text class="lbl-s" x="200" y="102" fill="var(--head)">右邊＝這個分頁的設定</text>
+        <rect x="200" y="114" width="300" height="6" rx="3" fill="var(--bg)" stroke="var(--line)"/>
+        <rect x="200" y="114" width="180" height="6" rx="3" fill="var(--blue)"/>
+        <rect x="200" y="140" width="300" height="6" rx="3" fill="var(--bg)" stroke="var(--line)"/>
+        <rect x="200" y="140" width="90" height="6" rx="3" fill="var(--blue)"/>
+        <rect x="200" y="166" width="300" height="6" rx="3" fill="var(--bg)" stroke="var(--line)"/>
+        <rect x="200" y="166" width="240" height="6" rx="3" fill="var(--blue)"/>
+        <text class="lbl-s" x="516" y="120" fill="var(--soft)">數值欄可以點</text>
+        <text class="lbl-s" x="516" y="140" fill="var(--soft)">→ 展開進階</text>
+        <text class="lbl-s" x="516" y="160" fill="var(--soft)">（壓力／傾斜）</text>
+        <text class="lbl-s" x="200" y="206" fill="var(--amber)">⚠ 有些設定只在特定模式下才出現（例如 Grain 要選 Moving）</text>
+      </svg>
+<figcaption>三塊而已：<b>上面是塗鴉板（改完馬上畫一筆看結果）、左邊是 14 個分頁、右邊是那一頁的滑桿。</b></figcaption>
+</figure>
+
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">動手前先做這件事，才不會回不去</div>
+        Brush Studio 裡有一個 <strong>Reset Point</strong>（還原點）：調到一個滿意的狀態時存一個，之後亂調壞了可以跳回來。但官方明講<strong>每支筆刷同時只能有一個還原點</strong>。<br>
+        所以更保險的做法是：<strong>先複製一支筆刷再改</strong>。原廠筆刷改壞了很難救，複製品壞了刪掉就好。
+      </div>
+    </section>
+
+    <section id="path">
+      <div class="sec-label" style="--c:var(--teal)">stroke_path</div>
+      <h2>01 · 一筆是怎麼組成的（Stroke Path）</h2>
+      <p>這一頁是整個 Brush Studio 的地基，也是最該先玩的一頁。它管的就是「那些印章怎麼排列」。</p>
+
+      <h3>Spacing（間距）：把線拆回印章</h3>
+      <p>官方對 Spacing 的定義是「設定你的筆刷形狀沿著路徑蓋幾次章」。直接看圖最快：</p>
+      <div class="figs">
+  <div class="pane" style="--c:var(--green)">
+    <div class="pt">Spacing 低</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="間距低，印章重疊成一條連續線">
+        <ellipse cx="24.0" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 24.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="35.7" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 35.7 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="47.4" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 47.4 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="59.1" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 59.1 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="70.8" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 70.8 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="82.5" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 82.5 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="94.2" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 94.2 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="105.8" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 105.8 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="117.5" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 117.5 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="129.2" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 129.2 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="140.9" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 140.9 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="152.6" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 152.6 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="164.3" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 164.3 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="176.0" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 176.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        </svg>
+    <div class="pd">間距小，印章疊在一起、看起來就是一條連續的線。日常用的筆刷都長這樣。</div>
+  </div>
+  <div class="pane" style="--c:var(--amber)">
+    <div class="pt">Spacing 中</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="間距中等，印章開始分離">
+        <ellipse cx="24.0" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 24.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="45.7" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 45.7 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="67.4" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 67.4 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="89.1" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 89.1 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="110.9" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 110.9 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="132.6" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 132.6 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="154.3" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 154.3 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="176.0" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 176.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        </svg>
+    <div class="pd">間距拉大，印章開始分家，你看得到一顆一顆的形狀了。</div>
+  </div>
+  <div class="pane" style="--c:var(--red)">
+    <div class="pt">Spacing 高</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="間距高，印章完全分開">
+        <ellipse cx="24.0" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 24.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="74.7" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 74.7 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="125.3" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 125.3 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="176.0" cy="60.0" rx="11.0" ry="11.0" transform="rotate(0 176.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        </svg>
+    <div class="pd">間距很大，變成一串分開的圖章——做虛線、腳印、鏈條就是靠這個。</div>
+  </div>
+</div>
+<p class="svgcap">同一支筆刷、只動 Spacing。<b>看得到印章分開的那一刻，你就懂什麼叫「一筆是蓋很多次章」了。</b></p>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">一個看起來像 bug、其實不是的行為</div>
+        就算你把 Spacing 拉到 0%，加上高一點的 Spacing Jitter，還是會看到間距在變。官方解釋過：<strong>間距有一個最小值</strong>，不會真的變成零。看到這個不用懷疑筆刷壞了。
+      </div>
+
+      <h3>Jitter（抖動）：讓排列不要太整齊</h3>
+      <p>印章排太整齊會很像電腦畫的。Jitter 就是拿來加一點亂度的，而且分成兩個方向：</p>
+      <div class="figs">
+  <div class="pane" style="--c:var(--green)">
+    <div class="pt">原始</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="無抖動，印章排成一直線">
+        <ellipse cx="24.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 24.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="43.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 43.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="62.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 62.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="81.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 81.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="100.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 100.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="119.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 119.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="138.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 138.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="157.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 157.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="176.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 176.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        </svg>
+    <div class="pd">沒有抖動。印章乖乖排在你畫的那條線上。</div>
+  </div>
+  <div class="pane" style="--c:var(--purple)">
+    <div class="pt">Jitter Lateral</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="印章垂直於路徑上下散開">
+        <ellipse cx="24.0" cy="68.2" rx="10.0" ry="10.0" transform="rotate(0 24.0 68.2)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="43.0" cy="69.2" rx="10.0" ry="10.0" transform="rotate(0 43.0 69.2)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="62.0" cy="58.0" rx="10.0" ry="10.0" transform="rotate(0 62.0 58.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="81.0" cy="73.3" rx="10.0" ry="10.0" transform="rotate(0 81.0 73.3)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="100.0" cy="39.5" rx="10.0" ry="10.0" transform="rotate(0 100.0 39.5)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="119.0" cy="55.4" rx="10.0" ry="10.0" transform="rotate(0 119.0 55.4)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="138.0" cy="52.2" rx="10.0" ry="10.0" transform="rotate(0 138.0 52.2)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="157.0" cy="52.1" rx="10.0" ry="10.0" transform="rotate(0 157.0 52.1)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="176.0" cy="61.0" rx="10.0" ry="10.0" transform="rotate(0 176.0 61.0)" fill="var(--c)" opacity="1.00"/>
+        </svg>
+    <div class="pd">Lateral（垂直向）：印章往線的<strong>兩側</strong>散開，線變毛毛的。</div>
+  </div>
+  <div class="pane" style="--c:var(--purple)">
+    <div class="pt">Jitter Linear</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="印章沿路徑前後散開">
+        <ellipse cx="19.2" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 19.2 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="27.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 27.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="78.6" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 78.6 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="67.5" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 67.5 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="115.5" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 115.5 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="127.4" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 127.4 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="124.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 124.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="163.3" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 163.3 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="160.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 160.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        </svg>
+    <div class="pd">Linear（沿線向）：印章沿著<strong>前後方向</strong>亂跑，間距變得不規則。</div>
+  </div>
+</div>
+<p class="svgcap">兩種抖動的方向不一樣：一個讓線變寬變毛，一個讓疏密變亂。</p>
+
+      <h3>Fall Off（衰減）：這一筆能撐多長</h3>
+      <div class="figs">
+  <div class="pane" style="--c:var(--green)">
+    <div class="pt">Fall Off 關</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="整筆不透明度一致">
+        <ellipse cx="20.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 20.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="30.7" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 30.7 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="41.3" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 41.3 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="52.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 52.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="62.7" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 62.7 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="73.3" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 73.3 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="84.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 84.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="94.7" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 94.7 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="105.3" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 105.3 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="116.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 116.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="126.7" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 126.7 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="137.3" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 137.3 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="148.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 148.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="158.7" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 158.7 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="169.3" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 169.3 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="180.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 180.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        </svg>
+    <div class="pd">關掉。整條線從頭到尾一樣濃。</div>
+  </div>
+  <div class="pane" style="--c:var(--amber)">
+    <div class="pt">Fall Off 中</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="筆畫尾端逐漸變淡">
+        <ellipse cx="20.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 20.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="30.7" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 30.7 60.0)" fill="var(--c)" opacity="0.93"/>
+        <ellipse cx="41.3" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 41.3 60.0)" fill="var(--c)" opacity="0.87"/>
+        <ellipse cx="52.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 52.0 60.0)" fill="var(--c)" opacity="0.80"/>
+        <ellipse cx="62.7" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 62.7 60.0)" fill="var(--c)" opacity="0.73"/>
+        <ellipse cx="73.3" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 73.3 60.0)" fill="var(--c)" opacity="0.67"/>
+        <ellipse cx="84.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 84.0 60.0)" fill="var(--c)" opacity="0.60"/>
+        <ellipse cx="94.7" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 94.7 60.0)" fill="var(--c)" opacity="0.53"/>
+        <ellipse cx="105.3" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 105.3 60.0)" fill="var(--c)" opacity="0.47"/>
+        <ellipse cx="116.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 116.0 60.0)" fill="var(--c)" opacity="0.40"/>
+        <ellipse cx="126.7" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 126.7 60.0)" fill="var(--c)" opacity="0.33"/>
+        <ellipse cx="137.3" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 137.3 60.0)" fill="var(--c)" opacity="0.27"/>
+        <ellipse cx="148.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 148.0 60.0)" fill="var(--c)" opacity="0.20"/>
+        <ellipse cx="158.7" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 158.7 60.0)" fill="var(--c)" opacity="0.13"/>
+        <ellipse cx="169.3" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 169.3 60.0)" fill="var(--c)" opacity="0.07"/>
+        <ellipse cx="180.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 180.0 60.0)" fill="var(--c)" opacity="0.03"/>
+        </svg>
+    <div class="pd">中等。畫到後面慢慢變淡，像顏料快用完。</div>
+  </div>
+  <div class="pane" style="--c:var(--red)">
+    <div class="pt">Fall Off 高</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="筆畫很快淡到看不見">
+        <ellipse cx="20.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 20.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="30.7" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 30.7 60.0)" fill="var(--c)" opacity="0.73"/>
+        <ellipse cx="41.3" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 41.3 60.0)" fill="var(--c)" opacity="0.53"/>
+        <ellipse cx="52.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 52.0 60.0)" fill="var(--c)" opacity="0.37"/>
+        <ellipse cx="62.7" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 62.7 60.0)" fill="var(--c)" opacity="0.25"/>
+        <ellipse cx="73.3" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 73.3 60.0)" fill="var(--c)" opacity="0.16"/>
+        <ellipse cx="84.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 84.0 60.0)" fill="var(--c)" opacity="0.10"/>
+        <ellipse cx="94.7" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 94.7 60.0)" fill="var(--c)" opacity="0.06"/>
+        <ellipse cx="105.3" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 105.3 60.0)" fill="var(--c)" opacity="0.03"/>
+        <ellipse cx="116.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 116.0 60.0)" fill="var(--c)" opacity="0.03"/>
+        <ellipse cx="126.7" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 126.7 60.0)" fill="var(--c)" opacity="0.03"/>
+        <ellipse cx="137.3" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 137.3 60.0)" fill="var(--c)" opacity="0.03"/>
+        <ellipse cx="148.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 148.0 60.0)" fill="var(--c)" opacity="0.03"/>
+        <ellipse cx="158.7" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 158.7 60.0)" fill="var(--c)" opacity="0.03"/>
+        <ellipse cx="169.3" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 169.3 60.0)" fill="var(--c)" opacity="0.03"/>
+        <ellipse cx="180.0" cy="60.0" rx="10.0" ry="10.0" transform="rotate(0 180.0 60.0)" fill="var(--c)" opacity="0.03"/>
+        </svg>
+    <div class="pd">拉高。很快就淡到看不見，適合做飛白、噴霧感。</div>
+  </div>
+</div>
+<p class="svgcap">Fall Off 管的是「這一筆能撐多長」，跟壓力無關——你用力再重也救不回已經淡掉的尾巴。</p>
+    </section>
+
+    <section id="shapegrain">
+      <div class="sec-label" style="--c:var(--green)">shape_grain</div>
+      <h2>02 · 形狀與紋理：容器和它的表面</h2>
+      <p>知道一筆是印章排出來的之後，下一個問題自然就是——那顆印章長什麼樣？答案分兩層：Shape 管輪廓，Grain 管表面。</p>
+
+      <h3>Rotation：形狀要不要跟著筆畫轉</h3>
+      <div class="figs">
+  <div class="pane" style="--c:var(--red)">
+    <div class="pt">-100% 反向</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="形狀反方向旋轉">
+        <ellipse cx="26.0" cy="60.0" rx="13.0" ry="5.5" transform="rotate(-38 26.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="55.6" cy="60.0" rx="13.0" ry="5.5" transform="rotate(-38 55.6 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="85.2" cy="60.0" rx="13.0" ry="5.5" transform="rotate(-38 85.2 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="114.8" cy="60.0" rx="13.0" ry="5.5" transform="rotate(-38 114.8 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="144.4" cy="60.0" rx="13.0" ry="5.5" transform="rotate(-38 144.4 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="174.0" cy="60.0" rx="13.0" ry="5.5" transform="rotate(-38 174.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        </svg>
+    <div class="pd">−100%：形狀跟筆畫<strong>反方向</strong>轉，做出扭轉、麻花的效果。</div>
+  </div>
+  <div class="pane" style="--c:var(--green)">
+    <div class="pt">0% 不動</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="形狀方向固定不變">
+        <ellipse cx="26.0" cy="60.0" rx="13.0" ry="5.5" transform="rotate(0 26.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="55.6" cy="60.0" rx="13.0" ry="5.5" transform="rotate(0 55.6 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="85.2" cy="60.0" rx="13.0" ry="5.5" transform="rotate(0 85.2 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="114.8" cy="60.0" rx="13.0" ry="5.5" transform="rotate(0 114.8 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="144.4" cy="60.0" rx="13.0" ry="5.5" transform="rotate(0 144.4 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="174.0" cy="60.0" rx="13.0" ry="5.5" transform="rotate(0 174.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        </svg>
+    <div class="pd">0%：形狀方向固定不動，不管你往哪畫都是同一個角度——扁頭筆、書法筆就是這樣。</div>
+  </div>
+  <div class="pane" style="--c:var(--blue)">
+    <div class="pt">100% 跟隨</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="形狀跟著筆畫方向轉">
+        <ellipse cx="26.0" cy="60.0" rx="13.0" ry="5.5" transform="rotate(38 26.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="55.6" cy="60.0" rx="13.0" ry="5.5" transform="rotate(38 55.6 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="85.2" cy="60.0" rx="13.0" ry="5.5" transform="rotate(38 85.2 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="114.8" cy="60.0" rx="13.0" ry="5.5" transform="rotate(38 114.8 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="144.4" cy="60.0" rx="13.0" ry="5.5" transform="rotate(38 144.4 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="174.0" cy="60.0" rx="13.0" ry="5.5" transform="rotate(38 174.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        </svg>
+    <div class="pd">100%：形狀<strong>跟著筆畫方向</strong>轉，像一支永遠對齊行進方向的刷子。</div>
+  </div>
+</div>
+<p class="svgcap">「橫粗直細」的書法感，關鍵就在中間這格：<b>把形狀壓扁、再把 Rotation 設成 0%。</b></p>
+
+      <h3>Scatter 與 Count：讓一筆變成「一撮」</h3>
+      <div class="figs">
+  <div class="pane" style="--c:var(--green)">
+    <div class="pt">原始</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="單一朝向、每點一個印章">
+        <ellipse cx="26.0" cy="60.0" rx="11.0" ry="5.5" transform="rotate(0 26.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="50.7" cy="60.0" rx="11.0" ry="5.5" transform="rotate(0 50.7 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="75.3" cy="60.0" rx="11.0" ry="5.5" transform="rotate(0 75.3 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="100.0" cy="60.0" rx="11.0" ry="5.5" transform="rotate(0 100.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="124.7" cy="60.0" rx="11.0" ry="5.5" transform="rotate(0 124.7 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="149.3" cy="60.0" rx="11.0" ry="5.5" transform="rotate(0 149.3 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="174.0" cy="60.0" rx="11.0" ry="5.5" transform="rotate(0 174.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        </svg>
+    <div class="pd">原始：每個點蓋一次，方向一致。</div>
+  </div>
+  <div class="pane" style="--c:var(--purple)">
+    <div class="pt">Scatter</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="每個印章隨機旋轉">
+        <ellipse cx="26.0" cy="60.0" rx="11.0" ry="5.5" transform="rotate(150 26.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="50.7" cy="60.0" rx="11.0" ry="5.5" transform="rotate(239 50.7 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="75.3" cy="60.0" rx="11.0" ry="5.5" transform="rotate(42 75.3 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="100.0" cy="60.0" rx="11.0" ry="5.5" transform="rotate(274 100.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="124.7" cy="60.0" rx="11.0" ry="5.5" transform="rotate(119 124.7 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="149.3" cy="60.0" rx="11.0" ry="5.5" transform="rotate(304 149.3 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="174.0" cy="60.0" rx="11.0" ry="5.5" transform="rotate(306 174.0 60.0)" fill="var(--c)" opacity="1.00"/>
+        </svg>
+    <div class="pd">Scatter：每個印章隨機轉一個角度，看起來自然多了。</div>
+  </div>
+  <div class="pane" style="--c:var(--amber)">
+    <div class="pt">Count 5 + Scatter</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="每點蓋多次，方向各異">
+        <ellipse cx="22.7" cy="59.7" rx="9.0" ry="4.5" transform="rotate(150 22.7 59.7)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="22.4" cy="55.3" rx="9.0" ry="4.5" transform="rotate(239 22.4 55.3)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="30.3" cy="51.7" rx="9.0" ry="4.5" transform="rotate(42 30.3 51.7)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="23.7" cy="60.0" rx="9.0" ry="4.5" transform="rotate(274 23.7 60.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="28.5" cy="54.7" rx="9.0" ry="4.5" transform="rotate(119 28.5 54.7)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="55.2" cy="67.6" rx="9.0" ry="4.5" transform="rotate(304 55.2 67.6)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="50.1" cy="59.7" rx="9.0" ry="4.5" transform="rotate(306 50.1 59.7)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="54.8" cy="57.5" rx="9.0" ry="4.5" transform="rotate(106 54.8 57.5)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="53.6" cy="66.8" rx="9.0" ry="4.5" transform="rotate(33 53.6 66.8)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="48.8" cy="52.7" rx="9.0" ry="4.5" transform="rotate(124 48.8 52.7)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="72.7" cy="57.6" rx="9.0" ry="4.5" transform="rotate(79 72.7 57.6)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="70.9" cy="61.4" rx="9.0" ry="4.5" transform="rotate(189 70.9 61.4)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="77.1" cy="51.0" rx="9.0" ry="4.5" transform="rotate(328 77.1 51.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="77.5" cy="67.1" rx="9.0" ry="4.5" transform="rotate(279 77.5 67.1)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="77.7" cy="63.3" rx="9.0" ry="4.5" transform="rotate(291 77.7 63.3)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="94.3" cy="66.7" rx="9.0" ry="4.5" transform="rotate(79 94.3 66.7)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="102.5" cy="61.9" rx="9.0" ry="4.5" transform="rotate(226 102.5 61.9)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="95.5" cy="66.5" rx="9.0" ry="4.5" transform="rotate(220 95.5 66.5)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="95.6" cy="57.7" rx="9.0" ry="4.5" transform="rotate(337 95.6 57.7)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="94.4" cy="54.0" rx="9.0" ry="4.5" transform="rotate(160 94.4 54.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="119.4" cy="65.1" rx="9.0" ry="4.5" transform="rotate(216 119.4 65.1)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="126.6" cy="54.1" rx="9.0" ry="4.5" transform="rotate(262 126.6 54.1)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="122.5" cy="55.4" rx="9.0" ry="4.5" transform="rotate(320 122.5 55.4)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="121.0" cy="53.0" rx="9.0" ry="4.5" transform="rotate(158 121.0 53.0)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="121.7" cy="67.7" rx="9.0" ry="4.5" transform="rotate(93 121.7 67.7)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="146.2" cy="60.2" rx="9.0" ry="4.5" transform="rotate(227 146.2 60.2)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="145.4" cy="60.2" rx="9.0" ry="4.5" transform="rotate(287 145.4 60.2)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="150.4" cy="56.7" rx="9.0" ry="4.5" transform="rotate(71 150.4 56.7)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="148.8" cy="62.3" rx="9.0" ry="4.5" transform="rotate(120 148.8 62.3)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="151.3" cy="62.7" rx="9.0" ry="4.5" transform="rotate(123 151.3 62.7)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="172.0" cy="51.1" rx="9.0" ry="4.5" transform="rotate(76 172.0 51.1)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="175.5" cy="55.8" rx="9.0" ry="4.5" transform="rotate(240 175.5 55.8)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="172.2" cy="54.6" rx="9.0" ry="4.5" transform="rotate(265 172.2 54.6)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="169.8" cy="62.8" rx="9.0" ry="4.5" transform="rotate(347 169.8 62.8)" fill="var(--c)" opacity="1.00"/>
+        <ellipse cx="173.2" cy="52.6" rx="9.0" ry="4.5" transform="rotate(107 173.2 52.6)" fill="var(--c)" opacity="1.00"/>
+        </svg>
+    <div class="pd">Count 5 ＋ Scatter：每個點蓋五次、每次方向不同——一筆下去就是一撮。</div>
+  </div>
+</div>
+<p class="svgcap">草叢、樹葉、噴濺都是這樣做出來的。<b>Count 官方上限是 16 次。</b></p>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">Count Jitter 的官方算式，順手記一下</div>
+        Count 設 10、Jitter 設 0%，就是每個點都固定蓋 10 次。<strong>Jitter 拉到 100%，每個點會在 1～10 次之間隨機。</strong>拉 50% 就是在 5～10 之間隨機。<br>
+        想做「有疏有密的草叢」，動這一格比動 Scatter 更有效。
+      </div>
+
+      <h3>Grain：滾筒鎖住還是放開</h3>
+      <p>這是整個 Brush Studio 裡最容易搞混、但一講就懂的分岔。用滾筒油漆來想最快：</p>
+      <div class="figs f2">
+  <div class="pane" style="--c:var(--amber)">
+    <div class="pt">Moving（滾筒鎖住）</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="紋理被拖著走，產生條紋與模糊">
+        <rect x="18" y="42" width="164" height="36" rx="4" fill="var(--c)" opacity=".22"/><rect x="18" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.75"/><rect x="25" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.72"/><rect x="32" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.69"/><rect x="39" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.66"/><rect x="46" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.63"/><rect x="53" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.60"/><rect x="60" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.57"/><rect x="67" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.54"/><rect x="74" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.51"/><rect x="81" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.48"/><rect x="88" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.45"/><rect x="95" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.42"/><rect x="102" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.39"/><rect x="109" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.36"/><rect x="116" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.33"/><rect x="123" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.30"/><rect x="130" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.27"/><rect x="137" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.24"/><rect x="144" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.21"/><rect x="151" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.18"/><rect x="158" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.15"/><rect x="165" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.12"/><rect x="172" y="44" width="3.4" height="32" fill="var(--c)" opacity="0.09"/>
+        </svg>
+    <div class="pd"><strong>滾筒鎖住</strong>：紋理被筆畫拖著走，會拉出條紋、會糊開。官方說它「行為比較像傳統畫布上的顏料」。</div>
+  </div>
+  <div class="pane" style="--c:var(--green)">
+    <div class="pt">Texturized（滾筒放開）</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="紋理像蓋印般固定在背景">
+        <rect x="18" y="42" width="164" height="36" rx="4" fill="var(--c)" opacity=".22"/><circle cx="22" cy="48" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="34" cy="48" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="46" cy="48" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="58" cy="48" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="70" cy="48" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="82" cy="48" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="94" cy="48" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="106" cy="48" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="118" cy="48" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="130" cy="48" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="142" cy="48" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="154" cy="48" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="166" cy="48" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="178" cy="48" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="22" cy="57" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="34" cy="57" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="46" cy="57" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="58" cy="57" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="70" cy="57" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="82" cy="57" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="94" cy="57" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="106" cy="57" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="118" cy="57" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="130" cy="57" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="142" cy="57" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="154" cy="57" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="166" cy="57" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="178" cy="57" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="22" cy="66" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="34" cy="66" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="46" cy="66" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="58" cy="66" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="70" cy="66" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="82" cy="66" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="94" cy="66" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="106" cy="66" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="118" cy="66" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="130" cy="66" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="142" cy="66" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="154" cy="66" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="166" cy="66" r="2.6" fill="var(--c)" opacity=".85"/><circle cx="178" cy="66" r="2.6" fill="var(--c)" opacity=".85"/>
+        </svg>
+    <div class="pd"><strong>滾筒放開</strong>：紋理像蓋印章一樣固定在畫布上，不拖不糊，邊緣乾淨。</div>
+  </div>
+</div>
+<p class="svgcap">想像牆上滾油漆：<b>滾筒不轉就是拖出一道，滾筒會轉就是把花紋一段段印上去。</b></p>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">為什麼你的 Grain 設定有一半是灰的</div>
+        Grain 頁有好幾個設定<strong>只在 Moving 模式下才會出現</strong>（縮放、旋轉、深度最小值、深度抖動、位移抖動）。切到 Texturized 它們就消失了。<br>
+        不是你的 App 壞掉，是這些設定在「紋理不會動」的模式下本來就沒有意義。
+      </div>
+
+      <div class="callout" style="--c:var(--red)">
+        <div class="ct">要做「圖樣筆刷」的話，記得關掉這一個</div>
+        如果你想做的是能接續、不會斷掉的圖樣（官方舉的例子是格線筆刷），一定要<strong>把 Offset Jitter 關掉</strong>。它會讓每一筆的紋理起點隨機位移——對草叢很好用，對格線就是災難，接縫永遠對不起來。
+      </div>
+    </section>
+
+    <section id="feel">
+      <div class="sec-label" style="--c:var(--amber)">feel</div>
+      <h2>03 · 調出「手感」：收筆、穩定、速度</h2>
+      <p>到這裡形狀已經對了，但可能還是覺得「畫起來不像真的筆」。手感通常來自這三頁。</p>
+
+      <h3>Taper（收筆錐化）：筆鋒從哪來</h3>
+      <div class="figs">
+  <div class="pane" style="--c:var(--red)">
+    <div class="pt">Taper 關</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="兩端方頭的筆觸">
+        <polygon points="20.0,47.0 24.0,47.0 28.0,47.0 32.0,47.0 36.0,47.0 40.0,47.0 44.0,47.0 48.0,47.0 52.0,47.0 56.0,47.0 60.0,47.0 64.0,47.0 68.0,47.0 72.0,47.0 76.0,47.0 80.0,47.0 84.0,47.0 88.0,47.0 92.0,47.0 96.0,47.0 100.0,47.0 104.0,47.0 108.0,47.0 112.0,47.0 116.0,47.0 120.0,47.0 124.0,47.0 128.0,47.0 132.0,47.0 136.0,47.0 140.0,47.0 144.0,47.0 148.0,47.0 152.0,47.0 156.0,47.0 160.0,47.0 164.0,47.0 168.0,47.0 172.0,47.0 176.0,47.0 180.0,47.0 180.0,73.0 176.0,73.0 172.0,73.0 168.0,73.0 164.0,73.0 160.0,73.0 156.0,73.0 152.0,73.0 148.0,73.0 144.0,73.0 140.0,73.0 136.0,73.0 132.0,73.0 128.0,73.0 124.0,73.0 120.0,73.0 116.0,73.0 112.0,73.0 108.0,73.0 104.0,73.0 100.0,73.0 96.0,73.0 92.0,73.0 88.0,73.0 84.0,73.0 80.0,73.0 76.0,73.0 72.0,73.0 68.0,73.0 64.0,73.0 60.0,73.0 56.0,73.0 52.0,73.0 48.0,73.0 44.0,73.0 40.0,73.0 36.0,73.0 32.0,73.0 28.0,73.0 24.0,73.0 20.0,73.0" fill="var(--c)" opacity=".85"/>
+        </svg>
+    <div class="pd">關掉。起筆收筆都是方頭，像麥克筆。</div>
+  </div>
+  <div class="pane" style="--c:var(--green)">
+    <div class="pt">兩端 Taper</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="兩端收尖的筆觸">
+        <polygon points="20.0,58.5 24.0,57.9 28.0,57.4 32.0,56.8 36.0,56.2 40.0,55.6 44.0,55.0 48.0,54.5 52.0,53.9 56.0,53.3 60.0,52.8 64.0,52.2 68.0,51.6 72.0,51.0 76.0,50.5 80.0,49.9 84.0,49.3 88.0,48.7 92.0,48.1 96.0,47.6 100.0,47.0 104.0,47.6 108.0,48.1 112.0,48.7 116.0,49.3 120.0,49.9 124.0,50.5 128.0,51.0 132.0,51.6 136.0,52.2 140.0,52.8 144.0,53.3 148.0,53.9 152.0,54.5 156.0,55.0 160.0,55.6 164.0,56.2 168.0,56.8 172.0,57.4 176.0,57.9 180.0,58.5 180.0,61.5 176.0,62.1 172.0,62.6 168.0,63.2 164.0,63.8 160.0,64.4 156.0,65.0 152.0,65.5 148.0,66.1 144.0,66.7 140.0,67.2 136.0,67.8 132.0,68.4 128.0,69.0 124.0,69.5 120.0,70.1 116.0,70.7 112.0,71.3 108.0,71.8 104.0,72.4 100.0,73.0 96.0,72.4 92.0,71.8 88.0,71.3 84.0,70.7 80.0,70.1 76.0,69.5 72.0,69.0 68.0,68.4 64.0,67.8 60.0,67.2 56.0,66.7 52.0,66.1 48.0,65.5 44.0,65.0 40.0,64.4 36.0,63.8 32.0,63.2 28.0,62.6 24.0,62.1 20.0,61.5" fill="var(--c)" opacity=".85"/>
+        </svg>
+    <div class="pd">兩端都收尖，像毛筆或鋼筆的筆鋒。</div>
+  </div>
+  <div class="pane" style="--c:var(--amber)">
+    <div class="pt">只有收筆</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="起筆方、收筆尖">
+        <polygon points="20.0,47.0 24.0,47.0 28.0,47.0 32.0,47.0 36.0,47.0 40.0,47.0 44.0,47.0 48.0,47.0 52.0,47.0 56.0,47.0 60.0,47.0 64.0,47.0 68.0,47.0 72.0,47.0 76.0,47.0 80.0,47.0 84.0,47.0 88.0,47.0 92.0,47.0 96.0,47.0 100.0,47.0 104.0,47.6 108.0,48.1 112.0,48.7 116.0,49.3 120.0,49.9 124.0,50.5 128.0,51.0 132.0,51.6 136.0,52.2 140.0,52.8 144.0,53.3 148.0,53.9 152.0,54.5 156.0,55.0 160.0,55.6 164.0,56.2 168.0,56.8 172.0,57.4 176.0,57.9 180.0,58.5 180.0,61.5 176.0,62.1 172.0,62.6 168.0,63.2 164.0,63.8 160.0,64.4 156.0,65.0 152.0,65.5 148.0,66.1 144.0,66.7 140.0,67.2 136.0,67.8 132.0,68.4 128.0,69.0 124.0,69.5 120.0,70.1 116.0,70.7 112.0,71.3 108.0,71.8 104.0,72.4 100.0,73.0 96.0,73.0 92.0,73.0 88.0,73.0 84.0,73.0 80.0,73.0 76.0,73.0 72.0,73.0 68.0,73.0 64.0,73.0 60.0,73.0 56.0,73.0 52.0,73.0 48.0,73.0 44.0,73.0 40.0,73.0 36.0,73.0 32.0,73.0 28.0,73.0 24.0,73.0 20.0,73.0" fill="var(--c)" opacity=".85"/>
+        </svg>
+    <div class="pd">只收尾端：起筆保持飽滿、收筆才收掉。</div>
+  </div>
+</div>
+<p class="svgcap">Taper 是「筆畫兩端」的形狀，跟你壓多重無關——它是筆刷自己的個性。</p>
+
+      <h3>Stabilization（穩定器）：手抖救星，但有兩種個性</h3>
+      <div class="figs">
+  <div class="pane" style="--c:var(--red)">
+    <div class="pt">原始手抖</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="未經穩定的抖動線條">
+        <polyline points="16.0,58.3 18.8,62.4 21.6,60.2 24.4,60.7 27.2,60.4 30.0,66.6 32.8,68.0 35.6,67.0 38.4,67.8 41.2,65.1 44.0,67.0 46.8,66.2 49.6,63.0 52.4,62.7 55.2,63.7 58.0,72.3 60.8,64.7 63.6,62.6 66.4,60.6 69.2,66.8 72.0,65.1 74.8,64.8 77.6,62.2 80.4,64.7 83.2,60.9 86.0,62.0 88.8,63.4 91.6,68.5 94.4,68.1 97.2,63.5 100.0,63.8 102.8,65.6 105.6,67.2 108.4,66.3 111.2,65.1 114.0,68.0 116.8,69.4 119.6,68.9 122.4,67.9 125.2,66.7 128.0,61.9 130.8,60.6 133.6,60.3 136.4,63.4 139.2,65.5 142.0,61.1 144.8,58.4 147.6,58.7 150.4,62.5 153.2,66.3 156.0,59.9 158.8,58.1 161.6,54.7 164.4,53.8 167.2,50.0 170.0,51.6 172.8,51.2 175.6,57.8 178.4,59.4 181.2,63.0 184.0,59.8" fill="none" stroke="var(--c)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    <div class="pd">沒有穩定。手抖多少，線上就看得到多少。</div>
+  </div>
+  <div class="pane" style="--c:var(--green)">
+    <div class="pt">StreamLine</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="線條被拉順">
+        <polyline points="16.0,62.4 18.8,62.8 21.6,63.6 24.4,63.0 27.2,63.6 30.0,64.0 32.8,62.9 35.6,63.4 38.4,64.2 41.2,65.0 44.0,63.8 46.8,64.6 49.6,65.0 52.4,64.9 55.2,64.4 58.0,64.4 60.8,64.0 63.6,63.8 66.4,63.7 69.2,63.2 72.0,63.4 74.8,64.7 77.6,64.1 80.4,63.3 83.2,63.2 86.0,64.2 88.8,64.1 91.6,64.2 94.4,64.0 97.2,64.6 100.0,65.0 102.8,65.1 105.6,65.2 108.4,66.0 111.2,65.1 114.0,64.7 116.8,64.6 119.6,64.3 122.4,65.0 125.2,64.1 128.0,63.1 130.8,63.6 133.6,63.5 136.4,63.3 139.2,62.2 142.0,61.5 144.8,60.8 147.6,59.7 150.4,58.6 153.2,59.0 156.0,58.1 158.8,58.2 161.6,58.3 164.4,57.7 167.2,57.8 170.0,58.4 172.8,57.4 175.6,56.7 178.4,56.3 181.2,56.5 184.0,56.0" fill="none" stroke="var(--c)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    <div class="pd">StreamLine：把線往「你大概想畫的那條」拉順，適合描線、寫書法。</div>
+  </div>
+  <div class="pane" style="--c:var(--blue)">
+    <div class="pt">Motion Filtering</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="抖動極值被直接刪掉">
+        <polyline points="16.0,63.6 18.8,62.6 21.6,63.0 24.4,63.4 27.2,63.8 30.0,63.1 32.8,63.2 35.6,63.3 38.4,63.4 41.2,63.3 44.0,63.4 46.8,63.2 49.6,63.4 52.4,63.3 55.2,63.4 58.0,63.4 60.8,64.0 63.6,64.1 66.4,63.7 69.2,63.8 72.0,63.8 74.8,63.8 77.6,63.6 80.4,63.8 83.2,63.8 86.0,63.9 88.8,64.4 91.6,64.3 94.4,64.2 97.2,63.4 100.0,63.9 102.8,64.0 105.6,63.7 108.4,63.8 111.2,63.6 114.0,63.1 116.8,63.5 119.6,63.4 122.4,63.6 125.2,63.3 128.0,62.9 130.8,62.3 133.6,62.0 136.4,61.7 139.2,61.2 142.0,60.6 144.8,60.8 147.6,60.5 150.4,60.4 153.2,60.0 156.0,59.6 158.8,59.5 161.6,59.2 164.4,58.8 167.2,59.2 170.0,59.0 172.8,58.6 175.6,58.6 178.4,57.9 181.2,58.1 184.0,58.6" fill="none" stroke="var(--c)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    <div class="pd">Motion Filtering：直接把小抖動剔掉，線條變得比較硬、比較有稜角。</div>
+  </div>
+</div>
+<p class="svgcap">兩種穩定的個性不同：一個是<b>拉順</b>，一個是<b>剔掉</b>。描線用前者，畫幾何用後者。</p>
+
+      <h3>Dynamics（速度）：畫快畫慢會不會不一樣</h3>
+      <div class="figs">
+  <div class="pane" style="--c:var(--blue)">
+    <div class="pt">Speed Size −100%</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="畫慢線變細">
+        <polygon points="20.0,57.0 24.0,56.8 28.0,56.5 32.0,56.2 36.0,56.0 40.0,55.8 44.0,55.5 48.0,55.2 52.0,55.0 56.0,54.8 60.0,54.5 64.0,54.2 68.0,54.0 72.0,53.8 76.0,53.5 80.0,53.2 84.0,53.0 88.0,52.8 92.0,52.5 96.0,52.2 100.0,52.0 104.0,51.7 108.0,51.4 112.0,51.1 116.0,50.8 120.0,50.5 124.0,50.2 128.0,49.9 132.0,49.6 136.0,49.3 140.0,49.0 144.0,48.7 148.0,48.4 152.0,48.1 156.0,47.8 160.0,47.5 164.0,47.2 168.0,46.9 172.0,46.6 176.0,46.3 180.0,46.0 180.0,74.0 176.0,73.7 172.0,73.4 168.0,73.1 164.0,72.8 160.0,72.5 156.0,72.2 152.0,71.9 148.0,71.6 144.0,71.3 140.0,71.0 136.0,70.7 132.0,70.4 128.0,70.1 124.0,69.8 120.0,69.5 116.0,69.2 112.0,68.9 108.0,68.6 104.0,68.3 100.0,68.0 96.0,67.8 92.0,67.5 88.0,67.2 84.0,67.0 80.0,66.8 76.0,66.5 72.0,66.2 68.0,66.0 64.0,65.8 60.0,65.5 56.0,65.2 52.0,65.0 48.0,64.8 44.0,64.5 40.0,64.2 36.0,64.0 32.0,63.8 28.0,63.5 24.0,63.2 20.0,63.0" fill="var(--c)" opacity=".85"/>
+        </svg>
+    <div class="pd">Size −100%：<strong>畫慢的線比較細</strong>、畫快的線比較粗。</div>
+  </div>
+  <div class="pane" style="--c:var(--green)">
+    <div class="pt">Speed Size 0%</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="粗細不隨速度改變">
+        <polygon points="20.0,49.0 24.0,49.0 28.0,49.0 32.0,49.0 36.0,49.0 40.0,49.0 44.0,49.0 48.0,49.0 52.0,49.0 56.0,49.0 60.0,49.0 64.0,49.0 68.0,49.0 72.0,49.0 76.0,49.0 80.0,49.0 84.0,49.0 88.0,49.0 92.0,49.0 96.0,49.0 100.0,49.0 104.0,49.0 108.0,49.0 112.0,49.0 116.0,49.0 120.0,49.0 124.0,49.0 128.0,49.0 132.0,49.0 136.0,49.0 140.0,49.0 144.0,49.0 148.0,49.0 152.0,49.0 156.0,49.0 160.0,49.0 164.0,49.0 168.0,49.0 172.0,49.0 176.0,49.0 180.0,49.0 180.0,71.0 176.0,71.0 172.0,71.0 168.0,71.0 164.0,71.0 160.0,71.0 156.0,71.0 152.0,71.0 148.0,71.0 144.0,71.0 140.0,71.0 136.0,71.0 132.0,71.0 128.0,71.0 124.0,71.0 120.0,71.0 116.0,71.0 112.0,71.0 108.0,71.0 104.0,71.0 100.0,71.0 96.0,71.0 92.0,71.0 88.0,71.0 84.0,71.0 80.0,71.0 76.0,71.0 72.0,71.0 68.0,71.0 64.0,71.0 60.0,71.0 56.0,71.0 52.0,71.0 48.0,71.0 44.0,71.0 40.0,71.0 36.0,71.0 32.0,71.0 28.0,71.0 24.0,71.0 20.0,71.0" fill="var(--c)" opacity=".85"/>
+        </svg>
+    <div class="pd">Size 0%：粗細完全不受速度影響。</div>
+  </div>
+  <div class="pane" style="--c:var(--amber)">
+    <div class="pt">Speed Size +100%</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="畫快線變細">
+        <polygon points="20.0,46.0 24.0,46.3 28.0,46.6 32.0,46.9 36.0,47.2 40.0,47.5 44.0,47.8 48.0,48.1 52.0,48.4 56.0,48.7 60.0,49.0 64.0,49.3 68.0,49.6 72.0,49.9 76.0,50.2 80.0,50.5 84.0,50.8 88.0,51.1 92.0,51.4 96.0,51.7 100.0,52.0 104.0,52.2 108.0,52.5 112.0,52.8 116.0,53.0 120.0,53.2 124.0,53.5 128.0,53.8 132.0,54.0 136.0,54.2 140.0,54.5 144.0,54.8 148.0,55.0 152.0,55.2 156.0,55.5 160.0,55.8 164.0,56.0 168.0,56.2 172.0,56.5 176.0,56.8 180.0,57.0 180.0,63.0 176.0,63.2 172.0,63.5 168.0,63.8 164.0,64.0 160.0,64.2 156.0,64.5 152.0,64.8 148.0,65.0 144.0,65.2 140.0,65.5 136.0,65.8 132.0,66.0 128.0,66.2 124.0,66.5 120.0,66.8 116.0,67.0 112.0,67.2 108.0,67.5 104.0,67.8 100.0,68.0 96.0,68.3 92.0,68.6 88.0,68.9 84.0,69.2 80.0,69.5 76.0,69.8 72.0,70.1 68.0,70.4 64.0,70.7 60.0,71.0 56.0,71.3 52.0,71.6 48.0,71.9 44.0,72.2 40.0,72.5 36.0,72.8 32.0,73.1 28.0,73.4 24.0,73.7 20.0,74.0" fill="var(--c)" opacity=".85"/>
+        </svg>
+    <div class="pd">Size +100%：反過來，<strong>畫越快線越細</strong>——最像真實的筆。</div>
+  </div>
+</div>
+<p class="svgcap">注意這一頁官方明講<b>不吃壓力也不吃傾斜</b>，它只看你畫多快。用手指畫的人靠它做出變化。</p>
+
+      <div class="callout" style="--c:var(--teal)">
+        <div class="ct">這一頁跟壓力完全無關，官方明說的</div>
+        Dynamics 整頁的官方說明裡有一句：<strong>這些設定不依賴 Apple Pencil 的壓力與傾斜。</strong>它只看你畫多快、以及隨機值。<br>
+        所以有兩個實用推論：一、<strong>用手指畫畫的人靠這一頁做出變化</strong>；二、如果某支筆刷「感覺沒有感壓」，先看看它的變化是不是其實來自 Dynamics——那是規格，不是故障。
+      </div>
+    </section>
+
+    <section id="paint">
+      <div class="sec-label" style="--c:var(--purple)">paint</div>
+      <h2>04 · 顏料的行為：濕度、顏色、算圖</h2>
+      <p>前面三節都在講「形狀」。這一節開始講「顏料」——為什麼水彩會暈開、為什麼粉筆的顏色會花花的。</p>
+
+      <h3>Wet Mix（濕混）：筆上有多少顏料、摻了多少水</h3>
+      <div class="figs">
+  <div class="pane" style="--c:var(--green)">
+    <div class="pt">Charge 高</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="整筆顏色濃度一致">
+        <rect x="18" y="50" width="164" height="22" rx="8" fill="var(--c)" opacity=".9"/>
+        </svg>
+    <div class="pd">Charge 高：筆上顏料很多，一路畫都很濃。</div>
+  </div>
+  <div class="pane" style="--c:var(--amber)">
+    <div class="pt">Charge 低</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="顏色越畫越淡直到耗盡">
+        <rect x="18.0" y="50" width="8.4" height="22" fill="var(--c)" opacity="0.90"/><rect x="26.2" y="50" width="8.4" height="22" fill="var(--c)" opacity="0.85"/><rect x="34.4" y="50" width="8.4" height="22" fill="var(--c)" opacity="0.81"/><rect x="42.599999999999994" y="50" width="8.4" height="22" fill="var(--c)" opacity="0.77"/><rect x="50.8" y="50" width="8.4" height="22" fill="var(--c)" opacity="0.72"/><rect x="59.0" y="50" width="8.4" height="22" fill="var(--c)" opacity="0.68"/><rect x="67.19999999999999" y="50" width="8.4" height="22" fill="var(--c)" opacity="0.63"/><rect x="75.39999999999999" y="50" width="8.4" height="22" fill="var(--c)" opacity="0.58"/><rect x="83.6" y="50" width="8.4" height="22" fill="var(--c)" opacity="0.54"/><rect x="91.8" y="50" width="8.4" height="22" fill="var(--c)" opacity="0.50"/><rect x="100.0" y="50" width="8.4" height="22" fill="var(--c)" opacity="0.45"/><rect x="108.19999999999999" y="50" width="8.4" height="22" fill="var(--c)" opacity="0.41"/><rect x="116.39999999999999" y="50" width="8.4" height="22" fill="var(--c)" opacity="0.36"/><rect x="124.6" y="50" width="8.4" height="22" fill="var(--c)" opacity="0.32"/><rect x="132.79999999999998" y="50" width="8.4" height="22" fill="var(--c)" opacity="0.27"/><rect x="141.0" y="50" width="8.4" height="22" fill="var(--c)" opacity="0.23"/><rect x="149.2" y="50" width="8.4" height="22" fill="var(--c)" opacity="0.18"/><rect x="157.39999999999998" y="50" width="8.4" height="22" fill="var(--c)" opacity="0.14"/><rect x="165.6" y="50" width="8.4" height="22" fill="var(--c)" opacity="0.09"/><rect x="173.79999999999998" y="50" width="8.4" height="22" fill="var(--c)" opacity="0.05"/>
+        </svg>
+    <div class="pd">Charge 低：畫著畫著顏料就用完，尾巴自然變淡。抬筆再下筆等於重新沾一次顏料。</div>
+  </div>
+  <div class="pane" style="--c:var(--cyan)">
+    <div class="pt">Dilution 高</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="顏色稀釋透明、邊緣暈開">
+        <rect x="18" y="50" width="164" height="22" rx="8" fill="var(--c)" opacity=".30"/><rect x="18" y="46" width="164" height="30" rx="12" fill="var(--c)" opacity=".12"/>
+        </svg>
+    <div class="pd">Dilution 高：水多顏料少，顏色透、邊緣會暈開。</div>
+  </div>
+</div>
+<p class="svgcap">這一頁在模擬「筆上有多少顏料、摻了多少水」——水彩、油畫的味道就是從這裡來的。</p>
+
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">一個很真實的細節：抬筆等於重新沾顏料</div>
+        Charge 設低的時候，畫著畫著顏色就會用完。這時候<strong>把筆抬起來、再放下去畫，等於重新沾了一次調色盤</strong>——顏色又回來了。<br>
+        Dilution（稀釋）拉高時這個行為最明顯，也最像真的在畫水彩。
+      </div>
+
+      <h3>Color Dynamics（色彩動態）：讓顏色自己有變化</h3>
+      <div class="figs">
+  <div class="pane" style="--c:var(--green)">
+    <div class="pt">Jitter 關</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="整筆同一個顏色">
+        <circle cx="26.0" cy="60" r="9" fill="hsl(205 62% 62%)"/><circle cx="43.5" cy="60" r="9" fill="hsl(205 62% 62%)"/><circle cx="61.0" cy="60" r="9" fill="hsl(205 62% 62%)"/><circle cx="78.5" cy="60" r="9" fill="hsl(205 62% 62%)"/><circle cx="96.0" cy="60" r="9" fill="hsl(205 62% 62%)"/><circle cx="113.5" cy="60" r="9" fill="hsl(205 62% 62%)"/><circle cx="131.0" cy="60" r="9" fill="hsl(205 62% 62%)"/><circle cx="148.5" cy="60" r="9" fill="hsl(205 62% 62%)"/><circle cx="166.0" cy="60" r="9" fill="hsl(205 62% 62%)"/>
+        </svg>
+    <div class="pd">關掉。整筆都是你選的那個顏色。</div>
+  </div>
+  <div class="pane" style="--c:var(--amber)">
+    <div class="pt">Hue Jitter 低</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="顏色只有輕微偏移">
+        <circle cx="26.0" cy="60" r="9" fill="hsl(200 62% 62%)"/><circle cx="43.5" cy="60" r="9" fill="hsl(207 62% 62%)"/><circle cx="61.0" cy="60" r="9" fill="hsl(214 62% 62%)"/><circle cx="78.5" cy="60" r="9" fill="hsl(221 62% 62%)"/><circle cx="96.0" cy="60" r="9" fill="hsl(228 62% 62%)"/><circle cx="113.5" cy="60" r="9" fill="hsl(235 62% 62%)"/><circle cx="131.0" cy="60" r="9" fill="hsl(242 62% 62%)"/><circle cx="148.5" cy="60" r="9" fill="hsl(249 62% 62%)"/><circle cx="166.0" cy="60" r="9" fill="hsl(256 62% 62%)"/>
+        </svg>
+    <div class="pd">Hue Jitter 低：顏色只有輕微飄移，看起來像手繪的自然不均勻。</div>
+  </div>
+  <div class="pane" style="--c:var(--purple)">
+    <div class="pt">Hue Jitter 高</div>
+    <svg viewBox="0 0 200 150" role="img" aria-label="顏色跳過整個色譜">
+        <circle cx="26.0" cy="60" r="9" fill="hsl(0 62% 62%)"/><circle cx="43.5" cy="60" r="9" fill="hsl(36 62% 62%)"/><circle cx="61.0" cy="60" r="9" fill="hsl(72 62% 62%)"/><circle cx="78.5" cy="60" r="9" fill="hsl(108 62% 62%)"/><circle cx="96.0" cy="60" r="9" fill="hsl(144 62% 62%)"/><circle cx="113.5" cy="60" r="9" fill="hsl(180 62% 62%)"/><circle cx="131.0" cy="60" r="9" fill="hsl(216 62% 62%)"/><circle cx="148.5" cy="60" r="9" fill="hsl(252 62% 62%)"/><circle cx="166.0" cy="60" r="9" fill="hsl(288 62% 62%)"/>
+        </svg>
+    <div class="pd">Hue Jitter 高：整筆跳過整個色譜，做彩虹、粉筆、噴漆很好用。</div>
+  </div>
+</div>
+<p class="svgcap">想要「看起來不像電腦畫的」，這一頁比什麼都有效——一點點就夠了。</p>
+
+      <h3>Rendering（算圖）：顏色怎麼疊上去</h3>
+      <figure class="fig fig-wide">
+<svg viewBox="0 0 700 110" role="img" aria-label="六個算圖模式由輕到重的光譜">
+        <rect x="20" y="34" width="96" height="40" rx="5" fill="var(--cyan)" opacity=".18"/><text class="lbl-s" x="20" y="92" fill="var(--soft)">1</text><rect x="130" y="34" width="96" height="40" rx="5" fill="var(--cyan)" opacity=".30"/><text class="lbl-s" x="130" y="92" fill="var(--soft)">2</text><rect x="240" y="34" width="96" height="40" rx="5" fill="var(--cyan)" opacity=".44"/><text class="lbl-s" x="240" y="92" fill="var(--soft)">3</text><rect x="350" y="34" width="96" height="40" rx="5" fill="var(--cyan)" opacity=".60"/><text class="lbl-s" x="350" y="92" fill="var(--soft)">4</text><rect x="460" y="34" width="96" height="40" rx="5" fill="var(--cyan)" opacity=".78"/><text class="lbl-s" x="460" y="92" fill="var(--soft)">5</text><rect x="570" y="34" width="96" height="40" rx="5" fill="var(--cyan)" opacity=".95"/><text class="lbl-s" x="570" y="92" fill="var(--soft)">6</text>
+        <text class="lbl-s" x="20" y="20" fill="var(--green)">◄ 輕 · 像稀釋顏料</text>
+        <text class="lbl-s" x="560" y="20" fill="var(--red)">厚重顏料 · 重 ►</text>
+      </svg>
+<figcaption>六種算圖模式由輕到重。<b>越往右顏色堆疊的計算越複雜，也越吃效能。</b>不確定要選哪個時，先用預設的那個。</figcaption>
+</figure>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">這一頁不確定就別亂動</div>
+        Rendering 決定的是「顏色疊加時怎麼運算」，它的差異很微妙、但一改就會影響整支筆刷的個性，而且越右邊越吃效能。<br>
+        建議的做法是：<strong>先把其他頁都調好，最後才回來試 Rendering</strong>，一次換一個模式、在塗鴉板上畫兩筆比較。
+      </div>
+    </section>
+
+    <section id="pencil">
+      <div class="sec-label" style="--c:var(--navy)">your_pencil</div>
+      <h2>05 · 接上你的筆：哪些設定你手上這支做得到</h2>
+      <p>Brush Studio 有一整頁叫 Apple Pencil，管的是「你的筆怎麼影響這支筆刷」。但這裡有個很多教學不會講的前提——有些設定<strong>要特定世代的筆</strong>才會有作用。</p>
+
+      <h3>先看傾斜：有一段角度是完全無效的</h3>
+      <figure class="fig fig-wide">
+<svg viewBox="0 0 700 190" role="img" aria-label="傾斜角度分區：0到15度筆尖碰不到畫布、16到30度可能不準、30到90度才是建議使用範圍">
+        <rect x="30" y="60" width="106" height="34" rx="4" fill="var(--red-bg)" stroke="var(--red)"/>
+        <rect x="136" y="60" width="106" height="34" rx="4" fill="var(--amber-bg)" stroke="var(--amber)"/>
+        <rect x="242" y="60" width="424" height="34" rx="4" fill="var(--green-bg)" stroke="var(--green)"/>
+        <text class="lbl-s" x="42" y="82" fill="var(--red)">0°–15° 無效</text>
+        <text class="lbl-s" x="150" y="82" fill="var(--amber)">16°–30° 可能不準</text>
+        <text class="lbl-s" x="360" y="82" fill="var(--green)">30°–90° 建議使用範圍</text>
+        <line class="ax" x1="30" y1="110" x2="666" y2="110"/>
+        <line class="gl" x1="136" y1="104" x2="136" y2="116"/><line class="gl" x1="242" y1="104" x2="242" y2="116"/>
+        <text class="lbl-s" x="24" y="130">0°</text><text class="lbl-s" x="124" y="130">15°</text>
+        <text class="lbl-s" x="230" y="130">30°</text><text class="lbl-s" x="648" y="130">90°</text>
+        <text class="lbl-s" x="30" y="150" fill="var(--soft)">筆貼平畫布</text>
+        <text class="lbl-s" x="600" y="150" fill="var(--soft)">筆完全立直</text>
+        <text class="lbl-s" x="30" y="176" fill="var(--red)">⚠ 把觸發點設在 0–15° 之間＝那個設定完全不會作用（筆尖根本沒碰到畫布）</text>
+      </svg>
+<figcaption>這是全篇最實用的冷知識：<b>把傾斜效果綁在 0–15 度是完全無效的</b>，因為那個角度筆尖根本還沒碰到畫布。</figcaption>
+</figure>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">「我的傾斜設定沒反應」，九成是這個原因</div>
+        官方寫得很清楚：0～15 度時<strong>筆尖根本還沒碰到畫布</strong>，綁在這個範圍的設定不會有任何效果；16～30 度「可能不準」；<strong>30～90 度才是官方建議的使用範圍</strong>。<br>
+        所以調傾斜筆刷時，觸發點設在 30 度以上才有意義。這也剛好對應真人握筆的角度。
+      </div>
+
+      <h3>果果視角：哪一代筆、哪一台 iPad 才有這些功能</h3>
+      <p>我們手上 2018 到 2026 年的 iPad 與各代 Apple Pencil 都在架上，所以很清楚一件事：教學影片裡看到的設定，<strong>你手上那支筆不一定做得出來</strong>。買二手機或平價筆之前，這張表值得先看一眼。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Brush Studio 裡的設定</th><th>需要什麼才有作用</th><th>沒有的話會怎樣</th></tr>
+          <tr><td>Pressure（壓力）</td><td>第 1 代、第 2 代、Apple Pencil Pro</td><td class="bad">USB-C 版沒有壓力感應，粗細不會跟著手勁變</td></tr>
+          <tr><td>Tilt（傾斜）</td><td>原廠 Apple Pencil 各代都有</td><td class="bad">多數平價副廠筆做不到，側鋒效果出不來</td></tr>
+          <tr><td>Input style · Azimuth（方位角）</td><td>能回報方位角的筆</td><td class="bad">形狀不會跟著你握筆的方向轉</td></tr>
+          <tr><td>Input style · Barrel roll（轉筆桿）</td><td class="good">只有 Apple Pencil Pro</td><td class="bad">其他款完全沒有這個選項</td></tr>
+          <tr><td>Hover（懸浮預覽）</td><td>要機器與筆都支援懸浮</td><td class="bad">筆還沒碰到螢幕時不會顯示預覽</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--red)">
+        <div class="ct">誠實說：懸浮這一列請以官方比較表為準</div>
+        懸浮支援與否同時看 iPad 機型和 Pencil 世代，組合很多，而且會隨新機型變動。我們不在這裡列機型清單，是因為那種表最容易過期、過期又最容易害人買錯。<br>
+        <strong>要確認就去 Apple 官網的 Apple Pencil 機型比較表對一次</strong>，那是唯一會跟著更新的來源。
+      </div>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">還有一個游標設定，設了常常「沒反應」</div>
+        Brush Studio 裡可以設定筆刷游標的外框樣式，但官方註明一個前提：<strong>要先把「Actions → Prefs → Advanced cursor」設成 Per Brush</strong>，否則全域設定會蓋過去，你在筆刷裡設的東西根本不會顯示。<br>
+        這跟壓力曲線是同一種結構——全域壓過單支筆刷。在 Procreate 裡看到「設了沒反應」，先想想是不是有一層全域設定在上面。
+      </div>
+    </section>
+
+    <section id="recipes">
+      <div class="sec-label" style="--c:var(--green)">recipes</div>
+      <h2>06 · 六道食譜：想要這種效果，該動哪幾頁</h2>
+      <p>概念講完了，來收成可以直接動手的東西。下面六道是最常見的需求，各自對應哪幾頁：</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你想做出</th><th>主要動這幾頁</th><th>關鍵動作</th></tr>
+          <tr><td>石墨鉛筆<small>立起來畫細線、斜著打陰影</small></td><td>Shape ＋ Grain ＋ Apple Pencil</td><td>紋理選粗糙的、把傾斜接到 Size，觸發點設 30 度以上</td></tr>
+          <tr><td>書法／扁頭筆<small>橫粗直細</small></td><td>Shape</td><td>形狀壓扁，<strong>Rotation 設 0%</strong>（形狀不跟著筆畫轉）</td></tr>
+          <tr><td>水彩<small>會暈開、顏料會用完</small></td><td>Wet Mix ＋ Grain</td><td>Dilution 拉高、Charge 壓低，Grain 用 Moving</td></tr>
+          <tr><td>草叢／樹葉／噴濺<small>一撮一撮</small></td><td>Shape ＋ Stroke Path</td><td>Count 調高、開 Scatter、Spacing 拉大</td></tr>
+          <tr><td>像素畫<small>硬邊、不糊</small></td><td>Shape ＋ Rendering</td><td>形狀用方的、關掉平滑相關的柔化</td></tr>
+          <tr><td>自己拍的照片當紋理</td><td>Grain</td><td>用 Grain 編輯器匯入圖片；做圖樣要<strong>關掉 Offset Jitter</strong></td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--red)">
+        <div class="ct">這張表為什麼沒有數字？因為官方也沒給</div>
+        網路上很多筆刷教學會給你「Spacing 設 12%、Jitter 設 34%」這種配方。老實說，<strong>Procreate 官方從來沒有公布過任何一組配方數值</strong>——上面這些方向是依官方對各設定的說明推出來的，方向可靠，數字得你自己在塗鴉板上試。<br>
+        而且同一組數字換一個 Shape 就不成立了。<strong>與其抄數字，不如記住「這個效果歸哪一頁管」</strong>，那個知識才帶得走。
+      </div>
+    </section>
+
+    <section id="pitfalls">
+      <div class="sec-label" style="--c:var(--red)">pitfalls</div>
+      <h2>07 · 雷區，以及怎麼還原</h2>
+      <p>調筆刷最怕的不是調不出來，是回不去。這節把幾個真的會卡住人的地方講完。</p>
+
+      <ul class="flags">
+        <li><b>直接改原廠筆刷</b>——原廠筆刷改壞了很難完美還原。動手前先複製一支，改複製品。</li>
+        <li><b>以為還原點可以存很多個</b>——官方明講每支筆刷<strong>同時只能有一個</strong>還原點，存新的就蓋掉舊的。</li>
+        <li><b>想在 Brush Studio 裡改筆刷名稱</b>——自 Procreate 5.4 起這裡改不了了，要回筆刷庫長按筆刷選「重新命名」。</li>
+        <li><b>照抄別人的數值卻沒換 Shape</b>——同一組數字配不同形狀，結果會差很多，抄了通常不像。</li>
+        <li><b>放大到底還是很細</b>——去 Properties 看看，那裡可以幫側邊欄的尺寸／不透明度滑桿設上下限，設過就會被夾住。</li>
+      </ul>
+
+      <h3>兩個 Reset，管的範圍不一樣</h3>
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)">
+          <div class="ct">Reset all Brush Settings</div>
+          在 Brush Studio 裡，把<strong>目前這一支筆刷</strong>的設定還原。官方明白註明它只作用於當前筆刷，不會動到你其他筆刷。
+        </div>
+        <div class="callout" style="--c:var(--teal)">
+          <div class="ct">Reset Point（還原點）</div>
+          你自己存的存檔點，跳回存檔當下的狀態。適合「我想再試試看，但想留一條退路」的時候。
+        </div>
+      </div>
+
+      <details>
+        <summary>一個不用打開設定就能判斷筆刷的小技巧</summary>
+        <p>筆刷庫裡每支筆刷旁邊那條預覽線，官方說明它是「一筆由左到右、壓力逐漸增加、最後再放掉」的示範筆畫，而且<strong>任何綁在壓力上的效果都會在預覽裡被示範出來</strong>。所以那條預覽線如果從頭到尾一樣粗，這支筆刷多半沒有把壓力接到粗細上。</p>
+        <p>兩個但書：一、Properties 裡有個「Use Stamp Preview」開關，打開之後預覽會變成單一印章而不是筆畫，那就看不出來了；二、「預覽沒變化 → 一定沒接壓力」是我們從官方那句話反推的，官方並沒有直接這樣說。當快篩用可以，別當結論。</p>
+      </details>
+    </section>
+
+    <section id="honest">
+      <div class="sec-label" style="--c:var(--purple)">evidence</div>
+      <h2>08 · 這篇哪些是官方說的、哪些是推論</h2>
+      <p>筆刷設定這種題目，網路上很多說法查不到出處。我們把每一條的等級標出來，你可以自己決定要信到什麼程度。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>說法</th><th>等級</th><th>依據</th></tr>
+          <tr><td>Brush Studio 共 14 個可調分頁</td><td><span class="lv-tag ok">已確認</span></td><td>官方手冊該頁開頭逐字：「探索 Procreate 筆刷的 14 個可調整屬性」</td></tr>
+          <tr><td>一筆是「沿路徑蓋很多次章」組成的</td><td><span class="lv-tag ok">已確認</span></td><td>官方對 Stroke Path 的定義原文；Spacing 的說明也直接用了「蓋章」這個詞</td></tr>
+          <tr><td>拉高 Spacing 可以看清楚每個設定在做什麼</td><td><span class="lv-tag ok">已確認</span></td><td>官方手冊的 Pro Tip 原文，含「之後調回正常也會幫你想像」那句</td></tr>
+          <tr><td>Spacing 設 0% 仍看得到間距變化</td><td><span class="lv-tag ok">已確認</span></td><td>官方說明間距有一個最小值</td></tr>
+          <tr><td>Count 上限 16、Jitter 100% 時在 1～最大值之間隨機</td><td><span class="lv-tag ok">已確認</span></td><td>官方對 Count 與 Count Jitter 的逐字說明</td></tr>
+          <tr><td>Dynamics 整頁不依賴壓力與傾斜</td><td><span class="lv-tag ok">已確認</span></td><td>官方逐字，並說明用手指畫的人可用這頁做出變化</td></tr>
+          <tr><td>傾斜 0～15 度無效、30～90 度才是建議範圍</td><td><span class="lv-tag ok">已確認</span></td><td>官方對 Tilt 的逐字說明</td></tr>
+          <tr><td>游標外框要先把 Advanced cursor 設成 Per Brush</td><td><span class="lv-tag ok">已確認</span></td><td>官方註明否則會被全域設定覆蓋、不會顯示</td></tr>
+          <tr><td>Barrel roll 只有 Apple Pencil Pro 有</td><td><span class="lv-tag ok">已確認</span></td><td>官方 Input style 三個選項的逐字說明</td></tr>
+          <tr><td>還原點每支筆刷只能有一個、5.4 起不能在此改名</td><td><span class="lv-tag ok">已確認</span></td><td>官方對 Reset Point 與 Brush Title 的逐字說明</td></tr>
+          <tr><td>六道食譜該動哪幾頁</td><td><span class="lv-tag infer">合理推論</span></td><td>方向依官方對各設定的描述推出，但<strong>官方沒有給過任何配方的具體數值</strong>，數字要自己試</td></tr>
+          <tr><td>預覽線沒有粗細變化 → 這支筆刷沒接壓力</td><td><span class="lv-tag infer">合理推論</span></td><td>官方只說「綁在壓力上的效果會在預覽裡被示範」，反過來推是我們的判斷，當快篩用</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">為什麼要特別標出「沒有數字」這件事</div>
+        因為那正是這個主題最容易誤導人的地方。你在別處看到有人給你一組精確到個位數的筆刷配方時，可以回頭問一句：這組數字配的是哪一個 Shape？<br>
+        <strong>換一個形狀，同一組數字就不成立了。</strong>我們寧可教你哪一頁管什麼，也不想給你一組換個筆刷就失效的數字。
+      </div>
+    </section>
+
+    <section id="watch">
+      <div class="sec-label" style="--c:var(--teal)">videos</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p style="font-size:.9rem;color:var(--muted)">滑桿實際拉動的樣子，用看的比用讀的快。影片為第三方製作，介面可能因 Procreate 版本不同而有差異，設定說明仍以官方手冊為準。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=KrfCJdaIrzI" target="_blank" rel="noopener" data-yt="KrfCJdaIrzI" aria-label="播放：Procreate 製作筆刷｜設定參數霧煞煞｜10 分鐘內讓你搞明白">
+          <img loading="lazy" src="https://i.ytimg.com/vi/KrfCJdaIrzI/sddefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/KrfCJdaIrzI/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>Procreate製作筆刷｜設定參數霧煞煞｜10分鐘內讓你搞明白</b><small>頻道：Vera生活那些事 · <strong>繁體中文</strong>。三支裡最貼本文的一支——直接把 Brush Studio 的參數逐項拉給你看，正好補上本篇的圖看不到的「拉動當下的變化」。</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=Ti2vJhWibws" target="_blank" rel="noopener" data-yt="Ti2vJhWibws" aria-label="播放：PROCREATE 教程：如何自製 Procreate 筆刷？詳解參數設置介面">
+          <img loading="lazy" src="https://i.ytimg.com/vi/Ti2vJhWibws/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/Ti2vJhWibws/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>PROCREATE教程：如何自制PROCREATE笔刷？详解参数设置界面</b><small>頻道：叶子Msyemin · 簡體中文（用詞與台灣略有出入，但畫面看得懂）。從零做一支自己的筆刷，適合看完本篇想實作的人跟著走一遍。</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=Vfhd9-ruses" target="_blank" rel="noopener" data-yt="Vfhd9-ruses" aria-label="播放：Procreate Brush Settings to Change - brush studio EXPLAINED">
+          <img loading="lazy" src="https://i.ytimg.com/vi/Vfhd9-ruses/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/Vfhd9-ruses/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>Procreate Brush Settings to Change! | brush studio EXPLAINED</b><small>頻道：Wooly Pronto · 英文。挑出「最值得動的幾個設定」來講，跟本篇第 06 節的食譜是同一個思路，可以互相對照。</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">本文的分頁名稱、設定定義與各項數值上限，全部取自 Procreate 官方手冊；Apple Pencil 各代功能差異取自 Apple 官方頁面。以下每一條都在 2026 年 7 月 31 日重新逐字核對過：</p>
+      <ul class="sources">
+        <li><a href="https://help.procreate.com/procreate/handbook/brushes/brush-studio-settings">Procreate 官方手冊 · Brush Studio Settings</a>（本篇主要來源：該頁開頭明列「14 個可調整屬性」；Stroke Path 的「沿路徑畫上很多個點」定義；Spacing 的「蓋章」說明與最小值；拉高 Spacing 看印章的 Pro Tip；Count 上限 16 與 Count Jitter 算式；Grain 的 Moving／Texturized 差異與 Offset Jitter 提醒；Dynamics「不依賴壓力與傾斜」逐字；Tilt 的 0–15／16–30／30–90 度分區；Input style 三選一與 Barrel roll 需 Apple Pencil Pro；游標需設 Per Brush；Maximum／Minimum Size 與 Opacity 會夾住側邊欄滑桿；Reset Point 只能有一個；Brush Title 自 5.4 起不能在此修改；筆刷預覽是壓力漸增的示範筆畫）</li>
+        <li><a href="https://help.procreate.com/procreate/handbook/brushes/brush-studio">Procreate 官方手冊 · Brush Studio</a>（Brush Studio 的版面組成；Reset all Brush Settings 註明「只適用於目前這支筆刷」）</li>
+        <li><a href="https://www.apple.com/tw/apple-pencil/">Apple 台灣官網 · Apple Pencil</a>（各代機型比較表：壓力感應「不適用於 Apple Pencil (USB-C)」、傾斜度與懸浮的支援範圍——第 05 節那張表的依據）</li>
+      </ul>
+      <p class="updated">Brush Studio 是 Procreate 改版時最常變動的地方，新增或移除設定、搬動選單都可能發生；本文的分頁名稱與位置以查證日的版本為準，操作前請以你 iPad 上實際看到的字為準。標示為「合理推論」的說法請見<a class="inline" href="#honest">第 08 節</a>。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
