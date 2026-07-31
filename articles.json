@@ -942,6 +942,7 @@
         "q": "Brush Studio 裡哪些設定要 Apple Pencil Pro 才有？",
         "a": "最明確的一個是 Barrel roll（轉筆桿）。官方在 Input style 的三個選項裡寫明，「Azimuth and barrel roll」需要 Apple Pencil Pro，其他款筆完全沒有這個選項。另外壓力感應在 Apple Pencil USB-C 版上沒有作用，那一款本來就沒有；傾斜則是原廠各代都有。買二手機或平價筆之前，這幾項值得先對照確認。"
       }
-    ]
+    ],
+    "ogImage": "assets/og/procreate-brush-studio-basics-cover.png"
   }
 ]
