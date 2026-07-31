@@ -947,8 +947,8 @@
   },
   {
     "slug": "procreate-stroke-looks-wrong",
-    "title": "Procreate 筆觸怪怪的？先反查是哪一頁",
-    "seoTitle": "Procreate 筆觸怪怪的？症狀反查 Brush Studio 哪一頁 · 果果國際",
+    "title": "Procreate 筆觸怪怪的？先查看筆刷設定",
+    "seoTitle": "Procreate 筆觸怪怪的？筆刷設定症狀反查表 · 果果國際",
     "summary": "打開 Brush Studio 看到 14 個分頁不知道從哪下手，別一頁一頁亂拉——先看症狀反查是哪一頁。附 14 列症狀對照表、五個最常中的兇手（含官方明說的傾斜死區與「不吃壓力」的 Dynamics），以及藏在筆刷外面、會壓過單支筆刷的四道全域天花板。",
     "category": "技巧",
     "icon": "🩺",
@@ -993,6 +993,7 @@
         "q": "Procreate 設定明明改了卻沒反應，怎麼查？",
         "a": "往上找一層，通常是偏好設定壓過了筆刷。Procreate 的 Actions 選單裡的偏好設定有四個開關會蓋過單支筆刷：App 壓力靈敏度曲線、全域的穩定與動態濾鏡、進階游標（筆刷外框要選 Per brush，筆刷裡那組設定才會生效）、以及筆刷縮放。官方在這四處都各自寫明會影響或覆蓋筆刷行為，翻遍 14 個分頁找不到原因時先看這裡。"
       }
-    ]
+    ],
+    "ogImage": "assets/og/procreate-stroke-looks-wrong-cover.png"
   }
 ]
