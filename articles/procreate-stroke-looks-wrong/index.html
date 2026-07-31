@@ -358,6 +358,14 @@
         Dynamics 那一頁也有一個間距——官方說明它是「依筆畫速度調整間距，畫越快間距越大」。所以如果你的縫<strong>只在畫快的時候出現</strong>，去 Dynamics 找，不要在 Stroke Path 一直拉。
       </div>
 
+      <figure class="fig anim">
+        <div class="brush">
+          <div class="ends"><span>Spacing 低</span><span>Spacing 高</span></div>
+          <div class="slider"><b></b></div>
+          <div class="stamps"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <figcaption><b>線有縫不是筆刷破掉</b>，是間距把印章拉開了。滑桿往回拉，縫就等比例縮小——這也是確認「是不是間距在搞鬼」最快的方法。</figcaption>
+      </figure>
       <h3>兇手五：越畫越淡——兩個兇手，抬一次筆就分得出來</h3>
       <p>「一筆拉長就越來越淡」有兩個完全不同的來源，而且藏在不同頁。好消息是分辨方法只要一個動作：<strong>抬筆，重新畫一段</strong>。</p>
 
@@ -396,6 +404,23 @@
 
     <section id="global">
       <div class="sec-label" style="--c:var(--purple)">above_the_brush</div>
+      <figure class="fig anim">
+        <div class="flow">
+          <div class="box">
+            <div class="stroke"><div class="reveal"><div class="ink2 fade"></div></div></div>
+            <div class="stroke"><div class="reveal late"><div class="ink2 fade"></div></div></div>
+            <div class="bt">Fall Off</div>
+            <div class="bv">抬筆重畫，第二筆一樣淡</div>
+          </div>
+          <div class="box">
+            <div class="stroke"><div class="reveal"><div class="ink2 fade"></div></div></div>
+            <div class="stroke"><div class="reveal late"><div class="ink2 flat"></div></div></div>
+            <div class="bt">Charge</div>
+            <div class="bv">抬筆重畫，濃度回來</div>
+          </div>
+        </div>
+        <figcaption>看下面那一筆就分得出來：<b>抬筆重畫還是淡，是 Fall Off；濃度回來了，是 Wet Mix 的 Charge。</b>一個動作，兩個兇手當場現形。</figcaption>
+      </figure>
       <h2>03 · 你翻遍 14 頁都找不到？因為它不在筆刷裡</h2>
       <p>有一類問題最折磨人：你把 Brush Studio 從頭翻到尾，該關的都關了，症狀還在。那通常代表兇手根本不在筆刷裡，而是在它<strong>上面那一層</strong>。</p>
       <p>Procreate 的偏好設定裡有四個開關，會直接壓過單支筆刷的設定。我們把它叫做「筆刷之上的四道天花板」——它們的共同特徵是：你在筆刷裡設了，但它不生效，而且筆刷裡完全看不出原因。</p>

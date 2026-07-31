@@ -256,6 +256,14 @@
         就算你把 Spacing 拉到 0%，加上高一點的 Spacing Jitter，還是會看到間距在變。官方解釋過：<strong>間距有一個最小值</strong>，不會真的變成零。看到這個不用懷疑筆刷壞了。
       </div>
 
+      <figure class="fig anim">
+        <div class="brush">
+          <div class="ends"><span>Spacing 低</span><span>Spacing 高</span></div>
+          <div class="slider"><b></b></div>
+          <div class="stamps"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <figcaption>滑桿往右拉，同一串印章就散開——<b>線不是「畫」出來的，是「蓋」出來的</b>。看懂這一件事，後面 13 頁都好講。</figcaption>
+      </figure>
       <h3>Jitter（抖動）：讓排列不要太整齊</h3>
       <p>印章排太整齊會很像電腦畫的。Jitter 就是拿來加一點亂度的，而且分成兩個方向：</p>
       <div class="figs">
@@ -307,6 +315,21 @@
 </div>
 <p class="svgcap">兩種抖動的方向不一樣：一個讓線變寬變毛，一個讓疏密變亂。</p>
 
+      <figure class="fig anim">
+        <div class="flow">
+          <div class="box">
+            <div class="jit"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="bt">Jitter 0%</div>
+            <div class="bv">排得整整齊齊</div>
+          </div>
+          <div class="box">
+            <div class="jit shake"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="bt">Jitter 拉高</div>
+            <div class="bv">每顆各自跳開、轉向</div>
+          </div>
+        </div>
+        <figcaption>Jitter 動的不是「線」，是<b>每一顆印章各自的位置和角度</b>。這就是手繪感的來源——太整齊反而一眼看得出是電腦畫的。</figcaption>
+      </figure>
       <h3>Fall Off（衰減）：這一筆能撐多長</h3>
       <div class="figs">
   <div class="pane" style="--c:var(--green)">
@@ -566,6 +589,21 @@
 </div>
 <p class="svgcap">Taper 是「筆畫兩端」的形狀，跟你壓多重無關——它是筆刷自己的個性。</p>
 
+      <figure class="fig anim">
+        <div class="flow">
+          <div class="box">
+            <div class="stroke"><div class="reveal"><div class="ink2 flat"></div></div></div>
+            <div class="bt">Taper 關</div>
+            <div class="bv">頭尾一樣粗</div>
+          </div>
+          <div class="box">
+            <div class="stroke"><div class="reveal"><div class="ink2 taper"></div></div></div>
+            <div class="bt">Taper 開</div>
+            <div class="bv">收筆帶出筆鋒</div>
+          </div>
+        </div>
+        <figcaption>兩筆是<b>同一支筆刷、同樣的力道</b>，差別只在 Taper。筆鋒不是你手控出來的，是筆刷幫你在頭尾收掉——這也是為什麼有些筆刷怎麼畫都像麥克筆。</figcaption>
+      </figure>
       <h3>Stabilization（穩定器）：手抖救星，但有兩種個性</h3>
       <div class="figs">
   <div class="pane" style="--c:var(--red)">

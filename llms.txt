@@ -92,7 +92,7 @@
   - 本篇回答：為什麼二手市場上常常出現已綁定的 Apple Pencil Pro？
   - 本篇回答：買二手 Apple Pencil Pro 前，要怎麼確認有沒有被綁定？
   - 本篇回答：什麼情況下不該買已綁定的 Apple Pencil Pro？
-- [AirTag 不是 GPS 追蹤器](https://www.guoguo.tw/guide/articles/airtag-not-gps-tracker/)：AirTag 身上沒有 GPS、沒有 SIM 卡、也沒有 Wi-Fi，位置是路過的陌生 Apple 裝置用藍牙聽到後、拿自己的 GPS 座標代為回報的。懂了這件事，九種失效情況全部推得出來——追寵物、追人、防竊這三種，是一開始就選錯工具。（觀念、AirTag、尋找定位／2026-07-28）
+- [AirTag 不是 GPS 追蹤器](https://www.guoguo.tw/guide/articles/airtag-not-gps-tracker/)：AirTag 身上沒有 GPS、沒有 SIM 卡、也沒有 Wi-Fi，位置是路過的陌生 Apple 裝置用藍牙聽到後、拿自己的 GPS 座標代為回報的。懂了這件事，九種失效情況全部推得出來——追寵物、追人、防竊這三種，是一開始就選錯工具。（觀念、AirTag、尋找定位／2026-07-28，更新 2026-07-31）
   - 本篇回答：AirTag 的定位原理是什麼？
   - 本篇回答：AirTag 裡面有 GPS 嗎？
   - 本篇回答：為什麼我的 AirTag 位置一直沒更新？
@@ -128,7 +128,7 @@
   - 本篇回答：用 iPad 找 AirTag 會有箭頭指路嗎？
   - 本篇回答：撿到別人的 AirTag，要怎麼聯絡失主？
   - 本篇回答：舊 iPad 是不是就用不到這些「尋找」功能？
-- [iPhone 熱點給 iPad 為什麼只剩一半](https://www.guoguo.tw/guide/articles/hotspot-slower-than-phone/)：掉三到五成是正常的「熱點稅」，不是 iPad 壞掉。先教你三同一中位數的正確測法，再依落差幅度把六個原因對號入座——附三大電信官方降速門檻對照。（觀念、故障排除、連網與網速／2026-07-29）
+- [iPhone 熱點給 iPad 為什麼只剩一半](https://www.guoguo.tw/guide/articles/hotspot-slower-than-phone/)：掉三到五成是正常的「熱點稅」，不是 iPad 壞掉。先教你三同一中位數的正確測法，再依落差幅度把六個原因對號入座——附三大電信官方降速門檻對照。（觀念、故障排除、連網與網速／2026-07-29，更新 2026-07-31）
   - 本篇回答：iPhone 開熱點給 iPad，網速變慢是正常的嗎？
   - 本篇回答：熱點速度只有手機的一半，是 iPad 壞掉嗎？
   - 本篇回答：iPhone 的「最大化相容性」要開還是要關？
@@ -137,7 +137,7 @@
   - 本篇回答：熱點的網速要怎麼測才算數？
   - 本篇回答：低數據模式會讓熱點變慢嗎？
   - 本篇回答：熱點被降到 10Mbps，還能做哪些事？
-- [120Hz 和 60Hz 差多少？](https://www.guoguo.tw/guide/articles/promotion-120hz-who-feels-it/)：差別只在「你的手正推著畫面動」的時候出現——用 Pencil 的人最有感，追劇的人幾乎無感，因為多數影片一秒只有 24 到 30 格。附 2015–2026 全世代 ProMotion 對照表，以及同容量拉齊後的真實價差。（選購、螢幕規格、相容對照／2026-07-29）
+- [120Hz 和 60Hz 差多少？](https://www.guoguo.tw/guide/articles/promotion-120hz-who-feels-it/)：差別只在「你的手正推著畫面動」的時候出現——用 Pencil 的人最有感，追劇的人幾乎無感，因為多數影片一秒只有 24 到 30 格。附 2015–2026 全世代 ProMotion 對照表，以及同容量拉齊後的真實價差。（選購、螢幕規格、相容對照／2026-07-29，更新 2026-07-31）
   - 本篇回答：iPad 的 120Hz 和 60Hz 差很多嗎？
   - 本篇回答：ProMotion 值得多花錢加價買嗎？
   - 本篇回答：哪些 iPad 有 120Hz？

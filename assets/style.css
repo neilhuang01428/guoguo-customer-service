@@ -214,6 +214,171 @@
   .flow .box .bv { font-size: .9rem; color: var(--ink); font-weight: 700; margin-top: 3px; }
   .flow .arr { display: grid; place-items: center; color: var(--muted); font-family: var(--mono); }
 
+  /* ═══ 動態分鏡 anim（figure.fig 的動畫版）═══
+     用途：知識點本身是「會動的東西」時才用——過程、時間差、空間移動。
+     規格比較、清單、SOP 請用 table / flow / steps，動畫只會添亂。
+
+     ★ 鐵則：每個元素的「基礎樣式」必須等於動畫的最終狀態，動畫只是把它倒帶重演。
+       這樣關掉動畫、prefers-reduced-motion、或瀏覽器不支援 container query 單位時，
+       讀者看到的仍是看得懂的靜態圖，資訊不會少（見規範 §「無 JS 也全看得到」：
+       JS／動畫只能錦上添花，內容本身要預設可見）。絕不可把資訊只放在動畫的中間狀態。
+
+     情境 A：選單列 .scr/.lines/.bar/.menu/.tip/.trail  → iPadOS 26 頂端下滑
+     情境 B：觸控板手勢 .hand/.home/.appwin/.cards       → 1～3 指的動作
+     情境 C：筆刷間距 .brush/.slider/.stamps             → 滑桿一拉印章就散開
+     情境 D：壓感時間差 .canvas/.guess/.real/.nib        → 位置先到、力道後到
+     節奏一律 4.4s 一輪，全站保持同一種動畫語言。 */
+  .anim .box { padding: 12px 10px 14px; max-width: 300px; margin: 0 auto; }
+  .anim .scr { position: relative; aspect-ratio: 4 / 3; border: 2px solid var(--navy); border-radius: 8px; background: #fff; overflow: hidden; container-type: inline-size; }
+  .anim .lines { padding: 26px 8px 0; display: grid; gap: 4px; padding: 24cqi 7cqi 0; gap: 3.4cqi; }
+  .anim .lines i { display: block; height: 4px; height: 3.4cqi; border-radius: 99px; background: var(--grid); }
+  .anim .lines i:nth-child(2) { width: 74%; }
+  .anim .lines i:nth-child(3) { width: 48%; }
+  .anim .bar { position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: center; height: 14px; gap: 7px; padding: 0 6px; font-size: 8px; height: 13cqi; gap: 5cqi; padding: 0 5cqi; font-size: 5.2cqi; background: var(--navy-bg); border-bottom: 1px solid var(--line); font-family: var(--mono); color: var(--navy); }
+  .anim .bar b { font-weight: 600; }
+  .anim .menu { position: absolute; top: 13cqi; left: 5cqi; width: 60cqi; padding: 2cqi 0; background: #fff; border: 1px solid var(--line); border-radius: 4px; box-shadow: 0 4px 10px rgba(20,39,68,.16); }
+  .anim .menu div { display: flex; justify-content: space-between; gap: 4cqi; padding: .6cqi 4cqi; font-size: 8px; font-size: 5.2cqi; line-height: 1.6; }
+  .anim .menu b { color: var(--ink); font-weight: 600; }
+  .anim .menu span { color: var(--green-deep); font-family: var(--mono); }  /* 快捷鍵：整張圖的視覺重點 */
+  .anim .trail { position: absolute; left: 50%; top: 0; width: 2px; margin-left: -1px; height: 26cqi; border-radius: 2px; background: linear-gradient(var(--green), rgba(47,158,87,0)); transform-origin: top; }
+  .anim .tip { position: absolute; left: 50%; top: 0; width: 11cqi; height: 11cqi; margin-left: -5.5cqi; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4cqi rgba(47,158,87,.16); transform: translateY(200%); }
+  @keyframes mb-tip   { 0%, 6%  { transform: translateY(0); }               26%, 100% { transform: translateY(200%); } }
+  @keyframes mb-trail { 0%, 6%  { transform: scaleY(0); }                   26%, 100% { transform: scaleY(1); } }
+  @keyframes mb-bar   { 0%, 26% { transform: translateY(-100%); }           46%, 100% { transform: translateY(0); } }
+  @keyframes mb-menu  { 0%, 56% { opacity: 0; transform: translateY(-8%); } 70%, 100% { opacity: 1; transform: translateY(0); } }
+  .anim .tip   { animation: mb-tip 4.4s ease-in-out infinite; }
+  .anim .trail { animation: mb-trail 4.4s ease-in-out infinite; }
+  .anim .mv    { animation: mb-bar 4.4s cubic-bezier(.2,.8,.3,1) infinite; }
+  .anim .menu  { animation: mb-menu 4.4s ease-out infinite; }
+  /* ── 情境 B：觸控板手勢（1～3 指的動作） ── */
+  .anim .lines.tall { padding-top: 8cqi; }
+  .anim .hand { position: absolute; left: 50%; top: 44cqi; display: flex; gap: 6cqi; transform: translate(-50%, -26cqi); }
+  .anim .hand i { display: block; width: 9cqi; height: 9cqi; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3cqi rgba(47,158,87,.16); }
+  .anim .home { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 5cqi; padding: 14cqi 9cqi; align-content: start; }
+  .anim .home span { display: block; aspect-ratio: 1; border-radius: 3cqi; background: var(--navy-bg); }
+  .anim .appwin { position: absolute; inset: 0; background: #fff; transform: scale(.3); opacity: 0; }
+  .anim .cards { position: absolute; inset: 0; display: flex; align-items: center; gap: 4cqi; padding: 0 6cqi; }
+  .anim .cards span { display: block; flex: 1; height: 46cqi; border-radius: 3cqi; border: 1px solid var(--line); background: var(--panel2); }
+  .anim .cards span.on { background: var(--navy-bg); border-color: var(--navy); }
+  @keyframes g-up     { 0%, 12% { transform: translate(-50%, 0); }                  48%, 100% { transform: translate(-50%, -26cqi); } }
+  @keyframes g-half   { 0%, 12% { transform: translate(-50%, 13cqi); }              40%, 100% { transform: translate(-50%, 0); } }
+  @keyframes g-side   { 0%, 12% { transform: translate(calc(-50% + 17cqi), 0); }    52%, 100% { transform: translate(-50%, 0); } }
+  @keyframes g-scroll { 0%, 12% { transform: translateY(0); }                       48%, 100% { transform: translateY(-16cqi); } }
+  @keyframes g-shrink { 0%, 12% { transform: scale(1); opacity: 1; }                55%, 100% { transform: scale(.3); opacity: 0; } }
+  @keyframes g-pop    { 0%, 20% { transform: scale(1.45); opacity: 0; }             55%, 100% { transform: scale(1); opacity: 1; } }
+  @keyframes g-slide  { 0%, 12% { transform: translateX(23cqi); }                   52%, 100% { transform: translateX(0); } }
+  .anim .hand.up   { animation: g-up 4.4s ease-in-out infinite; }
+  .anim .hand.half { top: 44cqi; transform: translate(-50%, 0); animation: g-half 4.4s ease-in-out infinite; }
+  .anim .hand.side { top: 44cqi; transform: translate(-50%, 0); animation: g-side 4.4s ease-in-out infinite; }
+  .anim .lines.scroll { animation: g-scroll 4.4s ease-in-out infinite; }
+  .anim .appwin    { animation: g-shrink 4.4s ease-in-out infinite; }
+  .anim .cards.pop { animation: g-pop 4.4s ease-out infinite; }
+  .anim .cards.slide { animation: g-slide 4.4s ease-in-out infinite; }
+
+  /* ── 情境 C：筆刷間距 Spacing（滑桿一拉，印章就散開） ── */
+  .anim .brush { padding: 4px 0 2px; }
+  .anim .ends { display: flex; justify-content: space-between; margin: 0 8%; font-family: var(--mono); font-size: .66rem; color: var(--muted); }
+  .anim .slider { position: relative; height: 4px; border-radius: 4px; background: var(--line); margin: 8px 8% 20px; }
+  .anim .slider b { position: absolute; top: 50%; left: 100%; width: 15px; height: 15px; margin: -7.5px 0 0 -7.5px; border-radius: 50%; background: var(--green); box-shadow: 0 1px 5px rgba(20,39,68,.3); }
+  .anim .stamps { display: flex; align-items: center; justify-content: center; height: 34px; }
+  .anim .stamps i { display: block; flex: none; width: 24px; height: 24px; border-radius: 50%; background: var(--green); }
+  .anim .stamps i + i { margin-left: 10px; }
+  @keyframes b-knob { 0%, 10% { left: 0%; }        52%, 100% { left: 100%; } }
+  @keyframes b-lap  { 0%, 10% { margin-left: -15px; } 52%, 100% { margin-left: 10px; } }
+  .anim .slider b   { animation: b-knob 4.4s ease-in-out infinite; }
+  .anim .stamps i + i { animation: b-lap 4.4s ease-in-out infinite; }
+
+  /* ── 情境 D：位置先到、力道後到（Pencil 壓感的時間差） ── */
+  .anim .canvas { position: relative; height: 62px; margin: 6px 6% 4px; }
+  .anim .canvas .guess { position: absolute; left: 0; top: 50%; width: 100%; height: 9px; margin-top: -4.5px; border-radius: 9px; background: var(--line); }
+  .anim .canvas .real { position: absolute; left: 0; top: 50%; width: 100%; height: 22px; margin-top: -11px; background: var(--navy); opacity: 1;
+    clip-path: polygon(0 41%, 22% 34%, 48% 16%, 74% 4%, 100% 0, 100% 100%, 74% 96%, 48% 84%, 22% 66%, 0 59%); }
+  .anim .canvas .nib { position: absolute; top: 50%; left: 100%; width: 13px; height: 13px; margin: -6.5px 0 0 -6.5px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px rgba(47,158,87,.18); }
+  .anim .tags { display: flex; justify-content: space-between; margin: 0 6%; font-family: var(--mono); font-size: .64rem; }
+  .anim .tags span:first-child { color: var(--muted); }
+  .anim .tags span:last-child { color: var(--navy); }
+  @keyframes p-draw { 0%, 8% { width: 0; }  46%, 100% { width: 100%; } }
+  @keyframes p-nib  { 0%, 8% { left: 0; }   46%, 100% { left: 100%; } }
+  @keyframes p-fix  { 0%, 52% { opacity: 0; } 66%, 100% { opacity: 1; } }
+  .anim .canvas .guess { animation: p-draw 4.4s linear infinite; }
+  .anim .canvas .nib   { animation: p-nib 4.4s linear infinite; }
+  .anim .canvas .real  { animation: p-fix 4.4s ease-out infinite; }
+
+  /* ── 情境 E：筆畫造型（Taper 收筆／Fall Off 淡出／Charge 重新沾色）── */
+  .anim .stroke { position: relative; height: 34px; container-type: inline-size; }
+  .anim .stroke + .stroke { margin-top: 7px; }
+  .anim .reveal { position: absolute; inset: 0 auto 0 0; width: 100%; overflow: hidden; }
+  .anim .ink2 { position: absolute; left: 0; top: 0; height: 100%; width: 100cqw; background: var(--navy); }
+  .anim .ink2.flat  { clip-path: polygon(0 27%, 100% 27%, 100% 73%, 0 73%); }
+  .anim .ink2.taper { clip-path: polygon(0 50%, 9% 22%, 55% 13%, 88% 27%, 100% 50%, 88% 73%, 55% 87%, 9% 78%); }
+  .anim .ink2.fade  { clip-path: polygon(0 27%, 100% 27%, 100% 73%, 0 73%); background: linear-gradient(90deg, var(--navy), rgba(23,52,95,.1)); }
+  @keyframes s-draw  { 0%, 8%  { width: 0; } 46%, 100% { width: 100%; } }
+  @keyframes s-late  { 0%, 58% { width: 0; } 92%, 100% { width: 100%; } }
+  .anim .reveal      { animation: s-draw 4.4s ease-out infinite; }
+  .anim .reveal.late { animation: s-late 4.4s ease-out infinite; }
+
+  /* ── 情境 F：Jitter（印章排列的亂度）── */
+  .anim .jit { display: flex; align-items: center; justify-content: center; height: 38px; }
+  .anim .jit i { display: block; flex: none; width: 21px; height: 13px; border-radius: 50%; background: var(--amber); }
+  .anim .jit i + i { margin-left: 5px; }
+  .anim .jit.shake i { transform: translateY(var(--dy)) rotate(var(--rot)); animation: j-shake 4.4s ease-in-out infinite; }
+  .anim .jit.shake i:nth-child(1) { --dy: -5px; --rot: -22deg; }
+  .anim .jit.shake i:nth-child(2) { --dy:  4px; --rot:  14deg; }
+  .anim .jit.shake i:nth-child(3) { --dy: -7px; --rot:  28deg; }
+  .anim .jit.shake i:nth-child(4) { --dy:  2px; --rot: -12deg; }
+  .anim .jit.shake i:nth-child(5) { --dy: -3px; --rot:  20deg; }
+  .anim .jit.shake i:nth-child(6) { --dy:  6px; --rot: -26deg; }
+  .anim .jit.shake i:nth-child(7) { --dy: -6px; --rot:  10deg; }
+  .anim .jit.shake i:nth-child(8) { --dy:  3px; --rot: -18deg; }
+  @keyframes j-shake { 0%, 15% { transform: none; } 45%, 100% { transform: translateY(var(--dy)) rotate(var(--rot)); } }
+
+  /* ── 情境 G：延遲落差（筆尖跑在前、墨跡追在後）── */
+  .anim .race { position: relative; height: 30px; }
+  .anim .race::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 2px; margin-top: -1px; border-radius: 2px; background: var(--grid); }
+  .anim .race i { position: absolute; top: 50%; width: 13px; height: 13px; margin: -6.5px 0 0 -6.5px; border-radius: 50%; }
+  .anim .race .nib2 { left: 100%; z-index: 2; background: var(--green); box-shadow: 0 0 0 4px rgba(47,158,87,.18); }
+  .anim .race .ink3 { background: var(--navy); }
+  .anim .lag60  .ink3 { left: 66%; }
+  .anim .lag120 .ink3 { left: 92%; }
+  @keyframes r-nib   { 0%, 8% { left: 0; } 55%, 100% { left: 100%; } }
+  @keyframes r-i60   { 0%, 8% { left: 0; } 55%, 100% { left: 66%; } }
+  @keyframes r-i120  { 0%, 8% { left: 0; } 55%, 100% { left: 92%; } }
+  .anim .race .nib2   { animation: r-nib 4.4s ease-in-out infinite; }
+  .anim .lag60 .ink3  { animation: r-i60 4.4s ease-in-out infinite; }
+  .anim .lag120 .ink3 { animation: r-i120 4.4s ease-in-out infinite; }
+
+  /* ── 情境 H：訊號接力（AirTag 要靠路過的陌生裝置）── */
+  .anim .relay { position: relative; display: flex; align-items: center; justify-content: space-between; height: 44px; padding: 0 2px; font-size: 1.25rem; }
+  .anim .relay span { opacity: .9; }
+  .anim .relay span.off { opacity: .28; filter: grayscale(1); }
+  .anim .relay .sig { position: absolute; top: 50%; left: 88%; width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px rgba(47,158,87,.2); }
+  .anim .relay.dead .sig { left: 13%; background: var(--red); box-shadow: 0 0 0 4px rgba(192,73,47,.16); }
+  @keyframes a-hop  { 0%, 8% { left: 12%; opacity: 0; } 16% { opacity: 1; } 38% { left: 37%; } 60% { left: 62%; } 80%, 100% { left: 88%; } }
+  @keyframes a-stop { 0%, 8% { left: 12%; opacity: 0; } 16% { opacity: 1; } 34%, 46% { left: 17%; } 62%, 100% { left: 13%; } }
+  .anim .relay .sig      { animation: a-hop 4.4s ease-in-out infinite; }
+  .anim .relay.dead .sig { animation: a-stop 4.4s ease-in-out infinite; }
+
+  /* ── 情境 I：兩段路（熱點的第二段是單行道）── */
+  .anim .pipes { display: flex; align-items: center; gap: 7px; height: 50px; font-size: 1.1rem; }
+  .anim .pipe { position: relative; flex: 1; border-radius: 20px; background: var(--panel2); border: 1px solid var(--line); overflow: hidden; }
+  .anim .pipe.wide { height: 22px; }
+  .anim .pipe.narrow { height: 11px; }
+  .anim .pipe i { position: absolute; top: 50%; left: 100%; width: 8px; height: 8px; margin-top: -4px; border-radius: 50%; background: var(--navy); }
+  .anim .pipe.narrow i { width: 6px; height: 6px; margin-top: -3px; background: var(--amber); }
+  @keyframes f-flow { 0% { left: -6%; } 100% { left: 100%; } }
+  .anim .pipe i { animation: f-flow 1.6s linear infinite; }
+  .anim .pipe i:nth-child(2) { animation-delay: .53s; }
+  .anim .pipe i:nth-child(3) { animation-delay: 1.06s; }
+  .anim .pipe.narrow i { animation-duration: 3.6s; }
+  .anim .pipe.narrow i:nth-child(2) { animation-delay: 1.8s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .anim .tip, .anim .trail, .anim .mv, .anim .menu,
+    .anim .hand, .anim .lines, .anim .appwin, .anim .cards,
+    .anim .slider b, .anim .stamps i, .anim .canvas .guess, .anim .canvas .nib, .anim .canvas .real,
+    .anim .reveal, .anim .jit.shake i, .anim .race i, .anim .relay .sig, .anim .pipe i { animation: none; }
+  }
+
   /* 分水嶺光譜 spectrum（舊↔新區間對照） */
   .spectrum { display: flex; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); }
   .spectrum .seg { flex: 1; padding: 12px 14px; text-align: center; }
