@@ -155,7 +155,7 @@
   - 本篇回答：iPad 用 eSIM 要花多少錢？
   - 本篇回答：Wi-Fi 6 跟 5G 是同一件事嗎？
   - 本篇回答：一定要買行動網路版的 iPad 嗎？
-- [Apple Pencil 壓感變怪，先別送修](https://www.guoguo.tw/guide/articles/apple-pencil-pressure-troubleshooting/)：輕壓沒反應、線條粗細不跟手？先換一顆 148 元的筆尖，再考慮 4,390 元的新筆。四層排查由便宜到貴，每個說法都標了證據等級。（技巧、Apple Pencil、故障排除／2026-07-29）
+- [Apple Pencil 壓感變怪，先別送修](https://www.guoguo.tw/guide/articles/apple-pencil-pressure-troubleshooting/)：輕壓沒反應、線條粗細不跟手？先換一顆 148 元的筆尖，再考慮 4,390 元的新筆。這篇把力道要走的五道關卡拆開講清楚，四層排查由便宜到貴，每個說法都標了證據等級。（技巧、Apple Pencil、故障排除／2026-07-29，更新 2026-07-31）
   - 本篇回答：Apple Pencil 壓感沒反應，第一步該做什麼？
   - 本篇回答：我的 Apple Pencil 畫出來的線一直一樣粗，是壞了嗎？
   - 本篇回答：iPad 設定裡可以調 Apple Pencil 的筆壓靈敏度嗎？
