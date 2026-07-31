@@ -22,6 +22,24 @@
   /* stat 數字為文字型（A10X↓／拒保／免越獄），縮小以免擠爆卡片（共用檔 1.85rem） */
   .stat .num { font-family: var(--mono); font-size: 1.6rem; font-weight: 800; color: var(--c); line-height: 1.05; }
 
+  /* 自我檢測卡 selfcheck（本檔情境專屬）
+     用途：全文最實用的一句話判斷法——讀者不用認晶片、不用查表，30 秒自己得到答案。
+     因為它的實用價值最高，給它最高的視覺權重（深藍外框＋雙欄結果對比）。 */
+  .selfcheck { border: 2px solid var(--navy); border-radius: 14px; overflow: hidden; margin: 24px 0; background: #fff; box-shadow: 0 4px 16px rgba(20,39,68,.07); }
+  .selfcheck .sc-head { background: var(--navy); color: #fff; padding: 12px 18px; font-weight: 800; font-size: .98rem; }
+  .selfcheck .sc-path { padding: 16px 18px 14px; text-align: center; }
+  .selfcheck .sc-path .lb { font-family: var(--mono); font-size: .66rem; color: var(--muted); letter-spacing: .05em; margin-bottom: 8px; }
+  .selfcheck .sc-path b { display: inline-block; background: var(--navy-bg); color: var(--navy); font-size: .92rem; padding: 6px 13px; border-radius: 8px; margin: 3px 2px; }
+  .selfcheck .sc-path i { color: var(--muted); font-style: normal; margin: 0 2px; }
+  .selfcheck .sc-rows { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border-top: 1px solid var(--line); }
+  .selfcheck .sc-row { background: #fff; padding: 18px 16px; text-align: center; }
+  .selfcheck .sc-row .q { font-size: .88rem; color: var(--body); }
+  .selfcheck .sc-row .a { font-size: 1.14rem; font-weight: 800; margin-top: 9px; }
+  .selfcheck .sc-row.no .a { color: var(--red); }
+  .selfcheck .sc-row.yes .a { color: var(--green-deep); }
+  .selfcheck .sc-row small { display: block; font-size: .78rem; color: var(--muted); margin-top: 6px; line-height: 1.55; }
+  @media (max-width: 560px) { .selfcheck .sc-rows { grid-template-columns: 1fr; } }
+
   /* bigquote 置中引言版：無底色置中 pull-quote＋綠色 .rule 橫線（共用檔為 navy 底色塊，故中和底色與內距） */
   .bigquote { background: none; border-radius: 0; padding: 0; margin: 32px 40px; text-align: center; }
   .bigquote .qm { font-size: 2.6rem; color: var(--navy); opacity: .2; font-weight: 800; line-height: .5; }
@@ -60,6 +78,7 @@
   <a href="#do">04 · 越獄能做什麼</a>
   <div class="grp">代價與陷阱</div>
   <a href="#risk">05 · 風險與代價</a>
+  <a href="#buy">05.5 · 想玩？該買哪台</a>
   <a href="#scam">06 · 假越獄、真詐騙</a>
   <div class="grp">安全出路</div>
   <a href="#safe">07 · 不越獄的安全做法</a>
@@ -98,8 +117,8 @@
         <div class="stat" style="--c:var(--green)"><div class="num">免越獄</div><div class="lab">換圖示、裝官方沒有的 App…多半有合法做法</div></div>
       </div>
       <div class="cgrid">
-        <div class="callout" style="--c:var(--green)"><div class="ct">如果你是一般人</div>幾乎可以直接關掉這頁了——你想做的事，第 07、08 節有<strong>不用越獄、不掉保固</strong>的安全做法。</div>
-        <div class="callout" style="--c:var(--purple)"><div class="ct">如果你就是想搞懂 / 想玩</div>往下讀。重點在第 03 節（你的機器還做不做得到）和第 06 節（怎麼不被詐騙騙）。</div>
+        <div class="callout" style="--c:var(--green)"><div class="ct">如果你是一般人</div>幾乎可以直接關掉這頁了——你想做的事，<a class="inline" href="#safe">第 07</a>、<a class="inline" href="#advice">08 節</a>有<strong>不用越獄、不掉保固</strong>的安全做法。</div>
+        <div class="callout" style="--c:var(--purple)"><div class="ct">如果你就是想搞懂 / 想玩</div>往下讀。<strong><a class="inline" href="#can">第 03 節</a></strong>有個 30 秒的自我檢測，打開設定就知道你的機器行不行；<strong><a class="inline" href="#scam">第 06 節</a></strong>教你認出詐騙話術。真的打算買一台老 iPad 來玩，<strong><a class="inline" href="#buy">第 05.5 節</a></strong>列出了唯一可選的機型。</div>
       </div>
     </section>
 
@@ -111,8 +130,23 @@
       <p>用一句白話講：<strong>越獄就是把 Apple 原廠上的「安全鎖」撬開，拿到系統的最高權限</strong>，讓你能安裝官方 App Store 不准的東西——像是第三方軟體商店（Cydia／Sileo）、系統層外掛（tweak）、換整套主題字型、直接翻系統檔案等。Apple 官方把它定義為「對 iOS 未經授權的修改」，會繞過內建的安全防護。</p>
       <div class="callout" style="--c:var(--navy)"><div class="ct">一個好記的比喻</div>你的 iPad 出廠就像一間<strong>精裝套房</strong>：Apple 給你的鑰匙能開大門、用得很舒服，但很多櫃子、機房、電箱是<strong>鎖死</strong>的（為了安全）。越獄＝把所有鎖通通打開，你能改任何東西——但那套「保全系統」也被你一起拆掉了。方便，是用安全換來的。</div>
       <details>
-        <summary>進階：現在的越獄和以前的「Cydia 時代」不太一樣</summary>
-        <p>2024–2026 的越獄多是「rootless（無根）」型：一樣拿到系統最高權限、逃出沙盒，但不會寫入唯讀的系統根目錄，能改的東西比早年 Cydia 全盛期更受限。簡單說——就算真的越獄成功，你能玩的花樣也不如網路老文章講得那麼神。</p>
+        <summary>進階：Cydia、Sileo、rootless 是什麼？現在的越獄和「Cydia 時代」差在哪</summary>
+        <p><strong>先解決兩個名字：Cydia 和 Sileo。</strong>它們都是<strong>「越獄之後才會出現的另一間 App Store」</strong>——官方 App Store 不准上架的外掛、主題、工具，都是從那裡下載安裝。<strong>Cydia</strong> 是 2008 年就存在的元老，很多老文章講的「越獄天堂」就是它，但它近年已經幾乎沒在維護；<strong>Sileo</strong> 是後來取代它的角色，介面比較現代。名字不同，做的事是同一件：<strong>裝官方不給你裝的東西</strong>。</p>
+
+        <p><strong>那「rootless（無根）」又是什麼？</strong>接續上面那個「精裝套房」的比喻，一張表就懂：</p>
+        <table>
+          <tr><th>　</th><th>早年：rootful（有根）</th><th>現在：rootless（無根）</th></tr>
+          <tr><td><strong>用套房比喻</strong></td><td>機房、電箱通通撬得開，<strong>整棟隨你改</strong></td><td>只能在<strong>自己房間裡</strong>加裝東西，機房那道門<strong>還是打不開</strong></td></tr>
+          <tr><td><strong>技術上</strong></td><td>把系統分割區改成可讀寫，直接改系統檔案</td><td>完全不碰系統分割區，所有東西裝在自己的角落（<code>/var/jb</code>）</td></tr>
+          <tr><td><strong>能玩的花樣</strong></td><td class="good">多</td><td class="bad">明顯受限</td></tr>
+          <tr><td><strong>出事的風險</strong></td><td class="bad">改壞系統檔就很難救</td><td class="good">相對乾淨，要移除越獄也容易得多</td></tr>
+        </table>
+
+        <p><strong>為什麼會變成這樣？</strong>因為 Apple 從 <strong>iPadOS 15</strong> 起，用一套叫 <strong>SSV</strong> 的機制把系統分割區「封印」起來——整個作業系統分割區<strong>掛載為唯讀</strong>，而且會<strong>拒絕任何沒有 Apple 有效簽章的資料</strong>，使用者也無法關閉它。結果就是連越獄工具都撬不開那道門，只好退而求其次走 rootless 這條路。</p>
+
+        <p><strong>所以 rootless 不是越獄變聰明了，是被逼的。</strong>這也順帶修正了上面那個比喻——今天的越獄<strong>並沒有「把所有鎖通通打開」</strong>，最核心的那道鎖它打不開。</p>
+
+        <p><strong>這對你的實際意義：</strong>網路上那些把越獄講得神通廣大的文章，多半寫於 rootful 年代。<strong>就算你今天真的越獄成功，能改的東西也比那些文章講的少一大截</strong>——卻要付出一模一樣的風險代價。</p>
       </details>
     </section>
 
@@ -151,10 +185,38 @@
         <div class="card" style="--c:var(--red)"><div class="c-tag">基本不行（近幾年主流機）</div><h4>A12 世代起＋所有 M 系列，沒有公開越獄</h4><p>iPad Air 3 起、iPad 第 8 代起、iPad mini 5 起、所有 2018 年後的 iPad Pro、iPad Air 4／5、以及全部 M 系列 iPad。現行 iPadOS 上目前無解。</p></div>
       </div>
 
-      <div class="callout" style="--c:var(--amber)"><div class="ct">連「有機會」的舊機，代價也很大</div>就算你的是可越獄的 A11 以前老機，越獄後往往<strong>被迫關掉螢幕鎖定密碼</strong>——連帶失去 Face ID／Touch ID 和 Apple Pay。等於為了玩越獄，日常安全與便利先賠一半。</div>
+      <h3>還有另一半：iPadOS 版本</h3>
+      <p>上面講的是<strong>晶片</strong>，但開頭那句話說的是「晶片<strong>＋版本</strong>」。版本這一半很少人講，而且<strong>兩種機器的邏輯剛好相反</strong>：</p>
+      <div class="grid">
+        <div class="card" style="--c:var(--amber)"><div class="c-tag">🔓 A10X 及更舊</div><h4>版本完全不重要</h4><p>漏洞燒在晶片裡，<strong>系統更新碰不到它</strong>。你更新到 iPadOS 26 也一樣能越，停在 15 也能越——版本這一欄，對這批機器來說是空白的。</p></div>
+        <div class="card" style="--c:var(--red)"><div class="c-tag">🔒 A12 以上</div><h4>版本就是全部</h4><p>只有<strong>停在 iPadOS 16.6.1 以前</strong>才有工具（Dopamine）。<strong>17 之後完全沒有</strong>。而且 Apple 不簽署舊版——<strong>升上去就回不來</strong>，這是單向門。</p></div>
+      </div>
 
-      <div class="callout" style="--c:var(--red)"><div class="ct">⚠️ 高度時效性警告（最容易被詐騙站利用）</div>2026 年 6 月有研究者揭露一個新的晶片漏洞「usbliter8」，把「無法軟體修補」的範圍延伸到 A12／A13。<strong>但它目前只是「概念驗證」</strong>——需要實體接觸、外接專用硬體，<strong>不是一般人能用的「一鍵越獄」</strong>。這塊變動非常快，詐騙站最愛拿它當噱頭喊「A12 也能輕鬆越獄了！」。看到這種話，直接當作警訊。真實狀況請以工具開發者的官方頁面為準（見文末來源）。</div>
-      <p class="updated">本節查證時間：<b>2026 年 7 月</b>。越獄可行性會隨每次 iPadOS 更新與新漏洞而變動，請以工具官方頁最新資訊為準。</p>
+      <div class="selfcheck">
+        <div class="sc-head">⚡ 不用認晶片、不用查表——30 秒自己驗</div>
+        <div class="sc-path">
+          <div class="lb">打開你的 iPad，走這一條</div>
+          <b>設定</b><i>›</i><b>一般</b><i>›</i><b>軟體更新</b>
+        </div>
+        <div class="sc-rows">
+          <div class="sc-row no">
+            <div class="q">看得到 iPadOS 26 可以更新？</div>
+            <div class="a">❌ 越不了</div>
+            <small>你的機器還在 Apple 的支援名單內，<br>代表它是 A12 以上的新晶片</small>
+          </div>
+          <div class="sc-row yes">
+            <div class="q">已經收不到系統更新了？</div>
+            <div class="a">✅ 有機會</div>
+            <small>被 iPadOS 26 淘汰的機型，<br>正好就是可能越得了的那批</small>
+          </div>
+        </div>
+      </div>
+      <p><strong>這不是巧合。</strong>會有 checkm8 漏洞的舊晶片（A10X 以前），正好也老到被 iPadOS 26 淘汰了——<strong>同一條時間軸的兩端</strong>。所以「還收得到更新」和「越得了獄」，在今天幾乎是互斥的兩件事。</p>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">連「有機會」的舊機，代價也很大</div>這些機型多半只能做到<strong>「半越獄」</strong>——<strong>每次重新開機都會失效</strong>，得再接一次電腦重跑。也就是說，它不是「越一次就永久」，而是你每次重開機都要記得帶著電腦。加上這批機器本來就是 2014–2019 年的老機，日常已經偏慢，越獄後再掛一堆外掛只會更卡。</div>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">⚠️ 高度時效性警告（最容易被詐騙站利用）</div>2026 年 6 月有研究者揭露一個新的晶片漏洞「usbliter8」，把「無法軟體修補」的範圍延伸到 A12／A13。<strong>但它目前只是「概念驗證」</strong>——需要實體接觸、外接專用硬體，<strong>不是一般人能用的「一鍵越獄」</strong>。這塊變動非常快，詐騙站最愛拿它當噱頭喊「A12 也能輕鬆越獄了！」。看到這種話，直接當作警訊。<br><br><strong>而且這件事後來還有發展</strong>：2026 年 7 月 21 日，法院發布初步禁制令，要求研究團隊<strong>刪除已公開的技術文章與原始碼</strong>。所以它不但停在概念驗證階段，連資料都被下架了——<strong>離「一般人能用的工具」更遠，不是更近</strong>。真實狀況請以工具開發者的官方頁面為準（見文末來源）。</div>
+      <p class="updated">本節查證時間：<b>2026 年 8 月</b>。越獄可行性會隨每次 iPadOS 更新與新漏洞而變動，請以工具官方頁最新資訊為準。</p>
     </section>
 
     <section id="do">
@@ -166,7 +228,7 @@
         <tr><td>換 App 圖示、換整套主題</td><td class="good">用官方「捷徑」App 自訂圖示，桌布主題直接內建</td></tr>
         <tr><td>桌面放小工具、自由排版</td><td class="good">iPadOS 內建主畫面小工具、資料夾、App 資料庫</td></tr>
         <tr><td>依情境自動切靜音／換桌布</td><td class="good">內建「專注模式」＋自動化就能做</td></tr>
-        <tr><td>裝 App Store 沒有的 App</td><td class="good">用 AltStore「合法側載」（見第 07 節），歐盟還有官方第三方商店</td></tr>
+        <tr><td>裝 App Store 沒有的 App</td><td class="good">用 AltStore「合法側載」（見<a class="inline" href="#safe">第 07 節</a>），歐盟還有官方第三方商店</td></tr>
         <tr><td>系統深層外掛、翻系統檔案</td><td class="bad">這才是越獄「還」能、官方不給的部分——但也是風險最大、最不建議一般人碰的部分</td></tr>
       </table>
       <div class="callout" style="--c:var(--purple)"><div class="ct">一句點破</div>你會想越獄，通常是為了「某個具體效果」。先問自己：<strong>那個效果，官方或 AltStore 是不是已經能做？</strong>九成的情況，答案是「能」——那就沒必要冒險。</div>
@@ -188,6 +250,62 @@
       <div class="meter" style="--c:var(--red);--w:88%"><div class="mtop"><b>風險（安全／變磚／掉保固）</b><span>高</span></div><div class="track"><div class="fill"></div></div></div>
       <div class="meter" style="--c:var(--amber);--w:22%"><div class="mtop"><b>效益（官方＋AltStore 沒能做的部分）</b><span>對一般人很低</span></div><div class="track"><div class="fill"></div></div></div>
       <div class="callout" style="--c:var(--navy)"><div class="ct">最有力的一句話</div>連<strong>越獄工具自己的官方文件</strong>都白紙黑字寫著：「<strong>對資料遺失或裝置變磚概不負責，使用者須自行承擔全部風險</strong>。」——做這工具的人都叫你自負後果了，值得你想一下。</div>
+    </section>
+
+    <section id="buy">
+      <div class="sec-label" style="--c:var(--amber)">which_ipad</div>
+      <h2>05.5 · 看完風險還是想玩？那只有這幾台能選</h2>
+      <div class="callout" style="--c:var(--red)"><div class="ct">先說清楚這一節的立場</div>
+        <strong>這不是推薦你買一台來越獄</strong>，上面那些風險一條都沒少。<br>
+        寫這節只有一個目的：<strong>幫你不要買錯</strong>——市面上九成的 iPad 根本越不了，花錢買回來才發現不行，是我們客服最常遇到的白花錢情況之一。</div>
+
+      <h3>第一種：買到就能越，版本隨便</h3>
+      <p>這 9 款是<strong>唯一保證可行</strong>的——因為漏洞在晶片裡，賣家更新到哪個版本都不影響。<strong>越獄後你會裝一堆外掛常駐背景，所以 RAM 是這組真正的分水嶺</strong>：</p>
+      <table>
+        <tr><th>機型</th><th>晶片</th><th>RAM</th><th>年份</th><th>建議</th></tr>
+        <tr><td><strong>iPad Pro 10.5"</strong></td><td>A10X</td><td><strong>4GB</strong></td><td>2017</td><td class="good">👍 這組最推薦</td></tr>
+        <tr><td><strong>iPad Pro 12.9"（二代）</strong></td><td>A10X</td><td><strong>4GB</strong></td><td>2017</td><td class="good">👍 同晶片，螢幕更大</td></tr>
+        <tr><td>iPad Pro 12.9"（一代）</td><td>A9X</td><td>4GB</td><td>2015</td><td>可以，但更老</td></tr>
+        <tr><td>iPad 第 7 代</td><td>A10</td><td>3GB</td><td>2019</td><td>勉強夠用</td></tr>
+        <tr><td>iPad Pro 9.7"</td><td>A9X</td><td>2GB</td><td>2016</td><td class="bad">✋ RAM 不足</td></tr>
+        <tr><td>iPad 第 6 代</td><td>A10</td><td>2GB</td><td>2018</td><td class="bad">✋ RAM 不足</td></tr>
+        <tr><td>iPad 第 5 代</td><td>A9</td><td>2GB</td><td>2017</td><td class="bad">✋ RAM 不足</td></tr>
+        <tr><td>iPad Air 2</td><td>A8X</td><td>2GB</td><td>2014</td><td class="bad">✋ 太老，別買</td></tr>
+        <tr><td>iPad mini 4</td><td>A8</td><td>2GB</td><td>2015</td><td class="bad">✋ 太老，別買</td></tr>
+      </table>
+
+      <h3>第二種：效能好一倍，但版本是「買定離手」</h3>
+      <p>A12 以上的機器如果<strong>停在 iPadOS 16.6.1 以前</strong>，也有工具可用（Dopamine），而且效能差很多——Apple 官方數字：<strong>A12X 的 CPU 比 A10X 快最多 95%</strong>，接近兩倍。</p>
+      <p>問題是這些機型全都支援到 iPadOS 26，<strong>二手市場上大多早就更新過了</strong>。要判斷哪一台還有機會，看<strong>「出廠時搭載什麼系統」</strong>最準——出廠版本愈接近 16，代表它「從沒更新過就剛好落在範圍內」的機率愈高：</p>
+      <table>
+        <tr><th>機型</th><th>晶片</th><th>出廠系統</th><th>找到的機會</th></tr>
+        <tr><td><strong>iPad mini 6</strong></td><td>A15</td><td>iPadOS 15</td><td class="good">👍 高，效能又強</td></tr>
+        <tr><td>iPad Pro 11"／12.9"（M2, 2022）</td><td>M2</td><td>iPadOS 16</td><td class="good">高，但二手貴</td></tr>
+        <tr><td>iPad Air 5</td><td>M1</td><td>iPadOS 15</td><td class="good">高</td></tr>
+        <tr><td>iPad 第 9 代／第 10 代</td><td>A13／A14</td><td>iPadOS 15／16</td><td>中等</td></tr>
+        <tr><td>2018–2020 的 iPad Pro</td><td>A12X／A12Z</td><td>iOS 12／13</td><td class="bad">低（用了太久，早更新過）</td></tr>
+      </table>
+      <div class="callout" style="--c:var(--red)"><div class="ct">2023 年 9 月後上市的，一台都不用找</div>
+        iPad Pro M4／M5、iPad Air M2／M3／M4、iPad mini 7、iPad (A16)⋯⋯這些機器<strong>出廠就是 iPadOS 17 以上</strong>，
+        而系統<strong>沒有回頭路</strong>——它們永遠不可能落進可越獄的版本範圍。看到有人說這些機型能越獄，那是詐騙。</div>
+
+      <h3>買之前，這兩件事一定要做</h3>
+      <div class="steps">
+        <div class="step" style="--c:var(--navy);--cbg:var(--navy-bg)"><div class="n">1</div><div>
+          <h4>要賣家拍一張「關於本機」的截圖</h4>
+          <p>請對方打開<strong>「設定 → 一般 → 關於本機」</strong>拍給你，確認機型和 iPadOS 版本。<br>
+          <strong>買第一種（9 款老機）不用</strong>——版本無所謂。<strong>買第二種一定要</strong>，因為版本錯了就完全沒救。</p></div></div>
+        <div class="step" style="--c:var(--amber);--cbg:var(--amber-bg)"><div class="n">2</div><div>
+          <h4>拿到手第一件事：關掉自動更新</h4>
+          <p><strong>「設定 → 一般 → 軟體更新 → 自動更新」</strong>全部關掉。系統一旦升上 17，<strong>就再也回不去了</strong>。<br>
+          同樣地，第一種的 9 款老機沒有這個風險——這也是我們比較推薦它們的原因。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">懶得看表格？三句話決定</div>
+        <strong>想確定能成功、不想提心吊膽</strong> → 買 <strong>iPad Pro 10.5"</strong>，版本隨便挑。<br>
+        <strong>想要效能、能接受這台從此不能更新</strong> → 找停在 iPadOS 15 的 <strong>iPad mini 6</strong>。<br>
+        <strong>2023 年 9 月後的機型</strong> → 一台都不行，不用花時間找。</div>
+      <p class="updated">機型與工具支援範圍查證於 <b>2026 年 8 月</b>，依據 palera1n 與 Dopamine 官方公布的支援清單（見文末來源）。二手行情與流通量請直接詢問果果客服。</p>
     </section>
 
     <section id="scam">
@@ -252,13 +370,13 @@
       </ul>
 
       <h3>延伸觀看（YouTube 參考）</h3>
-      <p style="font-size:.9rem;color:var(--muted)">提供作參考；越獄類影片<strong>特別容易過時或夾帶詐騙</strong>，看的時候請對照上面第 06 節的紅旗檢查表，別照著陌生影片交出帳密或裝描述檔。</p>
+      <p style="font-size:.9rem;color:var(--muted)">提供作參考；越獄類影片<strong>特別容易過時或夾帶詐騙</strong>，看的時候請對照上面<a class="inline" href="#scam">第 06 節</a>的紅旗檢查表，別照著陌生影片交出帳密或裝描述檔。</p>
       <div class="vlite">
         <a class="thumb" href="https://www.youtube.com/watch?v=2xAIW0cdg1A" target="_blank" rel="noopener" data-yt="2xAIW0cdg1A" aria-label="播放：越獄 iOS iPadOS 15 使用 palera1n 開源軟體 Mac 實作">
           <img loading="lazy" src="https://i.ytimg.com/vi/2xAIW0cdg1A/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/2xAIW0cdg1A/hqdefault.jpg'" />
           <span class="pbtn"></span><span class="yt">YouTube</span>
         </a>
-        <div class="cap"><b>越獄 iOS／iPadOS 15：用開源工具 palera1n 實作（Mac 操作）</b><small><span class="ch">頻道：程式猿（AFA）</span> · 2022/11 · 繁中實作，接電腦跑開源工具——真越獄就長這樣</small><small>提醒：palera1n 只支援 A8–A11 舊機，你的新機大概不適用——先看第 03 節確認。</small></div>
+        <div class="cap"><b>越獄 iOS／iPadOS 15：用開源工具 palera1n 實作（Mac 操作）</b><small><span class="ch">頻道：程式猿（AFA）</span> · 2022/11 · 繁中實作，接電腦跑開源工具——真越獄就長這樣</small><small>提醒：palera1n 只支援 A8–A11 舊機，你的新機大概不適用——先看<a class="inline" href="#can">第 03 節</a>確認。</small></div>
       </div>
       <div class="callout" style="--c:var(--amber);margin-top:14px"><div class="ct">為什麼影片給得少</div>因為誠實——真正可靠、又適用近年機型的中文越獄教學其實非常少（因為新機根本越不了獄）。與其塞一堆可能有問題的影片給你，我們寧可把「怎麼不被騙」講清楚。</div>
     </section>
