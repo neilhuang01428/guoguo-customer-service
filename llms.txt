@@ -172,6 +172,15 @@
   - 本篇回答：在備忘錄有感壓，是不是就代表筆沒問題？
   - 本篇回答：Procreate 壓力設定被我改壞了，怎麼還原成預設？
   - 本篇回答：Apple Pencil USB-C 版在 Procreate 沒有粗細變化？
+- [Procreate 筆刷怎麼調？先懂三個概念](https://www.guoguo.tw/guide/articles/procreate-brush-studio-basics/)：Brush Studio 有 14 個分頁、上百個滑桿，但你不用背——一筆線其實是同一個形狀沿著路徑蓋很多次章，懂了這件事，其他滑桿幾乎都推得出來。35 張對照圖走完 14 頁，附六道食譜與各代 Apple Pencil 的功能對照。（技巧、Apple Pencil、相容對照／2026-07-31）
+  - 本篇回答：Procreate 的 Brush Studio 有幾個分頁？要全部背起來嗎？
+  - 本篇回答：Brush Studio 的滑桿看不懂在幹嘛，有快速搞懂的方法嗎？
+  - 本篇回答：Procreate 筆刷怎麼做出書法那種橫粗直細？
+  - 本篇回答：Grain 的 Moving 和 Texturized 差在哪？
+  - 本篇回答：Procreate 筆刷改壞了，怎麼還原？
+  - 本篇回答：Procreate 的傾斜設定沒反應，是筆壞了嗎？
+  - 本篇回答：網路上的 Procreate 筆刷參數配方可以照抄嗎？
+  - 本篇回答：Brush Studio 裡哪些設定要 Apple Pencil Pro 才有？
 
 ## 其他
 

@@ -232,7 +232,7 @@ footer p { font-size: .9rem; color: var(--body); margin: 0; }
       "description": "果果國際客戶專屬的 iPad 使用教學指南集合。",
       "inLanguage": "zh-TW",
       "itemListOrder": "https://schema.org/ItemListOrderAscending",
-      "numberOfItems": 18,
+      "numberOfItems": 19,
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -341,6 +341,12 @@ footer p { font-size: .9rem; color: var(--body); margin: 0; }
           "position": 18,
           "name": "Procreate 沒有粗細變化？原因深度解析",
           "url": "https://www.guoguo.tw/guide/articles/procreate-pressure-not-working/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 19,
+          "name": "Procreate 筆刷怎麼調？先懂三個概念",
+          "url": "https://www.guoguo.tw/guide/articles/procreate-brush-studio-basics/"
         }
       ]
     }
@@ -382,7 +388,7 @@ footer p { font-size: .9rem; color: var(--body); margin: 0; }
       <section class="guides" id="guides">
         <h2 class="glabel">全部教學</h2>
         <div class="filters" id="filterChips">
-          <button type="button" class="chip on" data-tag="__all__">全部<span class="cnt">(18)</span></button>
+          <button type="button" class="chip on" data-tag="__all__">全部<span class="cnt">(19)</span></button>
         </div>
         <button type="button" class="chip-toggle" id="filterToggle" aria-expanded="false" hidden>展開全部<span class="ct-caret" aria-hidden="true">▾</span></button>
         <div class="grid2" id="articleGrid">
@@ -510,6 +516,13 @@ footer p { font-size: .9rem; color: var(--body); margin: 0; }
         <div class="tag">技巧</div>
         <h3>Procreate 沒有粗細變化？原因深度解析</h3>
         <p>同一支筆在備忘錄好好的，一進 Procreate 就畫不出粗細？先看線的深淺有沒有跟著變，一句話分開是筆還是設定。附三層壓力相乘的完整解剖，與成本由低到高的 12 步排除順序。</p>
+        <div class="go">閱讀指南</div>
+      </a>
+      <a class="g" style="--c:var(--green);--cbg:var(--green-bg)" href="articles/procreate-brush-studio-basics/" data-tags="技巧;Apple Pencil;相容對照" data-search="procreate 筆刷怎麼調？先懂三個概念 brush studio 有 14 個分頁、上百個滑桿，但你不用背——一筆線其實是同一個形狀沿著路徑蓋很多次章，懂了這件事，其他滑桿幾乎都推得出來。35 張對照圖走完 14 頁，附六道食譜與各代 apple pencil 的功能對照。 技巧 技巧 apple pencil 相容對照">
+        <div class="ic">🖌</div>
+        <div class="tag">技巧</div>
+        <h3>Procreate 筆刷怎麼調？先懂三個概念</h3>
+        <p>Brush Studio 有 14 個分頁、上百個滑桿，但你不用背——一筆線其實是同一個形狀沿著路徑蓋很多次章，懂了這件事，其他滑桿幾乎都推得出來。35 張對照圖走完 14 頁，附六道食譜與各代 Apple Pencil 的功能對照。</p>
         <div class="go">閱讀指南</div>
       </a>
         </div>
@@ -691,7 +704,7 @@ footer p { font-size: .9rem; color: var(--body); margin: 0; }
     if (!input || !panel) return;
 
     // slug → { cat（分類）, tags（標籤陣列）, hue（色票名）}；由 build-homepage.py 從 articles.json 注入。
-    var META = {"ipad-magic-keyboard-guide": {"cat": "上手", "tags": ["上手", "Windows 用戶", "鍵盤配件"], "hue": "navy"}, "ipad-appstore-china-guide": {"cat": "技巧", "tags": ["技巧", "App 下載", "剪映抖音"], "hue": "green"}, "ipad-jianying-pencil-guide": {"cat": "選購", "tags": ["選購", "配件推薦", "Apple Pencil"], "hue": "teal"}, "ipad-jailbreak-guide": {"cat": "觀念", "tags": ["觀念", "防詐騙", "越獄"], "hue": "red"}, "smart-vs-magic-keyboard": {"cat": "選購", "tags": ["選購", "鍵盤配件", "相容對照"], "hue": "teal"}, "magic-keyboard-shortcuts": {"cat": "技巧", "tags": ["技巧", "鍵盤配件", "快捷鍵"], "hue": "green"}, "find-my-device-tiers": {"cat": "觀念", "tags": ["觀念", "尋找定位", "AirTag", "Apple Pencil"], "hue": "red"}, "apple-pencil-pro-unbinding": {"cat": "技巧", "tags": ["技巧", "Apple Pencil", "尋找定位"], "hue": "green"}, "pencil-pro-locked-worth-buying": {"cat": "選購", "tags": ["選購", "Apple Pencil", "尋找定位"], "hue": "teal"}, "airtag-not-gps-tracker": {"cat": "觀念", "tags": ["觀念", "AirTag", "尋找定位"], "hue": "red"}, "airtag-reset-vs-unbind": {"cat": "觀念", "tags": ["觀念", "AirTag", "尋找定位"], "hue": "red"}, "reset-all-settings-vs-erase": {"cat": "觀念", "tags": ["觀念", "故障排除", "尋找定位"], "hue": "red"}, "find-my-hidden-features": {"cat": "技巧", "tags": ["技巧", "AirTag", "尋找定位"], "hue": "green"}, "hotspot-slower-than-phone": {"cat": "觀念", "tags": ["觀念", "故障排除", "連網與網速"], "hue": "red"}, "promotion-120hz-who-feels-it": {"cat": "選購", "tags": ["選購", "螢幕規格", "相容對照"], "hue": "teal"}, "ipad-5g-wifi-vs-cellular": {"cat": "觀念", "tags": ["觀念", "連網與網速", "選購"], "hue": "red"}, "apple-pencil-pressure-troubleshooting": {"cat": "技巧", "tags": ["技巧", "Apple Pencil", "故障排除"], "hue": "green"}, "procreate-pressure-not-working": {"cat": "技巧", "tags": ["技巧", "Apple Pencil", "故障排除"], "hue": "green"}};
+    var META = {"ipad-magic-keyboard-guide": {"cat": "上手", "tags": ["上手", "Windows 用戶", "鍵盤配件"], "hue": "navy"}, "ipad-appstore-china-guide": {"cat": "技巧", "tags": ["技巧", "App 下載", "剪映抖音"], "hue": "green"}, "ipad-jianying-pencil-guide": {"cat": "選購", "tags": ["選購", "配件推薦", "Apple Pencil"], "hue": "teal"}, "ipad-jailbreak-guide": {"cat": "觀念", "tags": ["觀念", "防詐騙", "越獄"], "hue": "red"}, "smart-vs-magic-keyboard": {"cat": "選購", "tags": ["選購", "鍵盤配件", "相容對照"], "hue": "teal"}, "magic-keyboard-shortcuts": {"cat": "技巧", "tags": ["技巧", "鍵盤配件", "快捷鍵"], "hue": "green"}, "find-my-device-tiers": {"cat": "觀念", "tags": ["觀念", "尋找定位", "AirTag", "Apple Pencil"], "hue": "red"}, "apple-pencil-pro-unbinding": {"cat": "技巧", "tags": ["技巧", "Apple Pencil", "尋找定位"], "hue": "green"}, "pencil-pro-locked-worth-buying": {"cat": "選購", "tags": ["選購", "Apple Pencil", "尋找定位"], "hue": "teal"}, "airtag-not-gps-tracker": {"cat": "觀念", "tags": ["觀念", "AirTag", "尋找定位"], "hue": "red"}, "airtag-reset-vs-unbind": {"cat": "觀念", "tags": ["觀念", "AirTag", "尋找定位"], "hue": "red"}, "reset-all-settings-vs-erase": {"cat": "觀念", "tags": ["觀念", "故障排除", "尋找定位"], "hue": "red"}, "find-my-hidden-features": {"cat": "技巧", "tags": ["技巧", "AirTag", "尋找定位"], "hue": "green"}, "hotspot-slower-than-phone": {"cat": "觀念", "tags": ["觀念", "故障排除", "連網與網速"], "hue": "red"}, "promotion-120hz-who-feels-it": {"cat": "選購", "tags": ["選購", "螢幕規格", "相容對照"], "hue": "teal"}, "ipad-5g-wifi-vs-cellular": {"cat": "觀念", "tags": ["觀念", "連網與網速", "選購"], "hue": "red"}, "apple-pencil-pressure-troubleshooting": {"cat": "技巧", "tags": ["技巧", "Apple Pencil", "故障排除"], "hue": "green"}, "procreate-pressure-not-working": {"cat": "技巧", "tags": ["技巧", "Apple Pencil", "故障排除"], "hue": "green"}, "procreate-brush-studio-basics": {"cat": "技巧", "tags": ["技巧", "Apple Pencil", "相容對照"], "hue": "green"}};
 
     // ── 雙版基底（runtime 判斷；同一段 JS 兩版共用）──
     // 索引是對 dist 根（/）建的。關鍵：Pagefind 會「依 bundle 載入位置自動推導 baseUrl」，
