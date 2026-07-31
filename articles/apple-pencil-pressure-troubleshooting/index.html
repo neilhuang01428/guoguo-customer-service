@@ -38,10 +38,33 @@
   .lv-tag.infer { color: var(--amber); background: var(--amber-bg); border: 1px solid #e6d3a6; }
   .lv-tag.todo { color: var(--red); background: var(--red-bg); border: 1px solid #eec4b8; }
 
+  /* ── 原理示意圖：由 research/ipad/debug/procreate-pressure.html 移植，改為亮色主題 ── */
+  figure.fig svg { width: 100%; height: auto; display: block; }
+  /* 圖裡沿用原教材的 token 名稱，在這裡對應到站上的亮色配色 */
+  figure.fig { --head: var(--ink); --soft: var(--muted); --cyan: var(--teal); }
+  .fig-wide { overflow-x: auto; }
+  .fig-wide svg { min-width: 540px; }
+  svg .ax { stroke: var(--line); stroke-width: 1.2; }
+  svg .gl { stroke: var(--grid); stroke-width: 1; }
+  svg .lbl   { font-family: var(--mono); font-size: 11px;  fill: var(--muted); }
+  svg .lbl-s { font-family: var(--mono); font-size: 9.5px; fill: var(--muted); }
+  svg .lbl-h { font-family: var(--mono); font-size: 11px;  fill: var(--ink); }
+
+  /* 五道關卡 */
+  .gates { display: grid; gap: 8px; margin: 22px 0; }
+  .gate { display: flex; gap: 13px; align-items: flex-start; background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 10px; padding: 12px 15px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .gate .gn { font-family: var(--mono); min-width: 26px; height: 26px; border-radius: 7px; background: var(--cbg); color: var(--c); font-weight: 800; font-size: .74rem; display: grid; place-items: center; flex: none; margin-top: 1px; }
+  .gate .gt { flex: 1; }
+  .gate .gt b { display: block; color: var(--ink); font-size: .94rem; }
+  .gate .gt small { display: block; color: var(--muted); font-size: .84rem; line-height: 1.55; margin-top: 3px; }
+  .gate .gw { font-family: var(--mono); font-size: .62rem; color: var(--muted); background: var(--panel2); padding: 4px 9px; border-radius: 999px; white-space: nowrap; align-self: center; }
+
   @media (max-width: 860px) {
     .masthead { padding-left: 20px; padding-right: 20px; }
     .lrow { flex-wrap: wrap; }
     .lrow .lc { margin-left: 44px; }
+    .gate { flex-wrap: wrap; }
+    .gate .gw { margin-left: 39px; }
   }
 </style>
 </head>
@@ -54,7 +77,7 @@
     <div><b>壓感變怪怎麼辦</b><small>果果國際 · 客戶指南</small></div>
   </div>
   <a href="#answer" class="active">00 · 30 秒分流</a>
-  <a href="#how">01 · 壓感怎麼來的</a>
+  <a href="#how">01 · 力道的五道關卡</a>
   <div class="grp">四層排查</div>
   <a href="#tip">02 · 筆尖</a>
   <a href="#system">03 · iPadOS 設定</a>
@@ -90,9 +113,11 @@
 
     <p class="lede">成本差距也很現實。Apple 官方替換筆尖一組四入 NT$590，平均一顆 NT$148；一支 Apple Pencil Pro 是 NT$4,390。先花三十分之一的錢排掉最常見的原因，是划算的順序。</p>
 
-    <p class="lede">這篇按「由便宜到貴」排出四層：筆尖 → iPadOS 設定 → App 設定 → 配對與電量，最後給你「什麼症狀才真的該送修」的停止點。</p>
+    <p class="lede">這篇按「由便宜到貴」排出四層：筆尖 → iPadOS 設定 → App 設定 → 配對與電量，最後給你「什麼症狀才真的該送修」的停止點。第 01 節會先把整條訊號鏈拆成五道關卡——<strong>看懂那五關，後面每一步在修哪裡就一目瞭然。</strong></p>
 
-    <p class="updated">本文查證：<b>2026 年 7 月 29 日</b>，規格、售價與介面文字以 Apple 官方最新公告為準。<a class="inline" href="#sources">來源列在文末</a>，<a class="inline" href="#honest">哪些是推論也標出來了</a>。</p>
+    <p class="lede"><b>先說清楚這篇的範圍。</b>本文處理的是<strong>筆這一端、iPadOS 這一端，以及備忘錄、無邊記、GoodNotes、Notability 這類 App</strong> 的壓感問題。Procreate 是個例外——它的壓力設定有整整三層、彼此相乘，複雜到不適合塞在這裡講，第 04 節只給它的緊急止血法。</p>
+
+    <p class="updated">本文查證：<b>2026 年 7 月 31 日</b>，規格、售價與介面文字以 Apple 官方最新公告為準。<a class="inline" href="#sources">來源列在文末</a>，<a class="inline" href="#honest">哪些是推論也標出來了</a>。</p>
 
     <section id="answer">
       <div class="sec-label" style="--c:var(--navy)">triage</div>
@@ -139,7 +164,7 @@
         </div>
         <div class="callout" style="--c:var(--teal)">
           <div class="ct">B · 只有某一個 App 不對勁</div>
-          筆是好的。直接跳到<a class="inline" href="#app">第 04 節</a>看那個 App 的壓感開關與曲線。
+          筆多半是好的。直接跳到<a class="inline" href="#app">第 04 節</a>看那個 App 的壓感開關與曲線。<strong>Procreate 使用者請看該節最後一段</strong>——它的設定有三層，跟其他 App 不一樣。
         </div>
         <div class="callout" style="--c:var(--amber)">
           <div class="ct">C · 根本寫不出字、配不上</div>
@@ -161,12 +186,12 @@
         </div>
         <div class="lrow" style="--c:var(--teal);--cbg:var(--teal-bg)">
           <div class="lv">L2</div>
-          <div class="lt"><b>iPadOS 設定：確認你沒有在調錯的滑桿</b><small>系統其實沒有筆壓設定，這一層主要是拆掉誤解</small></div>
-          <div class="lc">1 分鐘 · 免費</div>
+          <div class="lt"><b>iPadOS 設定：確認你沒有在調錯的滑桿</b><small>系統沒有筆壓設定，但輔助使用的兩個開關會間接出事</small></div>
+          <div class="lc">2 分鐘 · 免費</div>
         </div>
         <div class="lrow" style="--c:var(--amber);--cbg:var(--amber-bg)">
           <div class="lv">L3</div>
-          <div class="lt"><b>App 設定：壓感開關與壓力曲線</b><small>GoodNotes、Concepts、Procreate 各有各的位置</small></div>
+          <div class="lt"><b>App 設定：壓感開關與壓力曲線</b><small>備忘錄、GoodNotes、Concepts、Notability 各有各的位置；Procreate 另有三層</small></div>
           <div class="lc">2 分鐘 · 免費</div>
         </div>
         <div class="lrow" style="--c:var(--navy);--cbg:var(--navy-bg)">
@@ -184,8 +209,41 @@
 
     <section id="how">
       <div class="sec-label" style="--c:var(--purple)">how_it_works</div>
-      <h2>01 · 壓感是怎麼做到的？</h2>
-      <p>知道訊號從哪來，才知道該先懷疑誰。Apple 官方對這件事只留下一句話，但那句話很關鍵。</p>
+      <h2>01 · 一筆下去，力道要走完五道關卡</h2>
+      <p>知道訊號從哪來，才知道該先懷疑誰。你壓下去的那一下，要走完五道關卡才會變成螢幕上的粗線。麻煩的地方在於：<strong>不管哪一關出事，你看到的症狀幾乎一模一樣</strong>——線就是不跟手。所以排查一定要有順序，不能靠感覺猜。</p>
+
+      <div class="gates">
+        <div class="gate" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="gn">①</div>
+          <div class="gt"><b>力道在筆裡量，而且是沿著筆軸量的</b><small>筆尖被往內推幾微米，筆身把這個位移換算成一個力道數值。</small></div>
+          <div class="gw">硬體</div>
+        </div>
+        <div class="gate" style="--c:var(--teal);--cbg:var(--teal-bg)">
+          <div class="gn">②</div>
+          <div class="gt"><b>這個數值必須用無線傳回 iPad</b><small>螢幕量不到筆尖內部的受力，所以力道非「傳」不可——這一段是無線的，會有延遲。</small></div>
+          <div class="gw">連線</div>
+        </div>
+        <div class="gate" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="gn">③</div>
+          <div class="gt"><b>iPadOS 先給 App 一個「估計值」</b><small>位置訊號立刻就到，力道還在路上。系統不會讓筆畫卡住等它，先塞一個猜的值進去。</small></div>
+          <div class="gw">系統</div>
+        </div>
+        <div class="gate" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="gn">④</div>
+          <div class="gt"><b>真值到了，iPadOS 再回頭通知 App 改</b><small>官方明文要求 App「必須」處理這個回頭補正。有些 App 處理得好，有些沒有。</small></div>
+          <div class="gw">系統</div>
+        </div>
+        <div class="gate" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="gn">⑤</div>
+          <div class="gt"><b>App 拿到數字，才決定線要多粗</b><small>同一個力道數值，每個 App 套的曲線都不一樣——這是 App 自己的自由。</small></div>
+          <div class="gw">App</div>
+        </div>
+      </div>
+
+      <p>①② 是硬體與連線，③④ 是 iPadOS，⑤ 才是 App。這五關剛好對應到後面的四層排查：<a class="inline" href="#tip">第 02 節</a>修①、<a class="inline" href="#pair">第 05 節</a>修②、<a class="inline" href="#app">第 04 節</a>修⑤，而 ③④ 是你動不到的——但它解釋了很多怪事。</p>
+
+      <h3>關卡 ① · 力道是在筆裡量的，不是螢幕量的</h3>
+      <p>Apple 對「筆尖裡面怎麼量」講得非常少，只留下一句話：</p>
 
       <div class="bigquote">
         <div class="qm">“</div>
@@ -194,19 +252,6 @@
       </div>
 
       <p>再往下就得靠拆解。iFixit 在 2015 年拆過第一代，看到的結構是這樣：筆尖是<strong>彈簧承載</strong>的，可以被往內推；筆桿組件末端與一塊極小的電路板上，各有三個互相對應的接點。</p>
-
-      <figure class="fig">
-        <div class="flow">
-          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">✍️</div><div class="bt">你下筆</div><div class="bv">力道加上去</div></div>
-          <div class="arr">→</div>
-          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">🔩</div><div class="bt">筆尖被推進去</div><div class="bv">位移幾微米</div></div>
-          <div class="arr">→</div>
-          <div class="box" style="--cbg:var(--teal-bg)"><div class="bi">📡</div><div class="bt">筆身量到位移</div><div class="bv">藍牙回報數值</div></div>
-          <div class="arr">→</div>
-          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">🎨</div><div class="bt">App 收到數值</div><div class="bv">決定線多粗</div></div>
-        </div>
-        <figcaption>壓感量的不是「你手指多用力」，是<b>筆尖被推進去多少</b>。</figcaption>
-      </figure>
 
       <div class="callout" style="--c:var(--purple)">
         <div class="ct">關鍵推論：這條鏈的第一節就在筆尖</div>
@@ -218,21 +263,155 @@
         「筆尖是彈簧承載的、內部有對應接點」是拆解拍到的事實。至於「位移就是壓力來源」，iFixit 原文用的是「如果要我們猜（If we had to hazard a guess）」——那是拆解者的推測，不是 Apple 的技術文件。方向合理，但我們不會把它寫成 Apple 說過的話。
       </div>
 
-      <h3>順帶釐清：壓力和傾斜是兩套機制</h3>
-      <p>很多人把「壓感」跟「傾斜」混在一起講，其實它們在硬體上是分開的。筆尖裡另有兩顆發射器，負責讓 iPad 判斷筆的角度與方向。</p>
+      <h3>那為什麼「握太斜就壓不粗」？因為量的是筆軸方向的力</h3>
+      <p>這一關還有一個很少被講、但客人常遇到的細節：力道是<strong>沿著筆桿方向</strong>量的。你手上使的勁沒變，但筆越躺平，真正「壓進螢幕」的那一分力就越小。</p>
+
+      <figure class="fig fig-wide">
+        <svg viewBox="0 0 700 236" role="img" aria-label="同樣沿筆桿的力道，筆越斜、真正壓進螢幕的垂直分力越小：90度全部、45度剩七成、20度只剩三分之一">
+          <line class="ax" x1="24" y1="166" x2="676" y2="166"/>
+          <text class="lbl-s" x="24" y="184">螢幕表面</text>
+          <text class="lbl" x="24" y="40">三支筆的</text>
+          <text class="lbl" x="24" y="56">手勁一樣</text>
+          <line x1="120" y1="48" x2="120" y2="164" stroke="var(--green)" stroke-width="7" stroke-linecap="round"/>
+          <path d="M142,120 L142,158" stroke="var(--head)" stroke-width="2.4"/>
+          <path d="M142,160 l-4.5,-9 l9,0 z" fill="var(--head)"/>
+          <text class="lbl-h" x="86" y="30">立直 90°</text>
+          <text class="lbl-s" x="150" y="142" fill="var(--green)">×1.00</text>
+          <text class="lbl-s" x="70" y="206" fill="var(--green)">垂直分力＝100%</text>
+          <line x1="293" y1="81" x2="376" y2="164" stroke="var(--amber)" stroke-width="7" stroke-linecap="round"/>
+          <path d="M348,132 L348,158" stroke="var(--head)" stroke-width="2.4"/>
+          <path d="M348,160 l-4.5,-9 l9,0 z" fill="var(--head)"/>
+          <path d="M354,166 A22,22 0 0,0 360,150" fill="none" stroke="var(--amber)" stroke-width="1.2"/>
+          <text class="lbl-s" x="386" y="158" fill="var(--amber)">45°</text>
+          <text class="lbl-h" x="292" y="30">斜 45°</text>
+          <text class="lbl-s" x="306" y="152" fill="var(--amber)">×0.71</text>
+          <text class="lbl-s" x="274" y="206" fill="var(--amber)">垂直分力剩 71%</text>
+          <line x1="530" y1="124" x2="640" y2="164" stroke="var(--red)" stroke-width="7" stroke-linecap="round"/>
+          <path d="M596,146 L596,158" stroke="var(--head)" stroke-width="2.4"/>
+          <path d="M596,160 l-4.5,-9 l9,0 z" fill="var(--head)"/>
+          <path d="M606,166 A34,34 0 0,0 608,154" fill="none" stroke="var(--red)" stroke-width="1.2"/>
+          <text class="lbl-s" x="650" y="158" fill="var(--red)">20°</text>
+          <text class="lbl-h" x="524" y="30">快貼平 20°</text>
+          <text class="lbl-s" x="546" y="158" fill="var(--red)">×0.34</text>
+          <text class="lbl-s" x="500" y="206" fill="var(--red)">垂直分力只剩 34%</text>
+          <text class="lbl-s" x="24" y="226" fill="var(--soft)">↓ 灰色箭頭＝真正壓進螢幕的量，長度已按 sin 比例畫</text>
+        </svg>
+        <figcaption>手勁完全一樣，只是握筆角度不同。<b>躺到 20 度，壓進去的力只剩三分之一。</b></figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">分寸說明：這張圖是幾何，不是 Apple 公式</div>
+        Apple 只提供了「筆與桌面的夾角」這個數值給 App，並沒有公布把力道換算成垂直分力的公式，也沒說繪圖 App 應該這樣算。上圖是<strong>依三角函數推出來的示意</strong>，用來解釋「為什麼躺著畫比較難壓粗」這個真實體感——別把它當成官方規格。<br>
+        實務上你只要記住一件事：<strong>排查壓感的時候，把筆立起來一點再測</strong>，免得把握筆習慣誤判成故障。
+      </div>
+
+      <h3>關卡 ③④ · iPadOS 的解法：先猜一個，之後再改</h3>
+      <p>這是整條鏈最反直覺、也最少人知道的一段，而且它直接解釋了一個常見的困惑：<strong>為什麼同一支筆，在不同 App 裡手感會不一樣？</strong></p>
+      <p>Apple 的開發者文件把原因寫得很白：力道必須「透過空中傳回 iPad」，這個延遲可能導致<strong>力道資訊比觸碰事件本身還晚到</strong>。系統的解法不是讓筆畫卡住等它，而是先給 App 一個估計值，等真值到了再回頭通知 App 改。</p>
+
+      <figure class="fig fig-wide">
+        <svg viewBox="0 0 700 300" role="img" aria-label="時間軸：位置立刻抵達，力道稍後抵達，App 先用估計值畫再回頭補正">
+          <text class="lbl-h" x="10" y="46">螢幕</text><text class="lbl-s" x="10" y="60">位置</text>
+          <text class="lbl-h" x="10" y="116">Pencil</text><text class="lbl-s" x="10" y="130">力道</text>
+          <text class="lbl-h" x="10" y="196">App</text><text class="lbl-s" x="10" y="210">畫出來</text>
+          <line class="gl" x1="70" y1="70" x2="690" y2="70"/>
+          <line class="gl" x1="70" y1="140" x2="690" y2="140"/>
+          <line class="gl" x1="70" y1="220" x2="690" y2="220"/>
+          <rect x="92" y="30" width="76" height="28" rx="4" fill="var(--green-bg)" stroke="var(--green)"/>
+          <text class="lbl-s" x="104" y="48" fill="var(--green)">立刻抵達</text>
+          <path d="M130,62 C130,105 300,105 372,105" stroke="var(--amber)" stroke-width="1.4" fill="none" stroke-dasharray="4 3"/>
+          <text class="lbl-s" x="196" y="98" fill="var(--amber)">藍牙傳輸延遲</text>
+          <rect x="372" y="100" width="86" height="28" rx="4" fill="var(--amber-bg)" stroke="var(--amber)"/>
+          <text class="lbl-s" x="382" y="118" fill="var(--amber)">真值才抵達</text>
+          <rect x="92" y="176" width="280" height="28" rx="4" fill="var(--red-bg)" stroke="var(--red)"/>
+          <text class="lbl-s" x="104" y="194" fill="var(--red)">這段用「猜的力道」先畫</text>
+          <rect x="372" y="176" width="300" height="28" rx="4" fill="var(--green-bg)" stroke="var(--green)"/>
+          <text class="lbl-s" x="382" y="194" fill="var(--green)">真值到，這段起才是準的</text>
+          <path d="M400,172 C400,160 150,160 122,170" stroke="var(--cyan)" stroke-width="1.6" fill="none"/>
+          <path d="M122,170 l-3,-8 l8,2 z" fill="var(--cyan)"/>
+          <text class="lbl-s" x="150" y="153" fill="var(--cyan)">App 要回頭把前面那段改對 ← 這步沒做好就出事</text>
+          <line class="ax" x1="70" y1="256" x2="676" y2="256"/>
+          <path d="M676,256 l-8,-4 l0,8 z" fill="var(--line)"/>
+          <line class="gl" x1="130" y1="250" x2="130" y2="262"/><line class="gl" x1="400" y1="250" x2="400" y2="262"/>
+          <text class="lbl-s" x="100" y="276">筆碰到螢幕</text>
+          <text class="lbl-s" x="372" y="276">幾毫秒之後</text>
+          <text class="lbl" x="600" y="276">時間 →</text>
+        </svg>
+        <figcaption>位置先到、力道後到。<b>每一筆的開頭那一小段，App 畫的其實是「猜的」。</b></figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--navy)">
+        <div class="ct">所以「同一支筆，不同 App 手感不同」是正常的</div>
+        Apple 對開發者的措辭是命令句：如果你要用 Apple Pencil 的力道資訊，<strong>就「必須」明確處理這些估計值</strong>。同一份文件還提到，當某些情況下已經等不到真值時，App「可能適合套用一條自訂的、工具專屬的力道曲線」。<br>
+        換句話說，<strong>Apple 把最後那一段的處理方式交給了每個 App 自己決定。</strong>起筆會不會缺一截、輕壓那一段細不細，很大程度是 App 的實作差異——這不是你的筆壞了。
+      </div>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">冷知識：力道走的是跟 iPhone「3D Touch」同一條管線</div>
+        Apple 並沒有為 Apple Pencil 另外開一條「壓力專用通道」。開發者文件裡負責力道的那一頁，標題寫的是〈追蹤 3D Touch 事件的力道〉，Apple Pencil 是寫在括號裡補上去的：「（同樣地，Apple Pencil 會把筆尖的受力回報給連接的裝置。）」<br>
+        這件事很實用：既然壓力是搭著<strong>一般觸控事件</strong>的順風車進來的，那只要觸控事件流本身受到干擾——連線不穩、系統狀態卡住、輔助使用在攔截觸控——<strong>壓感就會跟著出問題</strong>。這也是為什麼「重新配對」和「重新開機」這種看起來跟壓力無關的動作，真的救得回來。
+      </div>
+
+      <h3>順帶釐清：壓力和傾斜是兩套完全不同的機制</h3>
+      <p>很多人把「壓感」跟「傾斜」混在一起講，但這兩件事在原理上差得很遠——遠到它們的命運完全不同。</p>
+
+      <figure class="fig fig-wide">
+        <svg viewBox="0 0 700 260" role="img" aria-label="兩條路徑對比：傾斜由螢幕直接看電極幾何算出不需通道；壓力必須由筆內部感測器經藍牙傳回，這條通道 Apple 沒對副廠開放">
+          <text class="lbl-h" x="14" y="18" fill="var(--green)">傾斜 · 螢幕自己算得出來</text>
+          <rect x="14" y="32" width="120" height="52" rx="6" fill="var(--panel2)" stroke="var(--green)"/>
+          <text class="lbl-s" x="26" y="52" fill="var(--green)">筆的兩個電極</text>
+          <text class="lbl-s" x="26" y="70" fill="var(--soft)">tip ＋ ring</text>
+          <path d="M138,58 L214,58" stroke="var(--green)" stroke-width="1.8"/>
+          <path d="M214,58 l-8,-3.5 l0,7 z" fill="var(--green)"/>
+          <text class="lbl-s" x="146" y="50" fill="var(--soft)">螢幕直接看到</text>
+          <rect x="218" y="32" width="132" height="52" rx="6" fill="var(--panel2)" stroke="var(--green)"/>
+          <text class="lbl-s" x="230" y="52" fill="var(--green)">兩點的相對位置</text>
+          <text class="lbl-s" x="230" y="70" fill="var(--soft)">＝幾何問題</text>
+          <path d="M354,58 L430,58" stroke="var(--green)" stroke-width="1.8"/>
+          <path d="M430,58 l-8,-3.5 l0,7 z" fill="var(--green)"/>
+          <rect x="434" y="32" width="120" height="52" rx="6" fill="var(--green-bg)" stroke="var(--green)"/>
+          <text class="lbl-s" x="446" y="52" fill="var(--green)">算出傾斜角</text>
+          <text class="lbl-s" x="446" y="70" fill="var(--green)">不必傳任何資料</text>
+          <text class="lbl-s" x="566" y="62" fill="var(--green)">✓ 螢幕看得到</text>
+          <line class="gl" x1="14" y1="112" x2="686" y2="112"/>
+          <text class="lbl-h" x="14" y="142" fill="var(--red)">壓力 · 只有筆自己知道</text>
+          <rect x="14" y="156" width="120" height="52" rx="6" fill="var(--panel2)" stroke="var(--red)"/>
+          <text class="lbl-s" x="26" y="176" fill="var(--red)">筆尖內的感測器</text>
+          <text class="lbl-s" x="26" y="194" fill="var(--soft)">螢幕量不到</text>
+          <path d="M138,182 L214,182" stroke="var(--red)" stroke-width="1.8"/>
+          <path d="M214,182 l-8,-3.5 l0,7 z" fill="var(--red)"/>
+          <rect x="218" y="156" width="132" height="52" rx="6" fill="var(--panel2)" stroke="var(--red)"/>
+          <text class="lbl-s" x="230" y="176" fill="var(--red)">必須「傳」回 iPad</text>
+          <text class="lbl-s" x="230" y="194" fill="var(--soft)">藍牙通道</text>
+          <path d="M354,182 L430,182" stroke="var(--red)" stroke-width="1.8" stroke-dasharray="5 4"/>
+          <path d="M430,182 l-8,-3.5 l0,7 z" fill="var(--red)"/>
+          <text class="lbl-s" x="356" y="172" fill="var(--red)">會延遲、會斷</text>
+          <rect x="434" y="156" width="120" height="52" rx="6" fill="var(--red-bg)" stroke="var(--red)" stroke-width="2"/>
+          <text class="lbl-s" x="446" y="176" fill="var(--red)">配對正常</text>
+          <text class="lbl-s" x="446" y="194" fill="var(--red)">才有壓力值</text>
+          <text class="lbl-s" x="566" y="186" fill="var(--red)">✗ 非傳不可</text>
+          <text class="lbl-s" x="14" y="240" fill="var(--soft)">能被螢幕「看」出來的比較穩；必須「傳」進來的，就多了一整段會出事的路</text>
+        </svg>
+        <figcaption>傾斜是<b>幾何</b>，螢幕自己算得出來；壓力是<b>力學</b>，只有筆知道，非傳不可。</figcaption>
+      </figure>
 
       <div class="cgrid">
         <div class="callout" style="--c:var(--green)">
-          <div class="ct">壓力感應</div>
-          你壓多重 → 線多粗、顏色多深。靠筆尖位移量測。
-        </div>
-        <div class="callout" style="--c:var(--teal)">
           <div class="ct">傾斜度感應</div>
-          你筆桿多斜 → 像鉛筆側鋒那樣塗出寬面。靠筆尖內兩顆發射器。
+          筆頭上有兩個電極，螢幕看到這兩點的相對位置，就能反推筆躺得多斜——<strong>不需要筆傳任何資料回來</strong>。所以它比較不容易「壞」。
+        </div>
+        <div class="callout" style="--c:var(--red)">
+          <div class="ct">壓力感應</div>
+          螢幕永遠量不到筆尖內部的受力，<strong>非得靠筆自己傳回來不可</strong>。多了「傳」這一段，就多了一整段會延遲、會斷線的路。
         </div>
       </div>
 
-      <p>它們可以只壞一個，也可以在 App 裡被分開關掉——像 Concepts 就把 Pressure 和 Tilt 做成兩個獨立開關。所以描述症狀時講清楚是哪一個，排查會快很多。</p>
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">分寸說明</div>
+        「兩個電極的幾何關係」這個機制來自多家技術媒體一致的說法，<strong>Apple 官方沒有公開過細節</strong>，我們把它當合理推論看待。可以確定的是結果：傾斜與壓力在 App 裡是兩個獨立的輸入項，可以只壞一個，也可以被分開關掉——像 Concepts 就把 Pressure 和 Tilt 做成兩個獨立開關。
+      </div>
+
+      <p>所以描述症狀時講清楚是哪一個，排查會快很多：<strong>「側鋒塗不出寬面」是傾斜的事，「用力線不會變粗」才是壓感的事。</strong></p>
     </section>
 
     <section id="tip">
@@ -337,15 +516,41 @@
         Apple 官方繁體中文把 Scribble 譯成「<strong>隨手寫</strong>」，不是網路教學常寫的「塗鴉」。在設定裡搜「塗鴉」是找不到的。
       </div>
 
-      <p>這一層做完，你其實只花了一分鐘，而且知道了一件重要的事：往下所有「壓感太敏感／太遲鈍」的抱怨，都要往 App 去找。</p>
+      <h3>但有兩個系統設定「間接」會出事：輔助使用的觸控功能</h3>
+      <p>系統沒有壓感設定，不代表系統完全插不上手。回想<a class="inline" href="#how">第 01 節</a>那個冷知識：壓力是搭著<strong>一般觸控事件</strong>的順風車進來的。所以任何會攔截、改寫觸控事件的東西，都可能連帶影響壓感。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--amber)">
+          <div class="ct">AssistiveTouch</div>
+          設定 → 輔助使用 → 觸控 → AssistiveTouch。它會在畫面上疊一層虛擬按鈕並改變觸控的處理方式。
+        </div>
+        <div class="callout" style="--c:var(--amber)">
+          <div class="ct">觸控輔助（Touch Accommodations）</div>
+          設定 → 輔助使用 → 觸控 → 觸控輔助。它會刻意忽略太短的碰觸、或改變「按住多久才算數」。
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--teal)">
+        <div class="ct">怎麼知道要不要懷疑它</div>
+        這兩個開關<strong>預設都是關的</strong>，一般人不會自己打開——所以最該懷疑的是<strong>二手機</strong>（前手的設定會跟著機器一起過來）、或家裡有人幫忙「設定過」的機器。<br>
+        排查方式很簡單：<strong>進去看一眼，是關的就放心往下走，是開的就先關掉再測一次。</strong>三十秒的事，但不看就永遠不會發現。
+      </div>
+
+      <p>這一層做完，你其實只花了一兩分鐘，而且知道了兩件事：往下所有「壓感太敏感／太遲鈍」的抱怨都要往 App 去找；而如果是「整個觸控都怪怪的」，先回頭看輔助使用。</p>
     </section>
 
     <section id="app">
       <div class="sec-label" style="--c:var(--amber)">layer_3</div>
       <h2>04 · 第三層：App 裡的壓感開關與曲線</h2>
-      <p>這一層最容易被跳過，卻是「只有某個 App 怪怪的」唯一的答案。每個 App 把壓感藏在不同地方，名字也不一樣：</p>
+      <p>這一層最容易被跳過，卻是「只有某個 App 怪怪的」唯一的答案。回到<a class="inline" href="#how">第 01 節</a>的關卡 ⑤：<strong>同一個力道數值，每個 App 要怎麼翻譯成粗細，是 App 自己的自由。</strong>所以每個 App 把壓感藏在不同地方，名字也不一樣：</p>
 
       <div class="grid">
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">備忘錄 · 無邊記</div>
+          <h4>沒有任何壓感設定，所以最適合當試紙</h4>
+          <p>內建 App 沒有曲線可調、沒有開關可關，是最乾淨的對照組。但有個陷阱：壓感是綁在<strong>你選的那支筆</strong>上的——選到原子筆樣式就是沒有粗細變化。測的時候記得選鋼筆或麥克筆。</p>
+          <span class="ex">先確認選的不是原子筆</span>
+        </div>
         <div class="card" style="--c:var(--navy);--cbg:var(--navy-bg)">
           <div class="c-tag">GoodNotes</div>
           <h4>壓感綁在「筆的樣式」上</h4>
@@ -358,12 +563,6 @@
           <p>Settings → Interaction → Stylus 底下有 Pressure 開關，旁邊還有獨立的 Tilt 開關。被關掉的話，壓感是真的完全消失。</p>
           <span class="ex">Pressure 要是開的</span>
         </div>
-        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
-          <div class="c-tag">Procreate</div>
-          <h4>有完整的壓力曲線可以拉</h4>
-          <p>Actions → Prefs → Pressure &amp; Smoothing。覺得要很用力才畫得出深線就把曲線往左調，太敏感往右調；底部 Reset All 一鍵回到預設的線性。</p>
-          <span class="ex">排查前先 Reset All</span>
-        </div>
         <div class="card" style="--c:var(--purple);--cbg:var(--purple-bg)">
           <div class="c-tag">Notability</div>
           <h4>沒有曲線，但有連線開關</h4>
@@ -374,12 +573,41 @@
 
       <div class="callout" style="--c:var(--green)">
         <div class="ct">排查時的正確順序</div>
-        進 App 之後<strong>先把曲線 Reset 回預設、把 Pressure 開關打開</strong>，再判斷壓感正不正常。順序反過來的話，你永遠分不清是筆的問題還是自己半年前調過的曲線。
+        進 App 之後<strong>先把曲線 Reset 回預設、把 Pressure 開關打開、確認選的是有壓感的那支筆</strong>，再判斷壓感正不正常。順序反過來的話，你永遠分不清是筆的問題，還是自己半年前調過的設定。
       </div>
 
       <div class="callout" style="--c:var(--teal)">
         <div class="ct">怎麼一次驗證是不是 App 的問題</div>
-        打開 iPad 內建的「備忘錄」或「無邊記」，用手寫工具畫一筆由輕到重。內建 App 沒有任何壓感設定可以調，所以它是最乾淨的對照組——<strong>內建 App 正常、第三方 App 不正常，那就是 App 設定，不是筆。</strong>
+        打開 iPad 內建的「備忘錄」或「無邊記」，選鋼筆樣式，畫一筆由輕到重。<strong>內建 App 正常、第三方 App 不正常，那就是 App 設定，不是筆。</strong><br>
+        反過來要注意分寸：<strong>內建 App 正常，只能排掉「筆壞了」和「連線斷了」</strong>，排不掉第三方 App 當下的執行狀態出問題（這種把 App 完全關掉再開就會好）。
+      </div>
+
+      <h3>Procreate 是例外：它的壓力有整整三層</h3>
+      <p>如果你的問題出在 Procreate，先有個心理準備：它跟上面幾個 App 不是同一個量級。別的 App 頂多一個開關，Procreate 有<strong>三層壓力設定，而且是相乘的關係</strong>——</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>層</th><th>官方名稱</th><th>位置</th><th>影響範圍</th></tr>
+          <tr><td>L1</td><td>App Pressure Sensitivity</td><td>Actions → Prefs → Pressure &amp; Smoothing</td><td>整個 App 一條</td></tr>
+          <tr><td>L2</td><td>Pressure Graph</td><td>Brush Studio → Apple Pencil</td><td>只影響<strong>這一支筆刷</strong></td></tr>
+          <tr><td>L3</td><td>Pressure Curve</td><td>Brush Studio → 各設定項 → Pressure</td><td>只影響<strong>那一個設定項</strong></td></tr>
+        </table>
+      </div>
+
+      <p><strong>相乘的意思是：任何一層被拉平，最後出來的結果就是平的</strong>，另外兩層調得再漂亮也救不回來。這也解答了一個常見的困惑——「為什麼有些筆刷有感壓、有些沒有」：因為 L2、L3 是存在筆刷裡面的，換一支筆刷就換一組設定。</p>
+
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">30 秒止血：官方的「兩支筆刷試紙法」</div>
+        Procreate 官方支援文件給了一個很漂亮的差別診斷：<strong>用 Monoline 畫一筆，再用 Round Brush 用力畫一筆。</strong><br>
+        如果 Monoline 正常、Round Brush 卻怎麼壓都還是透明的——官方的判讀是「很可能是 Apple Pencil 本身的壓力問題」，那就回到本文<a class="inline" href="#tip">第 02 節</a>從筆尖開始查。<br>
+        如果<strong>兩支都不對勁</strong>，那多半是 Procreate 的設定或執行狀態，先把 App 完全關掉重開，再考慮動設定。
+      </div>
+
+      <div class="callout" style="--c:var(--red)">
+        <div class="ct">三件事別做錯</div>
+        <b>① 別急著動全域曲線。</b>Procreate 官方自己在說明文件裡標了警告：除非真的需要，一般不建議調整全域壓力設定，調曲線可能造成非預期的結果。<br>
+        <b>② 三個「Reset」各管各的。</b>Prefs 底部的 Reset all 只還原全域設定；Brush Studio 的 Reset all Brush Settings 官方註明「只適用於目前這支筆刷」。<br>
+        <b>③ 千萬別做 iPadOS 的「重置所有設定」。</b>這是最常見的大砲打蚊子——它<strong>碰不到 Procreate 的任何一層壓力設定</strong>（App 的資料不在它的清除範圍內），卻會把你整台 iPad 的設定與所有藍牙配對一起清掉。那些「重置完就好了」的案例，真正被修好的其實是<strong>被順手清掉的 Apple Pencil 配對</strong>——而那件事，用<a class="inline" href="#pair">第 05 節</a>的「忘記此裝置 → 重新配對」就做得到，代價低一個數量級。
       </div>
     </section>
 
@@ -503,6 +731,46 @@
             <td>iPadOS 26 官方使用手冊全章節無此項；唯一的力道滑桿被官方明文限定作用於「擠壓」動作</td>
           </tr>
           <tr>
+            <td>Apple Pencil 的力道沒有專用管線，是搭一般觸控事件回報的（與 iPhone 3D Touch 同一個欄位）</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>Apple 開發者文件負責力道的那一頁標題為〈追蹤 3D Touch 事件的力道〉，並在括號中補述 Apple Pencil 會把筆尖受力回報給連接的裝置</td>
+          </tr>
+          <tr>
+            <td>力道是「先給估計值、之後回頭補正」，而且 App 必須自己處理</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>Apple 開發者文件原文：力道必須透過空中傳回 iPad，延遲可能導致力道資訊比觸碰事件更晚抵達；另一頁以命令句要求開發者「必須」明確處理估計值</td>
+          </tr>
+          <tr>
+            <td>同一支筆在不同 App 手感不同，是 App 實作差異</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>同上兩份文件；官方並提到當等不到真值時，App「可能適合套用自訂的、工具專屬的力道曲線」——等於官方把最後一段交給 App 自己決定</td>
+          </tr>
+          <tr>
+            <td>筆握得越斜，壓進螢幕的分力越小（第 01 節那張 sin 比例圖）</td>
+            <td><span class="lv-tag infer">合理推論</span></td>
+            <td>Apple 有提供「筆與桌面的夾角」給 App，但<strong>沒有公布換算公式</strong>，也沒說繪圖 App 該這樣算。圖是依三角函數推出的示意，用來解釋體感</td>
+          </tr>
+          <tr>
+            <td>傾斜是靠筆頭兩個電極的相對位置由螢幕算出，不必經無線傳輸</td>
+            <td><span class="lv-tag infer">合理推論</span></td>
+            <td>多家技術媒體說法一致，Apple 官方未公開細節。可確定的是結果：傾斜與壓力在 App 裡是兩個獨立輸入項</td>
+          </tr>
+          <tr>
+            <td>Procreate 的壓力是三層相乘（全域 → 筆刷 → 單一設定項）</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>Procreate 官方手冊兩處明文：Pressure Graph 旁註明它「仍會遵從 Actions 選單中 Prefs → Pressure &amp; Smoothing 的全域設定」，單一設定項的曲線亦「會遵從整體的 pressure graph」</td>
+          </tr>
+          <tr>
+            <td>iPadOS 的「重置所有設定」碰不到 Procreate 的壓力設定</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>iPad 使用手冊列出該動作移除的項目，App 與 App 資料不在其中；但<strong>藍牙配對在其中</strong>——這解釋了為何有人做完覺得「修好了」</td>
+          </tr>
+          <tr>
+            <td>輔助使用的觸控功能會影響壓感</td>
+            <td><span class="lv-tag infer">合理推論</span></td>
+            <td>Procreate 官方排錯清單確實有「關閉 AssistiveTouch 與觸控輔助」這一步（這部分是已確認），但官方<strong>沒有解釋機制</strong>；「因為壓力搭觸控事件的順風車」是我們的推論</td>
+          </tr>
+          <tr>
             <td>筆尖沒鎖緊會影響壓感</td>
             <td><span class="lv-tag infer">合理推論</span></td>
             <td>iFixit 拆解顯示筆尖為彈簧承載、壓力疑似由位移量測而來（拆解者用的是推測語氣）；官方無此說明</td>
@@ -556,8 +824,19 @@
     <section id="sources">
       <div class="sec-label">sources</div>
       <h2>資料來源</h2>
-      <p class="sources">本文的規格、官方步驟、售價與保固條款皆取自 Apple 官方頁面，技術結構部分取自 iFixit 拆解，查證日期 2026 年 7 月 29 日：</p>
+      <p class="sources">本文的規格、官方步驟、售價與保固條款皆取自 Apple 官方頁面；訊號鏈原理取自 Apple 開發者文件，技術結構部分取自 iFixit 拆解，Procreate 的部分取自其官方手冊與支援文件。查證日期 2026 年 7 月 31 日：</p>
       <ul class="sources">
+        <li><a href="https://developer.apple.com/documentation/uikit/tracking-the-force-of-3d-touch-events">Apple 開發者文件 · Tracking the force of 3D Touch events</a>（力道沒有專用管線：標題是 3D Touch，Apple Pencil 於括號中補述「會把筆尖的受力回報給連接的裝置」）</li>
+        <li><a href="https://developer.apple.com/documentation/uikit/uitouch/estimatedproperties">Apple 開發者文件 · UITouch.estimatedProperties</a>（力道必須透過空中傳回 iPad，延遲可能導致力道資訊比觸碰事件更晚抵達——第 01 節時間軸圖的依據）</li>
+        <li><a href="https://developer.apple.com/documentation/uikit/handling-input-from-apple-pencil">Apple 開發者文件 · Handling input from Apple Pencil</a>（命令句：若使用 Apple Pencil 的高度、方位或力道資訊，開發者「必須」明確處理估計值）</li>
+        <li><a href="https://developer.apple.com/documentation/uikit/uitouch/force">Apple 開發者文件 · UITouch.force</a>（僅在支援 3D Touch 或 Apple Pencil 的裝置上有意義；等不到更新時「可能適合套用自訂的、工具專屬的力道曲線」）</li>
+        <li><a href="https://developer.apple.com/documentation/uikit/uitouch/altitudeangle">Apple 開發者文件 · UITouch.altitudeAngle</a>（0 弧度＝筆與表面平行、Pi/2＝垂直；Apple 只提供角度，未提供垂直分力換算公式——第 01 節那張 sin 比例圖標為推論的依據）</li>
+        <li><a href="https://help.procreate.com/procreate/handbook/brushes/brush-studio-settings">Procreate 官方手冊 · Brush Studio Settings</a>（Pressure Graph「調整這一支筆刷內所有設定的整體壓力」、可加四個節點；Heads Up 明寫它「仍會遵從 Actions 選單中 Prefs → Pressure &amp; Smoothing 的全域設定」；單一設定項的曲線「會遵從整體的 pressure graph」——第 04 節三層相乘的依據）</li>
+        <li><a href="https://help.procreate.com/procreate/handbook/brushes/brush-studio">Procreate 官方手冊 · Brush Studio</a>（Reset all Brush Settings 註明「只適用於目前這支筆刷」）</li>
+        <li><a href="https://help.procreate.com/articles/zpbmke-cant-paint-on-canvas">Procreate 支援 · Why can’t I paint, smudge, or erase on my canvas?</a>（兩支筆刷試紙法逐字：Monoline 正常但 Round Brush 仍透明「很可能是 Apple Pencil 本身的壓力問題」；排錯清單另列「確認 AssistiveTouch 與 Touch Accommodations 是關閉的」）</li>
+        <li><a href="https://help.procreate.com/articles/tIdR13-apple-pencil-pressure-and-smoothing">Procreate 支援 · Apple Pencil, Pressure and Smoothing</a>（官方警告：預設曲線是為多數情況設計的，「調整曲線可能造成非預期的結果」；並說明如何重置該區塊）</li>
+        <li><a href="https://support.apple.com/zh-tw/126643">Apple 支援 · 重置所有設定會移除哪些項目</a>（官方 17 項清單含「藍牙配對」；同頁明列不會刪除「App 和 App 資料」，並寫明「系統不會刪除任何資料或媒體」——第 04 節那段翻案的依據）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipad9a74dc01/ipados">iPad 使用手冊 · 將 iPad 設定重置為預設值</a>（「重置所有設定：所有設定（包括網路設定、鍵盤辭典、位置設定、隱私設定和 Apple Pay 卡片）都將被移除…資料或媒體將不會被刪除」）</li>
         <li><a href="https://www.apple.com/tw/apple-pencil/">Apple 台灣官網 · Apple Pencil</a>（機型比較表：壓力感應「不適用於 Apple Pencil (USB-C)」、傾斜度與懸浮兩款皆適用）</li>
         <li><a href="https://support.apple.com/zh-tw/111920">Apple Pencil（第 1 代）· 技術規格</a>（「靈敏感應筆尖的壓力與傾斜角度」、盒裝內含替換筆尖、相容機型）</li>
         <li><a href="https://support.apple.com/zh-tw/111889">Apple Pencil（第 2 代）· 技術規格</a>（全頁未逐項列出壓力與傾斜規格，佐證第 07 節的證據等級說明）</li>
