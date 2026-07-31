@@ -59,6 +59,8 @@
     .masthead { padding-left: 20px; padding-right: 20px; }
     .figs, .figs.f2 { grid-template-columns: 1fr 1fr; }
     .core { flex-wrap: wrap; }
+    /* 基底在窄螢幕把 .stats 收成單欄；本篇是 4 格導言數據，單欄會疊成很高的一條，改 2×2 */
+    .stats { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 560px) {
     .figs, .figs.f2 { grid-template-columns: 1fr; }
@@ -108,11 +110,27 @@
     <h1>Procreate 筆刷怎麼調成<br>自己要的手感？</h1>
     <p class="subtitle">Brush Studio 有 14 個分頁、上百個滑桿，但你不用背——先懂一件事，剩下的幾乎都推得出來。</p>
 
-    <p class="lede">想把 Procreate 筆刷調成自己要的手感，先記住一句話就好：一筆線其實是「同一個形狀<strong>沿著你的路徑蓋很多次章</strong>」。這不是比喻，是官方對 Stroke Path 的定義原文。知道這件事之後，間距、抖動、散佈、數量這些滑桿全部同時變得可以推理，不用一個一個死背。</p>
+    <p class="lede">想把 Procreate 筆刷調成自己要的手感，先記住一句話就好：一筆線其實是「同一個形狀<strong>沿著你的路徑蓋很多次章</strong>」。這不是比喻，是官方對 Stroke Path 的定義原文——懂了它，那十幾頁滑桿就從「要背」變成「推得出來」。</p>
 
-    <p class="lede">遇到看不懂的滑桿還有第二招，而且是 Procreate 官方自己在手冊裡教的：把 Stroke Path 的 <strong>Spacing 拉高</strong>，一筆就會散成一顆顆分開的印章，那個設定到底在動什麼就看得見了。官方還補了一句——就算你之後把間距調回正常，這個畫面也會一直幫你想像每個設定在做什麼。</p>
+    <div class="cgrid">
+      <div class="callout" style="--c:var(--navy)">
+        <div class="ct">心法一 · 懂了那句話，這些滑桿一起解鎖</div>
+        <strong>間距、抖動、散佈、數量</strong>——這幾頁管的都是同一件事：那些印章怎麼排。所以它們不是四個要分開背的知識，是同一個概念的四個面向。
+      </div>
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">心法二 · 看不懂的滑桿？官方教你這招</div>
+        把 Stroke Path 的 <strong>Spacing 拉高</strong>，一筆會散成一顆顆分開的印章，那個設定在動什麼就看得見了。官方還補一句：之後把間距調回正常，這個畫面也會一直幫你想像。
+      </div>
+    </div>
 
-    <p class="lede">這篇用 35 張對照圖把 14 個分頁走一遍，最後給六道食譜（想做鉛筆、水彩、草叢該動哪幾頁），並標出哪些設定要<strong>哪一代 Pencil</strong> 才有。不會叫你照抄數字——因為官方也沒給過數字。</p>
+    <div class="stats">
+      <div class="stat" style="--c:var(--navy)"><div class="num">14</div><div class="lab">個分頁全部走過</div></div>
+      <div class="stat" style="--c:var(--green)"><div class="num">35</div><div class="lab">張對照圖</div></div>
+      <div class="stat" style="--c:var(--teal)"><div class="num">6</div><div class="lab">道效果食譜<br>鉛筆・水彩・草叢…</div></div>
+      <div class="stat" style="--c:var(--amber)"><div class="num">0</div><div class="lab">組要你照抄的數字</div><span class="badge">官方也沒給過</span></div>
+    </div>
+
+    <p class="lede">另外會標出哪些設定要<strong>哪一代 Pencil</strong> 才有——像轉筆桿只有 Apple Pencil Pro 做得到、USB-C 版則完全沒有壓力感應。買二手機或平價筆之前，那張表值得先看一眼。</p>
 
     <p class="updated">本文查證：<b>2026 年 7 月 31 日</b>，內容依 Procreate 官方手冊逐項核對。Brush Studio 是全 App 最常改版的地方，選單位置與名稱以你機器上看到的為準。<a class="inline" href="#sources">來源列在文末</a>，<a class="inline" href="#honest">哪些是推論也標出來了</a>。</p>
 
