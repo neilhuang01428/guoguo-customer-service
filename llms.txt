@@ -163,7 +163,7 @@
   - 本篇回答：只有 Procreate 沒壓感，其他 App 正常，怎麼辦？
   - 本篇回答：怎麼確定 Apple Pencil 是真的壞了？
   - 本篇回答：Apple Pencil 的筆尖磨損有保固嗎？
-- [Procreate 沒有粗細變化？先問深淺](https://www.guoguo.tw/guide/articles/procreate-pressure-not-working/)：同一支筆在備忘錄好好的，一進 Procreate 就畫不出粗細？先看線的深淺有沒有跟著變，一句話分開是筆還是設定。附三層壓力相乘的完整解剖，與成本由低到高的 12 步排除順序。（技巧、Apple Pencil、故障排除／2026-07-31）
+- [Procreate 沒有粗細變化？原因深度解析](https://www.guoguo.tw/guide/articles/procreate-pressure-not-working/)：同一支筆在備忘錄好好的，一進 Procreate 就畫不出粗細？先看線的深淺有沒有跟著變，一句話分開是筆還是設定。附三層壓力相乘的完整解剖，與成本由低到高的 12 步排除順序。（技巧、Apple Pencil、故障排除／2026-07-31）
   - 本篇回答：Procreate 畫不出粗細變化，是筆壞了嗎？
   - 本篇回答：Procreate 沒有感壓，要做 iPadOS 的「重置所有設定」嗎？
   - 本篇回答：為什麼有些筆刷有感壓、有些完全沒有？
