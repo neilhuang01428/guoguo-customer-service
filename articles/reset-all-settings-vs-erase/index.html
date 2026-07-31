@@ -37,6 +37,13 @@
   .tbl-wrap table { margin: 0; min-width: 640px; }
   table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
 
+  /* 導言：迷你目錄（窄螢幕沒有左側 nav，這排就是導覽） */
+  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0 24px; }
+  .toc a { display: flex; align-items: baseline; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 14px; text-decoration: none; color: var(--ink); font-size: .93rem; transition: .12s; }
+  .toc a:hover { border-color: var(--navy); background: var(--navy-bg); }
+  .toc a i { font-family: var(--mono); font-style: normal; font-size: .72rem; color: var(--navy); font-weight: 700; flex: none; }
+  @media (max-width: 560px) { .toc { grid-template-columns: 1fr; } }
+
   @media (max-width: 860px) {
     .masthead { padding-left: 20px; padding-right: 20px; }
     .ba { grid-template-columns: 1fr; }
@@ -85,11 +92,31 @@
     <h1>「重置所有設定」和「清除所有內容和設定」差在哪</h1>
     <p class="subtitle">停在選單前不敢按？這頁把七個選項全部拆開，逐項告訴你會失去什麼、不會失去什麼，以及你現在該按哪一個。</p>
 
-    <p class="lede">「重置所有設定」只把設定歸零，照片、App、訊息、LINE 對話一個都不會少；「清除所有內容和設定」是整台抹掉、回到出廠狀態。兩者不是同一件事的不同講法，是<strong>完全不同等級的動作</strong>。</p>
+    <p class="lede">兩者不是同一件事的不同講法，是<strong>完全不同等級的動作</strong>：</p>
 
-    <p class="lede">Apple 官方的說法很直白：重置所有設定「不會刪除你的照片、訊息、App 和文件」；而要把 iPad 賣掉或送人，官方要你「改用『清除所有內容和設定』」。一個是家具歸位，一個是清空退租。</p>
+    <div class="cgrid">
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">重置所有設定 · 家具歸位</div>
+        只把設定歸零。<strong>照片、App、訊息、LINE 對話一個都不會少。</strong>
+      </div>
+      <div class="callout" style="--c:var(--red)">
+        <div class="ct">清除所有內容和設定 · 清空退租</div>
+        <strong>整台抹掉</strong>，回到出廠狀態。要把 iPad 賣掉或送人才用這個。
+      </div>
+    </div>
 
-    <p class="lede">底下先給你一張「會失去／不會失去」對照表，再把「重置」選單裡其他五個小選項一次講完——它們才是大多數情況下你真正該按的那一個。</p>
+    <div class="bigquote">
+      <div class="qm">“</div>
+      <p>重置所有設定「不會刪除你的照片、訊息、App 和文件」</p>
+      <small>Apple 官方的說法很直白；而要賣掉或送人，官方要你「改用『清除所有內容和設定』」。</small>
+    </div>
+
+    <div class="toc">
+      <a href="#reset-all"><i>02</i>會失去／不會失去對照表</a>
+      <a href="#small"><i>03</i>另外五個小選項（多數情況你真正該按的）</a>
+      <a href="#erase"><i>04</i>「清除」做了什麼</a>
+      <a href="#which"><i>05</i>你現在的狀況該按哪一個</a>
+    </div>
 
     <p class="updated">本文查證：<b>2026 年 7 月 28 日</b>，以 iPadOS 26／iOS 26 官方使用手冊與支援文件為準。<a class="inline" href="#sources">來源列在文末</a>。</p>
 

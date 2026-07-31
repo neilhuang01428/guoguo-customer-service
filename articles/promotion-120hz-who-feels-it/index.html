@@ -36,6 +36,13 @@
   .gaprow .bar { flex: 1; height: 24px; background: var(--panel2); border-radius: 6px; overflow: hidden; }
   .gaprow .fill { height: 100%; background: var(--c); display: flex; align-items: center; justify-content: flex-end; padding-right: 9px; color: #fff; font-family: var(--mono); font-size: .7rem; font-weight: 700; }
 
+  /* 導言：迷你目錄（窄螢幕沒有左側 nav，這排就是導覽） */
+  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0 24px; }
+  .toc a { display: flex; align-items: baseline; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 14px; text-decoration: none; color: var(--ink); font-size: .93rem; transition: .12s; }
+  .toc a:hover { border-color: var(--navy); background: var(--navy-bg); }
+  .toc a i { font-family: var(--mono); font-style: normal; font-size: .72rem; color: var(--navy); font-weight: 700; flex: none; }
+  @media (max-width: 560px) { .toc { grid-template-columns: 1fr; } }
+
   @media (max-width: 860px) {
     .masthead { padding-left: 20px; padding-right: 20px; }
     .trow .ms { display: none; }
@@ -82,11 +89,29 @@
     <h1>120Hz 和 60Hz 的 iPad，<br>到底差多少？</h1>
     <p class="subtitle">規格表上那個「ProMotion」值不值得加價，答案不在螢幕上，在你的使用習慣裡。這篇按四種用途分開講，也直說哪些人不必花這筆錢。</p>
 
-    <p class="lede">差別是真的，但它只在一種時刻出現：<strong>你的手正推著畫面動的時候</strong>。用 Apple Pencil 寫字、畫圖的人感受最深，長時間捲動閱讀的人次之。看影片、追劇的人幾乎感覺不到——因為多數影片本身一秒只有 24 到 30 格，螢幕再快也沒有更多畫面可以放。</p>
+    <p class="lede">差別是真的，但它只在一種時刻出現：<strong>你的手正推著畫面動的時候</strong>。</p>
 
-    <p class="lede">所以真正該問的不是「120Hz 好不好」，而是「我每天有多少時間，手正在推著畫面動」。這個問題只有你自己答得出來，規格表答不了。</p>
+    <table>
+      <tr><th>你的用途</th><th>有感程度</th><th>為什麼</th></tr>
+      <tr><td>Apple Pencil 寫字、畫圖</td><td class="good">最有感</td><td>手一路推著畫面走，筆跟畫面的落差最看得出來</td></tr>
+      <tr><td>長時間捲動閱讀</td><td class="good">次之</td><td>捲動時畫面一直在動</td></tr>
+      <tr><td>看影片、追劇</td><td class="bad">幾乎沒感覺</td><td>多數影片本身一秒只有 24 到 30 格，螢幕再快也沒有更多畫面可以放</td></tr>
+    </table>
 
-    <p class="lede">這頁給你四種用途的有感程度、一句話查出手上那台有沒有 ProMotion、2015 到 2026 全世代對照表，以及把加價金額換算成其他升級之後的實際比較。</p>
+    <div class="bigquote">
+      <div class="qm">“</div>
+      <p>真正該問的不是「120Hz 好不好」，是「我每天有多少時間，手正在推著畫面動」</p>
+      <small>這個問題只有你自己答得出來，規格表答不了。</small>
+    </div>
+
+    <p class="lede">這頁給你四樣，急的話直接跳：</p>
+
+    <div class="toc">
+      <a href="#pencil"><i>02</i>手寫與繪圖：差最多的一塊</a>
+      <a href="#video"><i>03</i>看影片為什麼幾乎沒感覺</a>
+      <a href="#which"><i>05</i>一句話查你那台有沒有（附 2015–2026 全世代對照）</a>
+      <a href="#worth"><i>06</i>加價金額換算成其他升級的比較</a>
+    </div>
 
     <p class="updated">本文查證：<b>2026 年 7 月 29 日</b>，規格與售價以 Apple 官方最新公告為準。<a class="inline" href="#sources">來源列在文末</a>。</p>
 

@@ -36,6 +36,13 @@
   .ruler .rbar i { display: block; height: 100%; width: var(--w); background: var(--c); }
   .ruler .rval { width: 74px; flex: none; font-family: var(--mono); font-size: .76rem; color: var(--c); text-align: right; }
 
+  /* 導言：迷你目錄（窄螢幕沒有左側 nav，這排就是導覽） */
+  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0 24px; }
+  .toc a { display: flex; align-items: baseline; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 14px; text-decoration: none; color: var(--ink); font-size: .93rem; transition: .12s; }
+  .toc a:hover { border-color: var(--navy); background: var(--navy-bg); }
+  .toc a i { font-family: var(--mono); font-style: normal; font-size: .72rem; color: var(--navy); font-weight: 700; flex: none; }
+  @media (max-width: 560px) { .toc { grid-template-columns: 1fr; } }
+
   @media (max-width: 860px) {
     .masthead { padding-left: 20px; padding-right: 20px; }
     .ruler .rname { width: 96px; font-size: .78rem; }
@@ -87,11 +94,43 @@
     <h1>iPhone 開熱點給 iPad，網速為什麼只剩一半</h1>
     <p class="subtitle">掉三到五成是熱點的常態，不是 iPad 故障。這頁先教你怎麼測才算數，再依落差幅度把六個原因對號入座。</p>
 
-    <p class="lede">熱點比手機本身慢，是<strong>正常的</strong>。手機自己上網只有一段路：基地台直接連到手機。開熱點是把訊號轉手一次，中間多插了一段 Wi-Fi，最後的速度只能取兩段裡比較慢的那一段。掉三到五成很常見，跟 iPad 好不好沒有關係。</p>
+    <p class="lede">熱點比手機本身慢，是<strong>正常的</strong>——因為你多買了一段路。</p>
 
-    <p class="lede">真正該看的是落差幅度。如果掉到只剩十分之一——手機 300Mbps、iPad 只有 20Mbps——那通常是三件事之一：電信方案的熱點流量用完被降速、iPhone 開了「最大化相容性」、或手機發燙與低耗電模式在自保。這三件都救得回來。</p>
+    <figure class="fig">
+      <div class="flow">
+        <div class="box" style="--cbg:var(--green-bg)"><div class="bi">📡</div><div class="bt">第一段</div><div class="bv">基地台 → 手機</div></div>
+        <div class="arr">＋</div>
+        <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">📶</div><div class="bt">第二段（多出來的）</div><div class="bv">手機 → iPad</div></div>
+        <div class="arr">＝</div>
+        <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">🐢</div><div class="bt">最後的速度</div><div class="bv">取比較慢的那段</div></div>
+      </div>
+      <figcaption>手機自己上網只有一段路，開熱點是把訊號轉手一次。<b>掉三到五成很常見，跟 iPad 好不好沒有關係。</b></figcaption>
+    </figure>
 
-    <p class="lede">底下先給一張「掉幾成 → 是什麼問題」的分流表，再把測法修對（測錯了後面全白搭），最後把六個原因拆成能救的三個與是天花板的三個，包含台灣三大電信白紙黑字寫在資費表上的熱點降速門檻。</p>
+    <p class="lede">真正該看的是<strong>落差幅度</strong>。掉到只剩十分之一（手機 300Mbps、iPad 只有 20Mbps），那通常是這三件事之一——而且都救得回來：</p>
+
+    <div class="grid g3">
+      <div class="card" style="--c:var(--amber);--cbg:var(--amber-bg)">
+        <div class="c-tag">原因 1</div><h4>熱點流量用完被降速</h4>
+        <p>電信方案裡的熱點額度跟手機額度是分開算的。</p>
+      </div>
+      <div class="card" style="--c:var(--teal);--cbg:var(--teal-bg)">
+        <div class="c-tag">原因 2</div><h4>開了「最大化相容性」</h4>
+        <p>iPhone 上這個開關會把熱點切到比較慢的模式。</p>
+      </div>
+      <div class="card" style="--c:var(--red);--cbg:var(--red-bg)">
+        <div class="c-tag">原因 3</div><h4>手機發燙或低耗電模式</h4>
+        <p>手機在自保，會主動壓低熱點的速度。</p>
+      </div>
+    </div>
+
+    <div class="toc">
+      <a href="#triage"><i>01</i>掉幾成 → 是什麼問題（分流表）</a>
+      <a href="#measure"><i>02</i>先把測法修對（測錯全白做）</a>
+      <a href="#carrier"><i>05</i>三大電信白紙黑字的降速門檻</a>
+      <a href="#fixable"><i>06</i>救得回來的三個</a>
+      <a href="#ceiling"><i>07</i>救不回來的三個</a>
+    </div>
 
     <p class="updated">本文查證：<b>2026 年 7 月 29 日</b>，Apple 說明以 iOS 26／iPadOS 26 官方文件為準，電信資費以三大電信官網當日公告為準。<a class="inline" href="#sources">來源列在文末</a>。</p>
 

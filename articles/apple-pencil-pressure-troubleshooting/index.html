@@ -59,6 +59,13 @@
   .gate .gt small { display: block; color: var(--muted); font-size: .84rem; line-height: 1.55; margin-top: 3px; }
   .gate .gw { font-family: var(--mono); font-size: .62rem; color: var(--muted); background: var(--panel2); padding: 4px 9px; border-radius: 999px; white-space: nowrap; align-self: center; }
 
+  /* 導言：迷你目錄（窄螢幕沒有左側 nav，這排就是導覽） */
+  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0 24px; }
+  .toc a { display: flex; align-items: baseline; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 14px; text-decoration: none; color: var(--ink); font-size: .93rem; transition: .12s; }
+  .toc a:hover { border-color: var(--navy); background: var(--navy-bg); }
+  .toc a i { font-family: var(--mono); font-style: normal; font-size: .72rem; color: var(--navy); font-weight: 700; flex: none; }
+  @media (max-width: 560px) { .toc { grid-template-columns: 1fr; } }
+
   @media (max-width: 860px) {
     .masthead { padding-left: 20px; padding-right: 20px; }
     .lrow { flex-wrap: wrap; }
@@ -111,11 +118,26 @@
 
     <p class="lede">Apple Pencil 壓感異常，最該先做的不是送修，是<strong>把筆尖轉緊、或換一顆新的</strong>。原因寫在第 01 節：壓力訊號來自筆尖被壓進去時的那一點點位移，筆尖跟筆身之間只要鬆一點點，量到的數字就不對了。</p>
 
-    <p class="lede">成本差距也很現實。Apple 官方替換筆尖一組四入 NT$590，平均一顆 NT$148；一支 Apple Pencil Pro 是 NT$4,390。先花三十分之一的錢排掉最常見的原因，是划算的順序。</p>
+    <div class="callout" style="--c:var(--amber)">
+      <div class="ct">先講成本，排查順序就自己浮出來了</div>
+      Apple 官方替換筆尖一組四入 NT$590、平均一顆 NT$148；一支 Apple Pencil Pro 是 NT$4,390。<strong>先花三十分之一的錢排掉最常見的原因</strong>，再考慮送修。
+    </div>
 
-    <p class="lede">這篇按「由便宜到貴」排出四層：筆尖 → iPadOS 設定 → App 設定 → 配對與電量，最後給你「什麼症狀才真的該送修」的停止點。第 01 節會先把整條訊號鏈拆成五道關卡——看懂那五關，<strong>後面每一步在修哪裡就一目瞭然</strong>。</p>
+    <p class="lede">所以這篇按「由便宜到貴」排出四層，最後給你送修的停止點。第 01 節會先把訊號鏈拆成五道關卡——看懂那五關，後面每一步在修哪裡就一目瞭然。</p>
 
-    <p class="lede"><b>先說清楚這篇的範圍。</b>本文處理的是筆這一端、iPadOS 這一端，以及備忘錄、無邊記、GoodNotes、Notability 這類 App 的壓感問題。Procreate 是個例外——它的壓力設定有整整三層、彼此相乘，複雜到不適合塞在這裡講，第 04 節只給它的緊急止血法。</p>
+    <div class="toc">
+      <a href="#how"><i>01</i>力道的五道關卡</a>
+      <a href="#tip"><i>02</i>第一層：筆尖</a>
+      <a href="#system"><i>03</i>第二層：iPadOS 設定</a>
+      <a href="#app"><i>04</i>第三層：App 設定</a>
+      <a href="#pair"><i>05</i>第四層：配對與電量</a>
+      <a href="#broken"><i>06</i>什麼情況才真的該送修</a>
+    </div>
+
+    <div class="callout" style="--c:var(--navy)">
+      <div class="ct">先說清楚這篇的範圍</div>
+      本文處理的是筆這一端、iPadOS 這一端，以及備忘錄、無邊記、GoodNotes、Notability 這類 App 的壓感問題。<strong>Procreate 是個例外</strong>——它的壓力設定有整整三層、彼此相乘，複雜到不適合塞在這裡講，第 04 節只給它的緊急止血法。
+    </div>
 
     <p class="updated">本文查證：<b>2026 年 7 月 31 日</b>，規格、售價與介面文字以 Apple 官方最新公告為準。<a class="inline" href="#sources">來源列在文末</a>，<a class="inline" href="#honest">哪些是推論也標出來了</a>。</p>
 

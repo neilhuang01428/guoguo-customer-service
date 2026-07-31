@@ -30,6 +30,13 @@
   /* 已在上手指南講過的列：淡化＋標記 */
   .a5 { font-family: var(--mono); font-size: .62rem; color: var(--green-deep); background: var(--green-bg); border: 1px solid #c3e4cf; border-radius: 4px; padding: 1px 6px; white-space: nowrap; }
 
+  /* 導言：迷你目錄（窄螢幕沒有左側 nav，這排就是導覽） */
+  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0 24px; }
+  .toc a { display: flex; align-items: baseline; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 14px; text-decoration: none; color: var(--ink); font-size: .93rem; transition: .12s; }
+  .toc a:hover { border-color: var(--navy); background: var(--navy-bg); }
+  .toc a i { font-family: var(--mono); font-style: normal; font-size: .72rem; color: var(--navy); font-weight: 700; flex: none; }
+  @media (max-width: 560px) { .toc { grid-template-columns: 1fr; } }
+
   @media (max-width: 860px) {
     .masthead { padding-left: 20px; padding-right: 20px; }
   }
@@ -73,11 +80,32 @@
     <div class="kicker">客戶指南 / iPad 鍵盤 · 已上手者的查表工具頁</div>
     <h1>巧控鍵盤快捷鍵＋觸控板手勢完整對照</h1>
     <p class="subtitle">哪些會因 App 而異？怎麼把按鍵改成自己的習慣？這頁當字典用：要查什麼，左邊目錄直接跳。</p>
-    <p class="lede">iPad 鍵盤的操作分<strong>兩層</strong>：<strong>系統級</strong>（iPadOS 保證、走到哪都通，像 <span class="k b">⌘</span><span class="plus">+</span><span class="k">Tab</span>、<span class="k b">⌘</span><span class="plus">+</span><span class="k">Space</span>）和 <strong>App 級</strong>（每個 App 自己決定要不要理你）。</p>
+    <p class="lede">iPad 鍵盤的操作分<strong>兩層</strong>。先分清楚這兩層，全篇都通：</p>
 
-    <p class="lede">所以<strong>快捷鍵按了沒反應，多半不是鍵盤壞了，是那個 App 沒有支援</strong>——Excel、Roblox 這類自帶按鍵邏輯的 App 最常見：iPad 版 Excel 官方支援的快捷鍵只有約 19 組，桌面版有 200 多組。</p>
+    <div class="cgrid">
+      <div class="callout" style="--c:var(--navy)">
+        <div class="ct">系統級 · iPadOS 保證</div>
+        走到哪都通，像 <span class="k b">⌘</span><span class="plus">+</span><span class="k">Tab</span>、<span class="k b">⌘</span><span class="plus">+</span><span class="k">Space</span>。
+      </div>
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">App 級 · 每個 App 自己決定</div>
+        要不要理你的按鍵，由那個 App 說了算。
+      </div>
+    </div>
 
-    <p class="lede">這頁給你三樣：系統級快捷鍵與觸控板手勢的完整對照表、「哪些 App 會失效」地圖、以及把 Caps Lock 換成你要的功能的改鍵教學。</p>
+    <div class="callout" style="--c:var(--red)">
+      <div class="ct">所以按了沒反應，多半不是鍵盤壞了</div>
+      是那個 App 沒有支援。Excel、Roblox 這類自帶按鍵邏輯的 App 最常見：<strong>iPad 版 Excel 官方支援的快捷鍵只有約 19 組，桌面版有 200 多組。</strong>
+    </div>
+
+    <p class="lede">這頁給你三樣，當字典用、要查什麼直接跳：</p>
+
+    <div class="toc">
+      <a href="#shortcuts"><i>01</i>系統級快捷鍵與手勢完整對照</a>
+      <a href="#deadzone"><i>03</i>「哪些 App 會失效」地圖</a>
+      <a href="#custom"><i>05</i>Caps Lock 改鍵教學</a>
+      <a href="#selftest"><i>04</i>10 秒判斷：鍵盤壞了還是 App 不支援</a>
+    </div>
 
     <section id="layers">
       <div class="sec-label" style="--c:var(--navy)">two_layers</div>

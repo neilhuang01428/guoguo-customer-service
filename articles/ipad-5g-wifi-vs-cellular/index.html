@@ -26,6 +26,13 @@
   .path .cap { width: 100%; font-size: .8rem; color: var(--muted); margin-top: 4px; }
   .path .cap b { color: var(--c); }
 
+  /* 導言：迷你目錄（窄螢幕沒有左側 nav，這排就是導覽） */
+  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0 24px; }
+  .toc a { display: flex; align-items: baseline; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 14px; text-decoration: none; color: var(--ink); font-size: .93rem; transition: .12s; }
+  .toc a:hover { border-color: var(--navy); background: var(--navy-bg); }
+  .toc a i { font-family: var(--mono); font-style: normal; font-size: .72rem; color: var(--navy); font-weight: 700; flex: none; }
+  @media (max-width: 560px) { .toc { grid-template-columns: 1fr; } }
+
   @media (max-width: 860px) {
     .masthead { padding-left: 20px; padding-right: 20px; }
   }
@@ -71,11 +78,27 @@
     <h1>iPad 寫「支援 5G」是哪一種 5G？</h1>
     <p class="subtitle">接家裡的 5G Wi-Fi，並不會有 5G 網速——兩個都叫 5G，但它們是兩件不同的事。</p>
 
-    <p class="lede">先給答案：iPad 規格表上的「5G」只有一個意思，就是<strong>用 SIM／eSIM 上網的行動網路 5G</strong>。它要買到「Wi-Fi + 行動網路」版本才有，Wi-Fi 版怎麼設定都不會有。</p>
+    <p class="lede">先給答案：iPad 規格表上的「5G」只有一個意思，就是用 SIM／eSIM 上網的<strong>行動網路 5G</strong>。兩個都叫 5G，但它們是兩件不同的事：</p>
 
-    <p class="lede">家裡路由器上那個「5G」是另一回事，它指的是 Wi-Fi 的 <strong>5GHz 頻段</strong>。iPad 接上去只是換了一條 Wi-Fi 車道，速度上限還是你家申請的網路方案，不會因此變成電信的 5G。</p>
+    <div class="cgrid">
+      <div class="callout" style="--c:var(--navy)">
+        <div class="ct">iPad 規格表的 5G · 行動網路</div>
+        用 SIM／eSIM 上網。要買到<strong>「Wi-Fi + 行動網路」版本</strong>才有，Wi-Fi 版怎麼設定都不會有。
+      </div>
+      <div class="callout" style="--c:var(--teal)">
+        <div class="ct">家裡路由器的 5G · Wi-Fi 頻段</div>
+        指的是 Wi-Fi 的 <strong>5GHz 頻段</strong>。接上去只是換一條 Wi-Fi 車道，速度上限還是你家申請的網路方案，不會變成電信的 5G。
+      </div>
+    </div>
 
-    <p class="lede">這頁幫你三件事：分清楚兩個撞名的 5G、三秒看出手上這台是哪個版本，以及真的想用行動 5G 時要準備什麼。</p>
+    <p class="lede">這頁幫你三件事，急的話直接跳：</p>
+
+    <div class="toc">
+      <a href="#collision"><i>01</i>為什麼會撞名</a>
+      <a href="#which"><i>03</i>三秒看出你這台是哪個版本</a>
+      <a href="#howto"><i>04</i>真想用行動 5G 要準備什麼</a>
+      <a href="#secondhand"><i>06</i>二手買家注意：Cellular ≠ 5G</a>
+    </div>
 
     <section id="answer">
       <div class="sec-label" style="--c:var(--navy)">the_answer</div>
