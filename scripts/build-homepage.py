@@ -84,6 +84,22 @@ def category_colors(articles):
     return colors
 
 
+def sort_for_display(articles):
+    """首頁卡片順序：新的排前面。
+
+    主鍵是 date 降冪；同一天發佈的，以 articles.json 的陣列位置降冪當 tiebreaker——
+    publish_article.py 是 append 寫入，位置越後面＝越晚上架＝A 編號越大，
+    所以同日多篇時「A 編號大的在前」自然成立。
+
+    ⚠️ 這只影響「顯示順序」。分類配色一律用原始（上架）順序計算，見 main()——
+       category_colors 是照「陣列中第一次出現的分類」依序配色的，
+       若跟著顯示順序走，每新增一篇就可能讓全站配色重排。
+    """
+    return [a for _, a in sorted(enumerate(articles),
+                                 key=lambda p: (p[1].get("date", ""), p[0]),
+                                 reverse=True)]
+
+
 def search_blob(a):
     """title + summary + tags + category 全部小寫串起來，給前端搜尋框比對用。"""
     parts = [a.get("title", ""), a.get("summary", ""), a.get("category", "")]
@@ -919,9 +935,12 @@ PAGE = """<!DOCTYPE html>
 """
 
 
-def build_html(articles, neutral=False):
-    """neutral=False → 導外版首頁（含商品側欄）；neutral=True → 中性版首頁（無側欄、無導購連結）。"""
-    colors = category_colors(articles)
+def build_html(articles, neutral=False, colors=None):
+    """neutral=False → 導外版首頁（含商品側欄）；neutral=True → 中性版首頁（無側欄、無導購連結）。
+
+    colors 由 main() 用「原始上架順序」算好傳進來，避免顯示順序影響分類配色；
+    單獨呼叫時不給也可以，會自己算。"""
+    colors = colors or category_colors(articles)
     card_mode = "emoji" if neutral else CARD_MODE   # 中性版一律 emoji（零導外）
     cards_html = "\n".join(render_card(a, colors, card_mode) for a in articles)
     jsonld = render_jsonld(articles, neutral=neutral)
@@ -973,10 +992,12 @@ def build_html(articles, neutral=False):
 
 def main():
     articles = load_articles()
+    colors = category_colors(articles)      # 配色鎖定在原始上架順序，不隨顯示順序變動
+    ordered = sort_for_display(articles)    # 顯示順序：新的在前
     with open(OUT_PATH, "w", encoding="utf-8") as f:
-        f.write(build_html(articles, neutral=False))
+        f.write(build_html(ordered, neutral=False, colors=colors))
     with open(NEUTRAL_OUT_PATH, "w", encoding="utf-8") as f:
-        f.write(build_html(articles, neutral=True))
+        f.write(build_html(ordered, neutral=True, colors=colors))
     print(
         "✅ 產生 index.html（導外版，含商品側欄）＋ index.neutral.html"
         "（中性版，無側欄／無導購連結）：{0} 篇教學。".format(len(articles))
