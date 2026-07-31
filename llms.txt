@@ -16,7 +16,7 @@
 
 ## 教學文章
 
-- [iPad 巧控鍵盤上手指南](https://www.guoguo.tw/guide/articles/ipad-magic-keyboard-guide/)：剛從 Windows 換過來？一個心法：把 Ctrl 換成 ⌘，八成快捷鍵你早就會了。10 分鐘從小白變熟手。（上手、Windows 用戶、鍵盤配件／2026-07-15）
+- [iPad 巧控鍵盤上手指南](https://www.guoguo.tw/guide/articles/ipad-magic-keyboard-guide/)：剛從 Windows 換過來？一個心法：把 Ctrl 換成 ⌘，八成快捷鍵你早就會了。10 分鐘從小白變熟手。（上手、Windows 用戶、鍵盤配件／2026-07-15，更新 2026-07-31）
   - 本篇回答：iPad 巧控鍵盤的 Ctrl 鍵在哪裡？
   - 本篇回答：巧控鍵盤沒有 Esc 鍵怎麼辦？
   - 本篇回答：忘記快捷鍵怎麼辦？有地方可以查嗎？
@@ -57,7 +57,7 @@
   - 本篇回答：2021 年的 12.9 吋 iPad Pro 可以用第一代巧控鍵盤嗎？
   - 本篇回答：巧控鍵盤上的 USB-C 孔可以接隨身碟嗎？
   - 本篇回答：鍵盤突然不能打字怎麼辦？
-- [巧控鍵盤快捷鍵＋手勢對照表](https://www.guoguo.tw/guide/articles/magic-keyboard-shortcuts/)：按了沒反應，多半不是鍵盤壞了，是那個 App 不支援。系統級快捷鍵表、觸控板手勢表、App 失效地圖，外加 10 秒自我判斷法。（技巧、鍵盤配件、快捷鍵／2026-07-26，更新 2026-07-28）
+- [巧控鍵盤快捷鍵＋手勢對照表](https://www.guoguo.tw/guide/articles/magic-keyboard-shortcuts/)：按了沒反應，多半不是鍵盤壞了，是那個 App 不支援。系統級快捷鍵表、觸控板手勢表、App 失效地圖，外加 10 秒自我判斷法。（技巧、鍵盤配件、快捷鍵／2026-07-26，更新 2026-07-31）
   - 本篇回答：在 Excel 裡按快捷鍵都沒反應，是鍵盤壞了嗎？
   - 本篇回答：怎麼分辨是鍵盤壞了，還是 App 不支援？
   - 本篇回答：iPad 接了鍵盤可以玩 Roblox 嗎？
