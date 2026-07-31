@@ -113,9 +113,9 @@
 
     <p class="lede">成本差距也很現實。Apple 官方替換筆尖一組四入 NT$590，平均一顆 NT$148；一支 Apple Pencil Pro 是 NT$4,390。先花三十分之一的錢排掉最常見的原因，是划算的順序。</p>
 
-    <p class="lede">這篇按「由便宜到貴」排出四層：筆尖 → iPadOS 設定 → App 設定 → 配對與電量，最後給你「什麼症狀才真的該送修」的停止點。第 01 節會先把整條訊號鏈拆成五道關卡——<strong>看懂那五關，後面每一步在修哪裡就一目瞭然。</strong></p>
+    <p class="lede">這篇按「由便宜到貴」排出四層：筆尖 → iPadOS 設定 → App 設定 → 配對與電量，最後給你「什麼症狀才真的該送修」的停止點。第 01 節會先把整條訊號鏈拆成五道關卡——看懂那五關，<strong>後面每一步在修哪裡就一目瞭然</strong>。</p>
 
-    <p class="lede"><b>先說清楚這篇的範圍。</b>本文處理的是<strong>筆這一端、iPadOS 這一端，以及備忘錄、無邊記、GoodNotes、Notability 這類 App</strong> 的壓感問題。Procreate 是個例外——它的壓力設定有整整三層、彼此相乘，複雜到不適合塞在這裡講，第 04 節只給它的緊急止血法。</p>
+    <p class="lede"><b>先說清楚這篇的範圍。</b>本文處理的是筆這一端、iPadOS 這一端，以及備忘錄、無邊記、GoodNotes、Notability 這類 App 的壓感問題。Procreate 是個例外——它的壓力設定有整整三層、彼此相乘，複雜到不適合塞在這裡講，第 04 節只給它的緊急止血法。</p>
 
     <p class="updated">本文查證：<b>2026 年 7 月 31 日</b>，規格、售價與介面文字以 Apple 官方最新公告為準。<a class="inline" href="#sources">來源列在文末</a>，<a class="inline" href="#honest">哪些是推論也標出來了</a>。</p>
 
@@ -164,7 +164,7 @@
         </div>
         <div class="callout" style="--c:var(--teal)">
           <div class="ct">B · 只有某一個 App 不對勁</div>
-          筆多半是好的。直接跳到<a class="inline" href="#app">第 04 節</a>看那個 App 的壓感開關與曲線。<strong>Procreate 使用者請看該節最後一段</strong>——它的設定有三層，跟其他 App 不一樣。
+          筆多半是好的。直接跳到<a class="inline" href="#app">第 04 節</a>看那個 App 的壓感開關與曲線。Procreate 使用者請直接看<a class="inline" href="../procreate-pressure-not-working/">〈Procreate 沒有粗細變化？先問深淺〉</a>——它的設定有三層，跟其他 App 不是同一個量級。
         </div>
         <div class="callout" style="--c:var(--amber)">
           <div class="ct">C · 根本寫不出字、配不上</div>
@@ -210,7 +210,7 @@
     <section id="how">
       <div class="sec-label" style="--c:var(--purple)">how_it_works</div>
       <h2>01 · 一筆下去，力道要走完五道關卡</h2>
-      <p>知道訊號從哪來，才知道該先懷疑誰。你壓下去的那一下，要走完五道關卡才會變成螢幕上的粗線。麻煩的地方在於：<strong>不管哪一關出事，你看到的症狀幾乎一模一樣</strong>——線就是不跟手。所以排查一定要有順序，不能靠感覺猜。</p>
+      <p>知道訊號從哪來，才知道該先懷疑誰。你壓下去的那一下，要走完五道關卡才會變成螢幕上的粗線。麻煩的地方在於：不管哪一關出事，你看到的<strong>症狀幾乎一模一樣</strong>——線就是不跟手。所以排查一定要有順序，不能靠感覺猜。</p>
 
       <div class="gates">
         <div class="gate" style="--c:var(--green);--cbg:var(--green-bg)">
@@ -306,7 +306,7 @@
       </div>
 
       <h3>關卡 ③④ · iPadOS 的解法：先猜一個，之後再改</h3>
-      <p>這是整條鏈最反直覺、也最少人知道的一段，而且它直接解釋了一個常見的困惑：<strong>為什麼同一支筆，在不同 App 裡手感會不一樣？</strong></p>
+      <p>這是整條鏈最反直覺、也最少人知道的一段，而且它直接解釋了一個常見的困惑——為什麼同一支筆，在不同 App 裡手感會不一樣？</p>
       <p>Apple 的開發者文件把原因寫得很白：力道必須「透過空中傳回 iPad」，這個延遲可能導致<strong>力道資訊比觸碰事件本身還晚到</strong>。系統的解法不是讓筆畫卡住等它，而是先給 App 一個估計值，等真值到了再回頭通知 App 改。</p>
 
       <figure class="fig fig-wide">
@@ -411,7 +411,7 @@
         「兩個電極的幾何關係」這個機制來自多家技術媒體一致的說法，<strong>Apple 官方沒有公開過細節</strong>，我們把它當合理推論看待。可以確定的是結果：傾斜與壓力在 App 裡是兩個獨立的輸入項，可以只壞一個，也可以被分開關掉——像 Concepts 就把 Pressure 和 Tilt 做成兩個獨立開關。
       </div>
 
-      <p>所以描述症狀時講清楚是哪一個，排查會快很多：<strong>「側鋒塗不出寬面」是傾斜的事，「用力線不會變粗」才是壓感的事。</strong></p>
+      <p>所以描述症狀時講清楚是哪一個，排查會快很多：「側鋒塗不出寬面」是<strong>傾斜</strong>的事，「用力線不會變粗」才是<strong>壓感</strong>的事。</p>
     </section>
 
     <section id="tip">
@@ -542,7 +542,7 @@
     <section id="app">
       <div class="sec-label" style="--c:var(--amber)">layer_3</div>
       <h2>04 · 第三層：App 裡的壓感開關與曲線</h2>
-      <p>這一層最容易被跳過，卻是「只有某個 App 怪怪的」唯一的答案。回到<a class="inline" href="#how">第 01 節</a>的關卡 ⑤：<strong>同一個力道數值，每個 App 要怎麼翻譯成粗細，是 App 自己的自由。</strong>所以每個 App 把壓感藏在不同地方，名字也不一樣：</p>
+      <p>這一層最容易被跳過，卻是「只有某個 App 怪怪的」唯一的答案。回到<a class="inline" href="#how">第 01 節</a>的關卡 ⑤：同一個力道數值，每個 App 要怎麼翻譯成粗細，<strong>是 App 自己的自由</strong>。所以每個 App 把壓感藏在不同地方，名字也不一樣：</p>
 
       <div class="grid">
         <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
@@ -583,7 +583,7 @@
       </div>
 
       <h3>Procreate 是例外：它的壓力有整整三層</h3>
-      <p>如果你的問題出在 Procreate，先有個心理準備：它跟上面幾個 App 不是同一個量級。別的 App 頂多一個開關，Procreate 有<strong>三層壓力設定，而且是相乘的關係</strong>——</p>
+      <p>如果你的問題出在 Procreate，先有個心理準備：它跟上面幾個 App 不是同一個量級。別的 App 頂多一個開關，Procreate 有<strong>三層壓力設定，而且是相乘的關係</strong>——這一層我們另外寫了一篇：<a class="inline" href="../procreate-pressure-not-working/">〈Procreate 沒有粗細變化？先問深淺〉</a>，含三層解剖與 12 步排除順序。下面先給你止血用的重點。</p>
 
       <div class="tbl-wrap">
         <table>
@@ -594,7 +594,7 @@
         </table>
       </div>
 
-      <p><strong>相乘的意思是：任何一層被拉平，最後出來的結果就是平的</strong>，另外兩層調得再漂亮也救不回來。這也解答了一個常見的困惑——「為什麼有些筆刷有感壓、有些沒有」：因為 L2、L3 是存在筆刷裡面的，換一支筆刷就換一組設定。</p>
+      <p>相乘的意思是：任何一層被拉平，<strong>最後出來的結果就是平的</strong>，另外兩層調得再漂亮也救不回來。這也解答了一個常見的困惑——「為什麼有些筆刷有感壓、有些沒有」：因為 L2、L3 是存在筆刷裡面的，換一支筆刷就換一組設定。</p>
 
       <div class="callout" style="--c:var(--green)">
         <div class="ct">30 秒止血：官方的「兩支筆刷試紙法」</div>
