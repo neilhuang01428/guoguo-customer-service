@@ -60,6 +60,12 @@
   .lay .lt small { display: block; color: var(--muted); font-size: .84rem; line-height: 1.55; margin-top: 3px; }
   .lay .lw { font-family: var(--mono); font-size: .62rem; color: var(--muted); background: var(--panel2); padding: 4px 9px; border-radius: 999px; white-space: nowrap; align-self: center; }
 
+  /* 導言的三層流程圖：窄螢幕改直向堆疊，避免 3+1 斷行讓「＝」落單 */
+  @media (max-width: 560px) {
+    .flow { flex-direction: column; }
+    .flow .box { width: 100%; }
+  }
+
   @media (max-width: 860px) {
     .masthead { padding-left: 20px; padding-right: 20px; }
     .figs { grid-template-columns: 1fr; }
@@ -110,9 +116,27 @@
 
     <p class="lede">Procreate 畫不出粗細變化的時候，先看一件事就好：<strong>線的深淺有沒有跟著變？</strong>深淺會變，代表壓力訊號是通的，只是被接到了「不透明度」而不是「粗細」，改一個筆刷設定就會回來。深淺也完全不變，才需要往筆、配對、硬體去查。</p>
 
-    <p class="lede">會這樣分，是因為 Procreate 的壓力設定有三層，而且是相乘的關係——全域一層、每支筆刷一層、每個屬性再一層。任何一層被拉平，最後畫出來就是平的，另外兩層調得再漂亮也救不回來。</p>
+    <p class="lede">會這樣分，是因為 Procreate 的壓力設定有三層，而且是<strong>相乘</strong>的關係：</p>
 
-    <p class="lede">這篇按「花你多少時間」由低到高排出完整順序，最後告訴你什麼時候該停手。先講一個結論：不要做 iPadOS 的<strong>「重置所有設定」</strong>——它碰不到 Procreate 的任何一層壓力設定，第 03 節會解釋為什麼還是有人做完覺得好了。</p>
+    <figure class="fig">
+      <div class="flow">
+        <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">🌐</div><div class="bt">L1 全域</div><div class="bv">整個 App</div></div>
+        <div class="arr">×</div>
+        <div class="box" style="--cbg:var(--purple-bg)"><div class="bi">🖌</div><div class="bt">L2 筆刷</div><div class="bv">只有這一支</div></div>
+        <div class="arr">×</div>
+        <div class="box" style="--cbg:var(--teal-bg)"><div class="bi">📏</div><div class="bt">L3 屬性</div><div class="bv">粗細或深淺</div></div>
+        <div class="arr">＝</div>
+        <div class="box" style="--cbg:var(--green-bg)"><div class="bi">✍️</div><div class="bt">你看到的</div><div class="bv">那一筆</div></div>
+      </div>
+      <figcaption>任何一層被拉平，最後畫出來就是平的——<b>另外兩層調得再漂亮也救不回來。</b></figcaption>
+    </figure>
+
+    <div class="callout" style="--c:var(--red)">
+      <div class="ct">先講一個結論：這一題不要做「重置所有設定」</div>
+      iPadOS 的「重置所有設定」<strong>碰不到 Procreate 的任何一層壓力設定</strong>。那為什麼還是有人做完覺得好了？<a class="inline" href="#reset">第 03 節</a>會解釋，而且真正該做的那一步成本低得多。
+    </div>
+
+    <p class="lede">下面按「花你多少時間」由低到高排出完整順序，最後告訴你什麼時候該停手。</p>
 
     <p class="updated">本文查證：<b>2026 年 7 月 31 日</b>，Procreate 官方手冊與支援文件的內容會隨改版調整，選單位置以你機器上看到的為準。<a class="inline" href="#sources">來源列在文末</a>，<a class="inline" href="#honest">哪些是推論也標出來了</a>。</p>
 
