@@ -15,14 +15,41 @@
   .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
   .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
 
+  /* ── 導言區 lead：把三段連續 .lede 拆成兩張卡 ──
+     原本的問題：h1 底下接三段 1.06rem 的 .lede，字級、顏色、行距全部一樣。
+     內容規範只要求「導言 >200 字要分段」，這裡確實分了三段——但分了段卻長得一模一樣，
+     視覺上仍是一整面灰牆，「一定救得回來」跟「你可能會失去整台機器」同等重量。
+     作法：字一個都不刪，只換載體——
+       .lead-ans（綠）  好消息：一定救得回來、最輕那條不動資料 → 大字卡
+       .lead-ans（紅）  但書：Apple 帳號密碼才是真正的關卡     → 警示卡
+       第三段「這頁講什麼」 → 移到既有 .toc 上方當引導句，查證承諾併入 .updated
+     結果是導言區的節奏變成「結論 → 但書 → 四個數字 → 目錄」，各有各的重量。
+     ⚠️ 同一組樣式在 activation-lock-truth 也有一份，刻意重複。
+        若第三篇要用，再上抽到 assets/style.css 並同步 html-guidelines.html。 */
+  .lead-ans { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--c, var(--navy)); border-radius: 10px; padding: 18px 22px; box-shadow: 0 2px 10px rgba(20,39,68,.04); }
+  .lead-ans + .lead-ans { margin-top: 10px; }
+  .lead-ans .lt { font-family: var(--mono); font-size: .68rem; font-weight: 700; color: var(--c); margin-bottom: 8px; }
+  .lead-ans .big { font-size: 1.3rem; font-weight: 800; color: var(--ink); line-height: 1.45; margin-bottom: 10px; }
+  .lead-ans .sm { font-size: 1rem; line-height: 1.8; margin-bottom: 0; }
+  /* 別名對照行：全文跟著 Apple 官方寫「Apple 帳號」，但讀者腦中、店家嘴裡都是「Apple ID」。
+     這是全篇最關鍵的一組名詞，不能讓讀者在這裡對不上號。 */
+  .alias-line { font-size: .88rem; color: var(--body); line-height: 1.7; margin: 12px 0 0; padding-top: 11px; border-top: 1px solid var(--grid); }
+  .alias-line b { font-family: var(--mono); font-size: .82rem; color: var(--red); font-weight: 700; }
+
   /* 導言：迷你目錄（窄螢幕沒有左側 nav，這排就是導覽） */
-  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0 24px; }
+  .toc-t { font-size: .95rem; color: var(--body); margin: 26px 0 0; }
+  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0 24px; }
   .toc a { display: flex; align-items: baseline; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 14px; text-decoration: none; color: var(--ink); font-size: .93rem; transition: .12s; }
   .toc a:hover { border-color: var(--navy); background: var(--navy-bg); }
   .toc a i { font-family: var(--mono); font-style: normal; font-size: .72rem; color: var(--navy); font-weight: 700; flex: none; }
   @media (max-width: 560px) { .toc { grid-template-columns: 1fr; } }
 
-  /* 表格橫向捲動 */
+  /* 表格橫向捲動。
+     ⚠️ main 是 body 這個 flex 容器的項目，預設 min-width:auto（＝內容的 min-content 寬）。
+        下面那條 min-width:620px 會沿著 .tbl-wrap 一路把 main 撐到 660px，
+        於是 430px 的手機上「整篇文章」都跟著橫向溢出，不只表格。
+        實測：viewport 430 → body.scrollWidth 660；補上 min-width:0 後回到 430。 */
+  main { min-width: 0; }
   .tbl-wrap { overflow-x: auto; margin: 20px 0; }
   .tbl-wrap table { margin: 0; min-width: 620px; }
   table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
@@ -37,6 +64,29 @@
   .lockscr .foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: .76rem; border-top: 1px solid rgba(255,255,255,.16); padding-top: 12px; }
   .lockscr .foot .dim { opacity: .5; }
   .lockscr .foot .hl { color: #7fe0a3; font-weight: 700; }
+
+  /* ── 動態分鏡：五次輸錯之後，角落那行小字才是入口 ──
+     用動畫的理由（依規範：知識點本身是「會動的東西」時才用）：
+     這一格要講的不是規格比較，是一段過程加一個時間差——密碼一次次輸錯、
+     畫面翻成「iPad 無法使用」，而真正的救援入口是最後才浮出來的「忘記密碼？」。
+     第 1 層與第 2 層都從那行小字進去，讀者卻最容易略過它，靜態圖點不出這個順序。
+     ★ 鐵則：基礎樣式＝動畫最終狀態（圓點是空的、「忘記密碼？」已經亮著），
+       關掉動畫、prefers-reduced-motion 或不支援時，看到的仍是完整可讀的靜態圖。
+     節奏 4.4s 一輪，與全站動畫語言一致。 */
+  @keyframes lk-fill  { 0%, 6% { background: transparent; } 12%, 46% { background: #fff; } 52%, 100% { background: transparent; } }
+  @keyframes lk-shake { 0%, 36% { transform: translateX(0); } 40% { transform: translateX(-5px); } 44% { transform: translateX(5px); } 48%, 100% { transform: translateX(0); } }
+  @keyframes lk-hint  { 0%, 56% { opacity: .3; } 72%, 100% { opacity: 1; } }
+  .lockscr { animation: lk-shake 4.4s ease-in-out infinite; }
+  .lockscr .pins i { animation: lk-fill 4.4s ease-in-out infinite; }
+  .lockscr .pins i:nth-child(2) { animation-delay: .15s; }
+  .lockscr .pins i:nth-child(3) { animation-delay: .30s; }
+  .lockscr .pins i:nth-child(4) { animation-delay: .45s; }
+  .lockscr .pins i:nth-child(5) { animation-delay: .60s; }
+  .lockscr .pins i:nth-child(6) { animation-delay: .75s; }
+  .lockscr .foot .hl { animation: lk-hint 4.4s ease-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .lockscr, .lockscr .pins i, .lockscr .foot .hl { animation: none; }
+  }
 
   /* 兩欄「有備份 / 沒備份」清單 */
   .ba { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
@@ -94,11 +144,17 @@
     <h1>iPad 忘記密碼怎麼辦：三層救援階梯</h1>
     <p class="subtitle">你現在大概正盯著「iPad 無法使用」那個畫面。先深呼吸——這台機器救得回來，問題只在你要付出多少代價。這頁把三條路照代價由輕到重排好。</p>
 
-    <p class="lede">iPad 忘記密碼，一定救得回來。最輕的一條路完全不會動到你的資料：如果你的 iPad 是 <strong>iPadOS 17 以上</strong>、最近才改過密碼、而且還記得舊的那一組，Apple 給你 <strong>72 小時</strong>可以用舊密碼開回來。過了這條線，剩下的兩條路都是把整台清空。</p>
+    <div class="lead-ans" style="--c:var(--green)">
+      <div class="lt">先講結論</div>
+      <p class="big">iPad 忘記密碼，一定救得回來。</p>
+      <p class="sm">最輕的一條路<strong>完全不會動到你的資料</strong>：如果你的 iPad 是 <strong>iPadOS 17 以上</strong>、最近才改過密碼、而且還記得舊的那一組，Apple 給你 <strong>72 小時</strong>可以用舊密碼開回來。過了這條線，剩下的兩條路都是把整台清空。</p>
+    </div>
 
-    <p class="lede">但在你按下任何「清除」之前，有一件事比螢幕密碼更關鍵：你的 <strong>Apple 帳號密碼</strong>還記得嗎？機器清空之後會回頭跟 Apple 要這組密碼，要不出來，它就停在那個畫面上，資料沒了、機器也開不了。</p>
-
-    <p class="lede">這頁把三層路徑逐一拆開：需要什麼條件、資料留不留、大概花多久、會卡在哪裡。內容全部對齊 Apple 官方支援文件，來源列在文末；查不到官方原文的說法，我們寧可不寫。</p>
+    <div class="lead-ans" style="--c:var(--red)">
+      <div class="lt">但在按下任何「清除」之前</div>
+      <p class="sm">有一件事比螢幕密碼更關鍵：你的 <strong>Apple 帳號密碼</strong>還記得嗎？機器清空之後會回頭跟 Apple 要這組密碼，要不出來，它就停在那個畫面上——<strong>資料沒了、機器也開不了</strong>。</p>
+      <p class="alias-line">名詞先對一下：這裡說的「Apple 帳號」<b>就是以前的 Apple ID</b>（Apple 官方已宣告更名，帳號和密碼都沒變）。而「機器清空後回頭跟你要這組帳號」這道關卡，官方叫<b>啟用鎖定</b>，也就是二手市場俗稱的 <b>ID 鎖</b>、<b>iCloud 鎖</b>。</p>
+    </div>
 
     <div class="stats">
       <div class="stat" style="--c:var(--red)"><div class="num">5</div><div class="lab">輸錯幾次會跳出<br>「iPad 無法使用」</div></div>
@@ -107,6 +163,7 @@
       <div class="stat" style="--c:var(--navy)"><div class="num">4</div><div class="lab">免電腦清除<br>缺一不可的條件</div></div>
     </div>
 
+    <div class="toc-t">這頁把三層路徑逐一拆開：需要什麼條件、資料留不留、大概花多久、會卡在哪裡。</div>
     <div class="toc">
       <a href="#appleid"><i>01</i>動手前先確認 Apple 帳號（最重要）</a>
       <a href="#level1"><i>02</i>72 小時內用舊密碼開回來</a>
@@ -114,7 +171,7 @@
       <a href="#level3"><i>04</i>接上電腦，走復原模式</a>
     </div>
 
-    <p class="updated">本文查證：<b>2026 年 8 月</b>，依 Apple 官方支援文件撰寫。Apple 隨時可能調整畫面與流程，操作時以你機器上的實際字樣為準。<a class="inline" href="#sources">來源列在文末</a>。</p>
+    <p class="updated">本文查證：<b>2026 年 8 月</b>，內容全部對齊 Apple 官方支援文件，查不到官方原文的說法我們寧可不寫。Apple 隨時可能調整畫面與流程，操作時以你機器上的實際字樣為準。<a class="inline" href="#sources">來源列在文末</a>。</p>
 
     <section id="ladder">
       <div class="sec-label" style="--c:var(--navy)">the_ladder</div>
@@ -234,7 +291,7 @@
           <div class="pins"><i></i><i></i><i></i><i></i><i></i><i></i></div>
           <div class="foot"><span class="dim">緊急服務</span><span class="hl">忘記密碼？</span></div>
         </div>
-        <figcaption>示意圖，實際畫面以你的機器為準。官方的指示是：<b>在螢幕底部角落，點一下「忘記密碼？」</b>——這行小字就是整篇文章的入口。</figcaption>
+        <figcaption>圖中重演的是你剛剛經歷的事：密碼一次次打進去、一次次被退回，最後角落那行小字才亮起來。<br>示意圖，實際畫面以你的機器為準。官方的指示是：<b>在螢幕底部角落，點一下「忘記密碼？」</b>——這行小字就是整篇文章的入口。</figcaption>
       </figure>
 
       <div class="callout" style="--c:var(--amber)"><div class="ct">關於「請在幾分鐘後再試」的倒數</div>有些人在這個畫面上還會看到一行倒數計時。<strong>各階段要等幾分鐘，Apple 官方文件沒有明文。</strong>網路上流傳的那張「1 分鐘／5 分鐘／15 分鐘」階梯表，我們查不到官方出處，所以這篇不列它。官方唯一寫死的數字是「五次」。</div>
@@ -472,6 +529,7 @@
         <li><a href="https://support.apple.com/zh-tw/105039">忘記新密碼時，在 iPhone 或 iPad 上暫時使用舊密碼</a>（72 小時「密碼重置」的適用版本、輸入錯誤密碼五次、「忘記密碼？」→「輸入先前的密碼」流程、解鎖後要立即再改一次、「立即讓舊密碼到期」）</li>
         <li><a href="https://support.apple.com/zh-tw/105090">如果看到無法使用 iPhone、iPad 或 Apple Vision Pro 的訊息或「安全鎖定」畫面</a>（免電腦清除的四項所需條件、iPadOS 17 以上的六個步驟、「忘記密碼？」與「清除 [裝置]」的版本差異、走不通請改用電腦）</li>
         <li><a href="https://support.apple.com/zh-tw/119858">如何使用 Mac 或 PC 重置 iPad 密碼</a>（所需項目與最多 60 分鐘、Windows 需安裝 iTunes 或 Apple Devices、關機與復原模式的分機型按鍵、回復步驟與 15 分鐘下載逾時、沒有電腦請前往 Apple 直營店或授權維修中心、iCloud.com 備援）</li>
+        <li><a href="https://support.apple.com/zh-tw/108647">如何建立新的「Apple 帳號」</a>（本文「Apple 帳號＝以前的 Apple ID」這句的依據，官方原文：「『Apple ID』現在已改名為『Apple 帳號』。你仍可使用相同的電子郵件地址或電話號碼以及對應的密碼登入。」）</li>
         <li><a href="https://support.apple.com/zh-tw/108794">iPhone 和 iPad 的「啟用鎖定」</a>（開啟「尋找」即自動啟用、每次啟用或復原都會聯絡 Apple 確認、清除後仍需 Apple 帳號密碼、找不到帳號或無法重置密碼將無法重新啟用裝置、請勿接手受保護的二手裝置）</li>
       </ul>
       <p class="updated">本文查證：<b>2026 年 8 月 1 日</b>，畫面字樣以 <b>iPadOS 17 以上</b>為準；較舊的系統版本看到的選項名稱不同（見第 03 節表格）。文中所有版本號、次數與時間皆為 Apple 官方文件原文，查不到官方出處的說法一律未收錄。</p>

@@ -18,6 +18,71 @@
   /* stat 數字為文字型（A10X↓／哈囉），縮小以免擠爆卡片（共用檔 1.85rem） */
   .stat .num { font-family: var(--mono); font-size: 1.55rem; font-weight: 800; color: var(--c); line-height: 1.05; }
 
+  /* ── 導言區 lead：把三段連續 .lede 拆成四種載體 ──
+     原本的問題：h1 底下接三段 1.06rem 的 .lede，字級、顏色、行距全部一樣。
+     內容規範只要求「導言 >200 字要分段」，這裡確實分了三段——但分了段卻長得一模一樣，
+     視覺上仍是一整面灰牆，讀者的眼睛沒有落點，最重要的那句結論跟過場句同等重量。
+     作法：字一個都不刪，只換載體——
+       .lead-ans  全篇最重要的結論 → 大字卡（左側色框沿用 .callout 的語彙）
+       .lead-src  Apple 官方原文   → 獨立成引用，從長段落裡抽出來
+       .lede      推論句           → 保留原樣式，此時它是唯一的純文字段，反而突顯
+       .lead-map  「這頁講什麼」   → 轉成可點的三格導覽（窄螢幕 nav 隱藏時它就是目錄）
+     ⚠️ 同一組樣式在 forgot-passcode-rescue-ladder 也有一份，刻意重複。
+        若第三篇要用，再上抽到 assets/style.css 並同步 html-guidelines.html。 */
+  .lead { margin-bottom: 4px; }
+  .lead-ans { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--c, var(--navy)); border-radius: 10px; padding: 18px 22px; box-shadow: 0 2px 10px rgba(20,39,68,.04); }
+  .lead-ans + .lead-ans { margin-top: 10px; }
+  .lead-ans .lt { font-family: var(--mono); font-size: .68rem; font-weight: 700; color: var(--c); margin-bottom: 8px; }
+  .lead-ans .big { font-size: 1.3rem; font-weight: 800; color: var(--ink); line-height: 1.45; margin-bottom: 10px; }
+  .lead-ans .sm { font-size: 1rem; line-height: 1.8; margin-bottom: 0; }
+  .lead-src { margin-top: 11px; padding: 13px 17px; background: var(--navy-bg); border-radius: 9px; font-size: .93rem; line-height: 1.75; color: var(--body); }
+  .lead-src cite { display: block; font-family: var(--mono); font-size: .66rem; font-style: normal; color: var(--muted); margin-top: 7px; }
+  .lead .lede { margin: 18px 0 0; }
+
+  /* 「這頁講什麼」三格導覽：原本是導言第三段的一句話，改成可點的入口 */
+  .lead-map { margin: 24px 0 0; }
+  .lead-map .lm-t { font-size: .95rem; color: var(--body); margin-bottom: 9px; }
+  .lead-map .lm-g { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+  .lead-map a { display: block; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 13px; text-decoration: none; color: var(--ink); font-size: .89rem; line-height: 1.5; transition: .12s; }
+  .lead-map a:hover { border-color: var(--navy); background: var(--navy-bg); }
+  .lead-map a i { display: block; font-family: var(--mono); font-style: normal; font-size: .66rem; color: var(--navy); font-weight: 700; margin-bottom: 4px; }
+  @media (max-width: 560px) { .lead-map .lm-g { grid-template-columns: 1fr; } }
+
+  /* 導言裡的別名對照行：讀者多半是用「Apple ID 鎖」「iCloud 鎖」搜進來的，
+     但 Apple 官方文件從頭到尾只寫「啟用鎖定」與「Apple 帳號」。
+     兩套詞彙對不上，讀者會懷疑自己找錯頁——所以第一屏就要把名字接起來。 */
+  .alias-line { font-size: .88rem; color: var(--body); line-height: 1.7; margin: 12px 0 0; padding-top: 11px; border-top: 1px solid var(--grid); }
+  .alias-line b { font-family: var(--mono); font-size: .82rem; color: var(--red); font-weight: 700; }
+
+  /* ── 兩種鎖的判別圖 twolock ──
+     讀者最常搞混、也最常問的一件事：「我進不去 iPad」到底是螢幕密碼鎖還是啟用鎖定？
+     原本這裡只有一張三欄表格。但這是「看螢幕認畫面」的問題，文字描述再準確，
+     都不如把兩個畫面並排畫出來——讀者抬頭看自己的 iPad、低頭看圖，一秒就能對上。
+     判別的關鍵特徵其實只有一個，圖裡也刻意只突顯這一點：
+       畫面上有沒有「要你輸入某一個 Apple 帳號」的欄位。
+       有帳號欄 → 啟用鎖定（ID 鎖）；只有數字鍵盤 → 螢幕密碼鎖。 */
+  .twolock .tl-g { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+  /* .tl 用 flex column ＋ .scr2 flex:1：兩張卡在 grid 裡本來就等高，
+     這樣連「螢幕」本身也會等高，左右才對得起來（左邊多了數字鍵盤，會比較高）。 */
+  .twolock .tl { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 11px; padding: 13px 14px 14px; display: flex; flex-direction: column; }
+  .twolock .scr2 { flex: 1; background: var(--navy-deep); border-radius: 11px; padding: 14px 12px 12px; color: #fff; text-align: center; min-height: 188px; display: flex; flex-direction: column; align-items: center; }
+  .twolock .s-ico { font-size: 1.3rem; line-height: 1; }
+  .twolock .s-ttl { font-size: .92rem; font-weight: 800; margin-top: 7px; }
+  .twolock .s-pins { display: flex; gap: 9px; margin: 13px 0 11px; }
+  .twolock .s-pins i { display: block; width: 9px; height: 9px; border-radius: 50%; border: 1px solid rgba(255,255,255,.55); }
+  .twolock .s-keys { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; width: 108px; }
+  .twolock .s-keys b { font-family: var(--mono); font-size: .68rem; font-weight: 500; color: rgba(255,255,255,.82); background: rgba(255,255,255,.13); border-radius: 50%; aspect-ratio: 1; display: grid; place-items: center; }
+  /* 帳號欄位＝啟用鎖定的招牌特徵，用綠色描邊把視線釘在這裡 */
+  .twolock .s-field { width: 100%; text-align: left; background: rgba(255,255,255,.1); border: 1px solid var(--green); border-radius: 6px; padding: 5px 9px; margin-top: 10px; }
+  .twolock .s-field span { display: block; font-family: var(--mono); font-size: .58rem; color: rgba(255,255,255,.55); }
+  .twolock .s-field b { font-size: .72rem; font-weight: 600; color: #7fe0a3; }
+  .twolock .s-note { font-size: .68rem; opacity: .6; margin-top: auto; padding-top: 11px; line-height: 1.5; }
+  .twolock .tl-nm { font-size: 1rem; font-weight: 800; color: var(--ink); }
+  .twolock .tl-al { font-family: var(--mono); font-size: .68rem; color: var(--c); margin-top: 3px; }
+  .twolock .tl-v { font-size: .86rem; color: var(--body); margin-top: 8px; line-height: 1.6; }
+  .twolock .tl-a { font-size: .82rem; font-weight: 700; color: var(--c); margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--grid); }
+  @media (max-width: 560px) { .twolock .tl-g { grid-template-columns: 1fr; } .twolock .scr2 { min-height: 0; } }
+
   /* bigquote 置中引言版（比照站上既有文章） */
   .bigquote { background: none; border-radius: 0; padding: 0; margin: 32px 40px; text-align: center; }
   .bigquote .qm { font-size: 2.6rem; color: var(--navy); opacity: .2; font-weight: 800; line-height: .5; }
@@ -96,9 +161,25 @@
     <h1>iPad 啟用鎖定，<br>到底解不解得開？</h1>
     <p class="subtitle">你正在搜「破解」，很可能也正打算付錢給某個解鎖服務。先花三分鐘看完這頁——我們把三條路照做之後會發生的事，全部攤開給你看，你自己判斷。</p>
 
-    <p class="lede">直接回答：<strong>沒有合法、也沒有安全的破解方法。</strong>因為那把鎖根本不在你手上這台機器裡，而是在 Apple 的伺服器上。Apple 官方說明寫得很白：「每次啟用或復原 iPhone 或 iPad 時，裝置都會聯絡 Apple 以確認是否已開啟『啟用鎖定』。」</p>
-    <p class="lede">所以網路上那些方法做的都不是「開鎖」，而是「讓機器這一次不要去問 Apple」。問題是，<strong>它下一次開機還是會再問一次</strong>。</p>
-    <p class="lede">這頁不打算說教。我們把三類方法各自會得到什麼、你這台還有沒有救、有正當來源的人該走哪條官方路，一次講完。</p>
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--red)">
+        <div class="lt">直接回答</div>
+        <p class="big">沒有合法、也沒有安全的破解方法。</p>
+        <p class="sm">因為那把鎖根本<strong>不在你手上這台機器裡</strong>，而是在 Apple 的伺服器上。</p>
+        <p class="alias-line">你可能是用 <b>Apple ID 鎖</b>、<b>iCloud 鎖</b>、<b>ID 鎖</b> 這些名字找到這頁的——<strong>都是同一件事</strong>。Apple 的正式名稱叫「啟用鎖定」，被綁住的那個帳號，官方現在寫作「Apple 帳號」，也就是<strong>以前的 Apple ID</strong>（Apple 已在官方文件宣告更名）。</p>
+      </div>
+      <blockquote class="lead-src">Apple 官方說明寫得很白：「每次啟用或復原 iPhone 或 iPad 時，裝置都會聯絡 Apple 以確認是否已開啟『啟用鎖定』。」<cite>Apple 官方支援文件原文</cite></blockquote>
+      <p class="lede">所以網路上那些方法做的都不是「開鎖」，而是「讓機器這一次不要去問 Apple」。問題是，<strong>它下一次開機還是會再問一次</strong>。</p>
+    </div>
+
+    <div class="lead-map">
+      <div class="lm-t">這頁不打算說教，只把三件事一次講完：</div>
+      <div class="lm-g">
+        <a href="#methods"><i>01</i>三類方法各自會得到什麼</a>
+        <a href="#status"><i>02</i>你這台還有沒有救</a>
+        <a href="#official"><i>03</i>有正當來源的人走哪條官方路</a>
+      </div>
+    </div>
 
     <section id="verdict">
       <div class="sec-label" style="--c:var(--navy)">verdict</div>
@@ -114,12 +195,38 @@
         <div class="callout" style="--c:var(--amber)"><div class="ct">你是買到有鎖機的買家</div>先<strong>停止付錢給任何解鎖服務</strong>。往下看<a class="inline" href="#status">第 03 節</a>做一次處境判定，再看<a class="inline" href="#stoploss">第 05 節</a>的停損順序。</div>
         <div class="callout" style="--c:var(--green)"><div class="ct">你是忘記 Apple 帳號的原持有人</div>你是這篇裡最有機會救回來的人。直接跳<a class="inline" href="#official">第 04 節</a>——官方有一條正式管道，前提是你拿得出購買證明。</div>
       </div>
-      <div class="callout" style="--c:var(--navy)"><div class="ct">先確認你卡的是不是這個鎖</div>「進不去 iPad」有兩種完全不同的狀況，救法也完全不同。<strong>只有下表第二列才是這篇在講的事。</strong></div>
-      <table>
-        <tr><th>你在螢幕上看到什麼</th><th>這是哪一種鎖</th><th>這篇有沒有答</th></tr>
-        <tr><td>要你輸入 6 位數字的鍵盤<br>或「iPad 無法使用／已停用」</td><td>螢幕密碼鎖——<strong>機器是你的</strong>，只是你進不去</td><td class="good">✗ 那是另一個狀況，有官方解法可以走，不在這篇範圍</td></tr>
-        <tr><td>「啟用 iPad」要你輸入<strong>某個 Apple 帳號</strong><br>或「iPhone 已為擁有者鎖定」</td><td>啟用鎖定——<strong>機器認的是別人的帳號</strong></td><td class="bad">✓ 這篇講的就是它</td></tr>
-      </table>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">先確認你卡的是不是這個鎖</div>「進不去 iPad」有兩種完全不同的狀況，救法也完全不同，而<strong>只有右邊那一種是這篇在講的事</strong>。判別方法只有一個，不用懂技術：<strong>看畫面上有沒有要你輸入「某一個 Apple 帳號」。</strong></div>
+      <figure class="fig twolock">
+        <div class="tl-g">
+          <div class="tl" style="--c:var(--green)">
+            <div class="scr2">
+              <div class="s-ico">🔢</div>
+              <div class="s-ttl">輸入密碼</div>
+              <div class="s-pins"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="s-keys"><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></div>
+              <div class="s-note">或顯示「iPad 無法使用」<br>「iPad 已停用」</div>
+            </div>
+            <div class="tl-nm">螢幕密碼鎖</div>
+            <div class="tl-al">俗稱：密碼鎖／鎖機／停用</div>
+            <div class="tl-v"><strong>機器是你的</strong>，只是你自己進不去。整個畫面<strong>不會出現任何帳號</strong>。</div>
+            <div class="tl-a">✗ 不是這篇——有官方解法可以走</div>
+          </div>
+          <div class="tl" style="--c:var(--red)">
+            <div class="scr2">
+              <div class="s-ico">🍎</div>
+              <div class="s-ttl">啟用 iPad</div>
+              <div class="s-field"><b>Apple 帳號</b><span>s•••••@icloud.com</span></div>
+              <div class="s-field"><b>密碼</b><span>••••••••</span></div>
+              <div class="s-note">或顯示「iPhone 已為擁有者鎖定」</div>
+            </div>
+            <div class="tl-nm">啟用鎖定</div>
+            <div class="tl-al">俗稱：Apple ID 鎖／iCloud 鎖／ID 鎖</div>
+            <div class="tl-v">機器認的是<strong>別人的 Apple 帳號</strong>。那個綠框欄位，就是整件事的關鍵。</div>
+            <div class="tl-a">✓ 這篇講的就是它</div>
+          </div>
+        </div>
+        <figcaption>差別只有一個：<b>畫面上有沒有要你交出某一個帳號</b>。只有數字鍵盤＝密碼鎖；出現帳號欄＝啟用鎖定。</figcaption>
+      </figure>
     </section>
 
     <div class="part-div">先看清楚</div>
@@ -132,7 +239,7 @@
         <div class="flow">
           <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">📱</div><div class="bt">你手上這台</div><div class="bv">iPad 本體</div></div>
           <div class="arr">＋</div>
-          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">🪪</div><div class="bt">存在 Apple 伺服器</div><div class="bv">上一位的帳號</div></div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">🪪</div><div class="bt">存在 Apple 伺服器</div><div class="bv">上一位的 Apple 帳號</div></div>
           <div class="arr">＝</div>
           <div class="box" style="--cbg:var(--red-bg)"><div class="bi">🔒</div><div class="bt">每次開機都比對</div><div class="bv">對不上就不給用</div></div>
         </div>
@@ -340,6 +447,7 @@
         <li>Apple〈iPhone 和 iPad 的「啟用鎖定」〉<a class="inline" href="https://support.apple.com/zh-tw/108794">support.apple.com/zh-tw/108794</a>（運作方式、二手購買前的檢查步驟、「請勿接手」原文。發佈日期 2026 年 5 月 4 日）</li>
         <li>Apple〈如何移除「啟用鎖定」〉<a class="inline" href="https://support.apple.com/zh-tw/108934">support.apple.com/zh-tw/108934</a>（三種移除方式、憑購買證明提出支援要求。發佈日期 2026 年 6 月 1 日）</li>
         <li>Apple〈購買 Apple 裝置後請保存收據〉<a class="inline" href="https://support.apple.com/zh-tw/102264">support.apple.com/zh-tw/102264</a>（購買證明必須載明的欄位清單。發佈日期 2025 年 3 月 20 日）</li>
+        <li>Apple〈如何建立新的「Apple 帳號」〉<a class="inline" href="https://support.apple.com/zh-tw/108647">support.apple.com/zh-tw/108647</a>（本文「Apple 帳號＝以前的 Apple ID」這句的依據，官方原文：「『Apple ID』現在已改名為『Apple 帳號』。你仍可使用相同的電子郵件地址或電話號碼以及對應的密碼登入。」）</li>
         <li>Apple〈如果物品或裝置已連接其他「Apple 帳號」〉<a class="inline" href="https://support.apple.com/zh-tw/102620">support.apple.com/zh-tw/102620</a>（配件與「尋找」網絡裝置的解除配對；此頁明寫「Apple 無法為你移除『尋找』鎖定」）</li>
         <li>SecurityWeek〈Unpatchable iOS Bootrom Exploit〉<a class="inline" href="https://www.securityweek.com/unpatchable-ios-bootrom-exploit-allows-jailbreaking-many-iphones/">securityweek.com</a> 與 The Apple Wiki〈checkm8〉<a class="inline" href="https://theapplewiki.com/wiki/Checkm8_Exploit">theapplewiki.com</a>（漏洞涵蓋 A5–A11、A12 以後不受影響）</li>
         <li>MacRumors〈Apple Removes Activation Lock Status Checker〉<a class="inline" href="https://www.macrumors.com/2017/01/29/apple-removes-activation-lock-status-checker/">macrumors.com</a>（2017 年 1 月下架線上查詢工具）</li>
