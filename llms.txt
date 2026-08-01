@@ -34,7 +34,7 @@
   - 本篇回答：台灣人可以完成抖音的實名認證嗎？
   - 本篇回答：用中國帳號下載的 App，之後要怎麼更新？
   - 本篇回答：一定要另辦帳號嗎？直接把我現在的帳號改成中國區不行嗎？
-- [剪片要不要買 Apple Pencil？](https://www.guoguo.tw/guide/articles/ipad-jianying-pencil-guide/)：先分清楚你要「剪片」還是「做動畫」——這兩條路對筆的需求剛好相反。剪片手指就很順、副廠就夠；做動畫筆是核心工具，Pencil Pro 的側轉還能一邊移動一邊旋轉。（選購、配件推薦、Apple Pencil／2026-07-17，更新 2026-08-01）
+- [剪片要不要買 Apple Pencil？](https://www.guoguo.tw/guide/articles/ipad-jianying-pencil-guide/)：先分清楚你要「剪片」還是「做動畫」——這兩條路對筆的需求剛好相反。剪片手指就很順、副廠就夠；做動畫筆才是核心工具，側轉派得上用場。（選購、配件推薦、Apple Pencil／2026-07-17，更新 2026-08-01）
   - 本篇回答：用 iPad 剪片，需要買 Apple Pencil 嗎？
   - 本篇回答：Apple Pencil 可以縮放剪輯時間軸嗎？
   - 本篇回答：剪片用副廠觸控筆夠嗎？還是一定要買原廠？
@@ -72,7 +72,7 @@
   - 本篇回答：改了修飾鍵設定，換一顆鍵盤還有效嗎？
   - 本篇回答：iPad 的游標太小常常跟丟，可以調大嗎？
   - 本篇回答：手不方便沒辦法同時按住兩顆鍵，有解嗎？
-- [尋找 App 能追蹤哪些裝置？](https://www.guoguo.tw/guide/articles/find-my-device-tiers/)：AirTag、Apple Pencil Pro、AirPods 都在同一個 App 裡，掉了找得回來的機率卻差很多。喇叭、UWB、作業系統這三個硬體切出五個等級，一張表看懂你手上那台屬哪一級。（觀念、尋找定位、AirTag、Apple Pencil／2026-07-28）
+- [尋找 App 能追蹤哪些裝置？](https://www.guoguo.tw/guide/articles/find-my-device-tiers/)：都在同一個「尋找」App 裡，掉了找得回來的機率卻差很多。喇叭、UWB、作業系統三個硬體切出五個等級——一張表看懂你手上那台屬哪一級。（觀念、尋找定位、AirTag、Apple Pencil／2026-07-28）
   - 本篇回答：Apple Pencil Pro 掉了，可以像 AirTag 一樣找到嗎？
   - 本篇回答：AirTag 有 GPS 嗎？沒有網路的地方還定位得到嗎？
   - 本篇回答：尋找 App 到底可以加哪些東西？
@@ -81,7 +81,7 @@
   - 本篇回答：第三方防丟卡跟 AirTag 差在哪？
   - 本篇回答：AirTag 可以拿來防車子被偷、或追蹤寵物嗎？
   - 本篇回答：二手買的 Apple Pencil Pro 加不進我的尋找，是壞掉了嗎？
-- [Apple Pencil Pro 怎麼解除綁定？](https://www.guoguo.tw/guide/articles/apple-pencil-pro-unbinding/)：二手 Pencil Pro 加不進自己的「尋找」，不是壞掉，是前一位主人沒解綁。判斷只有一個準確方法，解除也只有一條路——而 Apple 官方明說它不能代為移除。（技巧、Apple Pencil、尋找定位／2026-07-28）
+- [Apple Pencil Pro 怎麼解除綁定？](https://www.guoguo.tw/guide/articles/apple-pencil-pro-unbinding/)：二手 Pencil Pro 加不進自己的「尋找」不是壞掉，是前一位主人沒解綁。判斷只有一個準確方法，解除也只有一條路——官方明說不能代為移除。（技巧、Apple Pencil、尋找定位／2026-07-28）
   - 本篇回答：Apple Pencil Pro 怎麼看有沒有被綁定？
   - 本篇回答：二手 Apple Pencil Pro 加不進我的尋找，是壞掉了嗎？
   - 本篇回答：Apple Pencil Pro 要怎麼解除綁定？
@@ -90,7 +90,7 @@
   - 本篇回答：為什麼 Apple Pencil 第 2 代沒有這個綁定問題？
   - 本篇回答：賣掉 Apple Pencil Pro 前要注意什麼？
   - 本篇回答：被綁定的 Apple Pencil Pro 還能正常使用嗎？
-- [已綁定的 Apple Pencil Pro，到底能不能買？](https://www.guoguo.tw/guide/articles/pencil-pro-locked-worth-buying/)：二手商品標著「已綁定」通常代表別碰，但 Apple Pencil Pro 是例外。官方給它的「尋找」能力只有三項、兩項限定 iPad，也沒有離身通知，構不成追蹤；書寫、壓感、雙指按壓等八項功能一項都沒少。（選購、Apple Pencil、尋找定位／2026-07-28）
+- [已綁定的 Apple Pencil Pro，到底能不能買？](https://www.guoguo.tw/guide/articles/pencil-pro-locked-worth-buying/)：二手標「已綁定」通常代表別碰，Apple Pencil Pro 是例外。它的「尋找」只有三項能力、沒有離身通知，構不成追蹤；八項功能一項沒少。（選購、Apple Pencil、尋找定位／2026-07-28）
   - 本篇回答：已綁定 Apple 帳號的 Apple Pencil Pro 可以買嗎？
   - 本篇回答：被綁定的 Apple Pencil Pro，前一位主人看得到我在哪嗎？
   - 本篇回答：Apple Pencil Pro 被綁定，會影響書寫或壓感嗎？
@@ -99,7 +99,7 @@
   - 本篇回答：為什麼二手市場上常常出現已綁定的 Apple Pencil Pro？
   - 本篇回答：買二手 Apple Pencil Pro 前，要怎麼確認有沒有被綁定？
   - 本篇回答：什麼情況下不該買已綁定的 Apple Pencil Pro？
-- [AirTag 不是 GPS 追蹤器](https://www.guoguo.tw/guide/articles/airtag-not-gps-tracker/)：AirTag 身上沒有 GPS、沒有 SIM 卡、也沒有 Wi-Fi，位置是路過的陌生 Apple 裝置用藍牙聽到後、拿自己的 GPS 座標代為回報的。懂了這件事，九種失效情況全部推得出來——追寵物、追人、防竊這三種，是一開始就選錯工具。（觀念、AirTag、尋找定位／2026-07-28，更新 2026-07-31）
+- [AirTag 不是 GPS 追蹤器](https://www.guoguo.tw/guide/articles/airtag-not-gps-tracker/)：AirTag 沒有 GPS 也沒有 SIM 卡，位置是路過的陌生 Apple 裝置代為回報。懂了這件事，九種失效全部推得出來，也會懂追寵物是選錯工具。（觀念、AirTag、尋找定位／2026-07-28，更新 2026-07-31）
   - 本篇回答：AirTag 的定位原理是什麼？
   - 本篇回答：AirTag 裡面有 GPS 嗎？
   - 本篇回答：為什麼我的 AirTag 位置一直沒更新？
@@ -108,7 +108,7 @@
   - 本篇回答：AirTag 可以防止機車或腳踏車被偷嗎？
   - 本篇回答：AirTag 的位置可以保留多久？
   - 本篇回答：AirTag 什麼情況最好用？
-- [AirTag 重置完，還是不能配對？](https://www.guoguo.tw/guide/articles/airtag-reset-vs-unbind/)：扣電池五次是「重置」，不是「解鎖」。它只讓 AirTag 忘記上一次配對的對象，Apple 伺服器上那筆帳號登記一動也沒動——所以聽到第五聲不代表解開了。這頁把兩件事分開講，附一代二代不同的重置步驟，以及付錢前唯一有效的驗證動作。（觀念、AirTag、尋找定位／2026-07-28）
+- [AirTag 重置完，還是不能配對？](https://www.guoguo.tw/guide/articles/airtag-reset-vs-unbind/)：扣電池五次是「重置」，不是「解鎖」。它只讓 AirTag 忘記上一次配對的對象，伺服器上那筆帳號登記一動也沒動。付錢前唯一有效的驗證動作在這裡。（觀念、AirTag、尋找定位／2026-07-28）
   - 本篇回答：AirTag 重置了為什麼還是不能配對？
   - 本篇回答：扣電池五次是不是就等於解除綁定？
   - 本篇回答：買到已綁定其他 Apple 帳號的 AirTag 還有救嗎？
@@ -117,7 +117,7 @@
   - 本篇回答：AirTag 一代和二代的重置方式一樣嗎？
   - 本篇回答：重置 AirTag 時聽不到不一樣的第五聲怎麼辦？
   - 本篇回答：買二手 AirTag 前要怎麼確認它是乾淨的？
-- [重置所有設定 vs 清除，差在哪？](https://www.guoguo.tw/guide/articles/reset-all-settings-vs-erase/)：「重置所有設定」只把設定歸零，照片和 App 一個都不會少；「清除所有內容和設定」才是整台抹掉。這頁把重置選單裡七個選項全部拆開，逐項列出官方的「會失去／不會失去」清單，並告訴你現在該按哪一個。（觀念、故障排除、尋找定位／2026-07-28）
+- [重置所有設定 vs 清除，差在哪？](https://www.guoguo.tw/guide/articles/reset-all-settings-vs-erase/)：「重置所有設定」只把設定歸零，照片和 App 一個都不會少；「清除所有內容和設定」才是整台抹掉。七個選項逐項拆開，告訴你現在該按哪一個。（觀念、故障排除、尋找定位／2026-07-28）
   - 本篇回答：「重置所有設定」會刪掉照片和 LINE 對話嗎？
   - 本篇回答：重置所有設定跟清除所有內容和設定差在哪？
   - 本篇回答：iPad 要賣掉之前該按哪一個？
@@ -126,7 +126,7 @@
   - 本篇回答：重置選單裡的「重置手寫風格」是什麼？
   - 本篇回答：Wi-Fi 一直連不上該用哪一個重置？
   - 本篇回答：買二手 iPad 怎麼確認賣家清乾淨了？
-- [「尋找」App 的 7 個隱藏功能](https://www.guoguo.tw/guide/articles/find-my-hidden-features/)：行李沒跟你下飛機時，可以產生一個七天有效的連結，讓航空公司地勤直接看到 AirTag 的位置；台灣的中華航空已經支援。七個沒人在用的「尋找」功能，逐項標出你手上那台吃不吃得到。（技巧、AirTag、尋找定位／2026-07-28）
+- [「尋找」App 的 7 個隱藏功能](https://www.guoguo.tw/guide/articles/find-my-hidden-features/)：行李沒跟你下飛機時，可以產生七天有效的連結讓地勤直接看到 AirTag 位置，中華航空已支援。七個沒人在用的「尋找」功能，逐項標出你那台吃不吃得到。（技巧、AirTag、尋找定位／2026-07-28）
   - 本篇回答：行李掉了，怎麼把 AirTag 的位置給航空公司？
   - 本篇回答：台灣有哪些航空公司支援 AirTag 分享行李位置？
   - 本篇回答：航空公司收到連結後，看得到我什麼資料？
@@ -144,7 +144,7 @@
   - 本篇回答：熱點的網速要怎麼測才算數？
   - 本篇回答：低數據模式會讓熱點變慢嗎？
   - 本篇回答：熱點被降到 10Mbps，還能做哪些事？
-- [120Hz 和 60Hz 差多少？](https://www.guoguo.tw/guide/articles/promotion-120hz-who-feels-it/)：差別只在「你的手正推著畫面動」的時候出現——用 Pencil 的人最有感，追劇的人幾乎無感，因為多數影片一秒只有 24 到 30 格。附 2015–2026 全世代 ProMotion 對照表，以及同容量拉齊後的真實價差。（選購、螢幕規格、相容對照／2026-07-29，更新 2026-07-31）
+- [120Hz 和 60Hz 差多少？](https://www.guoguo.tw/guide/articles/promotion-120hz-who-feels-it/)：差別只在「手正推著畫面動」時出現——用 Pencil 最有感，追劇幾乎無感，因為影片一秒只有 24 到 30 格。附全世代對照表與真實價差。（選購、螢幕規格、相容對照／2026-07-29，更新 2026-07-31）
   - 本篇回答：iPad 的 120Hz 和 60Hz 差很多嗎？
   - 本篇回答：ProMotion 值得多花錢加價買嗎？
   - 本篇回答：哪些 iPad 有 120Hz？
@@ -162,7 +162,7 @@
   - 本篇回答：iPad 用 eSIM 要花多少錢？
   - 本篇回答：Wi-Fi 6 跟 5G 是同一件事嗎？
   - 本篇回答：一定要買行動網路版的 iPad 嗎？
-- [Apple Pencil 壓感變怪，先別送修](https://www.guoguo.tw/guide/articles/apple-pencil-pressure-troubleshooting/)：輕壓沒反應、線條粗細不跟手？先換一顆 148 元的筆尖，再考慮 4,390 元的新筆。這篇把力道要走的五道關卡拆開講清楚，四層排查由便宜到貴，每個說法都標了證據等級。（技巧、Apple Pencil、故障排除／2026-07-29，更新 2026-07-31）
+- [Apple Pencil 壓感變怪，先別送修](https://www.guoguo.tw/guide/articles/apple-pencil-pressure-troubleshooting/)：輕壓沒反應、粗細不跟手？先換一顆 148 元的筆尖，再考慮 4,390 元的新筆。五道關卡逐一拆開，排查由便宜到貴，每個說法都標了證據等級。（技巧、Apple Pencil、故障排除／2026-07-29，更新 2026-07-31）
   - 本篇回答：Apple Pencil 壓感沒反應，第一步該做什麼？
   - 本篇回答：我的 Apple Pencil 畫出來的線一直一樣粗，是壞了嗎？
   - 本篇回答：iPad 設定裡可以調 Apple Pencil 的筆壓靈敏度嗎？
@@ -170,7 +170,7 @@
   - 本篇回答：只有 Procreate 沒壓感，其他 App 正常，怎麼辦？
   - 本篇回答：怎麼確定 Apple Pencil 是真的壞了？
   - 本篇回答：Apple Pencil 的筆尖磨損有保固嗎？
-- [Procreate 沒有粗細變化？原因深度解析](https://www.guoguo.tw/guide/articles/procreate-pressure-not-working/)：同一支筆在備忘錄好好的，一進 Procreate 就畫不出粗細？先看線的深淺有沒有跟著變，一句話分開是筆還是設定。附三層壓力相乘的完整解剖，與成本由低到高的 12 步排除順序。（技巧、Apple Pencil、故障排除、Procreate、電繪／2026-07-31）
+- [Procreate 沒有粗細變化？原因深度解析](https://www.guoguo.tw/guide/articles/procreate-pressure-not-working/)：同一支筆在備忘錄好好的，一進 Procreate 就畫不出粗細？先看線的深淺有沒有跟著變，一句話分開是筆還是設定。附成本由低到高的 12 步排除順序。（技巧、Apple Pencil、故障排除、Procreate、電繪／2026-07-31）
   - 本篇回答：Procreate 畫不出粗細變化，是筆壞了嗎？
   - 本篇回答：Procreate 沒有感壓，要做 iPadOS 的「重置所有設定」嗎？
   - 本篇回答：為什麼有些筆刷有感壓、有些完全沒有？
@@ -179,7 +179,7 @@
   - 本篇回答：在備忘錄有感壓，是不是就代表筆沒問題？
   - 本篇回答：Procreate 壓力設定被我改壞了，怎麼還原成預設？
   - 本篇回答：Apple Pencil USB-C 版在 Procreate 沒有粗細變化？
-- [Procreate 筆刷怎麼調？先懂三個概念](https://www.guoguo.tw/guide/articles/procreate-brush-studio-basics/)：Brush Studio 有 14 個分頁、上百個滑桿，但你不用背——一筆線其實是同一個形狀沿著路徑蓋很多次章，懂了這件事，其他滑桿幾乎都推得出來。35 張對照圖走完 14 頁，附六道食譜與各代 Apple Pencil 的功能對照。（技巧、Apple Pencil、相容對照、Procreate、電繪／2026-07-31）
+- [Procreate 筆刷怎麼調？先懂三個概念](https://www.guoguo.tw/guide/articles/procreate-brush-studio-basics/)：上百個滑桿不用背——一筆線其實是同一個形狀沿路徑蓋很多次章，懂了這件事，其他滑桿幾乎都推得出來。35 張對照圖走完 14 頁，附六道食譜。（技巧、Apple Pencil、相容對照、Procreate、電繪／2026-07-31）
   - 本篇回答：Procreate 的 Brush Studio 有幾個分頁？要全部背起來嗎？
   - 本篇回答：Brush Studio 的滑桿看不懂在幹嘛，有快速搞懂的方法嗎？
   - 本篇回答：Procreate 筆刷怎麼做出書法那種橫粗直細？
@@ -188,7 +188,7 @@
   - 本篇回答：Procreate 的傾斜設定沒反應，是筆壞了嗎？
   - 本篇回答：網路上的 Procreate 筆刷參數配方可以照抄嗎？
   - 本篇回答：Brush Studio 裡哪些設定要 Apple Pencil Pro 才有？
-- [Procreate 筆觸怪怪的？先查看筆刷設定](https://www.guoguo.tw/guide/articles/procreate-stroke-looks-wrong/)：打開 Brush Studio 看到 14 個分頁不知道從哪下手，別一頁一頁亂拉——先看症狀反查是哪一頁。附 14 列症狀對照表、五個最常中的兇手（含官方明說的傾斜死區與「不吃壓力」的 Dynamics），以及藏在筆刷外面、會壓過單支筆刷的四道全域天花板。（技巧、Apple Pencil、故障排除、Procreate、電繪／2026-07-31）
+- [Procreate 筆觸怪怪的？先查看筆刷設定](https://www.guoguo.tw/guide/articles/procreate-stroke-looks-wrong/)：14 個分頁別一頁一頁亂拉——先從症狀反查是哪一頁。附 14 列症狀對照表、五個最常中的兇手，以及會壓過單支筆刷的四道全域天花板。（技巧、Apple Pencil、故障排除、Procreate、電繪／2026-07-31）
   - 本篇回答：Procreate 筆觸怪怪的，要先看哪一頁？
   - 本篇回答：Procreate 的傾斜設定完全沒反應是為什麼？
   - 本篇回答：Procreate 筆刷放大到最大還是很細，怎麼辦？
@@ -197,7 +197,7 @@
   - 本篇回答：Procreate 一筆越畫越淡是什麼設定造成的？
   - 本篇回答：Procreate 筆刷調壞了要怎麼還原？
   - 本篇回答：Procreate 設定明明改了卻沒反應，怎麼查？
-- [iPad 忘記螢幕鎖密碼？三層救援階梯](https://www.guoguo.tw/guide/articles/forgot-passcode-rescue-ladder/)：輸錯五次跳出「iPad 無法使用」先別急著清機。這篇按傷害由輕到重排成三層：72 小時內用舊密碼開回來（資料全留）、免電腦在裝置上清除（四個條件缺一不可）、接電腦走復原模式（官方建議預留 60 分鐘）。動手前還有一個第 0 步——先確認 Apple 帳號登得進去，否則清完會卡在啟用鎖定，機器就真的變擺飾了。（技巧、故障排除、尋找定位／2026-08-01）
+- [iPad 忘記螢幕鎖密碼？三層救援階梯](https://www.guoguo.tw/guide/articles/forgot-passcode-rescue-ladder/)：跳出「iPad 無法使用」先別急著清機。三層救援由輕到重，資料留不留得住差很多。動手前先確認 Apple 帳號登得進去，否則清完會卡在啟用鎖定。（技巧、故障排除、尋找定位／2026-08-01）
   - 本篇回答：iPad 忘記密碼可以不清資料就解鎖嗎？
   - 本篇回答：iPad 密碼輸錯幾次會被鎖住？
   - 本篇回答：沒有電腦可以重置忘記密碼的 iPad 嗎？
@@ -206,7 +206,7 @@
   - 本篇回答：用電腦重置 iPad 要花多久？要準備什麼？
   - 本篇回答：iPad 進不了復原模式怎麼辦？
   - 本篇回答：iPad 清除後沒有備份，資料還救得回來嗎？
-- [iPad 啟用鎖定，到底解不解得開？](https://www.guoguo.tw/guide/articles/activation-lock-truth/)：答案是解不開——啟用鎖定的紀錄存在 Apple 伺服器上，不在機身裡，所以任何工具都改不掉它。這篇把你會搜到的三類方法攤開講「照做之後會拿到什麼」：DNS 繞過（重開機就打回原形的半殘機）、解鎖軟體（只吃 A11 以前的舊晶片）、代解 ID（五條紅旗）。再給你這台的處境判定、官方唯一那條路，以及果果收機時怎麼一眼判斷有沒有鎖。（觀念、防詐騙、尋找定位／2026-08-01）
+- [iPad 啟用鎖定，到底解不解得開？](https://www.guoguo.tw/guide/articles/activation-lock-truth/)：答案是解不開——那把鎖在 Apple 伺服器上，不在機身裡，任何工具都改不掉。三類破解方法照做之後會拿到什麼，這裡全部攤開，再給官方唯一那條路。（觀念、防詐騙、尋找定位／2026-08-01）
   - 本篇回答：iPad 啟用鎖定可以破解嗎？
   - 本篇回答：買到有鎖的二手 iPad 還有救嗎？
   - 本篇回答：DNS 繞過現在還能用嗎？
@@ -215,7 +215,7 @@
   - 本篇回答：我是原持有人，只是忘記 Apple ID 密碼怎麼辦？
   - 本篇回答：面交買二手 iPad，要看到什麼畫面才能付錢？
   - 本篇回答：可以先用序號查這台有沒有啟用鎖定嗎？
-- [iPad 鍵盤沒反應？接觸式與藍牙分流排查](https://www.guoguo.tw/guide/articles/keyboard-not-responding/)：鍵盤突然打不出字，多數時候不是鍵盤壞了。先看它要不要充電：不用充電、吸上去就能用的走聰穎接點，該查接點；要充電要配對的才是藍牙鍵盤，該查配對紀錄。這篇附 Apple 官方四步排錯流程、六種「打得出字但字是錯的」設定假故障對照表，以及「重置所有設定」會清掉什麼、官方明寫不會刪什麼的逐項清單。誠實說明：官方鍵盤排錯文件裡並沒有「重置所有設定」這一項，把它寫進來依據的是果果自己的售後經驗。（技巧、故障排除、鍵盤配件／2026-08-02）
+- [iPad 鍵盤沒反應？接觸式與藍牙分流排查](https://www.guoguo.tw/guide/articles/keyboard-not-responding/)：鍵盤突然打不出字，多半不是壞了。吸上去就能用的走聰穎接點，要充電配對的才是藍牙——兩條路查法完全不同。附官方四步排錯與六種「假故障」對照。（技巧、故障排除、鍵盤配件／2026-08-02）
   - 本篇回答：巧控鍵盤在藍牙設定裡找不到，是壞掉了嗎？
   - 本篇回答：「重置所有設定」會刪掉我的照片和 App 嗎？
   - 本篇回答：重置所有設定之後，我要重新設定哪些東西？
@@ -223,7 +223,7 @@
   - 本篇回答：聰穎接點可以自己清嗎？要用什麼清？
   - 本篇回答：鍵盤打得出字，但符號位置不對，是壞了嗎？
   - 本篇回答：巧控鍵盤完全沒反應，是鍵盤壞還是 iPad 壞？
-- [iPad 當機卡死？強制重啟全型號按法](https://www.guoguo.tw/guide/articles/frozen-force-restart/)：畫面凍住、點什麼都沒反應、連關機滑桿都叫不出來，先做強制重新啟動——它不需要畫面有反應就能執行。但按下去之前一定要先看一眼螢幕有沒有進度列，正在更新時硬重開可能把系統弄壞。官方按法只分兩種，關鍵是看螢幕下方有沒有實體圓鈕，而不是看有沒有 Touch ID。這篇附四條世代分界線對照表、按了沒反應的完整後續（官方寫可能需要充電達一個小時）、以及該停手送修的明確門檻。（技巧、故障排除、相容對照／2026-08-02）
+- [iPad 當機卡死？強制重啟全型號按法](https://www.guoguo.tw/guide/articles/frozen-force-restart/)：畫面凍住、關機滑桿也叫不出來時，強制重啟不需要畫面有反應。但先確認沒有進度列，更新中硬重開會出事。按法只分兩種，關鍵是實體圓鈕不是 Touch ID。（技巧、故障排除、相容對照／2026-08-02）
   - 本篇回答：iPad 當機強制重啟，會把資料刪掉嗎？
   - 本篇回答：iPad 卡住連關機都關不了，怎麼辦？
   - 本篇回答：怎麼知道我的 iPad 該用哪一種按法？
