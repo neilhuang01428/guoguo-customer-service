@@ -81,6 +81,9 @@
   .recovery .scr3 { position: relative; width: 100%; height: 100%; border-radius: 6px; background: var(--navy-deep); overflow: hidden; }
   .recovery .ph { position: absolute; inset: 0; display: grid; place-content: center; gap: 4px; text-align: center; font-size: 1.45rem; line-height: 1; }
   .recovery .ph small { display: block; font-family: var(--mono); font-size: .46rem; color: rgba(255,255,255,.62); }
+  /* 開機時螢幕上是黑底白色的 Apple 標誌，所以這裡用純白 SVG 而不是 🍎 emoji——
+     emoji 是紅蘋果、而且每個平台長得不一樣，跟讀者實際會看到的畫面對不起來。 */
+  .recovery .ph svg { display: block; width: 21px; height: 21px; margin: 0 auto 3px; fill: #fff; }
   /* 三顆實體按鍵：位置照真機——頂端按鈕在頂邊右角，兩顆音量鍵在右側邊，
      「近／遠」就是相對於頂端按鈕的距離，這也是官方原文唯一的指認方式。 */
   .recovery .btn { position: absolute; background: #c8d2e0; border-radius: 3px; }
@@ -455,7 +458,7 @@
         <div class="rc">
           <div class="pad">
             <div class="scr3">
-              <div class="ph apple">🍎<small>還不能放手</small></div>
+              <div class="ph apple"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.088-4.61 1.088zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.702z"/></svg><small>還不能放手</small></div>
               <div class="ph plug">💻🔌<small>看到這個才放</small></div>
             </div>
             <div class="btn top"><b>頂端</b></div>
