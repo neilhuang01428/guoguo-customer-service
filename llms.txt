@@ -170,7 +170,7 @@
   - 本篇回答：只有 Procreate 沒壓感，其他 App 正常，怎麼辦？
   - 本篇回答：怎麼確定 Apple Pencil 是真的壞了？
   - 本篇回答：Apple Pencil 的筆尖磨損有保固嗎？
-- [Procreate 沒有粗細變化？原因深度解析](https://www.guoguo.tw/guide/articles/procreate-pressure-not-working/)：同一支筆在備忘錄好好的，一進 Procreate 就畫不出粗細？先看線的深淺有沒有跟著變，一句話分開是筆還是設定。附三層壓力相乘的完整解剖，與成本由低到高的 12 步排除順序。（技巧、Apple Pencil、故障排除／2026-07-31）
+- [Procreate 沒有粗細變化？原因深度解析](https://www.guoguo.tw/guide/articles/procreate-pressure-not-working/)：同一支筆在備忘錄好好的，一進 Procreate 就畫不出粗細？先看線的深淺有沒有跟著變，一句話分開是筆還是設定。附三層壓力相乘的完整解剖，與成本由低到高的 12 步排除順序。（技巧、Apple Pencil、故障排除、Procreate、電繪／2026-07-31）
   - 本篇回答：Procreate 畫不出粗細變化，是筆壞了嗎？
   - 本篇回答：Procreate 沒有感壓，要做 iPadOS 的「重置所有設定」嗎？
   - 本篇回答：為什麼有些筆刷有感壓、有些完全沒有？
@@ -179,7 +179,7 @@
   - 本篇回答：在備忘錄有感壓，是不是就代表筆沒問題？
   - 本篇回答：Procreate 壓力設定被我改壞了，怎麼還原成預設？
   - 本篇回答：Apple Pencil USB-C 版在 Procreate 沒有粗細變化？
-- [Procreate 筆刷怎麼調？先懂三個概念](https://www.guoguo.tw/guide/articles/procreate-brush-studio-basics/)：Brush Studio 有 14 個分頁、上百個滑桿，但你不用背——一筆線其實是同一個形狀沿著路徑蓋很多次章，懂了這件事，其他滑桿幾乎都推得出來。35 張對照圖走完 14 頁，附六道食譜與各代 Apple Pencil 的功能對照。（技巧、Apple Pencil、相容對照／2026-07-31）
+- [Procreate 筆刷怎麼調？先懂三個概念](https://www.guoguo.tw/guide/articles/procreate-brush-studio-basics/)：Brush Studio 有 14 個分頁、上百個滑桿，但你不用背——一筆線其實是同一個形狀沿著路徑蓋很多次章，懂了這件事，其他滑桿幾乎都推得出來。35 張對照圖走完 14 頁，附六道食譜與各代 Apple Pencil 的功能對照。（技巧、Apple Pencil、相容對照、Procreate、電繪／2026-07-31）
   - 本篇回答：Procreate 的 Brush Studio 有幾個分頁？要全部背起來嗎？
   - 本篇回答：Brush Studio 的滑桿看不懂在幹嘛，有快速搞懂的方法嗎？
   - 本篇回答：Procreate 筆刷怎麼做出書法那種橫粗直細？
@@ -188,7 +188,7 @@
   - 本篇回答：Procreate 的傾斜設定沒反應，是筆壞了嗎？
   - 本篇回答：網路上的 Procreate 筆刷參數配方可以照抄嗎？
   - 本篇回答：Brush Studio 裡哪些設定要 Apple Pencil Pro 才有？
-- [Procreate 筆觸怪怪的？先查看筆刷設定](https://www.guoguo.tw/guide/articles/procreate-stroke-looks-wrong/)：打開 Brush Studio 看到 14 個分頁不知道從哪下手，別一頁一頁亂拉——先看症狀反查是哪一頁。附 14 列症狀對照表、五個最常中的兇手（含官方明說的傾斜死區與「不吃壓力」的 Dynamics），以及藏在筆刷外面、會壓過單支筆刷的四道全域天花板。（技巧、Apple Pencil、故障排除／2026-07-31）
+- [Procreate 筆觸怪怪的？先查看筆刷設定](https://www.guoguo.tw/guide/articles/procreate-stroke-looks-wrong/)：打開 Brush Studio 看到 14 個分頁不知道從哪下手，別一頁一頁亂拉——先看症狀反查是哪一頁。附 14 列症狀對照表、五個最常中的兇手（含官方明說的傾斜死區與「不吃壓力」的 Dynamics），以及藏在筆刷外面、會壓過單支筆刷的四道全域天花板。（技巧、Apple Pencil、故障排除、Procreate、電繪／2026-07-31）
   - 本篇回答：Procreate 筆觸怪怪的，要先看哪一頁？
   - 本篇回答：Procreate 的傾斜設定完全沒反應是為什麼？
   - 本篇回答：Procreate 筆刷放大到最大還是很細，怎麼辦？
