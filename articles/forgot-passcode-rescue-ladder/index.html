@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>iPad 忘記密碼怎麼辦？三層救援階梯，從不清資料的那一層開始 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式 ── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 導言：迷你目錄（窄螢幕沒有左側 nav，這排就是導覽） */
+  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0 24px; }
+  .toc a { display: flex; align-items: baseline; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 14px; text-decoration: none; color: var(--ink); font-size: .93rem; transition: .12s; }
+  .toc a:hover { border-color: var(--navy); background: var(--navy-bg); }
+  .toc a i { font-family: var(--mono); font-style: normal; font-size: .72rem; color: var(--navy); font-weight: 700; flex: none; }
+  @media (max-width: 560px) { .toc { grid-template-columns: 1fr; } }
+
+  /* 表格橫向捲動 */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 620px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+
+  /* 鎖定畫面模擬（截圖替身，純 CSS） */
+  .lockscr { max-width: 288px; margin: 0 auto; background: var(--navy-deep); border-radius: 22px; padding: 26px 20px 16px; color: #fff; text-align: center; box-shadow: 0 8px 24px rgba(15,37,71,.28); }
+  .lockscr .ico { font-size: 1.6rem; line-height: 1; }
+  .lockscr .ttl { font-size: 1.04rem; font-weight: 800; margin-top: 10px; }
+  .lockscr .sub { font-size: .78rem; opacity: .7; margin-top: 6px; line-height: 1.6; }
+  .lockscr .pins { display: flex; justify-content: center; gap: 13px; margin: 22px 0 24px; }
+  .lockscr .pins i { display: block; width: 11px; height: 11px; border-radius: 50%; border: 1px solid rgba(255,255,255,.55); }
+  .lockscr .foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: .76rem; border-top: 1px solid rgba(255,255,255,.16); padding-top: 12px; }
+  .lockscr .foot .dim { opacity: .5; }
+  .lockscr .foot .hl { color: #7fe0a3; font-weight: 700; }
+
+  /* 兩欄「有備份 / 沒備份」清單 */
+  .ba { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .ba .pane { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 12px; padding: 15px 17px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .ba .pane .sub { font-family: var(--mono); font-size: .66rem; color: var(--c); }
+  .ba .pane h4 { font-size: 1rem; color: var(--ink); font-weight: 800; margin: 3px 0 10px; }
+  .ba .pane ul { list-style: none; }
+  .ba .pane li { font-size: .87rem; padding: 6px 0 6px 16px; position: relative; border-bottom: 1px solid var(--grid); color: var(--body); }
+  .ba .pane li:last-child { border-bottom: 0; }
+  .ba .pane li::before { content: '·'; position: absolute; left: 3px; color: var(--c); font-weight: 800; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .ba { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>iPad 忘記密碼</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#ladder" class="active">00 · 三層救援階梯</a>
+  <div class="grp">動手之前</div>
+  <a href="#appleid">01 · 第 0 步：先確認帳號</a>
+  <div class="grp">三層路徑</div>
+  <a href="#level1">02 · 第 1 層：72 小時舊密碼</a>
+  <a href="#level2">03 · 第 2 層：不用電腦清除</a>
+  <a href="#level3">04 · 第 3 層：接電腦復原</a>
+  <div class="grp">收尾</div>
+  <a href="#after">05 · 清完之後那一關</a>
+  <a href="#guoguo">06 · 果果的角度與防詐</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>三層路徑照代價排好</span><span>每一步都附官方原文</span><span>查不到官方出處的就不寫</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">iPad 疑難排解 / 鎖定畫面</div>
+    <h1>iPad 忘記密碼怎麼辦：三層救援階梯</h1>
+    <p class="subtitle">你現在大概正盯著「iPad 無法使用」那個畫面。先深呼吸——這台機器救得回來，問題只在你要付出多少代價。這頁把三條路照代價由輕到重排好。</p>
+
+    <p class="lede">iPad 忘記密碼，一定救得回來。最輕的一條路完全不會動到你的資料：如果你的 iPad 是 <strong>iPadOS 17 以上</strong>、最近才改過密碼、而且還記得舊的那一組，Apple 給你 <strong>72 小時</strong>可以用舊密碼開回來。過了這條線，剩下的兩條路都是把整台清空。</p>
+
+    <p class="lede">但在你按下任何「清除」之前，有一件事比螢幕密碼更關鍵：你的 <strong>Apple 帳號密碼</strong>還記得嗎？機器清空之後會回頭跟 Apple 要這組密碼，要不出來，它就停在那個畫面上，資料沒了、機器也開不了。</p>
+
+    <p class="lede">這頁把三層路徑逐一拆開：需要什麼條件、資料留不留、大概花多久、會卡在哪裡。內容全部對齊 Apple 官方支援文件，來源列在文末；查不到官方原文的說法，我們寧可不寫。</p>
+
+    <div class="stats">
+      <div class="stat" style="--c:var(--red)"><div class="num">5</div><div class="lab">輸錯幾次會跳出<br>「iPad 無法使用」</div></div>
+      <div class="stat" style="--c:var(--green)"><div class="num">72h</div><div class="lab">改密碼後<br>舊密碼還能用多久</div></div>
+      <div class="stat" style="--c:var(--amber)"><div class="num">60m</div><div class="lab">官方建議<br>電腦路徑預留時間</div></div>
+      <div class="stat" style="--c:var(--navy)"><div class="num">4</div><div class="lab">免電腦清除<br>缺一不可的條件</div></div>
+    </div>
+
+    <div class="toc">
+      <a href="#appleid"><i>01</i>動手前先確認 Apple 帳號（最重要）</a>
+      <a href="#level1"><i>02</i>72 小時內用舊密碼開回來</a>
+      <a href="#level2"><i>03</i>不用電腦，在 iPad 上直接清除</a>
+      <a href="#level3"><i>04</i>接上電腦，走復原模式</a>
+    </div>
+
+    <p class="updated">本文查證：<b>2026 年 8 月</b>，依 Apple 官方支援文件撰寫。Apple 隨時可能調整畫面與流程，操作時以你機器上的實際字樣為準。<a class="inline" href="#sources">來源列在文末</a>。</p>
+
+    <section id="ladder">
+      <div class="sec-label" style="--c:var(--navy)">the_ladder</div>
+      <h2>00 · 三層救援階梯：先看你屬於哪一層</h2>
+      <p>網路上關於「iPad 忘記密碼」的教學，幾乎都直接從「怎麼清除」開始教。但清除是三條路裡最貴的兩條，不該是第一個選項。正確的順序是從最輕的開始試：</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">🔓</div><div class="bt">第 1 層 · 最輕</div><div class="bv">用舊密碼開回來</div></div>
+          <div class="arr">↓不行</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">📱</div><div class="bt">第 2 層 · 免電腦</div><div class="bv">在 iPad 上清除</div></div>
+          <div class="arr">↓不行</div>
+          <div class="box" style="--cbg:var(--red-bg)"><div class="bi">💻</div><div class="bt">第 3 層 · 最後手段</div><div class="bv">接電腦復原模式</div></div>
+        </div>
+        <figcaption>只有<b>第 1 層</b>能保住資料。往下每一層都是把整台清空，差別只在「你手邊有沒有電腦」。</figcaption>
+      </figure>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>層級</th><th>什麼情況適用</th><th>需要什麼</th><th>你的資料</th><th>大概要多久</th></tr>
+          <tr>
+            <td>第 1 層<br>舊密碼</td>
+            <td>iPadOS 17 以上，且你在 72 小時內改過密碼、忘記的是新那組</td>
+            <td>記得舊密碼<small>不需要電腦、不需要 Apple 帳號密碼</small></td>
+            <td class="good">完全保留</td>
+            <td>幾分鐘</td>
+          </tr>
+          <tr>
+            <td>第 2 層<br>裝置上清除</td>
+            <td>iPadOS 15.2 以上，且機器連得上網、有開「尋找」</td>
+            <td>Apple 帳號和密碼<small>四個條件缺一不可，見第 03 節</small></td>
+            <td class="bad">全部清空</td>
+            <td>視網速與備份而定</td>
+          </tr>
+          <tr>
+            <td>第 3 層<br>電腦復原模式</td>
+            <td>上面兩條都走不了，或系統版本太舊</td>
+            <td>Mac 或 Windows PC、連接線、網路<small>官方建議預留最多 60 分鐘</small></td>
+            <td class="bad">全部清空</td>
+            <td>官方寫最多 60 分鐘</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">核心觀念</div>Apple 沒有留「不清資料的萬用鑰匙」。第 2 層與第 3 層都是把機器倒回出廠狀態——沒有一種官方方法能繞過螢幕密碼直接進去看你的照片。這是設計，不是漏洞。</div>
+
+      <p>三層都看懂之後，先別急著動手。有一個檢查要放在所有「清除」動作的前面，那才是這篇最想跟你講的事。</p>
+    </section>
+
+    <section id="appleid">
+      <div class="sec-label" style="--c:var(--red)">step_zero</div>
+      <h2>01 · 第 0 步：動手清除前，先確認 Apple 帳號登得進去</h2>
+      <p>真正會讓一台 iPad 變成擺飾的，不是螢幕密碼，是 Apple 帳號密碼。</p>
+      <p>螢幕密碼忘了，最壞的結果是資料清光，機器還是你的。Apple 帳號密碼忘了，情況完全不同——清空之後那台 iPad 會回頭跟 Apple 要這組密碼，要不出來，它就永遠停在啟用畫面。</p>
+
+      <div class="bigquote">
+        <div class="qm">“</div>
+        <p>如果找不到「Apple 帳號」，或無法重置密碼，你將無法存取帳號，也可能無法使用或重新啟用裝置。</p>
+        <small>Apple 官方在「啟用鎖定」說明頁的原文。這句話值得讀兩遍——它講的就是「機器變擺飾」這件事。</small>
+      </div>
+
+      <p>為什麼會這樣？因為「尋找」一打開，「啟用鎖定」就自動跟著開了。官方對它的描述是：每次啟用或復原 iPad 時，裝置都會聯絡 Apple 確認啟用鎖定的狀態。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--red-bg)"><div class="bi">🗑️</div><div class="bt">你按下清除</div><div class="bv">資料全部消失</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">📡</div><div class="bt">重新啟用時</div><div class="bv">裝置聯絡 Apple</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">🍎</div><div class="bt">Apple 問你</div><div class="bv">要 Apple 帳號密碼</div></div>
+        </div>
+        <figcaption>清除<b>不會</b>解開這道鎖。官方原文：在任何人關閉「尋找」、清除你的裝置，或重新啟用並使用你的裝置之前，需要輸入你的「Apple 帳號」密碼。</figcaption>
+      </figure>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">帳密答得出來</div>清除只是損失資料，機器照常回到你手上。有備份的話，多數東西還能回復。</div>
+        <div class="callout" style="--c:var(--red)"><div class="ct">帳密答不出來</div>資料沒了，機器也停在啟用畫面打不開。Apple 只認帳號，不認人——拿發票、拿身分證都沒有用。</div>
+      </div>
+
+      <h3>怎麼在動手前先確認？三個動作</h3>
+      <div class="steps">
+        <div class="step" style="--c:var(--green)"><div class="n">01</div><div><h4>拿另一台裝置實際登入一次</h4><p>用手邊的手機、另一台平板或電腦，登入 Apple 帳號的官方網頁。「我應該記得」不算數，真的登進去才算。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">02</div><div><h4>確認驗證碼收得到</h4><p>帳號若開了雙重認證，登入時會需要另一台信任的裝置、或收得到驗證碼的電話號碼。那支門號還在用嗎？很多人卡在這裡。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">03</div><div><h4>登不進去就先停手</h4><p>先把帳號救回來，再回來處理這台 iPad。順序反過來的話，你會用一台已經清空的機器去跟一個進不去的帳號對決。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">順序不能反</div>這是全篇最值錢的一句：<strong>帳號先、機器後。</strong>清除是不可逆的，而帳號救援可以慢慢來——把可逆的事情留到最後做，是唯一不會後悔的順序。</div>
+
+      <p>另外有一種情況這篇不處理：機器是二手買來的，卡住的是<strong>前一手</strong>的 Apple 帳號。那不是「你忘記密碼」，是另一個問題，我們另外有一篇專門談它。</p>
+    </section>
+
+    <section id="level1">
+      <div class="sec-label" style="--c:var(--green)">level_1</div>
+      <h2>02 · 第 1 層：72 小時內用舊密碼開回來（資料全留）</h2>
+      <p>這是最多人不知道的一條路，也是解鎖工具的廣告絕對不會提的一條——講了他們就沒生意了。</p>
+      <p>Apple 把這個機制叫做「密碼重置」。官方的說法是：在 iOS 17、iPadOS 17 和以上版本中更改密碼時，「密碼重置」讓你能在 <strong>72 小時</strong>內，仍可使用先前的密碼取用 iPhone 或 iPad。</p>
+
+      <figure class="fig">
+        <div class="spectrum">
+          <div class="seg old">改密碼後 0～72 小時<small>舊密碼還留著一條後門</small><b>資料完全保留</b></div>
+          <div class="divider">72 小時<br>分水嶺</div>
+          <div class="seg new">超過 72 小時<small>舊密碼正式失效</small><b>只剩清除一途</b></div>
+        </div>
+        <figcaption>倒數從你<b>更改密碼那一刻</b>起算，不是從你被鎖住那一刻起算。</figcaption>
+      </figure>
+
+      <p>換句話說，這一層專門救一種人：你剛換過密碼，<strong>忘記的是新的那一組</strong>。如果你根本沒改過密碼、只是單純想不起來，那它幫不上忙，直接看第 03 節。</p>
+
+      <h3>先認識那個畫面</h3>
+      <p>官方寫得很明確：在輸入錯誤密碼<strong>五次</strong>後，鎖定畫面會出現「[裝置] 無法使用」的畫面。第 1 層和第 2 層的入口都藏在這個畫面的角落。</p>
+
+      <figure class="fig">
+        <div class="lockscr">
+          <div class="ico">🔒</div>
+          <div class="ttl">iPad 無法使用</div>
+          <div class="sub">輸入錯誤密碼五次後<br>會看到這個畫面</div>
+          <div class="pins"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="foot"><span class="dim">緊急服務</span><span class="hl">忘記密碼？</span></div>
+        </div>
+        <figcaption>示意圖，實際畫面以你的機器為準。官方的指示是：<b>在螢幕底部角落，點一下「忘記密碼？」</b>——這行小字就是整篇文章的入口。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">關於「請在幾分鐘後再試」的倒數</div>有些人在這個畫面上還會看到一行倒數計時。<strong>各階段要等幾分鐘，Apple 官方文件沒有明文。</strong>網路上流傳的那張「1 分鐘／5 分鐘／15 分鐘」階梯表，我們查不到官方出處，所以這篇不列它。官方唯一寫死的數字是「五次」。</div>
+
+      <h3>實際怎麼操作</h3>
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">01</div><div><h4>讓「iPad 無法使用」畫面出現</h4><p>輸入錯誤密碼五次後就會跳出來。你多半已經在這個畫面了。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">02</div><div><h4>點螢幕底部角落的「忘記密碼？」</h4><p>官方原文：出現提示時，請在螢幕底部角落，點一下「忘記密碼？」。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">03</div><div><h4>點「輸入先前的密碼」</h4><p>這一項就是第 1 層的分岔口。看得到它，代表 72 小時還沒過完。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">04</div><div><h4>輸入舊密碼，依畫面指示設定新密碼</h4><p>官方註明：若以此種方式解鎖裝置，系統會提示你立即重新更改密碼。</p></div></div>
+      </div>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">這一層救得到誰</div>剛改完密碼、手指還記得舊的那組手勢的人。不需要電腦、不需要 Apple 帳號密碼、不需要網路以外的任何東西，資料一件不少。</div>
+        <div class="callout" style="--c:var(--red)"><div class="ct">這一層救不到誰</div>很久沒開機的舊 iPad、沒改過密碼只是忘了、系統停在 iPadOS 16 以下、或已經超過 72 小時。這四種請直接往下看。</div>
+      </div>
+
+      <details>
+        <summary>反過來用：怎麼讓舊密碼提前失效？</summary>
+        <p>如果你剛改過密碼，但懷疑有人知道你的舊密碼，那 72 小時對你就不是保險而是風險。官方給了關閉的方法：打開「設定」App → 點「Face ID 與密碼」（或「Touch ID 與密碼」）→ 輸入目前的密碼 → 點「立即讓舊密碼到期」。</p>
+        <p style="margin-top:10px">按下去之後，舊密碼馬上作廢，這一層的救援也同時消失。新密碼記牢再按。</p>
+      </details>
+    </section>
+
+    <section id="level2">
+      <div class="sec-label" style="--c:var(--amber)">level_2</div>
+      <h2>03 · 第 2 層：不用電腦，在 iPad 上直接清除</h2>
+      <p>從這裡開始，資料就保不住了。先做好心理準備再往下看——這不是嚇你，是希望你在按下去之前先把第 01 節的帳號檢查做完。</p>
+      <p>好消息是這條路<strong>不需要電腦</strong>。iPadOS 15.2 以上的機器可以自己在鎖定畫面上完成整套清除。壞消息是它有四個前提條件，官方寫得很清楚，而且缺一不可。</p>
+
+      <div class="grid">
+        <div class="card" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="c-tag">條件 1 · 系統版本</div>
+          <h4>iPadOS 15.2 或以上</h4>
+          <p>官方所需項目寫的是「iOS 15.2 或 iPadOS 15.2 或以上版本」。低於這個版本，鎖定畫面上不會有這個入口。</p>
+        </div>
+        <div class="card" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="c-tag">條件 2 · 最容易漏掉的一個</div>
+          <h4>已在裝置上啟用「尋找」</h4>
+          <p>沒開「尋找」就進不了「安全鎖定」畫面，這條路直接斷。而且你現在已經打不開設定，沒辦法補開。</p>
+        </div>
+        <div class="card" style="--c:var(--teal);--cbg:var(--teal-bg)">
+          <div class="c-tag">條件 3 · 連線</div>
+          <h4>有效的行動網路或 Wi-Fi</h4>
+          <p>整個流程要跟 Apple 伺服器對話。鎖定畫面連不上網，畫面上就不會出現後續選項。</p>
+        </div>
+        <div class="card" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="c-tag">條件 4 · 就是第 0 步</div>
+          <h4>「Apple 帳號」和密碼</h4>
+          <p>流程中間會要你輸入它來登出帳號。答不出來，走到一半就停住——這就是為什麼帳號檢查要放最前面。</p>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">官方把這兩個條件講了兩次</div>「你必須連接有效的行動網路或 Wi-Fi 連線，且已在裝置上啟用『尋找』功能，才能在重置過程進入『安全鎖定』畫面。」——同一份文件裡重複強調的東西，通常就是最多人卡住的地方。</div>
+
+      <h3>iPadOS 17 以上的完整步驟</h3>
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">01</div><div><h4>在鎖定畫面嘗試輸入密碼</h4><p>一直輸入到出現「無法使用 [裝置]」畫面為止。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">02</div><div><h4>點一下「忘記密碼？」</h4><p>跟第 1 層是同一個入口，分岔在下一步。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">03</div><div><h4>在「安全鎖定」畫面點「開始 iPad 重置」</h4><p>這一步就是四個條件的檢查關卡。沒連網或沒開「尋找」，你根本走不到這個畫面。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">04</div><div><h4>輸入 Apple 帳號密碼登出帳號</h4><p>官方原文：輸入你的「Apple 帳號」密碼以在裝置上登出「Apple 帳號」。</p></div></div>
+        <div class="step" style="--c:var(--red)"><div class="n">05</div><div><h4>點「清除 iPad」</h4><p>官方用字是「永久刪除你所有的資料和設定」。行動網路機型還會問你 eSIM 要保留還是一起刪。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">06</div><div><h4>重新啟動後照畫面設定</h4><p>可以從備份回復資料和設定（如果你有備份），然後設定新的密碼。</p></div></div>
+      </div>
+
+      <h3>不同系統版本，看到的字不一樣</h3>
+      <p>很多人照著別人的教學做卻找不到按鈕，原因通常在這裡：</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你的 iPadOS 版本</th><th>鎖定畫面上會出現</th><th>接下來</th></tr>
+          <tr><td>iPadOS 17 或以上</td><td class="good">「忘記密碼？」</td><td>可以走第 1 層（舊密碼）或第 2 層（清除），都從這個入口進去</td></tr>
+          <tr><td>iPadOS 15.2 / 16</td><td>「清除 iPad」</td><td class="bad">只有清除這條路，沒有舊密碼可用</td></tr>
+          <tr><td>iPadOS 15.1 或更舊</td><td class="bad">兩個都不會出現</td><td class="bad">官方所需項目就是 15.2 起跳，只能改走第 3 層</td></tr>
+        </table>
+      </div>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--red)"><div class="ct">這一步沒有反悔鍵</div>按下「清除 iPad」之後就開始執行，中途沒有取消。不確定備份有沒有做，就先別按——第 05 節有講沒備份會失去什麼。</div>
+        <div class="callout" style="--c:var(--navy)"><div class="ct">走不通就往下一層</div>官方對這條路的收尾很直接：「如果無法依照上述步驟操作，請使用電腦來重置裝置。」沒有第四條路，只有借一台電腦。</div>
+      </div>
+    </section>
+
+    <section id="level3">
+      <div class="sec-label" style="--c:var(--red)">level_3</div>
+      <h2>04 · 第 3 層：接上電腦，走復原模式</h2>
+      <p>這是最後手段，也是唯一「不挑條件」的一條——不需要「尋找」開著、不需要 iPad 連得上網、系統再舊也能做。代價是你得有一台電腦，而且要有耐心。</p>
+
+      <p>Apple 在文件開頭就把成本列給你看了：</p>
+      <ul class="check">
+        <li>Mac 或 Windows PC</li>
+        <li>可為 iPad 充電的連接線</li>
+        <li>網際網路連線</li>
+        <li>最多 60 分鐘的時間 —— 這是官方自己寫在「所需項目」裡的數字，不是我們加的</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">Windows 使用者的隱藏成本</div>Mac 直接用 Finder 就好。<strong>Windows 得先裝 iTunes 或 Apple Devices</strong>，官方指定從 Microsoft Store 取得 Apple Devices。下載安裝也算在那 60 分鐘裡，別等到最後一刻才發現電腦上什麼都沒有。</div>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">01</div><div><h4>先把 iPad 關機</h4><p>如果已經接著電腦，先拔掉連接線。拖移滑桿關機後，官方要你「稍待一分鐘，確認已完全關機」。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">02</div><div><h4>用連接線接上電腦，按出復原模式</h4><p>按鍵順序依機型不同，看下面那張表。Apple 標誌出現時還不能放手。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">03</div><div><h4>在電腦上選「回復」</h4><p>在 Finder、iTunes 或 Apple Devices 裡找到你的 iPad，出現「回復」或「更新」時選「回復」，然後靜候整個程序完成。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">04</div><div><h4>看到「哈囉」畫面就成功了</h4><p>回復完成後 iPad 會顯示「哈囉」畫面。拔掉連接線，開始重新設定。</p></div></div>
+      </div>
+
+      <h3>兩種機型，按法完全不同</h3>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>機型</th><th>關機怎麼按</th><th>進復原模式怎麼按</th></tr>
+          <tr>
+            <td>沒有主畫面按鈕<small>全螢幕的 iPad Pro / Air / mini</small></td>
+            <td>同時按住其中一個音量按鈕和頂端按鈕，直到關機滑桿出現</td>
+            <td>按下離頂端按鈕<b>最近</b>的音量按鈕後迅速放開 → 按下離頂端按鈕<b>最遠</b>的音量按鈕後迅速放開 → 按住頂端按鈕</td>
+          </tr>
+          <tr>
+            <td>有主畫面按鈕<small>畫面下方有實體圓鈕</small></td>
+            <td>按住頂端按鈕，直到關機滑桿出現</td>
+            <td>同時按住主畫面按鈕和頂端（或側邊）按鈕</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">最容易前功盡棄的一句</div>官方原文：「Apple 標誌出現時，繼續按住按鈕。不要放開按鈕，直到出現<strong>電腦和連接線的影像</strong>後，再放開按鈕。」看到蘋果就鬆手，等於白按一次。</div>
+
+      <h3>會卡在哪裡（全部是官方寫明的狀況）</h3>
+      <ul class="flags">
+        <li><b>螢幕跑出密碼畫面</b>——代表沒進到復原模式。官方要你把 iPad 關機，再從頭來一次。</li>
+        <li><b>下載超過 15 分鐘，裝置自己跳出復原模式畫面</b>——等下載完成，把 iPad 關機，再重新開始。</li>
+        <li><b>按鈕壞了，怎麼按都進不去</b>——官方直說「可能需要維修服務」。硬按不會有結果。</li>
+        <li><b>沒有電腦也借不到</b>——官方的答案是前往 Apple 直營店或 Apple 授權維修中心尋求協助。</li>
+      </ul>
+
+      <details>
+        <summary>還有一條官方備援：用 iCloud.com 清除</summary>
+        <p>Apple 在同一份文件的最後留了一句：「如果無法透過 Mac 或 PC 重置 iPad，你可以使用 iCloud.com 來清除 iPad，然後使用備份進行回復，或將 iPad 設定為新裝置。」</p>
+        <p style="margin-top:10px">這條路一樣要登入你的 Apple 帳號、一樣會把資料清光。我們沒有逐步驗證過它在台灣帳號上的實際畫面，所以這裡只轉述官方這句話，不寫步驟——照我們的規矩，沒查證到的東西寧可留白。</p>
+      </details>
+    </section>
+
+    <section id="after">
+      <div class="sec-label" style="--c:var(--teal)">after_erase</div>
+      <h2>05 · 清完之後：那一關叫「啟用鎖定」</h2>
+      <p>機器重開機之後不會直接進主畫面，而是走一遍全新的設定流程。這裡有兩件事要先知道。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">👋</div><div class="bt">第一關</div><div class="bv">「哈囉」畫面</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">🍎</div><div class="bt">第二關</div><div class="bv">Apple 帳號驗證</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">📦</div><div class="bt">第三關</div><div class="bv">從備份回復</div></div>
+        </div>
+        <figcaption>看到「哈囉」不代表過關，<b>第二關才是真正的門</b>——過不了它，這台機器誰都用不了。</figcaption>
+      </figure>
+
+      <p>兩條清除路徑問你帳號的<strong>時間點</strong>不一樣。免電腦那條，官方步驟是在清除以前就先要你輸入 Apple 帳號密碼登出帳號；電腦那條沒有這一步，驗證就落在重新啟用的時候。</p>
+      <p>但結論是一樣的：不管走哪條路，那組密碼你都逃不掉，差別只在它什麼時候問你。這也是第 01 節那個檢查要放在最前面的原因。</p>
+
+      <h3>資料回不回得來，取決於一件事</h3>
+      <div class="ba">
+        <div class="pane" style="--c:var(--green)">
+          <div class="sub">有備份 · 官方說法</div>
+          <h4>大部分東西回得來</h4>
+          <ul>
+            <li>官方原文：清除 iPad 之後，你可以從備份回復資料和設定</li>
+            <li>照片、訊息、App 資料會跟著備份回來</li>
+            <li>真正麻煩的通常不是資料，是重連 Wi-Fi、重登一輪 App 帳號</li>
+            <li>備份愈新，損失愈小——這是唯一能提前控制的變數</li>
+          </ul>
+        </div>
+        <div class="pane" style="--c:var(--red)">
+          <div class="sub">沒備份 · 誠實說</div>
+          <h4>只有雲端上的回得來</h4>
+          <ul>
+            <li>官方原文：可以將其設定成新裝置，然後下載你存放在 iCloud 的任何資料</li>
+            <li>換句話說，本來就同步在 iCloud 的東西還在</li>
+            <li>只存在這台機器裡、沒同步過的，就是沒了</li>
+            <li>我們不會給你「其實還能救」的假希望——沒有工具做得到</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--teal)"><div class="ct">機器回來之後，順手做一件事</div>設一組你真的記得住的密碼，並且確認 iCloud 備份是開著的。這次的教訓很貴，別讓它白痛——下一次如果又忘記，有備份的版本只是麻煩，沒備份的版本才叫災難。</div>
+    </section>
+
+    <section id="guoguo">
+      <div class="sec-label" style="--c:var(--purple)">our_view</div>
+      <h2>06 · 果果的角度：為什麼我們一直在講那個帳號</h2>
+      <p>我們每天在做的事，是把二手 iPad 收進來、逐台檢測、再交到下一個人手上。做久了會發現一件事：讓一台機器出不了貨的，很少是刮痕或電池。</p>
+      <p>是啟用鎖定。一台機況再好的 iPad，只要前一手的 Apple 帳號還掛在上面，它在我們手上就只是一塊玻璃。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">檢測台上「有解」的問題</div>刮痕、電池衰退、觸控失靈、按鍵不靈——這些都能處理：換料、整理、把健康度照實標出來，機器照樣交得到下一個人手上。</div>
+        <div class="callout" style="--c:var(--red)"><div class="ct">檢測台上「無解」的問題</div>啟用鎖定沒有中間值，只有能開跟不能開。前一手的帳號還在上面，機況再好也只能停在檢測台，連保固都無從談起。</div>
+      </div>
+
+      <p>而最讓人難受的版本是這樣的：客人自己在家把機器清乾淨了，卻停在最後那個畫面——因為當年那組 Apple 帳號，是用一個早就停用的信箱申請的，驗證碼寄去的號碼也換掉了。走到這一步，我們幫不上忙，Apple 也只認帳號不認人。</p>
+      <p>這就是為什麼這篇文章要把「先確認帳號」放在所有動作前面。全網的教學都從步驟開始教，但真正決定結局的那個檢查，其實在步驟開始之前。</p>
+
+      <h3>順便擋掉幾種你現在最容易被騙的說法</h3>
+      <ul class="flags">
+        <li><b>「不用清資料就能解開螢幕密碼」</b>——Apple 的設計就是不讓這件事發生。官方三份文件講的全都是「清除後重新設定」，沒有一條例外。</li>
+        <li><b>「代解 Apple ID 鎖／啟用鎖定破解」</b>——官方對這類機器的態度是「請勿接手任何受啟用鎖定保護的二手裝置」。我們不碰，也不建議你花這筆錢。</li>
+        <li><b>「一鍵、免電腦、全機型通用、100% 成功」</b>——Apple 連自己的官方方法都會補一句「如果無法依照上述步驟操作⋯⋯」。把話說到 100% 的，通常不是在幫你。</li>
+      </ul>
+
+      <div class="bigquote">
+        <div class="qm">“</div>
+        <p>螢幕密碼忘了，你失去的是資料；Apple 帳號密碼忘了，你失去的是整台機器。</p>
+        <small>兩件事的嚴重程度差一個數量級，而多數人是在按下「清除」之後才第一次意識到這個差別。</small>
+      </div>
+
+      <h3>延伸觀看（YouTube 參考）</h3>
+      <p style="font-size:.9rem;color:var(--muted)">說明一下選片標準：這個主題的中文搜尋結果幾乎被解鎖軟體的業配影片佔滿，我們逐支查過頻道與說明欄，找不到乾淨又貼題的繁中影片，所以直接用 Apple 官方支援頻道的兩支。<strong>兩支都是英文發音</strong>，但畫面就是實機操作，跟著按也看得懂。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=wADqwyfgtCI" target="_blank" rel="noopener" data-yt="wADqwyfgtCI" aria-label="播放：How to reset your iPad if you've forgotten your passcode | Apple Support">
+          <img loading="lazy" src="https://i.ytimg.com/vi/wADqwyfgtCI/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/wADqwyfgtCI/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>How to reset your iPad if you’ve forgotten your passcode | Apple Support</b><small>頻道：Apple UK（Apple 官方支援頻道）· 推薦原因：對應本文第 04 節的電腦路徑，關機、按鍵順序、Finder 選「回復」全程實拍，比文字好懂 · 2026 年 5 月發佈，說明欄直接連到本文引用的官方文件 119858 · 英文發音</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=ktoe1Hut6JA" target="_blank" rel="noopener" data-yt="ktoe1Hut6JA" aria-label="播放：How to restore your iPhone if you forgot your passcode | Apple Support">
+          <img loading="lazy" src="https://i.ytimg.com/vi/ktoe1Hut6JA/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/ktoe1Hut6JA/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>How to restore your iPhone if you forgot your passcode | Apple Support</b><small>頻道：Apple Support（Apple 官方支援頻道）· 推薦原因：雖然拍的是 iPhone，但它把整條救援階梯串成一支——說明欄同時列出「安全鎖定」「舊密碼 72 小時」「備份」三份文件，正好是本文第 02～05 節的骨架 · 英文發音</small></div>
+      </div>
+
+      <h3 id="sources">資料來源</h3>
+      <p class="sources">本文的每一個步驟、條件與數字皆取自 Apple 官方支援文件，查證日期 2026 年 8 月 1 日：</p>
+      <ul class="sources">
+        <li><a href="https://support.apple.com/zh-tw/105039">忘記新密碼時，在 iPhone 或 iPad 上暫時使用舊密碼</a>（72 小時「密碼重置」的適用版本、輸入錯誤密碼五次、「忘記密碼？」→「輸入先前的密碼」流程、解鎖後要立即再改一次、「立即讓舊密碼到期」）</li>
+        <li><a href="https://support.apple.com/zh-tw/105090">如果看到無法使用 iPhone、iPad 或 Apple Vision Pro 的訊息或「安全鎖定」畫面</a>（免電腦清除的四項所需條件、iPadOS 17 以上的六個步驟、「忘記密碼？」與「清除 [裝置]」的版本差異、走不通請改用電腦）</li>
+        <li><a href="https://support.apple.com/zh-tw/119858">如何使用 Mac 或 PC 重置 iPad 密碼</a>（所需項目與最多 60 分鐘、Windows 需安裝 iTunes 或 Apple Devices、關機與復原模式的分機型按鍵、回復步驟與 15 分鐘下載逾時、沒有電腦請前往 Apple 直營店或授權維修中心、iCloud.com 備援）</li>
+        <li><a href="https://support.apple.com/zh-tw/108794">iPhone 和 iPad 的「啟用鎖定」</a>（開啟「尋找」即自動啟用、每次啟用或復原都會聯絡 Apple 確認、清除後仍需 Apple 帳號密碼、找不到帳號或無法重置密碼將無法重新啟用裝置、請勿接手受保護的二手裝置）</li>
+      </ul>
+      <p class="updated">本文查證：<b>2026 年 8 月 1 日</b>，畫面字樣以 <b>iPadOS 17 以上</b>為準；較舊的系統版本看到的選項名稱不同（見第 03 節表格）。文中所有版本號、次數與時間皆為 Apple 官方文件原文，查不到官方出處的說法一律未收錄。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
