@@ -46,7 +46,12 @@
   /* ── Main ── */
   /* 內容寬度 820（原 900）：扣掉 .inner 左右 padding 後每行約 43 個中文字。
      900px 時每行 49 字，超過中文最佳閱讀寬度（35–40），視線回掃容易跳行。 */
-  main { flex: 1; max-width: 820px; padding: 0 0 120px; }
+  /* min-width:0 是必要的，不是保險。
+     main 是 body 這個 flex 容器的項目，flex item 預設 min-width:auto（＝內容的 min-content 寬），
+     所以任何一個寬元素（最常見的是 .tbl-wrap 裡 min-width:620px 的寬表格）都會沿著 main
+     把「整篇文章」撐開，手機上變成全頁橫向捲動——不只那張表格會跑掉，連標題和內文都被推出畫面。
+     實測（viewport 390px，22 篇文章）：加這一行之前有 16 篇溢出，最寬的到 740px；加了之後全部回到 390。 */
+  main { flex: 1; min-width: 0; max-width: 820px; padding: 0 0 120px; }
   .inner { padding: 46px 52px 0; }
 
   /* ── V1 masthead（極簡淺色）── */
@@ -70,6 +75,37 @@
   .subtitle { font-size: 1.12rem; color: var(--body); margin-bottom: 30px; line-height: 1.5; }   /* 20 → 30：與導言的分界 */
   /* 導言比正文略大、行距更鬆，讓眼睛進入正文前先「呼吸」 */
   .lede { font-size: 1.06rem; line-height: 1.85; margin-bottom: 24px; }
+
+  /* ── 導言區元件 lead ──
+     解決的問題：h1 底下連接好幾段 .lede，字級、顏色、行距全部一樣。
+     內容規範只要求「導言 >200 字要分段」（content-quality-guidelines §12），
+     但分了段卻長得一模一樣時，視覺上仍是一整面灰牆——最重要的那句結論
+     跟過場句同等重量，讀者的眼睛沒有落點。
+     作法是不刪任何字、只換載體：
+       .lead-ans    全篇最重要的結論 → 大字卡（左側色框沿用 .callout 的語彙，以 --c 指定語意色）
+       .alias-line  名詞別名對照     → 卡片內的分隔小字（官方用詞 ↔ 讀者熟悉的俗稱）
+       .lead-src    引用的官方原文   → 獨立成引用區塊，從長段落裡抽出來
+       .lead-map    「這頁講什麼」   → 可點的導覽格（窄螢幕 nav 隱藏時，它就是目錄）
+     首次使用：activation-lock-truth、forgot-passcode-rescue-ladder。 */
+  .lead { margin-bottom: 4px; }
+  .lead .lede { margin: 18px 0 0; }
+  .lead-ans { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--c, var(--navy)); border-radius: 10px; padding: 18px 22px; box-shadow: 0 2px 10px rgba(20,39,68,.04); }
+  .lead-ans + .lead-ans { margin-top: 10px; }
+  .lead-ans .lt { font-family: var(--mono); font-size: .68rem; font-weight: 700; color: var(--c); margin-bottom: 8px; }
+  .lead-ans .big { font-size: 1.3rem; font-weight: 800; color: var(--ink); line-height: 1.45; margin-bottom: 10px; }
+  .lead-ans .sm { font-size: 1rem; line-height: 1.8; margin-bottom: 0; }
+  /* 別名對照：讀者搜尋、店家口語用的詞，常常跟官方正式名稱對不上號（例：ID 鎖 ↔「啟用鎖定」）。
+     名字對不起來，讀者會懷疑自己找錯頁，所以放在第一屏的結論卡裡。 */
+  .alias-line { font-size: .88rem; color: var(--body); line-height: 1.7; margin: 12px 0 0; padding-top: 11px; border-top: 1px solid var(--grid); }
+  .alias-line b { font-family: var(--mono); font-size: .82rem; color: var(--red); font-weight: 700; }
+  .lead-src { margin-top: 11px; padding: 13px 17px; background: var(--navy-bg); border-radius: 9px; font-size: .93rem; line-height: 1.75; color: var(--body); }
+  .lead-src cite { display: block; font-family: var(--mono); font-size: .66rem; font-style: normal; color: var(--muted); margin-top: 7px; }
+  .lead-map { margin: 24px 0 0; }
+  .lead-map .lm-t { font-size: .95rem; color: var(--body); margin-bottom: 9px; }
+  .lead-map .lm-g { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+  .lead-map a { display: block; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 13px; text-decoration: none; color: var(--ink); font-size: .89rem; line-height: 1.5; transition: .12s; }
+  .lead-map a:hover { border-color: var(--navy); background: var(--navy-bg); }
+  .lead-map a i { display: block; font-family: var(--mono); font-style: normal; font-size: .66rem; color: var(--navy); font-weight: 700; margin-bottom: 4px; }
 
   section { margin-top: 56px; scroll-margin-top: 20px; }
   h2 { font-weight: 800; font-size: 1.42rem; color: var(--ink); margin-bottom: 14px; }   /* 4 → 14：小標不貼內文 */
@@ -431,4 +467,8 @@
     .grid, .cgrid, .stats, .swatches { grid-template-columns: 1fr; }
     .masthead .tagline { display: none; }
     .spectrum { flex-direction: column; }
+  }
+  /* 560 而不是 860：導覽格三欄在平板寬度還讀得完，硬要提早拆成一欄反而變成一長條。 */
+  @media (max-width: 560px) {
+    .lead-map .lm-g { grid-template-columns: 1fr; }
   }

@@ -15,26 +15,9 @@
   .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
   .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
 
-  /* ── 導言區 lead：把三段連續 .lede 拆成兩張卡 ──
-     原本的問題：h1 底下接三段 1.06rem 的 .lede，字級、顏色、行距全部一樣。
-     內容規範只要求「導言 >200 字要分段」，這裡確實分了三段——但分了段卻長得一模一樣，
-     視覺上仍是一整面灰牆，「一定救得回來」跟「你可能會失去整台機器」同等重量。
-     作法：字一個都不刪，只換載體——
-       .lead-ans（綠）  好消息：一定救得回來、最輕那條不動資料 → 大字卡
-       .lead-ans（紅）  但書：Apple 帳號密碼才是真正的關卡     → 警示卡
-       第三段「這頁講什麼」 → 移到既有 .toc 上方當引導句，查證承諾併入 .updated
-     結果是導言區的節奏變成「結論 → 但書 → 四個數字 → 目錄」，各有各的重量。
-     ⚠️ 同一組樣式在 activation-lock-truth 也有一份，刻意重複。
-        若第三篇要用，再上抽到 assets/style.css 並同步 html-guidelines.html。 */
-  .lead-ans { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--c, var(--navy)); border-radius: 10px; padding: 18px 22px; box-shadow: 0 2px 10px rgba(20,39,68,.04); }
-  .lead-ans + .lead-ans { margin-top: 10px; }
-  .lead-ans .lt { font-family: var(--mono); font-size: .68rem; font-weight: 700; color: var(--c); margin-bottom: 8px; }
-  .lead-ans .big { font-size: 1.3rem; font-weight: 800; color: var(--ink); line-height: 1.45; margin-bottom: 10px; }
-  .lead-ans .sm { font-size: 1rem; line-height: 1.8; margin-bottom: 0; }
-  /* 別名對照行：全文跟著 Apple 官方寫「Apple 帳號」，但讀者腦中、店家嘴裡都是「Apple ID」。
-     這是全篇最關鍵的一組名詞，不能讓讀者在這裡對不上號。 */
-  .alias-line { font-size: .88rem; color: var(--body); line-height: 1.7; margin: 12px 0 0; padding-top: 11px; border-top: 1px solid var(--grid); }
-  .alias-line b { font-family: var(--mono); font-size: .82rem; color: var(--red); font-weight: 700; }
+  /* 導言區 .lead-ans / .alias-line 已上抽到 assets/style.css
+     （並同步 html-guidelines.html），本篇不再重複定義。
+     本篇導言的節奏：結論卡（綠）→ 但書卡（紅）→ 四個數字 → 目錄，各有各的重量。 */
 
   /* 導言：迷你目錄（窄螢幕沒有左側 nav，這排就是導覽） */
   .toc-t { font-size: .95rem; color: var(--body); margin: 26px 0 0; }
@@ -44,12 +27,9 @@
   .toc a i { font-family: var(--mono); font-style: normal; font-size: .72rem; color: var(--navy); font-weight: 700; flex: none; }
   @media (max-width: 560px) { .toc { grid-template-columns: 1fr; } }
 
-  /* 表格橫向捲動。
-     ⚠️ main 是 body 這個 flex 容器的項目，預設 min-width:auto（＝內容的 min-content 寬）。
-        下面那條 min-width:620px 會沿著 .tbl-wrap 一路把 main 撐到 660px，
-        於是 430px 的手機上「整篇文章」都跟著橫向溢出，不只表格。
-        實測：viewport 430 → body.scrollWidth 660；補上 min-width:0 後回到 430。 */
-  main { min-width: 0; }
+  /* 表格橫向捲動。下面那條 min-width:620px 只有在 main 有 min-width:0 時才關得住，
+     否則會沿著 flex item 把整篇文章撐開（手機全頁橫向捲動）。
+     那一行放在共用的 assets/style.css 的 main 規則裡，全站一起受惠。 */
   .tbl-wrap { overflow-x: auto; margin: 20px 0; }
   .tbl-wrap table { margin: 0; min-width: 620px; }
   table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
@@ -87,6 +67,63 @@
   @media (prefers-reduced-motion: reduce) {
     .lockscr, .lockscr .pins i, .lockscr .foot .hl { animation: none; }
   }
+
+  /* ── 動態分鏡：復原模式的按鍵時序 ──
+     用動畫的理由：這一段是全篇唯一「純時序」的知識點——三顆按鍵要按對順序，
+     前兩顆是「按一下就放」、第三顆是「按住不放」，而且要按住到什麼時候，
+     取決於螢幕上出現什麼。這種「動作 × 畫面回饋」的對應關係，
+     用文字寫成一句話（官方原文就是一長串）幾乎不可能讀懂，
+     但演一次就好了。也是最多人前功盡棄的一步：看到蘋果標誌就鬆手。
+     ★ 鐵則：基礎樣式＝動畫最終狀態——頂端按鈕亮著（還按著）、
+       螢幕已經是「電腦和連接線」、第 3 步是高亮的。關掉動畫仍看得懂。 */
+  .recovery .rc { display: grid; grid-template-columns: 132px 1fr; gap: 20px; align-items: center; }
+  .recovery .pad { position: relative; width: 104px; height: 140px; margin: 0 auto; border: 2px solid var(--navy); border-radius: 13px; background: #fff; padding: 7px; }
+  .recovery .scr3 { position: relative; width: 100%; height: 100%; border-radius: 6px; background: var(--navy-deep); overflow: hidden; }
+  .recovery .ph { position: absolute; inset: 0; display: grid; place-content: center; gap: 4px; text-align: center; font-size: 1.45rem; line-height: 1; }
+  .recovery .ph small { display: block; font-family: var(--mono); font-size: .46rem; color: rgba(255,255,255,.62); }
+  /* 三顆實體按鍵：位置照真機——頂端按鈕在頂邊右角，兩顆音量鍵在右側邊，
+     「近／遠」就是相對於頂端按鈕的距離，這也是官方原文唯一的指認方式。 */
+  .recovery .btn { position: absolute; background: #c8d2e0; border-radius: 3px; }
+  .recovery .btn.top  { top: -5px; right: 14px; width: 30px; height: 5px; }
+  .recovery .btn.near { right: -5px; top: 18px; width: 5px; height: 22px; }
+  .recovery .btn.far  { right: -5px; top: 50px; width: 5px; height: 22px; }
+  /* 鐵則：基礎樣式＝動畫最終狀態。這一格的終點是「頂端鍵還按著、螢幕已出現電腦與連接線、
+     第 3 步亮著」，所以靜態時就要長這樣，關掉動畫也是一張看得懂的完成圖。 */
+  .recovery .btn.top { background: var(--green); }
+  .recovery .ph.apple { opacity: 0; }
+  .recovery .rs.s3 { border-color: var(--green); background: var(--green-bg); }
+  .recovery .rs.s3 i { background: var(--green); color: #fff; }
+  .recovery .btn b { position: absolute; font-family: var(--mono); font-size: .54rem; color: var(--muted); white-space: nowrap; }
+  .recovery .btn.top b  { bottom: 8px; right: 0; }
+  .recovery .btn.near b { left: 10px; top: 4px; }
+  .recovery .btn.far b  { left: 10px; top: 4px; }
+  .recovery .rs { display: flex; gap: 9px; align-items: flex-start; padding: 7px 9px; border-radius: 8px; border: 1px solid var(--line); background: #fff; }
+  .recovery .rs + .rs { margin-top: 6px; }
+  .recovery .rs i { flex: none; width: 19px; height: 19px; border-radius: 5px; background: var(--navy-bg); color: var(--navy); font-family: var(--mono); font-style: normal; font-size: .68rem; font-weight: 800; display: grid; place-items: center; }
+  .recovery .rs div { font-size: .82rem; color: var(--body); line-height: 1.5; }
+  .recovery .rs span { display: block; font-size: .74rem; color: var(--muted); }
+  .recovery .rs.on { border-color: var(--green); background: var(--green-bg); }
+  .recovery .rs.on i { background: var(--green); color: #fff; }
+  @keyframes rc-near { 0%, 4% { background: #c8d2e0; } 8%, 17% { background: var(--green); } 21%, 100% { background: #c8d2e0; } }
+  @keyframes rc-far  { 0%, 22% { background: #c8d2e0; } 26%, 35% { background: var(--green); } 39%, 100% { background: #c8d2e0; } }
+  @keyframes rc-top  { 0%, 40% { background: #c8d2e0; } 44%, 100% { background: var(--green); } }
+  @keyframes rc-apple { 0%, 52% { opacity: 0; } 58%, 76% { opacity: 1; } 82%, 100% { opacity: 0; } }
+  @keyframes rc-plug  { 0%, 80% { opacity: 0; } 86%, 100% { opacity: 1; } }
+  @keyframes rc-on1 { 0%, 4% { border-color: var(--line); background: #fff; } 8%, 17% { border-color: var(--green); background: var(--green-bg); } 21%, 100% { border-color: var(--line); background: #fff; } }
+  @keyframes rc-on2 { 0%, 22% { border-color: var(--line); background: #fff; } 26%, 35% { border-color: var(--green); background: var(--green-bg); } 39%, 100% { border-color: var(--line); background: #fff; } }
+  @keyframes rc-on3 { 0%, 40% { border-color: var(--line); background: #fff; } 44%, 100% { border-color: var(--green); background: var(--green-bg); } }
+  .recovery .btn.near { animation: rc-near 4.4s steps(1,end) infinite; }
+  .recovery .btn.far  { animation: rc-far  4.4s steps(1,end) infinite; }
+  .recovery .btn.top  { animation: rc-top  4.4s steps(1,end) infinite; }
+  .recovery .ph.apple { animation: rc-apple 4.4s ease-out infinite; }
+  .recovery .ph.plug  { animation: rc-plug  4.4s ease-out infinite; }
+  .recovery .rs.s1 { animation: rc-on1 4.4s steps(1,end) infinite; }
+  .recovery .rs.s2 { animation: rc-on2 4.4s steps(1,end) infinite; }
+  .recovery .rs.s3 { animation: rc-on3 4.4s steps(1,end) infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .recovery .btn, .recovery .ph, .recovery .rs { animation: none; }
+  }
+  @media (max-width: 560px) { .recovery .rc { grid-template-columns: 1fr; gap: 22px; } }
 
   /* 兩欄「有備份 / 沒備份」清單 */
   .ba { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
@@ -260,7 +297,7 @@
 
       <div class="callout" style="--c:var(--red)"><div class="ct">順序不能反</div>這是全篇最值錢的一句：<strong>帳號先、機器後。</strong>清除是不可逆的，而帳號救援可以慢慢來——把可逆的事情留到最後做，是唯一不會後悔的順序。</div>
 
-      <p>另外有一種情況這篇不處理：機器是二手買來的，卡住的是<strong>前一手</strong>的 Apple 帳號。那不是「你忘記密碼」，是另一個問題，我們另外有一篇專門談它。</p>
+      <p>另外有一種情況這篇不處理：機器是二手買來的，卡住的是<strong>前一手</strong>的 Apple 帳號。那不是「你忘記密碼」，是另一個問題——請改看<a class="inline" href="../activation-lock-truth/">〈iPad 啟用鎖定，到底解不解得開？〉</a>，那篇還附了一張圖，讓你當場分辨自己卡的是螢幕密碼鎖還是啟用鎖定。</p>
     </section>
 
     <section id="level1">
@@ -414,6 +451,25 @@
         </table>
       </div>
 
+      <figure class="fig recovery">
+        <div class="rc">
+          <div class="pad">
+            <div class="scr3">
+              <div class="ph apple">🍎<small>還不能放手</small></div>
+              <div class="ph plug">💻🔌<small>看到這個才放</small></div>
+            </div>
+            <div class="btn top"><b>頂端</b></div>
+            <div class="btn near"><b>近</b></div>
+            <div class="btn far"><b>遠</b></div>
+          </div>
+          <div>
+            <div class="rs s1"><i>1</i><div>離頂端按鈕<strong>最近</strong>的音量鍵<span>按一下，迅速放開</span></div></div>
+            <div class="rs s2"><i>2</i><div>離頂端按鈕<strong>最遠</strong>的音量鍵<span>按一下，迅速放開</span></div></div>
+            <div class="rs s3"><i>3</i><div><strong>按住</strong>頂端按鈕不放<span>看到蘋果標誌也不能放，要一直按到電腦和連接線的圖案出現</span></div></div>
+          </div>
+        </div>
+        <figcaption>以<b>沒有主畫面按鈕</b>的機型為例（全螢幕的 Pro / Air / mini）。前兩顆是「按一下就放」，只有第三顆要一直按著——<b>放手的時機不是看到蘋果標誌，是看到電腦和連接線。</b></figcaption>
+      </figure>
       <div class="callout" style="--c:var(--green)"><div class="ct">最容易前功盡棄的一句</div>官方原文：「Apple 標誌出現時，繼續按住按鈕。不要放開按鈕，直到出現<strong>電腦和連接線的影像</strong>後，再放開按鈕。」看到蘋果就鬆手，等於白按一次。</div>
 
       <h3>會卡在哪裡（全部是官方寫明的狀況）</h3>
@@ -449,6 +505,7 @@
 
       <p>兩條清除路徑問你帳號的<strong>時間點</strong>不一樣。免電腦那條，官方步驟是在清除以前就先要你輸入 Apple 帳號密碼登出帳號；電腦那條沒有這一步，驗證就落在重新啟用的時候。</p>
       <p>但結論是一樣的：不管走哪條路，那組密碼你都逃不掉，差別只在它什麼時候問你。這也是第 01 節那個檢查要放在最前面的原因。</p>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">這一關卡住了怎麼辦</div>如果你走到這裡，畫面要的是<strong>別人的</strong> Apple 帳號（例如二手買來的機器），那已經不是這篇的範圍了——請看<a class="inline" href="../activation-lock-truth/">〈iPad 啟用鎖定，到底解不解得開？〉</a>，裡面有官方唯一那條移除管道，以及三類「破解方法」照做之後實際會發生什麼。</div>
 
       <h3>資料回不回得來，取決於一件事</h3>
       <div class="ba">

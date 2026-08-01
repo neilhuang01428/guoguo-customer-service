@@ -18,41 +18,8 @@
   /* stat 數字為文字型（A10X↓／哈囉），縮小以免擠爆卡片（共用檔 1.85rem） */
   .stat .num { font-family: var(--mono); font-size: 1.55rem; font-weight: 800; color: var(--c); line-height: 1.05; }
 
-  /* ── 導言區 lead：把三段連續 .lede 拆成四種載體 ──
-     原本的問題：h1 底下接三段 1.06rem 的 .lede，字級、顏色、行距全部一樣。
-     內容規範只要求「導言 >200 字要分段」，這裡確實分了三段——但分了段卻長得一模一樣，
-     視覺上仍是一整面灰牆，讀者的眼睛沒有落點，最重要的那句結論跟過場句同等重量。
-     作法：字一個都不刪，只換載體——
-       .lead-ans  全篇最重要的結論 → 大字卡（左側色框沿用 .callout 的語彙）
-       .lead-src  Apple 官方原文   → 獨立成引用，從長段落裡抽出來
-       .lede      推論句           → 保留原樣式，此時它是唯一的純文字段，反而突顯
-       .lead-map  「這頁講什麼」   → 轉成可點的三格導覽（窄螢幕 nav 隱藏時它就是目錄）
-     ⚠️ 同一組樣式在 forgot-passcode-rescue-ladder 也有一份，刻意重複。
-        若第三篇要用，再上抽到 assets/style.css 並同步 html-guidelines.html。 */
-  .lead { margin-bottom: 4px; }
-  .lead-ans { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--c, var(--navy)); border-radius: 10px; padding: 18px 22px; box-shadow: 0 2px 10px rgba(20,39,68,.04); }
-  .lead-ans + .lead-ans { margin-top: 10px; }
-  .lead-ans .lt { font-family: var(--mono); font-size: .68rem; font-weight: 700; color: var(--c); margin-bottom: 8px; }
-  .lead-ans .big { font-size: 1.3rem; font-weight: 800; color: var(--ink); line-height: 1.45; margin-bottom: 10px; }
-  .lead-ans .sm { font-size: 1rem; line-height: 1.8; margin-bottom: 0; }
-  .lead-src { margin-top: 11px; padding: 13px 17px; background: var(--navy-bg); border-radius: 9px; font-size: .93rem; line-height: 1.75; color: var(--body); }
-  .lead-src cite { display: block; font-family: var(--mono); font-size: .66rem; font-style: normal; color: var(--muted); margin-top: 7px; }
-  .lead .lede { margin: 18px 0 0; }
-
-  /* 「這頁講什麼」三格導覽：原本是導言第三段的一句話，改成可點的入口 */
-  .lead-map { margin: 24px 0 0; }
-  .lead-map .lm-t { font-size: .95rem; color: var(--body); margin-bottom: 9px; }
-  .lead-map .lm-g { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
-  .lead-map a { display: block; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 13px; text-decoration: none; color: var(--ink); font-size: .89rem; line-height: 1.5; transition: .12s; }
-  .lead-map a:hover { border-color: var(--navy); background: var(--navy-bg); }
-  .lead-map a i { display: block; font-family: var(--mono); font-style: normal; font-size: .66rem; color: var(--navy); font-weight: 700; margin-bottom: 4px; }
-  @media (max-width: 560px) { .lead-map .lm-g { grid-template-columns: 1fr; } }
-
-  /* 導言裡的別名對照行：讀者多半是用「Apple ID 鎖」「iCloud 鎖」搜進來的，
-     但 Apple 官方文件從頭到尾只寫「啟用鎖定」與「Apple 帳號」。
-     兩套詞彙對不上，讀者會懷疑自己找錯頁——所以第一屏就要把名字接起來。 */
-  .alias-line { font-size: .88rem; color: var(--body); line-height: 1.7; margin: 12px 0 0; padding-top: 11px; border-top: 1px solid var(--grid); }
-  .alias-line b { font-family: var(--mono); font-size: .82rem; color: var(--red); font-weight: 700; }
+  /* 導言區 .lead / .lead-ans / .lead-src / .lead-map / .alias-line 已上抽到
+     assets/style.css（並同步 html-guidelines.html），本篇不再重複定義。 */
 
   /* ── 兩種鎖的判別圖 twolock ──
      讀者最常搞混、也最常問的一件事：「我進不去 iPad」到底是螢幕密碼鎖還是啟用鎖定？
@@ -81,6 +48,11 @@
   .twolock .tl-al { font-family: var(--mono); font-size: .68rem; color: var(--c); margin-top: 3px; }
   .twolock .tl-v { font-size: .86rem; color: var(--body); margin-top: 8px; line-height: 1.6; }
   .twolock .tl-a { font-size: .82rem; font-weight: 700; color: var(--c); margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--grid); }
+  /* 判定「不是這篇」的人必須有路可走，否則這張圖只做了一半：
+     讀者好不容易分辨出自己卡的是哪一種鎖，卻不知道接下來該去哪裡。
+     連結沿用卡片的語意色（不用 a.inline 的粉紅），才不會跟卡片配色打架。 */
+  .twolock .tl-a a { color: var(--c); text-decoration: none; border-bottom: 1px solid currentColor; }
+  .twolock .tl-a a:hover { background: var(--green-bg); }
   @media (max-width: 560px) { .twolock .tl-g { grid-template-columns: 1fr; } .twolock .scr2 { min-height: 0; } }
 
   /* bigquote 置中引言版（比照站上既有文章） */
@@ -114,10 +86,58 @@
     .anim .ban.late, .anim .lockscr.back { animation: none; }
   }
 
+  /* ── 動態分鏡：每次開機，機器都會再問 Apple 一次 ──
+     用動畫的理由：這是全篇的心智模型，而它的重點是一個「往返」動作——
+     不是「鎖在哪裡」的靜態組成（那個上面那張 flow 已經講完了），
+     而是「這件事每一次開機都會重來」。靜態圖畫得出兩個端點，畫不出「又問了一次」；
+     迴圈播放的動畫本身就是這句話的形狀。
+     ★ 鐵則：基礎樣式＝動畫最終狀態（訊號已經帶著紅色的答案回到 iPad 這端），
+       兩行標籤常駐，關掉動畫仍是一張完整的來回示意圖。 */
+  .askapple .aa { display: grid; grid-template-columns: 1fr 1.5fr 1fr; align-items: center; gap: 6px; }
+  .askapple .node { text-align: center; }
+  .askapple .node span { font-size: 1.7rem; line-height: 1.2; }
+  .askapple .node b { display: block; font-size: .88rem; color: var(--ink); margin-top: 2px; }
+  .askapple .node small { display: block; font-family: var(--mono); font-size: .62rem; color: var(--muted); margin-top: 2px; }
+  .askapple .wire { position: relative; height: 58px; }
+  .askapple .wire::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 2px; margin-top: -1px; border-radius: 2px; background: repeating-linear-gradient(90deg, var(--line) 0 5px, transparent 5px 10px); }
+  .askapple .sig { position: absolute; top: 50%; left: 2%; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: var(--red); box-shadow: 0 0 0 4px rgba(192,73,47,.16); }
+  .askapple .lbl { position: absolute; left: 0; right: 0; text-align: center; font-size: .72rem; line-height: 1.4; }
+  .askapple .lbl.up { bottom: 56%; color: var(--navy); }
+  .askapple .lbl.dn { top: 56%; color: var(--red); }
+  @keyframes aa-move { 0%, 6% { left: 2%; } 40%, 50% { left: 98%; } 86%, 100% { left: 2%; } }
+  @keyframes aa-col  { 0%, 44% { background: var(--navy); box-shadow: 0 0 0 4px rgba(23,52,95,.14); } 50%, 100% { background: var(--red); box-shadow: 0 0 0 4px rgba(192,73,47,.16); } }
+  .askapple .sig { animation: aa-move 4.4s ease-in-out infinite, aa-col 4.4s steps(1,end) infinite; }
+  @media (prefers-reduced-motion: reduce) { .askapple .sig { animation: none; } }
+
+  /* ── 動態分鏡：清完了，不代表過關 ──
+     用動畫的理由：這一格的知識點就是「時間差」——賣家當著你的面清除，
+     畫面轉一圈回到「哈囉」，看起來乾乾淨淨；要一路點到啟用那一步，
+     才會冒出「請輸入某個 Apple 帳號」。踩雷的人全部踩在中間那一格就付錢了。
+     資訊藏在時間軸上，靜態圖沒有時間軸。
+     ★ 鐵則：基礎樣式＝動畫最終狀態（第三格的帳號要求已經蓋上去了）。 */
+  .anim .hello { position: absolute; inset: 0; display: grid; place-content: center; background: #fff; font-size: 9cqi; font-weight: 800; color: var(--ink); }
+  .anim .wipe { position: absolute; inset: 0; display: grid; place-content: center; gap: 2.5cqi; justify-items: center; background: #fff; }
+  .anim .wipe i { display: block; width: 26cqi; height: 3cqi; border-radius: 99px; background: var(--navy-bg); overflow: hidden; }
+  .anim .wipe i::after { content: ''; display: block; width: 62%; height: 100%; border-radius: 99px; background: var(--navy); }
+  /* 6cqi＋navy：這格在 130px 寬的螢幕框裡，5cqi 的灰字實測幾乎讀不出來 */
+  .anim .wipe span { font-family: var(--mono); font-size: 6cqi; color: var(--navy); }
+  @keyframes chk-late { 0%, 60% { opacity: 0; } 76%, 100% { opacity: 1; } }
+  .anim .lockscr.reveal { animation: chk-late 4.4s ease-out infinite; }
+  @media (prefers-reduced-motion: reduce) { .anim .lockscr.reveal { animation: none; } }
+
   @media (max-width: 860px) {
     .masthead { padding-left: 20px; padding-right: 20px; }
     .stats { grid-template-columns: 1fr 1fr; }
     .bigquote { margin: 28px 4px; }
+  }
+  /* 手機不拆成單欄：這張圖的意思就是「兩端之間的一趟來回」，
+     一旦堆疊成上下，中間那條水平線上的訊號點就對不上兩端了。改成縮字、維持三欄。 */
+  @media (max-width: 560px) {
+    .askapple .aa { grid-template-columns: 1fr 1.25fr 1fr; gap: 2px; }
+    .askapple .node span { font-size: 1.4rem; }
+    .askapple .node b { font-size: .76rem; line-height: 1.35; }
+    .askapple .node small { font-size: .56rem; }
+    .askapple .lbl { font-size: .62rem; }
   }
 </style>
 </head>
@@ -209,7 +229,7 @@
             <div class="tl-nm">螢幕密碼鎖</div>
             <div class="tl-al">俗稱：密碼鎖／鎖機／停用</div>
             <div class="tl-v"><strong>機器是你的</strong>，只是你自己進不去。整個畫面<strong>不會出現任何帳號</strong>。</div>
-            <div class="tl-a">✗ 不是這篇——有官方解法可以走</div>
+            <div class="tl-a">✗ 不是這篇 → 看<a href="../forgot-passcode-rescue-ladder/">〈忘記密碼：三層救援階梯〉</a></div>
           </div>
           <div class="tl" style="--c:var(--red)">
             <div class="scr2">
@@ -246,6 +266,18 @@
         <figcaption>鎖不在機身裡，而是在<b>中間那格</b>——Apple 伺服器上那筆「這台屬於誰」的紀錄。</figcaption>
       </figure>
       <div class="callout" style="--c:var(--navy)"><div class="ct">Apple 官方原文</div>「開啟後，Apple 會將你的『Apple 帳號』安全地儲存在其啟用伺服器，並將『Apple 帳號』與你的裝置建立連結。」——所以要拿掉鎖，只有兩種可能：<strong>那個帳號自己來解，或 Apple 從伺服器端幫你拿掉</strong>。第三種不存在。</div>
+      <figure class="fig askapple">
+        <div class="aa">
+          <div class="node"><span>📱</span><b>你的 iPad</b><small>每一次開機</small></div>
+          <div class="wire">
+            <div class="lbl up">「這台是誰的？」</div>
+            <i class="sig"></i>
+            <div class="lbl dn">「不是你的帳號」</div>
+          </div>
+          <div class="node"><span>☁️</span><b>Apple 啟用伺服器</b><small>紀錄放在這裡</small></div>
+        </div>
+        <figcaption>這趟來回<b>每次開機都會重跑一遍</b>。所以「繞過」能做的，頂多是讓機器這一次別去問——<b>它不會讓答案變成不一樣。</b></figcaption>
+      </figure>
       <p>換個比喻：這台 iPad 像一間換了電子鎖的房子，而<strong>那把鑰匙的資料存在管理室（Apple）</strong>，不在門上。你把門把拆了、換了新的門把，管理室的紀錄一樣沒變——下次系統對帳，還是會告訴你「這間不是你的」。</p>
       <details>
         <summary>那為什麼 Apple 要設計得這麼死？（一句話：它解得開就沒用了）</summary>
@@ -423,6 +455,31 @@
         <tr><td class="bad">要求輸入某個 Apple 帳號<br>／「已為擁有者鎖定」</td><td>還綁在上一位的帳號上</td><td class="bad">🚩 當場退回，不要付款、不要收</td></tr>
       </table>
       <div class="callout" style="--c:var(--purple)"><div class="ct">關鍵是「清除完之後再看一次」</div>很多人踩雷的點在這裡：賣家在你面前按了「清除所有內容和設定」，畫面轉一圈回到設定精靈，看起來很乾淨——<strong>但如果原帳號沒有解除，走到啟用那一步才會跳出來要帳號</strong>。所以驗機不能停在「清完了」，要一路點到看見「哈囉」。</div>
+      <figure class="fig anim">
+        <div class="flow">
+          <div class="box">
+            <div class="scr"><div class="wipe"><span>清除中…</span><i></i></div></div>
+            <div class="bt">step_01</div>
+            <div class="bv">賣家當面按下清除</div>
+          </div>
+          <div class="arr">→</div>
+          <div class="box">
+            <div class="scr"><div class="hello">哈囉</div></div>
+            <div class="bt">step_02</div>
+            <div class="bv">看起來乾乾淨淨</div>
+          </div>
+          <div class="arr">→</div>
+          <div class="box">
+            <div class="scr">
+              <div class="hello">哈囉</div>
+              <div class="lockscr reveal"><div class="lk">🍎</div><div class="lt">要求 Apple 帳號</div></div>
+            </div>
+            <div class="bt">step_03</div>
+            <div class="bv">走到啟用才跳出來</div>
+          </div>
+        </div>
+        <figcaption>錢通常就是在<b>中間那一格</b>付出去的——畫面最乾淨、資訊也最少的那一刻。<b>要一路點到啟用那一步，答案才會出現。</b></figcaption>
+      </figure>
 
       <h3>下單前先問這五句（線上交易也適用）</h3>
       <ul class="check">
