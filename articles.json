@@ -1072,7 +1072,8 @@
         "q": "iPad 清除後沒有備份，資料還救得回來嗎？",
         "a": "只有原本就同步在 iCloud 上的資料回得來。Apple 官方的說法是：如果沒有備份，可以把 iPad 設定成新裝置，然後下載你存放在 iCloud 的任何資料。換句話說，只存在這台機器裡、從來沒有同步過的照片與檔案，清除之後就是永久消失，沒有任何工具能還原。所以按下清除以前，務必先確認自己的備份狀況。"
       }
-    ]
+    ],
+    "ogImage": "assets/og/forgot-passcode-rescue-ladder-cover.png"
   },
   {
     "slug": "activation-lock-truth",
