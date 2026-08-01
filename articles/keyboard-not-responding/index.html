@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>iPad 鍵盤沒反應？先別急著買新的：接觸式／藍牙分流排查 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式（共用 assets/style.css 沒有的部分）── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 表格橫向捲動（寬表格自己捲，不會撐開整頁） */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 600px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+
+  /* ── 兩種鍵盤的判別圖 twokb ──
+     這是全篇的分流依據，也是最多人一開始就走錯的地方：
+     走聰穎接點的鍵盤「不會出現在藍牙清單裡」，所以叫人「去藍牙設定看看」
+     對這一半的讀者完全無效。判別特徵刻意只留三個看得到、摸得到的：
+     要不要充電、要不要配對、機身上有沒有接點。 */
+  .twokb .kb-g { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+  .twokb .kb { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 11px; padding: 14px 15px 15px; display: flex; flex-direction: column; }
+  .twokb .kb-nm { font-size: 1.02rem; font-weight: 800; color: var(--ink); }
+  .twokb .kb-al { font-family: var(--mono); font-size: .68rem; color: var(--c); margin-top: 3px; }
+  .twokb .kb-list { list-style: none; margin: 11px 0 0; }
+  .twokb .kb-list li { font-size: .85rem; color: var(--body); padding: 6px 0 6px 20px; position: relative; border-bottom: 1px solid var(--grid); line-height: 1.55; }
+  .twokb .kb-list li:last-child { border-bottom: 0; }
+  .twokb .kb-list li::before { content: '·'; position: absolute; left: 5px; color: var(--c); font-weight: 800; }
+  .twokb .kb-go { font-size: .84rem; font-weight: 700; color: var(--c); margin-top: auto; padding-top: 10px; }
+  .twokb .kb-go a { color: var(--c); text-decoration: none; border-bottom: 1px solid currentColor; }
+
+  /* ── 聰穎接點位置示意 dots ──
+     官方叫你「清潔鍵盤上以及 iPad 背面或邊緣的聰穎接點」，但沒說長什麼樣。
+     多數人從沒注意過機身上那三顆小圓點，畫出來比描述有效。 */
+  .dots .dv { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: center; }
+  .dots .pad { position: relative; aspect-ratio: 3/4; max-width: 128px; margin: 0 auto; border: 2px solid var(--navy); border-radius: 12px; background: #fff; }
+  .dots .pad.back { background: var(--panel2); }
+  .dots .pad .lbl { position: absolute; top: 8px; left: 0; right: 0; text-align: center; font-family: var(--mono); font-size: .58rem; color: var(--muted); }
+  .dots .three { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); display: flex; gap: 9px; }
+  .dots .three i { display: block; width: 9px; height: 9px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px rgba(47,158,87,.16); }
+  .dots .side { position: absolute; left: -4px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 9px; }
+  .dots .side i { display: block; width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px rgba(47,158,87,.16); }
+  .dots .note { font-size: .86rem; color: var(--body); line-height: 1.7; }
+
+  /* ── 兩層示意 layers ──
+     原理段的主圖：讓「重置設定」跟「清除資料」在視覺上就是兩個不同的盒子。
+     怕重置的人怕的是資料被動到，圖要先解除這個恐懼。 */
+  .layers .ly { border: 1px solid var(--line); border-radius: 11px; overflow: hidden; }
+  .layers .row { display: grid; grid-template-columns: 92px 1fr; align-items: stretch; }
+  .layers .row + .row { border-top: 1px solid var(--line); }
+  /* border-radius:0 是必要的：共用檔有一個標籤雲元件也叫 .tag，帶 border-radius:999px，
+     不覆蓋掉的話這一格會被撐成圓形，兩行字擠在圓裡很難讀。 */
+  .layers .tag { display: grid; place-content: center; text-align: center; font-family: var(--mono); font-size: .66rem; font-weight: 700; color: #fff; background: var(--c); border: 0; border-radius: 0; padding: 12px 6px; line-height: 1.4; }
+  .layers .bd { padding: 12px 15px; background: #fff; }
+  .layers .bd b { display: block; font-size: .95rem; color: var(--ink); }
+  .layers .bd span { display: block; font-size: .84rem; color: var(--body); margin-top: 3px; line-height: 1.6; }
+  .layers .bd em { display: inline-block; font-style: normal; font-family: var(--mono); font-size: .68rem; color: var(--c); background: var(--cbg); border-radius: 5px; padding: 2px 8px; margin-top: 7px; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+  }
+  @media (max-width: 560px) {
+    .twokb .kb-g { grid-template-columns: 1fr; }
+    .dots .dv { grid-template-columns: 1fr; }
+    .layers .row { grid-template-columns: 68px 1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>iPad 鍵盤沒反應</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#triage" class="active">00 · 先分是哪一種鍵盤</a>
+  <div class="grp">先看懂症狀</div>
+  <a href="#symptom">01 · 三種「沒反應」</a>
+  <div class="grp">兩條排查線</div>
+  <a href="#contact">02 · 接觸式：看接點</a>
+  <a href="#bluetooth">03 · 藍牙式：看配對</a>
+  <a href="#settings">04 · 打得出字但字是錯的</a>
+  <div class="grp">最後一招</div>
+  <a href="#reset">05 · 重置所有設定</a>
+  <a href="#why">06 · 為什麼它有效</a>
+  <a href="#hardware">07 · 真的是壞了嗎</a>
+  <div class="grp">果果的角度</div>
+  <a href="#guoguo">08 · 檢測台上看到的</a>
+  <a href="#sources">來源與更新日期</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>鍵盤天天經手，最知道哪一步真的有用</div>
+      </div>
+      <div class="pills"><span>先分種類再排查</span><span>官方步驟附原文</span><span>查不到官方出處的就不寫</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">iPad 疑難排解 / 外接鍵盤</div>
+    <h1>iPad 鍵盤沒反應？先別急著買新的</h1>
+    <p class="subtitle">打字打到一半突然沒反應、觸控板也不動，拔起來重裝還是死的——先別查價錢。在動手買之前，有一條五分鐘的排查路，順序對了通常就結束了。</p>
+
+    <div class="lead-ans" style="--c:var(--green)">
+      <div class="lt">先講結論</div>
+      <p class="big">鍵盤沒反應，多數時候不是鍵盤壞了。</p>
+      <p class="sm">先看你的鍵盤是哪一種：<strong>吸上去就能用、不用充電也不用配對</strong>的，走聰穎接點，該查的是接點乾不乾淨；<strong>要充電、要配對</strong>的才是藍牙鍵盤，該查的是配對紀錄。兩條路走完還是不行，才輪到「重置所有設定」——它會清掉設定，但 Apple 官方明寫<strong>不會刪除任何資料或媒體</strong>。</p>
+      <p class="alias-line">最常見的錯誤指引是「去設定→藍牙看看有沒有配對」。如果你用的是<b>巧控鍵盤</b>或<b>聰穎鍵盤</b>這類吸附式的，它<strong>根本不會出現在藍牙清單裡</strong>——不是壞掉，是它本來就不走藍牙。</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat" style="--c:var(--navy)"><div class="num">4</div><div class="lab">官方給的<br>鍵盤排錯步驟</div></div>
+      <div class="stat" style="--c:var(--amber)"><div class="num">18.3</div><div class="lab">iPad Air 巧控鍵盤<br>需要的 iPadOS 版本</div></div>
+      <div class="stat" style="--c:var(--green)"><div class="num">0</div><div class="lab">重置所有設定<br>會刪掉的照片數</div></div>
+      <div class="stat" style="--c:var(--red)"><div class="num">17</div><div class="lab">重置會清掉的<br>設定項目（官方列）</div></div>
+    </div>
+
+    <div class="lead-map">
+      <div class="lm-t">這篇按你手上那把鍵盤分兩條路走，每一步修好就可以停：</div>
+      <div class="lm-g">
+        <a href="#triage"><i>00</i>先分接觸式還是藍牙式</a>
+        <a href="#symptom"><i>01</i>三種「沒反應」差很多</a>
+        <a href="#reset"><i>05</i>重置所有設定與原理</a>
+      </div>
+    </div>
+
+    <p class="updated">本文查證：<b>2026 年 8 月</b>，操作步驟與官方原文皆取自 Apple 支援文件與 iPad 使用手冊，查不到官方出處的說法我們寧可不寫。Apple 隨時可能調整畫面與流程，操作時以你機器上的實際字樣為準。<a class="inline" href="#sources">來源列在文末</a>。</p>
+
+    <section id="triage">
+      <div class="sec-label" style="--c:var(--navy)">triage</div>
+      <h2>00 · 先分清楚：你的鍵盤是哪一種</h2>
+      <p>這一步最重要，因為<strong>兩種鍵盤故障的原因完全不同，排查方法也不能互換</strong>。判斷只要 10 秒，看三件事就好。</p>
+
+      <figure class="fig twokb">
+        <div class="kb-g">
+          <div class="kb" style="--c:var(--navy)">
+            <div class="kb-nm">接觸式（聰穎接點）</div>
+            <div class="kb-al">巧控鍵盤／聰穎鍵盤／鍵盤式聰穎雙面夾</div>
+            <ul class="kb-list">
+              <li><strong>不用充電</strong>——電力從 iPad 直接供給</li>
+              <li><strong>不用配對</strong>——吸上去就能打字</li>
+              <li>iPad 背面或邊緣有<strong>一排小圓點</strong>接點</li>
+              <li>在「設定 → 藍牙」裡<strong>看不到它</strong></li>
+            </ul>
+            <div class="kb-go">→ 走 <a href="#contact">第 02 節</a>：查接點</div>
+          </div>
+          <div class="kb" style="--c:var(--purple)">
+            <div class="kb-nm">藍牙式</div>
+            <div class="kb-al">巧控鍵盤（Mac 用）／各家第三方藍牙鍵盤</div>
+            <ul class="kb-list">
+              <li><strong>要充電</strong>——自己有電池和開關</li>
+              <li><strong>要配對</strong>——第一次用要按配對鍵</li>
+              <li>機身沒有吸附用的接點</li>
+              <li>在「設定 → 藍牙」的清單裡<strong>找得到名字</strong></li>
+            </ul>
+            <div class="kb-go">→ 走 <a href="#bluetooth">第 03 節</a>：查配對</div>
+          </div>
+        </div>
+        <figcaption>分辨方法最快的一句：<b>它需要充電嗎？</b>不需要充電、吸上去就能用的，就是接觸式——這種鍵盤永遠不會出現在藍牙清單裡。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">全網最常見的錯誤指引</div>「請到設定 → 藍牙看看有沒有配對」——對接觸式鍵盤的使用者來說，這句話是無效的。Apple 官方文件講得很清楚：巧控鍵盤「<strong>不需要將巧控鍵盤配對、開機或充電</strong>」。看不到它不代表故障，照著藍牙路線排查只會白花時間。</div>
+    </section>
+
+    <div class="part-div">先看懂症狀</div>
+
+    <section id="symptom">
+      <div class="sec-label" style="--c:var(--teal)">symptom</div>
+      <h2>01 · 「沒反應」其實有三種，差很多</h2>
+      <p>大家都說「鍵盤沒反應」，但講的往往是三件不同的事。<strong>分錯了，後面每一步都會做白工。</strong></p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你遇到的狀況</th><th>最可能是什麼</th><th>先做哪一步</th></tr>
+          <tr>
+            <td>整把鍵盤完全沒反應<br><small>連觸控板也不動</small></td>
+            <td>接點沒接好、版本太舊、或連線沒建立</td>
+            <td class="good">走 <a class="inline" href="#contact">第 02 節</a>官方四步</td>
+          </tr>
+          <tr>
+            <td>某幾顆鍵打不出來<br><small>其他鍵都正常</small></td>
+            <td>接點髒污或該顆鍵本身的硬體問題</td>
+            <td>先做<strong>跨 App 測試</strong>（見下方）</td>
+          </tr>
+          <tr>
+            <td class="good">每顆鍵都有反應<br><small>但打出來的字元是錯的</small></td>
+            <td class="good">幾乎都是設定，不是壞掉</td>
+            <td class="good">跳 <a class="inline" href="#settings">第 04 節</a>查設定</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">一句話幫你省下拆機的時間</div><strong>硬體壞鍵，是某幾顆完全沒反應；設定問題，是每顆都有反應、但出來的字元錯位，而且錯得有規律。</strong>只要按下去「有東西出現」，那條線路就是通的——通的東西不會是接觸不良。</div>
+
+      <h3>跨 App 測試：30 秒分辨是鍵盤、是 App、還是設定</h3>
+      <p>找三個地方各打幾個字：備忘錄、Safari 的網址列、設定裡的搜尋欄。三個都試過再看結果：</p>
+      <div class="steps">
+        <div class="step" style="--c:var(--red)"><div class="n">A</div><div>
+          <h4>三個地方都是固定同幾顆鍵不能用</h4>
+          <p>問題跟著鍵盤走，先清潔接點、取下保護殼、更新 iPadOS 再測一次。都做完仍舊，硬體的可能性就高了。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">B</div><div>
+          <h4>只有某一個 App 打不了字</h4>
+          <p>那是那支 App 的事，不是鍵盤。強制關閉那個 App 再開、更新它、必要時刪掉重裝。這種情況重置全機設定幫不上忙。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">C</div><div>
+          <h4>打得出字，但字元不對</h4>
+          <p>例如按 Y 出來 Z、引號變成別的符號。這是鍵盤佈局或變更鍵被改過，<strong>換新鍵盤也不會好</strong>。直接看第 04 節。</p></div></div>
+      </div>
+    </section>
+
+    <div class="part-div">兩條排查線</div>
+
+    <section id="contact">
+      <div class="sec-label" style="--c:var(--navy)">smart_connector</div>
+      <h2>02 · 接觸式線：Apple 官方就四個步驟</h2>
+      <p>如果你的鍵盤是吸上去就能用的那種，官方支援文件給的排錯流程只有四步。<strong>照順序做，做完一步測一次</strong>，好了就停，不用全部跑完。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">01</div><div>
+          <h4>先確認這把鍵盤真的能配你這台 iPad</h4>
+          <p>官方第一步不是清潔也不是重開，是「確認你的 iPad 和鍵盤或雙面夾可以搭配使用」。尺寸相同不代表相容，跨代之間常常吸得上去卻不會動。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">02</div><div>
+          <h4>更新 iPadOS——這一步比你想的常見</h4>
+          <p>官方明訂版本門檻：<strong>適用於 iPad Air 的巧控鍵盤須搭載 iPadOS 18.3 或以上版本，其他巧控鍵盤須 14.5 或以上版本。</strong>新鍵盤配舊系統，症狀就是完全沒反應。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">03</div><div>
+          <h4>清潔聰穎接點，兩邊都要清</h4>
+          <p>先把鍵盤從 iPad 上取下，用<strong>柔軟且不起毛絮的布</strong>清潔鍵盤上、以及 <strong>iPad 背面或邊緣</strong>的聰穎接點。很多人只擦鍵盤那側，忘了機身這側。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">04</div><div>
+          <h4>取下其他保護殼，重新接上；沒立即回應就重新啟動 iPad</h4>
+          <p>官方特別點名：使用巧控鍵盤或鍵盤式聰穎雙面夾時，請<strong>取下任何其他 iPad 保護殼或護蓋</strong>。接回去之後如果鍵盤沒有立即回應，重新啟動 iPad。</p></div></div>
+      </div>
+
+      <h3>「聰穎接點」到底在哪裡？</h3>
+      <p>官方叫你清潔接點，卻沒說它長什麼樣子。它是機身上一排<strong>小小的金屬圓點</strong>，位置依機型不同——這也是很多人從來沒注意過的地方。</p>
+
+      <figure class="fig dots">
+        <div class="dv">
+          <div>
+            <div class="pad back">
+              <div class="lbl">iPad 背面</div>
+              <div class="three"><i></i><i></i><i></i></div>
+            </div>
+          </div>
+          <div class="note">
+            <p style="margin-bottom:8px"><strong>背面靠近底部</strong>：巧控鍵盤、鍵盤式聰穎雙面夾這類從背面吸附的，接點在機身背面下緣。</p>
+            <p style="margin-bottom:0"><strong>側邊</strong>：部分機型的接點在長邊側面。找不到的話，把鍵盤翻過來看它的接點在哪，機身對應的位置就是。</p>
+          </div>
+        </div>
+        <figcaption>清潔時<b>兩側都要擦</b>——鍵盤上的接點，以及 iPad 機身上與它相貼的那一排。只擦一邊是最常見的漏做。</figcaption>
+      </figure>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">官方唯一寫明的清潔工具</div>「使用<strong>柔軟且不起毛絮的布</strong>」——官方對這一步只給了這一句。乾擦、輕擦，把可能墊在中間的灰塵或棉絮帶走。</div>
+        <div class="callout" style="--c:var(--red)"><div class="ct">誠實說：這些偏方官方沒有背書</div>網路上流傳的酒精棉片、橡皮擦、牙刷刷接點，<strong>Apple 官方文件裡沒有任何一種</strong>。我們不轉載沒有出處的做法——金屬鍍層被磨損是不可逆的，賭注和收益不成比例。</div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">如果跳出「不支援配件」的提示</div>那通常不是相容性問題，而是<strong>接點被東西擋住了</strong>。官方要你檢查接點針腳上有沒有碎屑或塑膠膜——新機或整新機的保護膜沒撕乾淨，是很典型的一種。</div>
+    </section>
+
+    <section id="bluetooth">
+      <div class="sec-label" style="--c:var(--purple)">bluetooth</div>
+      <h2>03 · 藍牙線：問題幾乎都在配對關係</h2>
+      <p>藍牙鍵盤的死因跟接觸式完全不同。它不是「接觸不良」，而是<strong>iPad 和鍵盤之間那份配對紀錄出了狀況</strong>。按這個順序查：</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">01</div><div>
+          <h4>電量與開關——先排除最尷尬的那個</h4>
+          <p>藍牙鍵盤自己有電池。充一段時間再測，並確認實體開關是開的。這一步聽起來多餘，但它是真實排名第一的原因。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">02</div><div>
+          <h4>iPad 的藍牙開著嗎？清單裡顯示什麼？</h4>
+          <p>前往「設定 → 藍牙」。如果顯示「未連線」，點一下試著連；如果連名字都找不到，讓鍵盤重新進入可被偵測的狀態再找一次。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">03</div><div>
+          <h4>顯示「已連線」卻打不出字？先查 App 的藍牙權限</h4>
+          <p>官方把這一步排在「取消配對」<strong>之前</strong>：前往「設定 → 隱私權與安全性 → 藍牙」，確認已為那個 App 開啟權限。看到「已連線」就斷定鍵盤壞了，是很常見的誤判。</p></div></div>
+        <div class="step" style="--c:var(--red)"><div class="n">04</div><div>
+          <h4>最後才用「忘記此裝置設定」重新配對</h4>
+          <p>路徑是「設定 → 藍牙 → 該裝置右邊的 ⓘ → 忘記此裝置設定」。官方對它的定義只有一句：把配件「<strong>從可用的藍牙裝置列表中移除</strong>」。移除後要讓鍵盤回到可被偵測模式，再重新配一次——它不會自己接回來。</p></div></div>
+      </div>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--amber)"><div class="ct">按下去之前要知道的代價</div>官方明寫：該配件會在<strong>所有登入你 Apple 帳號的裝置上一起取消配對</strong>。所以按之前先想一下，這顆鍵盤是不是也配著你的其他裝置——等一下都要重配一次。</div>
+        <div class="callout" style="--c:var(--red)"><div class="ct">別把它講成「重置藍牙」</div>網路上寫「忘記此裝置＝清除快取／重置藍牙模組」，聽起來很專業，但<strong>查不到官方出處</strong>。Apple 只說「從可用列表移除」，沒有一個字提到快取或韌體。取消再重新配對確實是官方建議的排錯步驟，我們照做就好，不必替它加上沒有根據的解釋。</div>
+      </div>
+    </section>
+
+    <section id="settings">
+      <div class="sec-label" style="--c:var(--teal)">false_alarm</div>
+      <h2>04 · 打得出字、但字是錯的——這幾乎都是設定</h2>
+      <p>這一節專門救一種人：鍵盤明明有反應，但打出來的東西不對。<strong>這種情況換新鍵盤百分之百不會好</strong>，因為問題根本不在鍵盤上。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>症狀</th><th>其實是這個設定</th><th>去哪裡改</th></tr>
+          <tr><td>按 Y 出來 Z、引號變成別的符號</td><td>替代鍵盤佈局<small>官方允許指定一個「不符合鍵盤上按鍵」的佈局</small></td><td>設定 → 一般 → 鍵盤 → 硬體鍵盤</td></tr>
+          <tr><td>Command 沒作用、Caps Lock 變成別的功能</td><td>「變更鍵」被改過<small>iPad 官方繁中叫「變更鍵」</small></td><td>設定 → 一般 → 鍵盤 → 硬體鍵盤 → 變更鍵</td></tr>
+          <tr><td>打字連續跳字、要按很久才出字</td><td>按鍵重複／按鍵暫留／慢速按鍵</td><td>設定 → 輔助使用 → 鍵盤與輸入</td></tr>
+          <tr><td>打一打突然變注音、日文或表情符號</td><td>Caps Lock 被設成切換語言</td><td>設定 → 一般 → 鍵盤 → 硬體鍵盤，關閉「使用大寫鎖定鍵切換語言」</td></tr>
+          <tr><td>螢幕鍵盤全部變大寫</td><td class="good">「顯示小寫按鍵」被關掉，不是輸入法壞</td><td>設定 → 輔助使用 → 鍵盤與輸入</td></tr>
+          <tr><td>按地球鍵不會切語言了</td><td>地球鍵被設成只叫出表情符號</td><td>鍵盤設定裡的「按 🌐 顯示表情符號」</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">兩個特別容易誤判的</div>①「<strong>慢速按鍵</strong>」造成的延遲，很像藍牙鍵盤訊號差或電量不足——別急著換鍵盤或換電池，先看這一頁。<br>② 二手買到的外接鍵盤常是美規、日規、歐規混賣，<strong>佈局本來就跟你想的不同</strong>，這時要調的是設定，不是換一把。</div>
+    </section>
+
+    <div class="part-div">最後一招</div>
+
+    <section id="reset">
+      <div class="sec-label" style="--c:var(--red)">reset_all</div>
+      <h2>05 · 上面都做完還是不行：重置所有設定</h2>
+      <p>走到這裡，代表接點清過、版本更新過、配對重來過，狀況都還在。這時才輪到這一招。</p>
+      <p>它的路徑是<strong>設定 → 一般 → 移轉或重置 iPad → 重置 → 重置所有設定</strong>。名字很嚇人，所以先把最重要的一句放前面。</p>
+
+      <div class="bigquote">
+        <div class="qm">“</div>
+        <p>「所有設定……都將被移除，或是回復為預設值。<br>資料或媒體將不會被刪除。」</p>
+        <small>Apple iPad 使用手冊〈將 iPad 設定重置為預設值〉的官方繁體中文原文。另一份支援文件也寫著同一件事：「系統不會刪除任何資料或媒體。」</small>
+      </div>
+
+      <h3>官方逐項列出：什麼會被清掉、什麼不會被動</h3>
+      <p>這不是我們的推測，是 Apple 支援文件自己列的清單。左欄會歸零，右欄官方明寫不受影響：</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>會被移除或回復預設（官方列出 17 項）</th><th>官方明寫「不會刪除」</th></tr>
+          <tr><td>Wi-Fi 密碼和網路、Wi-Fi 連線</td><td class="good">照片、影片和音樂</td></tr>
+          <tr><td>藍牙配對</td><td class="good">App 和 App 資料</td></tr>
+          <tr><td>Apple Pay 卡片</td><td class="good">訊息和通話記錄</td></tr>
+          <tr><td>Face ID 設定、Touch ID 設定</td><td class="good">聯絡人和行事曆行程</td></tr>
+          <tr><td>主畫面佈局和背景圖片</td><td class="good">文件和檔案</td></tr>
+          <tr><td>鍵盤辭典、定位服務偏好設定</td><td class="good">已下載的內容</td></tr>
+          <tr><td>通知、隱私權與安全性、音效與觸覺回饋設定</td><td class="good">Apple Watch 配對</td></tr>
+          <tr><td>VPN 設定、先前信任的電腦和配件</td><td class="good">「輔助使用」設定、「螢幕顯示與亮度」設定</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">「不會掉資料」不等於「沒有損失」</div>資料確實留著，但按下去之後你會馬上有感的是這幾件事：<strong>家裡的 Wi-Fi 密碼要重打</strong>、AirPods 和車機要<strong>重新配對</strong>、Apple Pay 的卡片要<strong>重新加入</strong>、Face ID 要<strong>重錄一次</strong>、桌布和主畫面排列<strong>回到預設</strong>。<br><br>所以按之前先問自己一句：<strong>我知道自家 Wi-Fi 的密碼嗎？</strong>答不出來就先去查到，再回來按。</div>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">我們必須誠實說的一件事</div>Apple 官方的鍵盤排錯文件，<strong>四個步驟裡並沒有「重置所有設定」這一項</strong>——官方在那份文件的終點是「重新啟動 iPad」。而在介紹重置功能的頁面上，Apple 自己還寫著：「<strong>只有極少數的情況會需要執行此步驟。</strong>」<br><br>把它放進這篇，依據的是我們自己的售後經驗，不是官方指引。這個差別你有權知道。</div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">果果售後經驗：約九成（粗估）</div>在我們的售後紀錄裡，走到這一步的鍵盤問題，<strong>約九成（粗估）</strong>在重置所有設定之後就恢復了，最後真的需要換鍵盤的是少數。<br><br>這是我們自家經手案件的觀察值，不是統計調查，也不是 Apple 的數據——請把它當成「值得先試一次」的理由，不要當成成功率保證。</div>
+    </section>
+
+    <section id="why">
+      <div class="sec-label" style="--c:var(--purple)">why_it_works</div>
+      <h2>06 · 為什麼清設定能修好鍵盤？</h2>
+      <p>這是全網最少人講、卻最該講的一段。理解了它，你按下去的時候就不會怕。</p>
+      <p>iPad 和鍵盤之間，除了實體的接點或無線訊號，還隔著<strong>一層設定</strong>：用哪種佈局、變更鍵怎麼對應、哪個配件被信任過、輔助使用開了什麼。這層東西跟你的照片、App 分開存放。</p>
+
+      <figure class="fig layers">
+        <div class="ly">
+          <div class="row" style="--c:var(--red);--cbg:var(--red-bg)">
+            <div class="tag">設定層<br>會被重置</div>
+            <div class="bd">
+              <b>鍵盤佈局、變更鍵、信任過的配件、Wi-Fi、輔助使用⋯⋯</b>
+              <span>鍵盤要正常運作，靠的就是這一層的紀錄。這層一旦有項目卡在奇怪的狀態，症狀就是「硬體明明好好的，就是不動」。</span>
+              <em>重置所有設定 → 這層打掉重來</em>
+            </div>
+          </div>
+          <div class="row" style="--c:var(--green);--cbg:var(--green-bg)">
+            <div class="tag">資料層<br>不受影響</div>
+            <div class="bd">
+              <b>照片、影片、訊息、聯絡人、App 和 App 裡的資料</b>
+              <span>官方原句：「資料或媒體將不會被刪除。」這一層跟上面那一層是分開的，重置設定不會走到這裡。</span>
+              <em>完全不動</em>
+            </div>
+          </div>
+        </div>
+        <figcaption>換個比喻：這不是把房子拆掉重蓋，是<b>把總電箱的開關全部關掉再打開一次</b>。家具、家電、東西都還在原位，只是每個開關回到出廠位置——包括那個不知道什麼時候被撥錯、卻讓鍵盤不動的開關。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">保守一點說</div>Apple 沒有公開說明「重置設定為什麼能修好配件連線」的底層機制，所以更精細的解釋（清了哪個檔案、重建了什麼紀錄）我們一律不寫——那些說法在網路上很多，但都找不到官方出處。<br><br>能確定的只有兩件事，而這兩件事已經夠用了：<strong>它動的是設定，不是資料；而它在實務上真的常常有效。</strong></div>
+    </section>
+
+    <section id="hardware">
+      <div class="sec-label" style="--c:var(--amber)">cross_test</div>
+      <h2>07 · 真的是壞了嗎：兩分鐘的交叉測試</h2>
+      <p>如果連重置都做過還是不行，接下來要回答的問題只有一個：<strong>壞的是鍵盤，還是 iPad？</strong>不要用猜的，交叉測一次就知道。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>測試方式</th><th>結果</th><th>代表什麼</th></tr>
+          <tr><td rowspan="2">把這把鍵盤接到<strong>另一台</strong>相容的 iPad</td><td class="bad">一樣沒反應</td><td class="bad">問題在鍵盤這一側</td></tr>
+          <tr><td class="good">在別台正常</td><td class="good">鍵盤是好的，問題在你這台 iPad</td></tr>
+          <tr><td rowspan="2">拿<strong>另一把</strong>相容鍵盤接你的 iPad</td><td class="bad">也沒反應</td><td class="bad">問題在 iPad 這一側（接點或系統）</td></tr>
+          <tr><td class="good">別把鍵盤正常</td><td class="good">你的 iPad 沒事，是原本那把鍵盤的問題</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">沒有第二台可以測怎麼辦</div>這時候的判斷依據換成「範圍」：<strong>如果 iPad 本身的觸控、充電、其他功能都正常，只有外接鍵盤這件事不動</strong>，鍵盤側的機率比較高。反過來，如果連 Apple Pencil 吸附、充電也怪怪的，就要往 iPad 這側查。</div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">走到這裡就該停手了</div>接點清潔只做到「用不起毛絮的布擦」為止。<strong>撬開、拆殼、拿工具刮接點、灌來路不明的修復軟體，都不在自救範圍內</strong>——這些動作會讓原本單純的問題變複雜，也可能影響保固。判定是硬體之後，交給檢測或維修管道處理就好。</div>
+    </section>
+
+    <div class="part-div">果果的角度</div>
+
+    <section id="guoguo">
+      <div class="sec-label" style="--c:var(--green)">our_view</div>
+      <h2>08 · 檢測台上，我們天天在看接點</h2>
+      <p>我們每天收二手 iPad 和鍵盤進來，逐台檢測再交到下一個人手上。做久了會發現一件事：<strong>被當成「鍵盤壞了」而被換掉的，很多其實還活著。</strong></p>
+      <p>最常見的兩種誤判，都跟這篇前面講的一樣。一種是拿新鍵盤配舊系統，版本沒到就整把不動；一種是接點上有一層看不太出來的髒污，擦過就好了。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">我們的立場很單純</div>如果一把鍵盤靠清潔和設定就能救回來，那就沒有換的必要。<strong>能修好的東西被當成壞掉丟掉，對誰都不划算</strong>——買家多花錢，市場上也少一把還能用的鍵盤。</div>
+        <div class="callout" style="--c:var(--amber)"><div class="ct">買二手鍵盤時多做一件事</div>面交當場<strong>吸上去打一行字，順便滑一下觸控板</strong>。接觸式鍵盤不用配對，所以這個測試三十秒就做得完；能打字、觸控板會動，接點就是通的。</div>
+      </div>
+
+      <p>另外提醒一個二手特有的狀況：<strong>外接鍵盤的佈局有美規、日規、歐規之分</strong>。拿到手覺得「某些符號位置不對」，先去第 04 節那張表看看是不是佈局設定的事，不要第一時間認定買到瑕疵品。</p>
+
+      <div class="bigquote">
+        <div class="qm">”</div>
+        <p>鍵盤沒反應，先問「是不是它壞了」——<br>而不是先問「要買哪一把新的」。</p>
+        <small>順序反過來，多數人會多花一筆本來不用花的錢。</small>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label" style="--c:var(--muted)">sources</div>
+      <h2>來源與更新日期</h2>
+      <p class="updated">本文查證與撰寫：<b>2026 年 8 月</b>。操作步驟、版本門檻與「重置所有設定」的清除範圍，全部逐字取自下列 Apple 官方文件；查不到官方原文的說法（例如各種接點清潔偏方、重置背後的底層機制）一律未收錄。</p>
+      <p class="updated">文中「果果售後經驗約九成」為我們自家售後紀錄的<b>粗估觀察值</b>，不是統計調查，也不是 Apple 公布的數據——請當成「值得先試」的參考，不要當成成功率保證。</p>
+      <p class="sources">主要查證來源：</p>
+      <ul class="sources">
+        <li>Apple〈如果無法將 iPad 連接巧控鍵盤、巧控鍵盤雙面夾、聰穎鍵盤，或鍵盤式聰穎雙面夾〉<a class="inline" href="https://support.apple.com/zh-tw/108983">support.apple.com/zh-tw/108983</a>（官方四步排錯流程、iPadOS 18.3／14.5 版本門檻、「柔軟且不起毛絮的布」清潔聰穎接點、取下其他保護殼。發佈日期 2026 年 4 月 6 日）</li>
+        <li>Apple〈設定及使用 iPad 的巧控鍵盤〉<a class="inline" href="https://support.apple.com/zh-tw/108762">support.apple.com/zh-tw/108762</a>（「不需要將巧控鍵盤配對、開機或充電」的官方原文，本文分流的依據）</li>
+        <li>Apple iPad 使用手冊〈將 iPad 設定重置為預設值〉<a class="inline" href="https://support.apple.com/zh-tw/guide/ipad/ipad9a74dc01/ipados">support.apple.com/zh-tw/guide/ipad/ipad9a74dc01/ipados</a>（「資料或媒體將不會被刪除」的官方繁中原文、「重置」子選單的完整選項）</li>
+        <li>Apple〈在 iPhone、iPad 或 iPod touch 上重置〉相關支援文件 <a class="inline" href="https://support.apple.com/zh-tw/126643">support.apple.com/zh-tw/126643</a>（重置所有設定會移除的 17 項清單、官方明列不會刪除的項目、「只有極少數的情況會需要執行此步驟」）</li>
+        <li>Apple〈如果藍牙配件無法連接 iPhone、iPad 或 iPod touch〉<a class="inline" href="https://support.apple.com/zh-tw/111804">support.apple.com/zh-tw/111804</a>（藍牙排錯順序、App 層藍牙權限排在取消配對之前、「忘記此裝置設定」的官方定義與影響範圍）</li>
+      </ul>
+
+      <h3>延伸觀看（YouTube 參考）</h3>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">這個主題我們找不到合適的影片</div>我們實際搜過「iPad 鍵盤沒反應」「巧控鍵盤失靈」「聰穎接點清潔」等關鍵字，<strong>找不到一支真正在講排查流程的繁中教學影片</strong>——結果多半是鍵盤開箱評測、iPad 設定技巧合輯，或是修復軟體廠商的自營頻道。<br><br>與其硬塞一支不對題的影片充版面，我們寧可誠實說沒有。這一篇的每個步驟都已經寫成可以照做的順序，不看影片也做得完。</div>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+</script>
+</body>
+</html>
