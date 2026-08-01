@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>電池健康度 vs 充電循環次數：差在哪、怎麼看 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式（共用 assets/style.css 沒有的部分）── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 寬表格橫向捲動（比照站上既有文章） */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 600px; }
+
+  /* bigquote 置中引言版（比照站上既有文章） */
+  .bigquote { background: none; border-radius: 0; padding: 0; margin: 32px 40px; text-align: center; }
+  .bigquote .qm { font-size: 2.6rem; color: var(--navy); opacity: .2; font-weight: 800; line-height: .5; }
+  .bigquote p { font-size: 1.3rem; font-weight: 800; color: var(--ink); line-height: 1.5; margin: 10px 0; }
+  .bigquote small { display: block; color: var(--muted); font-size: .9rem; }
+  .bigquote .rule { width: 42px; height: 3px; background: var(--green); border-radius: 3px; margin: 14px auto 0; }
+
+  /* 影片卡加強版（比照站上既有文章） */
+  .vlite .thumb .pbtn { width: 66px; height: 46px; border-radius: 12px; box-shadow: 0 4px 14px rgba(0,0,0,.35); transition: .14s; }
+  .vlite .thumb:hover .pbtn { background: rgba(193,73,47,1); transform: translate(-50%,-50%) scale(1.06); }
+  .vlite .cap small { display: block; margin-top: 3px; }
+  .vlite .cap .ch { color: var(--navy); font-family: var(--mono); font-size: .68rem; }
+
+  /* ── 兩個量表 gauges：健康度 vs 循環次數，各自在量什麼 ──
+     這是全篇的心智模型，必須第一眼就分得開：左邊是「容器現在多大」（會縮水、可回頭），
+     右邊是「累積跑了多遠」（只會往上加、不會倒退）。用兩種完全不同的圖形語言區隔：
+     左＝橫條（有滿格上限），右＝階梯（一路往上）。 */
+  .gauges { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+  .gauges .gg { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 11px; padding: 15px 16px 16px; }
+  .gauges .gt { font-family: var(--mono); font-size: .66rem; color: var(--c); }
+  .gauges .gn { font-size: 1.02rem; font-weight: 800; color: var(--ink); margin-top: 3px; }
+  .gauges .gs { font-size: .84rem; color: var(--body); margin-top: 7px; line-height: 1.6; }
+  .gauges .gbox { margin: 13px 0 10px; height: 74px; display: flex; align-items: center; }
+  /* 左：容量條——外框＝出廠容量，實心＝現在的最大容量，缺口就是「掉的那些」 */
+  .gauges .tank { width: 100%; border: 2px solid var(--navy); border-radius: 7px; height: 40px; padding: 3px; position: relative; }
+  .gauges .tank i { display: block; height: 100%; width: 88%; border-radius: 4px; background: var(--green); }
+  .gauges .tank b { position: absolute; right: 7px; top: 50%; transform: translateY(-50%); font-family: var(--mono); font-size: .66rem; color: var(--muted); }
+  /* 右：階梯——每一階是累積的一段，只會往右上長 */
+  .gauges .stair { width: 100%; height: 56px; display: flex; align-items: flex-end; gap: 5px; border-bottom: 2px solid var(--navy); }
+  .gauges .stair i { flex: 1; background: var(--teal-bg); border: 1px solid var(--teal); border-bottom: 0; border-radius: 4px 4px 0 0; }
+  .gauges .gk { font-size: .78rem; color: var(--muted); border-top: 1px solid var(--grid); padding-top: 9px; line-height: 1.55; }
+  .gauges .gk b { color: var(--c); }
+
+  /* ── 分布圖 dist：5,000 台的循環次數 × 健康度（100% 堆疊長條）──
+     為什麼不是散布圖：5,000 個點在手機上會糊成一團黑塊，而讀者真正要問的是
+     「我這台循環 XXX 次，健康度大概會落在哪」——那是「每一個循環區間裡的組成比例」，
+     堆疊長條正好就是這個問題的形狀。精確數字另附表格，資訊不減。 */
+  .dist { margin: 6px 0 4px; }
+  .dist .row { display: grid; grid-template-columns: 96px 1fr; gap: 11px; align-items: center; margin-bottom: 9px; }
+  .dist .rl { font-family: var(--mono); font-size: .74rem; color: var(--ink); text-align: right; line-height: 1.3; }
+  .dist .rl small { display: block; font-size: .62rem; color: var(--muted); font-weight: 400; }
+  .dist .bar { display: flex; height: 32px; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: #fff; }
+  .dist .bar span { display: grid; place-items: center; font-family: var(--mono); font-size: .66rem; font-weight: 700; overflow: hidden; white-space: nowrap; }
+  .dist .s1 { background: #2f9e57; color: #fff; }              /* 95–100%：好 */
+  .dist .s2 { background: #8cc7a1; color: var(--ink); }        /* 90–94% */
+  .dist .s3 { background: #e8d6a4; color: var(--ink); }        /* 85–89% */
+  .dist .s4 { background: #d59a52; color: #fff; }              /* 80–84% */
+  .dist .s5 { background: #c0492f; color: #fff; }              /* 低於 80% */
+  .dist-leg { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .74rem; color: var(--body); margin-bottom: 14px; }
+  .dist-leg span { display: inline-flex; align-items: center; gap: 5px; }
+  .dist-leg i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+  /* ── 準確率長條 acc：循環次數差多少，才真的能推論誰的電池比較好 ──
+     紅線＝擲銅板（50%）。沒有這條基準線，讀者無從判斷 66% 到底算高還算低。 */
+  .acc { margin: 16px 0 6px; }
+  .acc .r { display: grid; grid-template-columns: 108px 1fr 46px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .acc .l { font-family: var(--mono); font-size: .72rem; color: var(--ink); text-align: right; }
+  /* 軌道給白底＋細框：figure 的底色就是 panel2，不畫框的話讀者看不到「滿格在哪」，
+     長條會像浮在空中，也就無從判斷 66% 離滿分還有多遠。 */
+  .acc .t { position: relative; height: 24px; background: #fff; border: 1px solid var(--line); border-radius: 5px; overflow: hidden; }
+  .acc .f { height: 100%; width: var(--w); background: var(--c, var(--navy)); border-radius: 5px; }
+  .acc .base { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--red); }
+  .acc .v { font-family: var(--mono); font-size: .8rem; font-weight: 800; color: var(--c, var(--navy)); }
+  .acc-note { font-size: .74rem; color: var(--muted); margin-top: 10px; }
+  .acc-note b { color: var(--red); }
+
+  /* ── 情境：循環次數怎麼累積（本篇唯一動畫）──
+     用動畫的理由：這個知識點的本質是「跨兩天累積」——有時間差。
+     靜態圖只能用文字寫「第一天…第二天…」，那就是在求救（見內容規範 §12 媒介階梯）。
+     ★ 鐵則：基礎樣式＝動畫最終狀態，關掉動畫仍是完整的三格圖，資訊一點不少。 */
+  /* ⚠️ 踩過的坑：.scr 自己的 padding／gap 不能用 cqi。
+     容器不能查詢自己——cqi 寫在 .scr 上會退回用「視窗寬度」算，
+     1280px 視窗下 5cqi＝64px，直接把 4:3 的小螢幕內部塞爆，
+     裡面所有子元素的 cqi 也跟著縮到 3px。容器本身一律用 px。 */
+  .cyc .scr { display: grid; place-content: center; justify-items: center; gap: 6px; padding: 10px; }
+  .cyc .day { font-family: var(--mono); font-size: 10px; font-size: 8cqi; color: var(--muted); }
+  .cyc .batt { position: relative; width: 118px; width: 70cqi; height: 40px; height: 24cqi; border: 3px solid var(--navy); border-radius: 7px; padding: 3px; }
+  .cyc .batt::after { content: ''; position: absolute; right: -6px; top: 50%; transform: translateY(-50%); width: 3px; height: 13px; border-radius: 0 2px 2px 0; background: var(--navy); }
+  .cyc .lv { display: block; height: 100%; border-radius: 3px; background: var(--green); }
+  .cyc .lv.warn { background: var(--amber); }
+  .cyc .pct { font-family: var(--mono); font-size: 11px; font-size: 9cqi; color: var(--ink); font-weight: 700; }
+  .cyc .sum { font-family: var(--mono); font-size: 10px; font-size: 8cqi; font-weight: 700; color: var(--green-deep); background: var(--green-bg); border: 1px solid var(--green); border-radius: 5px; padding: 3px 7px; }
+  .cyc .box .bv b { color: var(--navy); }
+  @keyframes cy-d1  { 0%, 10% { width: 100%; } 46%, 100% { width: 25%; } }
+  @keyframes cy-d2  { 0%, 14% { width: 25%; }  50%, 100% { width: 100%; } }
+  @keyframes cy-d3  { 0%, 18% { width: 100%; } 54%, 100% { width: 75%; } }
+  @keyframes cy-sum { 0%, 60% { opacity: 0; }  76%, 100% { opacity: 1; } }
+  .cyc .lv.a1 { animation: cy-d1 4.4s ease-in-out infinite; }
+  .cyc .lv.a2 { animation: cy-d2 4.4s ease-in-out infinite; }
+  .cyc .lv.a3 { animation: cy-d3 4.4s ease-in-out infinite; }
+  .cyc .sum   { animation: cy-sum 4.4s ease-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .cyc .lv.a1, .cyc .lv.a2, .cyc .lv.a3, .cyc .sum { animation: none; }
+  }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .bigquote { margin: 28px 4px; }
+    .gauges { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    /* 三格分鏡在手機上讓 flex 自己換行會變成「兩小格＋一大格」，
+       三個步驟看起來就不像同一個序列了。直接改成單欄、箭頭轉成朝下。 */
+    .cyc .flow { flex-direction: column; align-items: stretch; }
+    /* .anim .box 有 margin:0 auto，flex 的 auto margin 會蓋掉 align-items:stretch，
+       三格就會各自縮成內文寬度、寬窄不一。補一個 width 讓它們回到等寬。 */
+    .cyc .flow .box { width: 100%; }
+    .cyc .flow .arr { transform: rotate(90deg); }
+    /* 分布圖不改成單欄：長條本身就是「比例」，切開就沒意義了。改成縮排標、維持兩欄 */
+    .dist .row { grid-template-columns: 74px 1fr; gap: 8px; }
+    .dist .rl { font-size: .68rem; }
+    .dist .bar span { font-size: .58rem; }
+    .acc .r { grid-template-columns: 84px 1fr 42px; gap: 7px; }
+    .acc .l { font-size: .66rem; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>健康度 vs 循環次數</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#verdict" class="active">00 · 30 秒結論</a>
+  <div class="grp">兩個數字</div>
+  <a href="#what">01 · 各自在量什麼</a>
+  <a href="#cycle">02 · 循環次數怎麼算</a>
+  <div class="grp">5,000 台的實際分布</div>
+  <a href="#data">03 · 真實分布長這樣</a>
+  <a href="#howuse">04 · 循環次數怎麼用才對</a>
+  <div class="grp">換你這台</div>
+  <a href="#check">05 · 怎麼查自己的 iPad</a>
+  <a href="#deal">06 · 買賣時怎麼看</a>
+  <a href="#limits">07 · 這份數據的限制</a>
+  <a href="#sources">來源與更新日期</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>這頁的數字，是我們自己收機、自己測出來的</div>
+      </div>
+      <div class="pills"><span>每台入庫都測電池</span><span>健康度照實標</span><span>只公開彙總、不公開單機</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">客戶指南 / 電池與二手機況</div>
+    <h1>電池健康度和循環次數，差在哪？</h1>
+    <p class="subtitle">你可能正拿著「這台才 200 次循環」在議價，或看到「500 次」就想砍價。先看完這頁——我們把 5,000 台收購 iPad 的檢測紀錄攤開，這兩個數字的關係比大家以為的鬆很多。</p>
+
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--navy)">
+        <div class="lt">直接回答</div>
+        <p class="big">健康度是「現在還裝得下多少電」，循環次數是「總共用掉幾趟電」。</p>
+        <p class="sm">一個量的是<strong>剩餘容量</strong>，一個量的是<strong>累積用量</strong>——所以循環次數低，不等於電池一定健康。</p>
+        <p class="alias-line">你可能是用 <b>最大容量</b>、<b>電池容量</b>、<b>battery health</b>，或 <b>充電次數</b>、<b>cycle count</b> 這些名字找到這頁的——講的都是這兩個數字。Apple 在 iPad 上的正式欄位名稱是「電池健康度」與「循環使用次數」。</p>
+      </div>
+      <blockquote class="lead-src">Apple 官方對「一次循環」怎麼算，寫得很白：「你可能某一天使用了 75% 的電池蓄電量，然後整晚將它再次充飽電，而第二天又使用了 25% 的電力，總共放電達 100%，這二天的用電量將累積成一次充電循環。」<cite>Apple 官方〈電池 — 為何選用鋰離子電池〉</cite></blockquote>
+      <p class="lede">換句話說，循環次數算的是「放電量的累積」，不是「插了幾次電」。它跟健康度當然有關係，但那個關係有多緊？這件事光靠定義說不清楚，得有真實資料才算數。</p>
+    </div>
+
+    <div class="lead-map">
+      <div class="lm-t">這頁不說教，只把三件事講完：</div>
+      <div class="lm-g">
+        <a href="#what"><i>01</i>兩個數字各自在量什麼</a>
+        <a href="#data"><i>02</i>5,000 台的真實分布</a>
+        <a href="#howuse"><i>03</i>循環次數怎麼用才不吃虧</a>
+      </div>
+    </div>
+
+    <section id="verdict">
+      <div class="sec-label" style="--c:var(--navy)">verdict</div>
+      <h2>00 · 30 秒結論（趕時間看這段就好）</h2>
+      <div class="bigquote"><div class="qm">“</div><p>循環次數是「跑了幾公里」，<br>健康度是「油箱現在裝得下多少」。</p><small>里程數低的車，油箱不一定比較大——這就是整篇文章要講的事。</small><div class="rule"></div></div>
+      <div class="stats">
+        <div class="stat" style="--c:var(--navy)"><div class="num">5,000</div><div class="lab">台收購 iPad 的實測紀錄（本頁所有數字的來源）</div><span class="badge">GUOGUO DATA</span></div>
+        <div class="stat" style="--c:var(--green)"><div class="num">84%</div><div class="lab">隨機抽兩台，循環次數少的那台健康度真的比較好的機率</div></div>
+        <div class="stat" style="--c:var(--amber)"><div class="num">66%</div><div class="lab">但兩台只差 50 次以內時，這個機率就掉到這裡（亂猜是 50%）</div></div>
+        <div class="stat" style="--c:var(--red)"><div class="num">24</div><div class="lab">同樣是循環 200 次上下的機器，最好與最差差了幾個百分點</div></div>
+      </div>
+      <p>先把結論攤開：循環次數<strong>確實</strong>跟健康度有關，方向也對——用得越兇，電池通常越差。這點我們的資料完全支持。</p>
+      <p>問題出在「通常」兩個字。它是一個趨勢，不是一台一台都準的判決。拿它去推論某一台的電池狀況，出錯的機率比多數人想像的高很多。</p>
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--teal)"><div class="ct">你正在看賣場標示的循環次數</div>那個數字有參考價值，但<strong>不能單獨當議價依據</strong>。往下看 <a class="inline" href="#data">第 03 節</a>的真實分布，再看 <a class="inline" href="#howuse">第 04 節</a>該怎麼用它。</div>
+        <div class="callout" style="--c:var(--green)"><div class="ct">你想知道自己手上這台如何</div>先弄清楚兩個數字的意思（<a class="inline" href="#what">第 01 節</a>），再照 <a class="inline" href="#check">第 05 節</a>把自己的數字查出來——iPad 這件事比 iPhone 麻煩一點。</div>
+      </div>
+    </section>
+
+    <div class="part-div">兩個數字</div>
+
+    <section id="what">
+      <div class="sec-label" style="--c:var(--teal)">concept</div>
+      <h2>01 · 兩個數字，各自在量什麼？</h2>
+      <p>最快的理解方式：把電池想成一個水桶。健康度講的是「這個桶子現在還能裝多少水」，循環次數講的是「這個桶子總共被倒空過幾次」。</p>
+      <figure class="fig">
+        <div class="gauges">
+          <div class="gg" style="--c:var(--navy)">
+            <div class="gt">battery_health</div>
+            <div class="gn">電池健康度（最大容量）</div>
+            <div class="gs">現在的最大容量，是出廠時的百分之幾。100% 代表跟新的一樣能裝，88% 代表少了 12%。</div>
+            <div class="gbox"><div class="tank"><i></i><b>88%</b></div></div>
+            <div class="gk">會<b>越掉越低</b>，但速度不固定；跟「還能撐多久」直接相關。</div>
+          </div>
+          <div class="gg" style="--c:var(--teal)">
+            <div class="gt">cycle_count</div>
+            <div class="gn">充電循環次數</div>
+            <div class="gs">累積放電量除以一顆電池的容量。放掉的電加起來等於一整顆，就記一次。</div>
+            <div class="gbox"><div class="stair"><i style="height:22%"></i><i style="height:40%"></i><i style="height:58%"></i><i style="height:76%"></i><i style="height:100%"></i></div></div>
+            <div class="gk">只會<b>往上加、不會下降</b>；記錄的是「用了多少」，不是「還剩多少」。</div>
+          </div>
+        </div>
+        <figcaption>左邊會縮水、右邊只會累加——<b>兩個數字連方向都不一樣</b>，本來就不該互相取代。</figcaption>
+      </figure>
+      <p>Apple 官方對這個數字的說明是：「這可稱為電池的最大容量，即測量電池<strong>相對於全新品時</strong>的容量。」最後那幾個字是關鍵——它是一個比值，不是絕對的電量。</p>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>比較</th><th>電池健康度</th><th>充電循環次數</th></tr>
+          <tr><td>它在回答什麼</td><td class="good">「這顆電池現在還剩多少本事？」</td><td>「這顆電池被用過多少？」</td></tr>
+          <tr><td>單位</td><td>百分比（相對出廠容量）</td><td>次（累積放電量 ÷ 一顆電池容量）</td></tr>
+          <tr><td>會不會變動</td><td>只會往下（系統估算，偶爾會微幅回跳）</td><td>只會往上，不會歸零</td></tr>
+          <tr><td>跟續航的關係</td><td class="good">直接相關——它就是容量本身</td><td class="bad">間接：要先影響健康度，才影響續航</td></tr>
+          <tr><td>能推出另一個嗎</td><td>能大致回推使用強度</td><td class="bad">只能猜大概，誤差比想像大（見第 03 節）</td></tr>
+        </table>
+      </div>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">Apple 給 iPad 電池的設計目標</div>官方原文：iPad「電池的設計旨在經過 <strong>1,000 次的完全充電循環之後，仍能保有最多達 80% 的原有蓄電量</strong>」。注意兩個字：「最多達」——那是理想條件下的設計目標，不是每一台都會達成的保證。</div>
+      <p>順帶一提，這個 1,000 次的數字跟 iPhone 不一樣。iPhone 14 以前是 500 次，iPhone 15 之後才提高到 1,000 次。所以拿 iPhone 的經驗值套 iPad，本來就會偏差。</p>
+      <h3>健康度掉的那幾 %，換成時間是差多少？</h3>
+      <p>「少了 12%」聽起來很嚇人，但換成時間就具體多了。Apple 官方標示 iPad 的續航是「Wi-Fi 無線上網或觀看影片最長可達 10 小時」（行動網路機型是 9 小時），把健康度乘上去，就是這台現在滿電大概能撐多久：</p>
+      <div class="meter" style="--c:var(--green);--w:100%"><div class="mtop"><b>健康度 100%（全新）</b><span>約 10 小時</span></div><div class="track"><div class="fill"></div></div></div>
+      <div class="meter" style="--c:var(--green);--w:95%"><div class="mtop"><b>健康度 95%</b><span>約 9 小時 30 分・少 30 分鐘</span></div><div class="track"><div class="fill"></div></div></div>
+      <div class="meter" style="--c:var(--teal);--w:88%"><div class="mtop"><b>健康度 88%</b><span>約 8 小時 48 分・少 1 小時 12 分</span></div><div class="track"><div class="fill"></div></div></div>
+      <div class="meter" style="--c:var(--amber);--w:80%"><div class="mtop"><b>健康度 80%</b><span>約 8 小時・少 2 小時</span></div><div class="track"><div class="fill"></div></div></div>
+      <p>所以健康度 88% 的意思不是「這台只剩 88% 的壽命」，而是<strong>滿電大概少撐一個多小時</strong>。</p>
+      <p>這個差距是大是小，其實取決於你怎麼用。一天用三、四小時的人，日常幾乎感覺不到；常常整天在外面靠電池撐、又不方便帶行動電源的人，就該把預算往健康度高的機器挪。</p>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">這個換算是量級，不是碼表</div>Apple 標示的 10 小時是「上網或看影片」情境下的官方數字。玩遊戲、錄影、開最高亮度時，全新機也撐不到 10 小時；只拿來看文件、亮度調低，則可能撐更久。它適合用來理解「差距大概多大」，別拿它當精準預測。</div>
+      <details>
+        <summary>那健康度多少算「該換了」？（先講一個常被誤會的前提）</summary>
+        <p>Apple 用 80% 當設計目標，很多人就把 80% 當成生死線。實務上它比較像是「開始明顯有感」的門檻，不是「不能用」的門檻——低於 80% 的 iPad 照樣開得了機、跑得動 App，只是同樣的事做不了那麼久。</p>
+        <p>更實際的判斷方式是<strong>用你的使用情境去測</strong>：你以前一趟出門帶著它夠用一整天，現在中午就得找插座，那就是有感了，不管螢幕上那個數字是 85% 還是 78%。反過來說，如果你本來就整天在桌邊插著電用，健康度掉到 80% 你大概也不會察覺。</p>
+      </details>
+    </section>
+
+    <section id="cycle">
+      <div class="sec-label" style="--c:var(--green)">how_it_counts</div>
+      <h2>02 · 循環次數是怎麼累積的？（八成的人第一次都會猜錯）</h2>
+      <p>這是整篇最常被誤解的地方。大多數人以為「插一次電就是一次循環」，所以會想「那我一天充兩次，一年不就好幾百次？」</p>
+      <p>不是這樣算的。它算的是<strong>放掉的電量</strong>，累積滿一整顆電池的量，才記一次。</p>
+      <figure class="fig anim cyc">
+        <div class="flow">
+          <div class="box">
+            <div class="scr">
+              <div class="day">第 1 天</div>
+              <div class="batt"><i class="lv a1" style="width:25%"></i></div>
+              <div class="pct">用掉 75%</div>
+            </div>
+            <div class="bt">step_01</div>
+            <div class="bv">累積放電 <b>75%</b></div>
+          </div>
+          <div class="arr">→</div>
+          <div class="box">
+            <div class="scr">
+              <div class="day">當晚</div>
+              <div class="batt"><i class="lv a2" style="width:100%"></i></div>
+              <div class="pct">充飽</div>
+            </div>
+            <div class="bt">step_02</div>
+            <div class="bv">充電<b>不會</b>讓累積歸零</div>
+          </div>
+          <div class="arr">→</div>
+          <div class="box">
+            <div class="scr">
+              <div class="day">第 2 天</div>
+              <div class="batt"><i class="lv warn a3" style="width:75%"></i></div>
+              <div class="sum">＝ 1 次循環</div>
+            </div>
+            <div class="bt">step_03</div>
+            <div class="bv">再用 25%，<b>累積達 100%</b></div>
+          </div>
+        </div>
+        <figcaption>兩天、充了一次電，合起來才算<b>一次</b>循環。所以「插電次數」跟「循環次數」是兩回事。</figcaption>
+      </figure>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>很多人以為</th><th>實際上</th><th>差在哪</th></tr>
+          <tr><td class="bad">插一次充電線 ＝ 一次循環</td><td class="good">要累積放掉 100% 的電才算一次</td><td>算的是放電量，不是插電動作</td></tr>
+          <tr><td class="bad">要充到 100% 才算一次</td><td class="good">充到幾 % 不影響計算</td><td>看的是放電端，不是充電端</td></tr>
+          <tr><td class="bad">一天充三次 ＝ 三次循環</td><td class="good">可能只累積了半次</td><td>淺充淺放，累積得慢</td></tr>
+          <tr><td class="bad">循環次數會被重置或洗掉</td><td class="good">它只會往上加</td><td>所以它可以當「使用強度」的參考</td></tr>
+        </table>
+      </div>
+      <h3>換個問法：循環 149 次，等於這台被用了多久？</h3>
+      <p>既然一次循環等於「把一整顆電池的電放完」，那把循環次數乘上這台滿電能撐的時間，就是它累計的開機使用時數。這是目前最接近「這台到底被用了多久」的一個數字。</p>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>循環次數</th><th>累計使用時數（約）</th><th>相當於每天用 3 小時，用了多久</th></tr>
+          <tr><td>50 次</td><td>450–500 小時</td><td>約 5 個月</td></tr>
+          <tr><td>100 次</td><td>900–1,000 小時</td><td>約 10 個月</td></tr>
+          <tr><td>150 次</td><td>1,350–1,500 小時</td><td>約 1 年 3 個月</td></tr>
+          <tr><td>300 次</td><td>2,700–3,000 小時</td><td>約 2 年 7 個月</td></tr>
+          <tr><td>500 次</td><td>4,500–5,000 小時</td><td>約 4 年 4 個月</td></tr>
+          <tr><td>1,000 次</td><td>9,000–10,000 小時</td><td>約 8 年 8 個月</td></tr>
+        </table>
+      </div>
+      <p>這張表很值得放在心上，因為循環次數是<strong>最容易被讀成天文數字的那個數字</strong>。看到「循環 149 次」先別緊張——換算起來大概是一台每天用三小時、用了一年多的機器。</p>
+      <p>反過來看到「循環 800 次」也不必直接排除：那通常代表它被認真用了好幾年，而不是它壞了。它現在還剩多少本事，還是要看健康度。</p>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">這個換算會偏樂觀，用它抓量級就好</div>三個原因：電池老化之後，同樣一次循環能撐的時間會變短；玩遊戲、錄影、開高亮度時一次循環撐不到 10 小時；而 Apple 標示的續航本來就是特定情境下的數字。所以它適合回答「幾個月還是幾年」，不適合拿來精算。</div>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">為什麼這件事很重要</div>因為「循環次數低」有兩種完全不同的可能：一種是<strong>真的很少用</strong>，另一種是<strong>用得很淺很勤</strong>——每天插著電用、掉一點就補一點的人，循環次數會累積得很慢，但電池經歷的時間、溫度一樣沒少。這正是下一節那些「反常個案」的來源之一。</div>
+      <details>
+        <summary>那我刻意少充電，是不是就能保養電池？（可以，但別為此犧牲好用）</summary>
+        <p>Apple 自己有提供兩個官方功能往這個方向走：「最佳化電池充電」會學習你的作息、把最後那段充電延到你要用之前才完成；比較新的機型（iPad mini A17 Pro、iPad A16、M2 之後的 iPad Air、M4 之後的 iPad Pro）還多了一個「充電上限」，可以直接設定只充到 80%。</p>
+        <p>但要誠實說：這類設定影響的是「老化速度」，效果是長期而緩慢的，不會讓你的健康度回升。如果為了省循環而讓自己每天帶著半格電出門，那是本末倒置——電池是耗材，它本來就是拿來用的。</p>
+      </details>
+    </section>
+
+    <div class="part-div">5,000 台的實際分布</div>
+
+    <section id="data">
+      <div class="sec-label" style="--c:var(--purple)">guoguo_data</div>
+      <h2>03 · 5,000 台的真實分布：關係比你想的鬆</h2>
+      <p>定義講完了，接下來是別人寫不出來的部分。</p>
+      <p>我們每天收二手 iPad，每一台入庫都會跑同一套檢測、把電池健康度與循環次數記進系統。這次我們從這些紀錄裡<strong>抽樣 5,000 台</strong>，來回答一個問題：只看循環次數，你能多準地猜出一台 iPad 的健康度？</p>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">先講清楚這份數據是什麼</div>樣本是<strong>被收購進來的二手 iPad</strong>，不是全台灣所有 iPad；機型以 iPad 第 6～9 代這類主流款為大宗。我們只公開彙總分布，不公開任何單一機器的紀錄。這份樣本的先天限制，我們在<a class="inline" href="#limits">第 07 節</a>整節講完，不藏。</div>
+
+      <h3>先看整體：循環次數每往上一階，健康度就往下滑一階</h3>
+      <p>下面這張圖把 5,000 台依循環次數分成五組，每一組再看健康度的組成。趨勢很清楚，但請特別注意<strong>每一條長條的顏色都不只一種</strong>。</p>
+      <figure class="fig">
+        <div class="dist-leg">
+          <span><i style="background:#2f9e57"></i>健康度 95–100%</span>
+          <span><i style="background:#8cc7a1"></i>90–94%</span>
+          <span><i style="background:#e8d6a4"></i>85–89%</span>
+          <span><i style="background:#d59a52"></i>80–84%</span>
+          <span><i style="background:#c0492f"></i>低於 80%</span>
+        </div>
+        <div class="dist">
+          <div class="row">
+            <div class="rl">0–99 次<small>佔 49%</small></div>
+            <div class="bar">
+              <span class="s1" style="flex:0 0 87%">87%</span>
+              <span class="s2" style="flex:0 0 10%">10%</span>
+              <span class="s3" style="flex:0 0 3%"></span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="rl">100–299 次<small>佔 30%</small></div>
+            <div class="bar">
+              <span class="s1" style="flex:0 0 35%">35%</span>
+              <span class="s2" style="flex:0 0 43%">43%</span>
+              <span class="s3" style="flex:0 0 15%">15%</span>
+              <span class="s4" style="flex:0 0 6%"></span>
+              <span class="s5" style="flex:0 0 1%"></span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="rl">300–499 次<small>佔 12%</small></div>
+            <div class="bar">
+              <span class="s1" style="flex:0 0 6%"></span>
+              <span class="s2" style="flex:0 0 35%">35%</span>
+              <span class="s3" style="flex:0 0 35%">35%</span>
+              <span class="s4" style="flex:0 0 17%">17%</span>
+              <span class="s5" style="flex:0 0 7%"></span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="rl">500–999 次<small>佔 8%</small></div>
+            <div class="bar">
+              <span class="s1" style="flex:0 0 4%"></span>
+              <span class="s2" style="flex:0 0 20%">20%</span>
+              <span class="s3" style="flex:0 0 35%">35%</span>
+              <span class="s4" style="flex:0 0 28%">28%</span>
+              <span class="s5" style="flex:0 0 13%">13%</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="rl">1,000 次以上<small>佔 1%</small></div>
+            <div class="bar">
+              <span class="s1" style="flex:0 0 1%"></span>
+              <span class="s2" style="flex:0 0 9%">9%</span>
+              <span class="s3" style="flex:0 0 27%">27%</span>
+              <span class="s4" style="flex:0 0 26%">26%</span>
+              <span class="s5" style="flex:0 0 37%">37%</span>
+            </div>
+          </div>
+        </div>
+        <figcaption>趨勢是對的：循環越高，綠色越少。但<b>每一組裡面都同時有很好和很差的機器</b>——那才是重點。</figcaption>
+      </figure>
+      <details>
+        <summary>看精確數字（每一組的完整百分比）</summary>
+        <div class="tbl-wrap">
+          <table>
+            <tr><th>循環次數</th><th>佔樣本</th><th>95–100%</th><th>90–94%</th><th>85–89%</th><th>80–84%</th><th>低於 80%</th></tr>
+            <tr><td>0–99 次</td><td>49%</td><td>87%</td><td>10%</td><td>3%</td><td>1%</td><td>0%</td></tr>
+            <tr><td>100–299 次</td><td>30%</td><td>35%</td><td>43%</td><td>15%</td><td>6%</td><td>1%</td></tr>
+            <tr><td>300–499 次</td><td>12%</td><td>6%</td><td>35%</td><td>35%</td><td>17%</td><td>7%</td></tr>
+            <tr><td>500–999 次</td><td>8%</td><td>4%</td><td>20%</td><td>35%</td><td>28%</td><td>13%</td></tr>
+            <tr><td>1,000 次以上</td><td>1%</td><td>1%</td><td>9%</td><td>27%</td><td>26%</td><td>37%</td></tr>
+          </table>
+        </div>
+        <p>百分比為各列橫向加總 100%，因四捨五入可能有 ±1% 誤差。全樣本有 97% 的機器健康度在 80% 以上、77% 在 90% 以上。</p>
+      </details>
+
+      <h3>三個打破直覺的數字</h3>
+      <p>把同一份資料換個問法，會看到更有意思的東西：</p>
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--red)"><div class="ct">循環 500 次以上 ≠ 電池報廢</div>這群機器裡，仍有<strong>超過 1/5 的健康度在 90% 以上</strong>，一半以上在 85% 以上。看到「500 次」就直接排除，你會錯過不少好機器。</div>
+        <div class="callout" style="--c:var(--amber)"><div class="ct">循環 100 次以下 ≠ 電池全新</div>這群機器裡，每 8 台就有 1 台健康度已經掉到 95% 以下；每 30 台就有 1 台掉到 90% 以下。「才 100 次」不是保證書。</div>
+      </div>
+      <div class="callout" style="--c:var(--purple)"><div class="ct">同樣的循環次數，健康度可以差很多</div>我們把循環次數落在 <strong>200 次上下</strong>（195～205 次）的機器單獨抓出來看，總共 80 幾台。它們的健康度中位數是 93%，但<strong>最低 76%、最高 100%——跨度 24 個百分點</strong>。同一個循環次數，兩台機器的電池可以差到這種程度。</div>
+      <p>如果你想從循環次數推健康度，下面這張表是誠實版本：它告訴你「猜」出來的區間有多寬。</p>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>看到的循環次數</th><th>健康度中位數</th><th>八成機器落在</th><th>實際出現過的最低</th></tr>
+          <tr><td>0–99 次</td><td class="good">100%</td><td>93–100%</td><td class="bad">34%</td></tr>
+          <tr><td>100–199 次</td><td>94%</td><td>87–98%</td><td class="bad">61%</td></tr>
+          <tr><td>200–299 次</td><td>91%</td><td>84–96%</td><td>76%</td></tr>
+          <tr><td>300–499 次</td><td>88%</td><td>80–94%</td><td class="bad">53%</td></tr>
+          <tr><td>500–999 次</td><td>86%</td><td>78–92%</td><td class="bad">28%</td></tr>
+          <tr><td>1,000 次以上</td><td>82%</td><td>63–90%</td><td class="bad">38%</td></tr>
+        </table>
+      </div>
+      <p>看第三欄就好：即使只看中間那八成，區間寬度也有 7 到 27 個百分點。這代表循環次數能幫你縮小範圍，但沒辦法幫你定案。</p>
+      <div class="callout" style="--c:var(--teal)"><div class="ct">兩個真實存在的極端個案</div>樣本裡有一台<strong>循環次數 0 次、健康度只有 84%</strong> 的機器——它幾乎沒被拿來用，電池卻已經老了。也有一台<strong>循環次數 1,241 次、健康度仍顯示 100%</strong>。這兩台不是打錯字，是同一批資料裡真實存在的兩端。</div>
+
+      <h3>為什麼會這樣？因為循環次數只記錄了老化原因的其中一項</h3>
+      <p>鋰電池老化不是只有「用了多少」這一件事。時間本身、環境溫度、每次充放電的深淺、甚至同一批電池的個體差異，都會讓兩台「里程數相同」的機器走到不同的終點。</p>
+      <p>循環次數只忠實記錄了其中一項。它是一份有用的線索，但它從來不是完整的病歷。</p>
+      <div class="callout" style="--c:var(--red)"><div class="ct">這幾項裡，Apple 唯一特別點名的是溫度</div>官方原文：「<strong>16° 至 22° C</strong> 則是最理想的適用溫度範圍」、「避免將你的裝置暴露在<strong>高於 35° C</strong> 的環境中格外重要，這樣的溫度<strong>可能會永久損害電池的蓄電量</strong>」，而且「即便只是把電池存放在炎熱的環境中，也可能對電池造成無法挽回的損壞」。</div>
+      <p>最後那句是關鍵：<strong>放著不用也會壞</strong>。夏天留在車上、長時間曬到太陽、邊充電邊錄影或跑重度遊戲，這些都不會讓循環次數增加一次，卻會實實在在扣在健康度上。</p>
+      <p>這就是我們資料裡那些「反常個案」最合理的解釋——那台循環 0 次、健康度只剩 84% 的機器，問題從來不在它被用了多少，而在它被放在什麼環境裡。</p>
+      <p>反過來說，一台被好好對待、多半在室溫下使用的機器，就算循環次數累積得比較高，健康度也可能維持得很漂亮。我們有一台循環 1,241 次、健康度仍顯示 100%，就是這種例子。</p>
+      <details>
+        <summary>再深一層：健康度那個數字本身也是「估算值」</summary>
+        <p>健康度不是拿一把尺量出來的，而是系統根據充放電行為推算出來的最大容量比值。所以它偶爾會有小幅度的跳動，甚至在校正後回升一兩個百分點——這是正常現象，不代表電池變好了。</p>
+        <p>這也是為什麼我們不建議把 92% 和 94% 的兩台機器拿來比高下：那個差距很可能落在估算誤差裡。真正有意義的是<strong>級距</strong>（例如 90% 以上 vs 80% 出頭），不是小數點。</p>
+      </details>
+    </section>
+
+    <section id="howuse">
+      <div class="sec-label" style="--c:var(--amber)">how_to_use</div>
+      <h2>04 · 那循環次數到底該怎麼用？</h2>
+      <p>講到這裡，你可能會覺得「那循環次數乾脆別看了」。也不是——它有它準的時候，關鍵在<strong>差距要夠大</strong>。</p>
+      <p>我們做了一個很直白的測試：從 5,000 台裡隨機抓兩台出來比，看「循環次數比較少的那台，健康度是不是真的比較好」。然後依兩台的循環次數差距分組統計。</p>
+      <figure class="fig">
+        <div class="acc">
+          <div class="r" style="--c:var(--amber)">
+            <div class="l">差 50 次以內</div>
+            <div class="t"><div class="f" style="--w:65.5%"></div><div class="base"></div></div>
+            <div class="v">66%</div>
+          </div>
+          <div class="r" style="--c:var(--amber)">
+            <div class="l">差 51–100 次</div>
+            <div class="t"><div class="f" style="--w:78.6%"></div><div class="base"></div></div>
+            <div class="v">79%</div>
+          </div>
+          <div class="r" style="--c:var(--navy)">
+            <div class="l">差 101–200 次</div>
+            <div class="t"><div class="f" style="--w:86.2%"></div><div class="base"></div></div>
+            <div class="v">86%</div>
+          </div>
+          <div class="r" style="--c:var(--navy)">
+            <div class="l">差 201–300 次</div>
+            <div class="t"><div class="f" style="--w:89.9%"></div><div class="base"></div></div>
+            <div class="v">90%</div>
+          </div>
+          <div class="r" style="--c:var(--green)">
+            <div class="l">差 301–500 次</div>
+            <div class="t"><div class="f" style="--w:92.6%"></div><div class="base"></div></div>
+            <div class="v">93%</div>
+          </div>
+          <div class="r" style="--c:var(--green)">
+            <div class="l">差 500 次以上</div>
+            <div class="t"><div class="f" style="--w:94.7%"></div><div class="base"></div></div>
+            <div class="v">95%</div>
+          </div>
+        </div>
+        <p class="acc-note"><b>紅線＝50%</b>，也就是不看任何資訊、直接亂猜的正確率。長條沒超過紅線多少，就代表那個資訊沒帶給你多少判斷力。</p>
+        <figcaption>兩台的循環次數只差 50 次時，猜對的機率只有 66%——比擲銅板好一點，但沒好到能拿來砍價。</figcaption>
+      </figure>
+      <p>把這張圖翻成白話，就是一句話：<strong>循環次數是拿來比大小的，不是拿來讀細節的。</strong></p>
+      <p>「180 次 vs 240 次」這種比較幾乎沒有意義，兩台誰的電池比較好，接近一半一半。但「120 次 vs 620 次」就很有參考價值了，你有九成以上的把握。</p>
+      <ul class="check">
+        <li><b>當對方只給循環次數、不給健康度時，先追問健康度</b>兩個數字裡，健康度才是直接跟你使用體驗有關的那個。願意只講一個的賣家，通常是因為另一個比較難看。</li>
+        <li><b>用循環次數判斷「這台被怎麼對待過」，而不是「電池好不好」</b>循環 900 次配上一年機齡，代表這台被用得很兇；循環 60 次配上五年機齡，代表它大半時間在抽屜裡。這些是健康度以外的資訊。</li>
+        <li><b>差距在 50 次以內就當它相同</b>與其為了 60 次的差距殺價，不如把注意力放在外觀、功能檢測、保固這些差距更明確的事情上。</li>
+        <li><b>兩個數字兜不攏時，以健康度為準</b>循環次數低、健康度卻也低，代表它老化的原因不在使用量上——溫度與存放環境的影響更大。你要接手的是「現在還剩多少容量」，所以看健康度，並確認價格有反映它。</li>
+      </ul>
+      <div class="callout" style="--c:var(--green)"><div class="ct">一句話總結這一節</div>循環次數告訴你<strong>這台機器過去被怎麼用</strong>，健康度告訴你<strong>它現在還剩多少本事</strong>。你要付錢買的是後者，前者只是幫你理解它為什麼變成這樣。</div>
+    </section>
+
+    <div class="part-div">換你這台</div>
+
+    <section id="check">
+      <div class="sec-label" style="--c:var(--navy)">check_yours</div>
+      <h2>05 · 怎麼查自己 iPad 的這兩個數字</h2>
+      <p>先說一句可能讓你鬆一口氣的話：如果你翻遍設定都找不到電池健康度，那多半不是你不會找，而是<strong>你的 iPad 就是沒有這個畫面</strong>。</p>
+      <p>iPhone 上這個畫面早就存在，iPad 卻一直沒跟上。到目前為止，只有比較新的機型才在設定裡看得到。</p>
+      <div class="steps">
+        <div class="step" style="--c:var(--green)"><div class="n">A</div><div><h4>2024 年後的新機型：設定裡直接看</h4><p>「設定」→「電池」→「電池健康度」，會顯示電池容量、健康度、循環使用次數、製造日期與首次使用日期。Apple 使用手冊列出的支援機型是 iPad mini（A17 Pro）、iPad（A16）、iPad Air 11 吋與 13 吋（M2／M3／M4）、iPad Pro 11 吋與 13 吋（M4／M5）。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">B</div><div><h4>舊機型：翻「分析資料」裡的紀錄</h4><p>「設定」→「隱私權與安全性」→「分析與改進」，先確認「分享 iPad 分析」是開著的，再進「分析資料」，找最新一筆 log-aggregated 開頭的紀錄，用搜尋找 MaximumCapacityPercent。這不是 Apple 提供的正式功能，畫面很難讀，剛打開分析也要等一天左右才會有資料。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">C</div><div><h4>接電腦用檢測工具（我們收機時用的方式）</h4><p>把 iPad 接上電腦，用電池檢測類的工具讀取，兩個數字會一起出現，也最不容易看錯。缺點是需要一台電腦，而且工具品質參差——這是我們入庫檢測採用的方式，因為要一次量幾千台，得用同一把尺。</p></div></div>
+      </div>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">關於「為什麼 iPad 沒有」</div>Apple 沒有公開說明過原因，我們也不推測。能確定的只有現況：官方使用手冊寫的是「在支援的機型上」才會顯示，其餘機型就是沒有這個選項——不是壞掉，也不是設定被誰關掉了。</div>
+      <ul class="flags">
+        <li><b>宣稱「一鍵檢測 iPad 電池健康度」的 App</b>——iPadOS 不開放第三方 App 讀取電池健康度，App Store 上那類 App 給的多半是推估值或裝飾性數字，別拿它去議價。</li>
+        <li><b>要你「登入 Apple 帳號」才能查電池的網站或工具</b>——查電池不需要任何帳號。看到這種要求就關掉。</li>
+      </ul>
+    </section>
+
+    <section id="deal">
+      <div class="sec-label" style="--c:var(--teal)">deal</div>
+      <h2>06 · 買二手、賣二手，這兩個數字怎麼看才不吃虧</h2>
+      <p>我們自己每天在做收購與販售，所以這一節就把立場攤開講——包括對我們不利的那面。</p>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你看到的標示</th><th>它其實告訴你什麼</th><th>該追問的下一句</th></tr>
+          <tr><td>只寫「循環 87 次」</td><td>使用強度低，但電池狀況未定</td><td class="good">「健康度是多少？可以拍給我看嗎？」</td></tr>
+          <tr><td>只寫「健康度 92%」</td><td>目前容量還不錯，但不知道用得兇不兇</td><td class="good">「循環次數大概多少？機齡幾年？」</td></tr>
+          <tr><td>兩個都寫，但兜不攏<br>（循環低、健康度也低）</td><td>老化的原因不在使用量，多半來自溫度或存放環境</td><td class="good">「平常會放車上或曬到太陽嗎？價格有反映健康度嗎？」</td></tr>
+          <tr><td>「電池全新」「電池 100%」</td><td>要先問清楚是原廠電池還是換過的</td><td class="good">「是換過電池嗎？在哪裡換的？」</td></tr>
+        </table>
+      </div>
+      <p>最後一列值得多說一句。我們的樣本裡，健康度 100% 的機器有 3% 循環次數超過 100 次，其中十來台甚至超過 300 次。這種組合最常見的解釋就是電池被換過。</p>
+      <p>換過電池本身不是壞事，重點是<strong>換的是什麼電池、誰換的</strong>。這件事沒問清楚就付錢，你買到的可能是一顆來歷不明的副廠電池。</p>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">我們自己怎麼用這兩個數字</div>收機估價時，健康度是主要依據、循環次數是輔助——因為健康度才是買家接手後真正會有感的東西。<br><br>對外販售時我們標的是<strong>健康度實際數字</strong>，不是「電池良好」這種形容詞。理由很簡單：形容詞沒辦法被驗證，數字可以。</div>
+      <p>還有一件我們希望你知道的事：健康度低的機器，<strong>價格本來就該比較低</strong>，而且我們的定價確實是這樣算的。</p>
+      <p>所以看到一台健康度 85% 的機器，該問的不是「這是不是瑕疵品」，而是「它便宜的那一段，值不值得我少那一個多小時的續航」。如果你一天用三小時，這個交易通常划算；如果你天天在外面撐一整天，那就別省這一筆。</p>
+      <div class="callout" style="--c:var(--green)"><div class="ct">還有一件事會讓這個決定輕鬆一點：電池是可以換的</div>先把話講在前面——<strong>我們沒有提供電池保固</strong>，這點不要誤會。但只要機器是在我們這裡買的，之後想換電池都有優惠價，直接私訊我們問就好。<br><br>所以健康度低的機器不是「買了就只能這樣」。它比較像是：你先用比較低的價格取得這台，將來真的覺得續航不夠，還有一條成本明確的路可以走。</div>
+      <div class="bigquote"><div class="qm">”</div><p>循環次數是這台 iPad 的過去，<br>健康度才是你要接手的現在。</p><small>兩個都看，但別讓過去替現在做決定。</small><div class="rule"></div></div>
+    </section>
+
+    <section id="limits">
+      <div class="sec-label" style="--c:var(--red)">limits</div>
+      <h2>07 · 這份數據的限制（該講的話一次講完）</h2>
+      <p>我們相信有數據就要連同數據的邊界一起講，否則數字只是拿來壯膽用的。這份 5,000 台的樣本有三個明確的限制：</p>
+      <ul class="styled">
+        <li><b>樣本是「被賣掉的二手 iPad」，不是全體 iPad。</b>會流到二手市場的機器，本來就跟一直被放在家裡用的機器不一樣。所以這份分布可以回答「二手市場上你會遇到什麼」，但不能回答「全世界的 iPad 平均活得如何」。</li>
+        <li><b>健康度是檢測工具讀到的值，不是 Apple 官方口徑。</b>我們用同一套流程量所有機器，所以彼此比較是公平的；但跟 Apple 自己在設定裡顯示的數字可能有一兩個百分點的落差。</li>
+        <li><b>機型組成不平均。</b>iPad 第 6～9 代這類主流入門款佔了很大比例，Pro 與 mini 系列相對少。不同機型的電池容量與使用情境本來就不同，這份彙總沒有替你分開。</li>
+      </ul>
+      <details>
+        <summary>一個我們自己也覺得意外的發現（順便示範什麼叫「不能直接解讀」）</summary>
+        <p>我們原本預期看到「機齡越老，同樣循環次數下健康度越差」——畢竟時間本身也會讓電池老化。結果資料顯示的方向反而相反：在同樣循環 100–199 次的機器裡，2014 年的舊機型健康度中位數比 2020 年的機型還高一點。</p>
+        <p>這不代表「老機器電池比較好」。比較合理的解釋是<strong>存活者偏誤</strong>——十年前的機器還能被收購、還值得整理的，本來就是被保養得特別好、或已經換過電池的那一批；狀況差的早就報廢或被丟在抽屜裡，根本不會出現在我們的資料裡。</p>
+        <p>所以這份資料我們只拿來回答「同樣循環次數，健康度會散得多開」，不拿來回答「時間讓電池老多少」。後者需要另一種取樣方式才問得出來。</p>
+      </details>
+      <p class="updated">數據期間：果果國際收購入庫檢測紀錄，抽樣 5,000 台 iPad。本頁只公開彙總統計，不含任何可識別單一機器的資訊。樣本每年更新一次。</p>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label" style="--c:var(--muted)">sources</div>
+      <h2>來源與更新日期</h2>
+      <p class="updated">本文查證與撰寫：<b>2026 年 8 月</b>。Apple 的官方規格與系統選單位置會隨版本調整，以官方最新頁面為準。</p>
+      <p class="sources">事實性內容以 Apple 官方頁面為主，數據部分為果果國際自有檢測紀錄：</p>
+      <ul class="sources">
+        <li>Apple〈電池 — 為何選用鋰離子電池〉<a class="inline" href="https://www.apple.com/tw/batteries/why-lithium-ion/">apple.com/tw/batteries/why-lithium-ion</a>（一次充電循環怎麼計算的官方例子；本文導言引用的原句）</li>
+        <li>Apple〈電池 — 服務與回收〉<a class="inline" href="https://www.apple.com/tw/batteries/service-and-recycling/">apple.com/tw/batteries/service-and-recycling</a>（iPad「1,000 次完全充電循環後仍能保有最多達 80% 原有蓄電量」、iPhone 14 以前 500 次／iPhone 15 起 1,000 次）</li>
+        <li>Apple〈電池 — 最大化電池效能〉<a class="inline" href="https://www.apple.com/tw/batteries/maximizing-performance/">apple.com/tw/batteries/maximizing-performance</a>（溫度：16–22° C 為最理想範圍、高於 35° C「可能會永久損害電池的蓄電量」、存放在炎熱環境也可能造成無法挽回的損壞；「最佳化電池充電」說明）</li>
+        <li>Apple 台灣官網 iPad 技術規格<a class="inline" href="https://www.apple.com/tw/ipad-11/specs/">apple.com/tw/ipad-11/specs</a>（續航標示：Wi-Fi 無線上網或觀看影片最長可達 10 小時、行動網路機型 9 小時——本文兩處時間換算的基準）</li>
+        <li>Apple〈iPhone 電池與效能〉<a class="inline" href="https://support.apple.com/zh-tw/101575">support.apple.com/zh-tw/101575</a>（「最大容量」的官方定義：「即測量電池相對於全新品時的容量」；電池為消耗品、化學年齡的說明）</li>
+        <li>Apple〈瞭解 iPad 電池用量和健康度〉<a class="inline" href="https://support.apple.com/zh-tw/guide/ipad/ipadcda46da7/ipados">support.apple.com · iPad 使用手冊</a>（「設定」→「電池」→「電池健康度」的路徑、顯示欄位，以及「在支援的機型上」才會出現的限制與機型清單）</li>
+        <li>果果國際收購入庫檢測紀錄（抽樣 5,000 台 iPad，同時記錄電池健康度與充電循環次數；本文所有分布、比例與配對比較皆由此計算，樣本限制見<a class="inline" href="#limits">第 07 節</a>）</li>
+      </ul>
+
+      <h3>延伸觀看（YouTube 參考）</h3>
+      <p style="font-size:.9rem;color:var(--muted)">下面兩支都是<strong>怎麼把數字查出來</strong>的實作教學。兩支都以 iPhone 示範，因為 iPhone 有內建畫面比較好拍；但影片裡「翻分析資料」與「用捷徑讀取」的做法，正是<a class="inline" href="#check">第 05 節</a>裡舊款 iPad 唯一能用的路。</p>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=GkHKp_cjsM8" target="_blank" rel="noopener" data-yt="GkHKp_cjsM8" aria-label="播放：iPhone 電池健康度怎麼查？內建功能和捷徑兩種方式">
+          <img loading="lazy" src="https://i.ytimg.com/vi/GkHKp_cjsM8/sddefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/GkHKp_cjsM8/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>電池健康度怎麼查？內建功能和捷徑 2 種方式</b><small><span class="ch">頻道：蘋果仁</span> · 2024/09 · 約 5 分鐘</small><small>推薦理由：把「內建畫面」與「捷徑讀取」兩條路各示範一次，也講到循環次數要去哪裡看——沒有內建畫面的 iPad 就是靠第二條路。</small></div>
+      </div>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=V0zlVzKxrp4" target="_blank" rel="noopener" data-yt="V0zlVzKxrp4" aria-label="播放：免裝 App，查看電池循環次數與剩餘容量">
+          <img loading="lazy" src="https://i.ytimg.com/vi/V0zlVzKxrp4/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/V0zlVzKxrp4/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>免裝 App，查看電池循環次數與剩餘容量</b><small><span class="ch">頻道：APPLEFANS 蘋果迷</span> · 2020/06 · 約 3 分鐘</small><small>推薦理由：完整演一次「分析資料」裡撈數字的流程，也就是第 05 節的 B 方案。要注意這支是 2020 年的影片，選單名稱在新版系統已略有調整（現在叫「隱私權與安全性」→「分析與改進」），但位置與原理相同。</small></div>
+      </div>
+      <div class="callout" style="--c:var(--amber);margin-top:14px"><div class="ct">為什麼沒放「iPad 電池健康度」的專門影片</div>因為誠實——我們實際搜過，中文圈這個題目的影片幾乎都是通訊行或維修店的短影音宣傳片，內容多半只演操作、不解釋兩個數字的差別。與其湊數量，不如只放兩支真的把流程演清楚的。</div>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
