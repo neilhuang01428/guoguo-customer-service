@@ -85,6 +85,25 @@
   .acc-note { font-size: .74rem; color: var(--muted); margin-top: 10px; }
   .acc-note b { color: var(--red); }
 
+  /* ── 掉電曲線示意圖 curve ──
+     為什麼用內嵌 SVG 而不是 CSS：這是一條有轉折的折線，CSS 畫不出來也難維護。
+     SVG 一樣是零外部檔案、零 JS、可縮放、深淺色都吃 currentColor 與 CSS 變數。
+     viewBox 用 300 寬（而不是 720）：手機上 1 單位≈1px，字級才不會縮到看不清楚。
+     ★ 這是示意圖不是實測，figcaption 有寫明。 */
+  .curve { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 13px 12px 6px; }
+  .curve svg { display: block; width: 100%; height: auto; }
+  .curve .grid line { stroke: var(--grid); stroke-width: 1; }
+  .curve .axis { stroke: var(--line); stroke-width: 1.2; }
+  .curve .lbl { font-family: var(--mono); font-size: 9px; fill: var(--muted); }
+  .curve .theory { stroke: var(--muted); stroke-width: 1.6; stroke-dasharray: 5 4; opacity: .8; fill: none; }
+  .curve .actual { fill: none; stroke: var(--navy); stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
+  .curve .note { font-size: 9.5px; font-weight: 700; fill: var(--navy); }
+  .curve .note tspan.q { fill: var(--muted); font-weight: 500; }
+  .cv-leg { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: .78rem; color: var(--body); margin-bottom: 11px; }
+  .cv-leg i { display: inline-block; width: 20px; height: 0; vertical-align: middle; margin-right: 7px; }
+  .cv-leg i.solid { border-top: 3px solid var(--navy); }
+  .cv-leg i.dash { border-top: 2px dashed var(--muted); }
+
   /* ── 情境：循環次數怎麼累積（本篇唯一動畫）──
      用動畫的理由：這個知識點的本質是「跨兩天累積」——有時間差。
      靜態圖只能用文字寫「第一天…第二天…」，那就是在求救（見內容規範 §12 媒介階梯）。
@@ -262,7 +281,11 @@
       <div class="meter" style="--c:var(--amber);--w:80%"><div class="mtop"><b>健康度 80%</b><span>約 8 小時・少 2 小時</span></div><div class="track"><div class="fill"></div></div></div>
       <p>所以健康度 88% 的意思不是「這台只剩 88% 的壽命」，而是<strong>滿電大概少撐一個多小時</strong>。</p>
       <p>這個差距是大是小，其實取決於你怎麼用。一天用三、四小時的人，日常幾乎感覺不到；常常整天在外面靠電池撐、又不方便帶行動電源的人，就該把預算往健康度高的機器挪。</p>
-      <div class="callout" style="--c:var(--amber)"><div class="ct">這個換算是量級，不是碼表</div>Apple 標示的 10 小時是「上網或看影片」情境下的官方數字。玩遊戲、錄影、開最高亮度時，全新機也撐不到 10 小時；只拿來看文件、亮度調低，則可能撐更久。它適合用來理解「差距大概多大」，別拿它當精準預測。</div>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">這組換算不用分機型——因為每一台 iPad 都是 10 小時</div>從 2014 年的 iPad Air 2 到現在的 iPad Pro 13 吋，Apple 給每一台 iPad 的續航標示<strong>都是「Wi-Fi 上網或觀看影片最長可達 10 小時」</strong>（行動網路機型一律 9 小時）。</div>
+      <p>神奇的是，它們的電池容量差了整整兩倍：iPad mini 只有 19.3 Wh，iPad Pro 13 吋是 38.99 Wh。</p>
+      <p>因為 Apple 的設計順序是反過來的——<strong>先定下 10 小時這個目標，再去配電池</strong>。螢幕越大越耗電，電池就配得越大，剛好抵銷。</p>
+      <p>這對上面那組換算是好消息：健康度是「相對這台自己的出廠容量」，而每一台的出廠容量都被設計成剛好撐 10 小時。所以 85% 在 mini 上和在 13 吋 Pro 上，都是「大約少一成五的續航」，不必分機型重算。</p>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">這個換算是量級，不是碼表</div>標示一樣不代表體感一樣——Pro 的 120Hz 螢幕、更大更亮的面板、更重的工作負載，實際續航還是會拉開。而且 Apple 標示的 10 小時是「上網或看影片」情境下的官方數字。玩遊戲、錄影、開最高亮度時，全新機也撐不到 10 小時；只拿來看文件、亮度調低，則可能撐更久。它適合用來理解「差距大概多大」，別拿它當精準預測。</div>
 
       <h3>更實際的問題：你一天用掉多少電？</h3>
       <p>續航會等比例往下掉，這件事沒有轉圜——健康度 80% 就是大約八成的續航，不會有奇蹟。</p>
@@ -552,6 +575,55 @@
         <li><b>宣稱「一鍵檢測 iPad 電池健康度」的 App</b>——iPadOS 不開放第三方 App 讀取電池健康度，App Store 上那類 App 給的多半是推估值或裝飾性數字，別拿它去議價。</li>
         <li><b>要你「登入 Apple 帳號」才能查電池的網站或工具</b>——查電池不需要任何帳號。看到這種要求就關掉。</li>
       </ul>
+
+      <h3>順便：想知道自己這台實際掉多快，設定裡就有曲線</h3>
+      <p>健康度是「還剩多少容量」，但你真正想知道的常常是「它掉得多快」。這個不用另外裝東西——「設定」→「電池」就有<strong>今天</strong>與<strong>過去八天</strong>的電量變化圖。</p>
+      <p>很多人第一次看到那條線會嚇一跳，因為它不是等速下降的。這件事本身很正常，值得先弄懂：</p>
+      <figure class="fig">
+        <div class="curve">
+          <div class="cv-leg">
+            <span><i class="solid"></i>實際掉電（示意）</span>
+            <span><i class="dash"></i>如果完全等速</span>
+          </div>
+          <svg viewBox="0 0 300 160" role="img" aria-label="電量對時間的示意圖：理論等速是一條直線，實際掉電前段平緩、後段變陡，最後一段掉最快">
+            <g class="grid">
+              <line x1="30" y1="10" x2="292" y2="10"/>
+              <line x1="30" y1="40" x2="292" y2="40"/>
+              <line x1="30" y1="70" x2="292" y2="70"/>
+              <line x1="30" y1="100" x2="292" y2="100"/>
+            </g>
+            <line class="axis" x1="30" y1="130" x2="292" y2="130"/>
+            <line class="axis" x1="30" y1="10" x2="30" y2="130"/>
+            <g class="lbl">
+              <text x="26" y="13" text-anchor="end">100%</text>
+              <text x="26" y="43" text-anchor="end">75%</text>
+              <text x="26" y="73" text-anchor="end">50%</text>
+              <text x="26" y="103" text-anchor="end">25%</text>
+              <text x="26" y="133" text-anchor="end">0%</text>
+              <text x="30" y="146" text-anchor="middle">開機</text>
+              <text x="161" y="146" text-anchor="middle">用了一半時間</text>
+              <text x="292" y="146" text-anchor="end">沒電</text>
+            </g>
+            <line class="theory" x1="30" y1="10" x2="292" y2="130"/>
+            <polyline class="actual" points="30,10 82,20 135,35 161,46 187,60 226,82 253,96 277,110 292,130"/>
+            <g class="note">
+              <text x="288" y="26" text-anchor="end">前段平緩　<tspan class="q">＝ 在做省電的事</tspan></text>
+              <text x="288" y="41" text-anchor="end">後段變陡　<tspan class="q">＝ 在做耗電的事</tspan></text>
+            </g>
+          </svg>
+        </div>
+        <figcaption>這是<b>示意圖，不是實測資料</b>——形狀取自常見的使用情境，重點在「為什麼不等速」，不是具體數字。</figcaption>
+      </figure>
+      <p>會歪掉主要有三個原因，而且<strong>第一個就佔了絕大部分</strong>：</p>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>原因</th><th>為什麼</th><th>你會看到什麼</th></tr>
+          <tr><td>耗電速度本來就會變</td><td>看文件、跑遊戲、看 4K 影片，耗電差好幾倍；螢幕亮度也是</td><td>同一台，早上一小時掉 5%，晚上一小時掉 25%</td></tr>
+          <tr><td>末段的估算誤差變大</td><td>鋰電池的電壓在快沒電時掉得特別急，系統的估算跟著變不準</td><td>「最後 10% 掉特別快」的經典感覺</td></tr>
+          <tr><td>溫度</td><td>低溫時可用容量會暫時縮水，回溫就恢復</td><td>冬天在戶外突然掉一大截，甚至直接關機</td></tr>
+        </table>
+      </div>
+      <div class="callout" style="--c:var(--green)"><div class="ct">所以看那張圖的正確方式</div>別看「線直不直」，那反映的是你在做什麼事，不是電池好壞。<strong>要看的是同樣的事情、同樣的亮度下，掉得比以前快多少</strong>——那才跟電池有關。</div>
     </section>
 
     <section id="deal">
