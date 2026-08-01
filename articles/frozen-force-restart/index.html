@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>iPad 當機、卡死怎麼辦？強制重啟按法全型號對照 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式（共用 assets/style.css 沒有的部分）── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 表格橫向捲動 */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 580px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+
+  /* ── 動手前的紅線圖 gate ──
+     這是全篇唯一「按下去會出事」的地方，所以放在最前面、也給它獨立的視覺。
+     判斷只有一個：畫面上有沒有進度列。有＝正在更新或回復，硬重開可能把系統弄壞。 */
+  .gate .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+  .gate .gs { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 11px; padding: 14px 15px 15px; }
+  .gate .scr { background: var(--navy-deep); border-radius: 10px; padding: 20px 14px 16px; text-align: center; color: #fff; min-height: 126px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+  .gate .apple { font-size: 1.5rem; line-height: 1; }
+  .gate .bar { width: 78%; height: 5px; border-radius: 99px; background: rgba(255,255,255,.24); overflow: hidden; }
+  .gate .bar i { display: block; width: 46%; height: 100%; border-radius: 99px; background: #fff; }
+  .gate .froz { font-family: var(--mono); font-size: .68rem; opacity: .55; }
+  .gate .gt { font-size: 1rem; font-weight: 800; color: var(--ink); margin-top: 12px; }
+  .gate .gd { font-size: .86rem; color: var(--body); margin-top: 5px; line-height: 1.6; }
+  .gate .gv { font-size: .84rem; font-weight: 700; color: var(--c); margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--grid); }
+
+  /* ── 按鍵位置示意 btnmap ──
+     全篇最重要的一張圖。官方用文字寫「最靠近頂端按鈕的音量鍵」，
+     但讀者手上正拿著卡死的機器、又急，文字描述很難當場對應到實體位置。
+     刻意用俯視輪廓標出三顆鍵的相對位置，並把按的順序寫在鍵旁邊。 */
+  .btnmap .bm { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .btnmap .unit { text-align: center; }
+  .btnmap .ttl { font-size: .95rem; font-weight: 800; color: var(--ink); margin-bottom: 3px; }
+  .btnmap .sub { font-family: var(--mono); font-size: .66rem; color: var(--muted); margin-bottom: 14px; line-height: 1.5; }
+  /* margin-top 22px 是留給頂端按鍵標籤的空間：那顆鍵畫在輪廓外側（top:-5px），
+     它的文字標籤還要再往上，不留空間就會壓到上面的副標。 */
+  .btnmap .pad { position: relative; width: 118px; height: 156px; margin: 22px auto 10px; border: 2px solid var(--navy); border-radius: 14px; background: #fff; }
+  .btnmap .pad .home { position: absolute; left: 50%; bottom: 7px; transform: translateX(-50%); width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--navy); }
+  .btnmap .k { position: absolute; background: var(--line); border-radius: 3px; }
+  .btnmap .k.on { background: var(--green); }
+  .btnmap .k.top { top: -5px; right: 16px; width: 30px; height: 5px; }
+  .btnmap .k.v1 { right: -5px; top: 20px; width: 5px; height: 24px; }
+  .btnmap .k.v2 { right: -5px; top: 54px; width: 5px; height: 24px; }
+  .btnmap .n { position: absolute; font-family: var(--mono); font-size: .62rem; font-weight: 800; color: var(--green); white-space: nowrap; }
+  .btnmap .k.top .n { bottom: 9px; right: 0; }
+  .btnmap .k.v1 .n, .btnmap .k.v2 .n { left: 11px; top: 3px; }
+  .btnmap .seq { list-style: none; text-align: left; font-size: .87rem; color: var(--body); }
+  .btnmap .seq li { padding: 6px 0 6px 22px; position: relative; border-bottom: 1px solid var(--grid); line-height: 1.55; }
+  .btnmap .seq li:last-child { border-bottom: 0; }
+  .btnmap .seq li b { position: absolute; left: 0; color: var(--green); font-family: var(--mono); font-weight: 800; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+  }
+  @media (max-width: 560px) {
+    .gate .g2 { grid-template-columns: 1fr; }
+    .btnmap .bm { grid-template-columns: 1fr; gap: 28px; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>iPad 當機卡死</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#gate" class="active">00 · 按之前先看一眼</a>
+  <div class="grp">現在就救</div>
+  <a href="#howto">01 · 強制重啟怎麼按</a>
+  <a href="#models">02 · 你那台屬於哪一類</a>
+  <a href="#failed">03 · 按了沒反應怎麼辦</a>
+  <div class="grp">不要再發生</div>
+  <a href="#repeat">04 · 三天兩頭當一次</a>
+  <a href="#hardware">05 · 什麼時候該送修</a>
+  <div class="grp">果果的角度</div>
+  <a href="#guoguo">06 · 檢測台上看到的</a>
+  <a href="#sources">來源與更新日期</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>各年份 iPad 都在收，按法我們全都要記</div>
+      </div>
+      <div class="pills"><span>全型號按法對照</span><span>每一步都附官方原文</span><span>查不到官方出處的就不寫</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">iPad 疑難排解 / 當機與卡死</div>
+    <h1>iPad 當機、卡死怎麼辦？</h1>
+    <p class="subtitle">畫面凍住、點什麼都沒反應，連關機滑桿都叫不出來——這種時候最怕亂按把資料弄丟，結果乾等一小時也沒好。先深呼吸，這件事有標準做法。</p>
+
+    <div class="lead-ans" style="--c:var(--green)">
+      <div class="lt">現在就做這件事</div>
+      <p class="big">畫面卡死，先做強制重新啟動。</p>
+      <p class="sm">它<strong>不需要畫面有反應</strong>就能執行，所以「連關機都關不了」一樣救得回來。按法只分兩種：<strong>有主畫面按鈕</strong>的機型，同時按住頂端按鈕和主畫面按鈕；<strong>沒有主畫面按鈕</strong>的機型，先按一下靠近頂端按鈕的音量鍵、再按一下離頂端按鈕最遠的音量鍵，然後按住頂端按鈕——兩種都是<strong>看到 Apple 標誌才放手</strong>。</p>
+      <p class="alias-line">先講清楚一件事：強制重新啟動<b>是重新開機，不是抹除</b>，它不是「清除所有內容和設定」那種會清空機器的操作。不過網路上流傳的「保證不會遺失資料」我們不寫——<strong>Apple 官方並沒有針對資料做過這樣的保證</strong>，正在編輯的檔案沒存到就是會沒有。</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat" style="--c:var(--red)"><div class="num">1</div><div class="lab">按下去之前<br>一定要先看的東西</div></div>
+      <div class="stat" style="--c:var(--navy)"><div class="num">2</div><div class="lab">官方按法<br>只有兩種</div></div>
+      <div class="stat" style="--c:var(--amber)"><div class="num">1hr</div><div class="lab">官方寫的<br>可能需要的充電時間</div></div>
+      <div class="stat" style="--c:var(--green)"><div class="num">4</div><div class="lab">有無主畫面按鈕的<br>四條世代分界線</div></div>
+    </div>
+
+    <div class="lead-map">
+      <div class="lm-t">畫面正卡著的話，看前三節就夠了：</div>
+      <div class="lm-g">
+        <a href="#gate"><i>00</i>按之前先看一眼螢幕</a>
+        <a href="#howto"><i>01</i>兩種按法怎麼按</a>
+        <a href="#models"><i>02</i>你那台屬於哪一類</a>
+      </div>
+    </div>
+
+    <p class="updated">本文查證：<b>2026 年 8 月</b>，按鍵組合與後續步驟逐字取自 Apple iPad 使用手冊與支援文件，機型的按鈕配置也逐台核對過官方機型頁。Apple 隨時可能調整畫面與流程，操作時以你機器上的實際狀況為準。<a class="inline" href="#sources">來源列在文末</a>。</p>
+
+    <section id="gate">
+      <div class="sec-label" style="--c:var(--red)">before_you_press</div>
+      <h2>00 · 按下去之前，先看一眼螢幕</h2>
+      <p>這是全篇唯一一個「按錯會出事」的地方，所以放在最前面。判斷只要兩秒：<strong>畫面上有沒有一條進度列？</strong></p>
+
+      <figure class="fig gate">
+        <div class="g2">
+          <div class="gs" style="--c:var(--red)">
+            <div class="scr">
+              <div class="apple">🍎</div>
+              <div class="bar"><i></i></div>
+            </div>
+            <div class="gt">有進度列 → 不要按</div>
+            <div class="gd">代表它正在<strong>更新、回復或備份</strong>。官方對更新畫面明講，進度列「可能移動緩慢或看似靜止」——看起來像當機，其實還在跑。</div>
+            <div class="gv">✗ 這時硬重開，可能把系統弄壞</div>
+          </div>
+          <div class="gs" style="--c:var(--green)">
+            <div class="scr">
+              <div class="froz">畫面停在 App 或桌面<br>點什麼都沒反應</div>
+            </div>
+            <div class="gt">沒有進度列 → 可以按</div>
+            <div class="gd">畫面停在某個 App、桌面或全黑，怎麼點都不動，也叫不出關機滑桿。這才是強制重新啟動要處理的狀況。</div>
+            <div class="gv">✓ 往下看第 01 節</div>
+          </div>
+        </div>
+        <figcaption>只要看到進度列，唯一該做的事就是<b>等</b>。更新中途被硬重開，原本十分鐘的事會變成要接電腦重灌。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">怎麼分辨「真的還在跑」還是「真的卡死」</div>把 iPad <strong>接上電源，放著等 30 分鐘以上</strong>再回來看。如果進度列有一點點前進，就繼續等；系統更新在舊機型上本來就可能久到讓人以為當機了。<br><br>只有在<strong>完全沒有進度列</strong>的情況下，才進到下一節。</div>
+    </section>
+
+    <div class="part-div">現在就救</div>
+
+    <section id="howto">
+      <div class="sec-label" style="--c:var(--navy)">how_to</div>
+      <h2>01 · 強制重新啟動：官方只有兩種按法</h2>
+      <p>Apple 對這件事的定義很明確：「<strong>如果 iPad 沒有回應，且你無法關機再開機來重新啟動，請嘗試強制重新啟動。</strong>」注意後半句——它就是設計給「連關機都做不到」的情況用的。</p>
+
+      <figure class="fig btnmap">
+        <div class="bm">
+          <div class="unit">
+            <div class="ttl">沒有主畫面按鈕</div>
+            <div class="sub">全螢幕的 Pro / Air / mini / iPad 10 代以後</div>
+            <div class="pad">
+              <div class="k top on"><span class="n">③ 按住</span></div>
+              <div class="k v1 on"><span class="n">① 按一下</span></div>
+              <div class="k v2 on"><span class="n">② 按一下</span></div>
+            </div>
+            <ul class="seq">
+              <li><b>①</b>快速按下並放開<strong>最靠近頂端按鈕</strong>的音量鍵</li>
+              <li><b>②</b>快速按下並放開<strong>離頂端按鈕最遠</strong>的音量鍵</li>
+              <li><b>③</b>按住頂端按鈕，看到 Apple 標誌再放開</li>
+            </ul>
+          </div>
+          <div class="unit">
+            <div class="ttl">有主畫面按鈕</div>
+            <div class="sub">螢幕下方有實體圓鈕的機型</div>
+            <div class="pad">
+              <div class="k top on"><span class="n">同時按住</span></div>
+              <div class="home"></div>
+            </div>
+            <ul class="seq">
+              <li><b>①</b><strong>同時按住</strong>頂端按鈕和主畫面按鈕</li>
+              <li><b>②</b>兩顆都不要放</li>
+              <li><b>③</b>看到 Apple 標誌，才放開兩個按鈕</li>
+            </ul>
+          </div>
+        </div>
+        <figcaption>官方的說法是「<b>最靠近／最遠離頂端按鈕</b>」的音量鍵，不是「音量上、音量下」——因為 iPad 可以直立也可以橫放，用上下講一定會有人按反。</figcaption>
+      </figure>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--red)"><div class="ct">最常見的三個失敗原因</div>① 前兩顆音量鍵<strong>按太久</strong>——官方寫的是「快速按下並放開」，不是按住。<br>② 第三步<strong>太早放手</strong>——要一直按到 Apple 標誌出現。<br>③ 兩顆音量鍵的<strong>順序按反</strong>——先近後遠，記反了不會有反應。</div>
+        <div class="callout" style="--c:var(--navy)"><div class="ct">按多久才算久</div>第三步按住頂端按鈕之後，<strong>可能要十幾秒才會出現 Apple 標誌</strong>，畫面在那之前是全黑的。很多人在第 8 秒放棄，以為方法錯了，其實只差幾秒。</div>
+      </div>
+    </section>
+
+    <section id="models">
+      <div class="sec-label" style="--c:var(--teal)">which_model</div>
+      <h2>02 · 你那台屬於哪一類？四條分界線</h2>
+      <p>不用查機型號碼，先低頭看一眼：<strong>螢幕下方有沒有一顆實體圓形按鈕？</strong>有就走「有主畫面按鈕」那一套，沒有就走另一套。這是最快也最可靠的判斷。</p>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">最容易害人按錯的一件事：Touch ID ≠ 主畫面按鈕</div>很多人以為「有指紋辨識就是有 Home 鍵」，這在近幾年的 iPad 上<strong>是錯的</strong>。iPad mini 6、iPad 第十代、iPad Air 第四代以後都有 Touch ID，但它做在<strong>頂端按鈕</strong>上，機身正面是全螢幕。<br><br>Apple 官方標題寫的是「配備 Face ID <strong>或頂端按鈕配備 Touch ID</strong> 的機型」，指的就是這種。<strong>認按鈕的位置，不要認有沒有指紋辨識。</strong></div>
+
+      <h3>不知道自己是第幾代？看這四條線就好</h3>
+      <p>每個系列都有一個明確的世代分界，界線之後就沒有主畫面按鈕了：</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>系列</th><th>有主畫面按鈕（頂端＋主畫面鍵）</th><th>沒有主畫面按鈕（音量近→遠→頂端）</th></tr>
+          <tr>
+            <td>iPad<br><small>數字世代</small></td>
+            <td class="good">第七代、第八代、第九代<br><small>以及更早的機型</small></td>
+            <td>第十代、iPad（A16）起</td>
+          </tr>
+          <tr>
+            <td>iPad Air</td>
+            <td class="good">第三代<br><small>以及更早的機型</small></td>
+            <td>第四代、第五代、M2／M3／M4 各尺寸</td>
+          </tr>
+          <tr>
+            <td>iPad mini</td>
+            <td class="good">第五代<br><small>以及更早的機型</small></td>
+            <td>第六代、mini（A17 Pro）起</td>
+          </tr>
+          <tr>
+            <td>iPad Pro</td>
+            <td class="good">12.9 吋第一、二代<br>以及 9.7／10.5 吋</td>
+            <td>11 吋<strong>全系列</strong>、12.9 吋第三代起、13 吋（M4／M5）</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">記不住也沒關係</div>這張表是給想確認的人看的。真正要用的時候，<strong>看螢幕下方有沒有圓鈕</strong>就夠了——這個判斷不會錯，也不需要知道自己買的是哪一年的機器。</div>
+        <div class="callout" style="--c:var(--amber)"><div class="ct">二手族群特別容易卡在這裡</div>網路上的教學多半只寫最新款的按法。手上是幾年前的機器、照著新款按法按半天沒反應，很容易誤以為「連強制重啟都沒用，一定是燒掉了」。<strong>先確認自己按的是對的那一套，再下結論。</strong></div>
+      </div>
+    </section>
+
+    <section id="failed">
+      <div class="sec-label" style="--c:var(--amber)">no_response</div>
+      <h2>03 · 按了沒反應？照這個順序往下走</h2>
+      <p>強制重啟按對了卻還是黑畫面，先別急著判定機器壞了。官方給的後續路徑很具體：</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">01</div><div>
+          <h4>接上電源充電，可能需要一個小時</h4>
+          <p>官方原文寫得很直白：「如果 iPad 無法開機，請按照這些步驟檢查硬體，並為裝置充電。<strong>你可能需要充電達一個小時。</strong>」電量徹底見底的機器，接上電之後不會馬上有畫面。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">02</div><div>
+          <h4>順便換一條線、換一個插頭試試</h4>
+          <p>充電線內部斷芯是外觀看不出來的。換一組確定能用的線和充電器再試一次，這一步不花錢，卻是實際上很常見的原因。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">03</div><div>
+          <h4>充過電之後，再按一次強制重新啟動</h4>
+          <p>有電之後再按一次。這時候要有耐心，按住頂端按鈕的時間可能比平常更久。</p></div></div>
+        <div class="step" style="--c:var(--red)"><div class="n">04</div><div>
+          <h4>卡在 Apple 標誌不動？那要接電腦</h4>
+          <p>如果按下去會出現 Apple 標誌、然後就停在那裡，官方的處理方式是接上電腦進入復原模式，<strong>選「更新」而不是「回復」</strong>——更新會保留資料，回復則會清空。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">接電腦那一步的官方細節</div>下載軟體的過程<strong>如果超過 15 分鐘，iPad 會自己結束復原模式</strong>，這時要把按鍵的步驟重做一次，不是失敗。另外 Windows 電腦需要先安裝 Apple Devices App 或 iTunes，別等到最後一刻才發現電腦上什麼都沒有。</div>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">到這裡就是停止點</div>官方對這條路的收尾只有一句：「<strong>如果 iPad 仍然無法運作，則可能需要維修。</strong>」<br><br>接下來不要做的事：拆機、拿吹風機加熱、灌來路不明的「一鍵修復」軟體。這些動作救不回已經是硬體的問題，卻會讓後續的檢測與維修變得更麻煩。</div>
+    </section>
+
+    <div class="part-div">不要再發生</div>
+
+    <section id="repeat">
+      <div class="sec-label" style="--c:var(--purple)">recurring</div>
+      <h2>04 · 三天兩頭當一次：先分清楚是誰在當</h2>
+      <p>偶爾當一次是正常的；<strong>反覆發生才需要根治</strong>。而根治的第一步不是重置全機，是先分辨「當掉的是整台，還是某一支 App」。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你觀察到的樣子</th><th>比較可能是</th><th>先做什麼</th></tr>
+          <tr>
+            <td class="good">只有某一支 App 會卡<br><small>其他 App 都正常</small></td>
+            <td class="good">那支 App 自己的問題</td>
+            <td class="good">強制關閉它再開 → 更新該 App → 還是不行就刪掉重裝</td>
+          </tr>
+          <tr>
+            <td>開大檔案或多視窗時容易自己關掉</td>
+            <td>記憶體壓力</td>
+            <td>減少同時開的 App 與分割視窗；更新 App 和系統</td>
+          </tr>
+          <tr>
+            <td class="bad">不管開什麼都會卡<br><small>連桌面都會凍住</small></td>
+            <td class="bad">整機層級的問題</td>
+            <td>更新 iPadOS → 重新啟動 → 仍舊才考慮重置設定</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">官方對「某一支 App 有問題」的終點，跟你想的不一樣</div>Apple 的 App 排錯文件走到最後，給的答案是<strong>聯絡那支 App 的開發者</strong>——整份文件裡沒有出現「重置」或「重灌系統」。<br><br>換句話說，<strong>一支 App 的程式問題，重置全機通常治不好</strong>。先確認是不是只有它在當，可以省下很多白工。</div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">關於「儲存空間要留多少才不會當機」</div>網路上流傳各種數字（留 10%、留 15% 之類）。我們查過 Apple 官方文件，<strong>找不到任何一個官方給的門檻數值</strong>，所以這篇不寫死。<br><br>能講的是方向：空間長期接近全滿時，系統的運作餘裕確實會變少，清理一些用不到的內容是合理的保養——但別把某個特定百分比當成規則。</div>
+    </section>
+
+    <section id="hardware">
+      <div class="sec-label" style="--c:var(--red)">when_to_repair</div>
+      <h2>05 · 什麼時候該懷疑不是軟體問題</h2>
+      <p>大部分當機都是軟體層面的事，重開就好。但下面這些訊號同時出現時，就不該再自己試下去：</p>
+
+      <ul class="flags">
+        <li><b>做某個特定動作就必當</b>——例如一開相機、一插充電線就凍住，指向特定零件。</li>
+        <li><b>當機時伴隨異常發燙</b>——不是溫熱，是燙到握不住。</li>
+        <li><b>電量跳水</b>——顯示 40% 卻突然關機，或充電進度非常不合理。</li>
+        <li><b>強制重啟後可以開機，但很短時間內又當</b>——而且已經更新過系統。</li>
+        <li><b>機身有摔過、進水的紀錄</b>——即使當下看起來正常，時間久了才出狀況很常見。</li>
+        <li><b>螢幕出現異常線條、色塊，或觸控有一塊沒反應</b>——這已經不是當機的範圍。</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">送修之前先做一件事：備份</div>如果機器還開得起來，<strong>先做一次備份再送</strong>。維修流程有可能需要清空裝置，事前備份是你唯一能自己控制的變數。<br><br>如果已經完全開不了機、也備份不了，那就照實跟維修方說明狀況，讓對方知道資料還沒備份。</div>
+    </section>
+
+    <div class="part-div">果果的角度</div>
+
+    <section id="guoguo">
+      <div class="sec-label" style="--c:var(--green)">our_view</div>
+      <h2>06 · 為什麼我們要把八個世代的按法都記起來</h2>
+      <p>我們每天收各種年份的 iPad 進來檢測。做久了會發現一件事：<strong>被當成「開不了機」送來的機器，有一部分只是按法按錯了。</strong></p>
+      <p>原因很單純。媒體和教學文章多半只寫最新款的按法，但二手市場上流通的機器橫跨好幾個世代——有 Home 鍵的、沒 Home 鍵的、Touch ID 在頂端的，全都在架上。<strong>對全型號在售的通路來說，這張對照表不是選配，是每天要用的東西。</strong></p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">檢測台上「按對就活」的機器</div>不少機器進來時客人說「完全開不了機」，實際上是照著新款按法按舊機。換成正確的組合、接電充飽再按，機器就起來了——這種情況不必花任何維修費。</div>
+        <div class="callout" style="--c:var(--red)"><div class="ct">但也有真的救不回來的</div>誠實說：如果是主機板層級的故障，任何按鍵組合都沒有用。這種時候我們會照實講，不會讓客人一直重按、也不會做無效的收費維修。</div>
+      </div>
+
+      <p>買二手 iPad 的時候，順手做一個小測試也有幫助：<strong>當場請賣家示範一次強制重新啟動</strong>。機器能正常重開、順利進入桌面，代表基本的開機流程是通的——這個測試不用三十秒。</p>
+
+      <div class="bigquote">
+        <div class="qm">”</div>
+        <p>「按了沒反應」有兩種：<br>一種是機器壞了，一種是你按的是別台的按法。</p>
+        <small>後面那種占的比例，比多數人想的高。</small>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label" style="--c:var(--muted)">sources</div>
+      <h2>來源與更新日期</h2>
+      <p class="updated">本文查證與撰寫：<b>2026 年 8 月</b>。按鍵組合、後續步驟與時間數字皆逐字取自下列 Apple 官方文件；機型的按鈕配置逐台核對過 iPad 使用手冊的機型頁。查不到官方出處的說法一律未收錄——包括流傳很廣的「強制重啟等於硬體級重置／切斷電源」與「保證不會遺失資料」，這兩句在官方文件裡都找不到依據。</p>
+      <p class="sources">主要查證來源：</p>
+      <ul class="sources">
+        <li>Apple iPad 使用手冊〈強制重新啟動 iPad〉<a class="inline" href="https://support.apple.com/zh-tw/guide/ipad/ipad9955c007/ipados">support.apple.com/zh-tw/guide/ipad/ipad9955c007/ipados</a>（官方定義「如果 iPad 沒有回應，且你無法關機再開機來重新啟動」、兩種機型的完整按鍵順序、看到 Apple 標誌才放手）</li>
+        <li>Apple〈如果 iPad 無法開機或沒有反應〉<a class="inline" href="https://support.apple.com/zh-tw/102642">support.apple.com/zh-tw/102642</a>（充電「可能需要充電達一個小時」、卡在 Apple 標誌時接電腦進復原模式選「更新」、下載超過 15 分鐘會結束復原模式、仍無法運作則可能需要維修。發佈日期 2026 年 5 月 11 日）</li>
+        <li>Apple iPad 使用手冊 · 各機型規格頁 <a class="inline" href="https://support.apple.com/zh-tw/guide/ipad/ipad9955c007/ipados">support.apple.com/zh-tw/guide/ipad</a>（本文第 02 節的四條世代分界線，逐台核對每個機型頁是否記載「主畫面按鈕」而來）</li>
+        <li>Apple〈如果 iPhone 或 iPad 上的 App 沒有回應或結束運作〉<a class="inline" href="https://support.apple.com/zh-tw/119876">support.apple.com/zh-tw/119876</a>（App 層問題的官方排錯終點是聯絡開發者，整份文件未出現重置或重灌系統）</li>
+        <li>Apple〈將 iPad 設定重置為預設值〉<a class="inline" href="https://support.apple.com/zh-tw/guide/ipad/ipad9a74dc01/ipados">support.apple.com/zh-tw/guide/ipad/ipad9a74dc01/ipados</a>（重置與清除的層級差別，本文用來說明強制重啟不是抹除）</li>
+      </ul>
+
+      <h3>延伸觀看（YouTube 參考）</h3>
+      <p style="font-size:.9rem;color:var(--muted)">說明一下選片標準：這個主題的中文搜尋結果有不少是<strong>修復軟體廠商的自營頻道</strong>（影片最後都會導向自家付費工具），我們逐支查過頻道再挑，只放這兩支——一支是 Apple 官方支援頻道，一支是純教學頻道，都沒有推銷任何軟體。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=vSguSOr6C2w" target="_blank" rel="noopener" data-yt="vSguSOr6C2w" aria-label="播放：How to restart your iPhone or iPad if it's frozen on the Apple logo | Apple Support">
+          <img loading="lazy" src="https://i.ytimg.com/vi/vSguSOr6C2w/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/vSguSOr6C2w/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>How to restart your iPhone or iPad if it's frozen on the Apple logo | Apple Support</b><small>頻道：Apple Support（Apple 官方支援頻道）· 推薦原因：正好對應本文第 03 節「卡在 Apple 標誌」那一段，官方親自示範按鍵順序與接電腦的處理方式，按到什麼時候該放手看畫面最清楚 · 英文發音，但畫面是實機操作</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=-W_FNXg3CpU" target="_blank" rel="noopener" data-yt="-W_FNXg3CpU" aria-label="播放：Q2 IPAD當機如何強制重開機">
+          <img loading="lazy" src="https://i.ytimg.com/vi/-W_FNXg3CpU/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/-W_FNXg3CpU/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>Q2 iPad 當機如何強制重開機</b><small>頻道：阿剛老師的電腦教學 · 推薦原因：繁體中文、短而直接，就是把強制重開機的按法示範一次，適合對照本文第 01 節邊看邊按；頻道走純教學路線，沒有推銷修復軟體</small></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
