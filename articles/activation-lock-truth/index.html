@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>iPad 啟用鎖定破解的真相：三類方法會發生什麼 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式（共用 assets/style.css 沒有的部分）── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* stat 數字為文字型（A10X↓／哈囉），縮小以免擠爆卡片（共用檔 1.85rem） */
+  .stat .num { font-family: var(--mono); font-size: 1.55rem; font-weight: 800; color: var(--c); line-height: 1.05; }
+
+  /* bigquote 置中引言版（比照站上既有文章） */
+  .bigquote { background: none; border-radius: 0; padding: 0; margin: 32px 40px; text-align: center; }
+  .bigquote .qm { font-size: 2.6rem; color: var(--navy); opacity: .2; font-weight: 800; line-height: .5; }
+  .bigquote p { font-size: 1.3rem; font-weight: 800; color: var(--ink); line-height: 1.5; margin: 10px 0; }
+  .bigquote small { display: block; color: var(--muted); font-size: .9rem; }
+  .bigquote .rule { width: 42px; height: 3px; background: var(--green); border-radius: 3px; margin: 14px auto 0; }
+
+  /* 影片卡加強版（比照站上既有文章） */
+  .vlite .thumb .pbtn { width: 66px; height: 46px; border-radius: 12px; box-shadow: 0 4px 14px rgba(0,0,0,.35); transition: .14s; }
+  .vlite .thumb:hover .pbtn { background: rgba(193,73,47,1); transform: translate(-50%,-50%) scale(1.06); }
+  .vlite .cap small { display: block; margin-top: 3px; }
+  .vlite .cap .ch { color: var(--navy); font-family: var(--mono); font-size: .68rem; }
+
+  /* ── 情境 L：繞過的迴圈（本篇專屬動畫零件）──
+     知識點本身是「時間差＋因果循環」：繞過 → 半殘 → 一重開機又回到原點。
+     鐵則照規範：每個元素的基礎樣式＝動畫最終狀態，關掉動畫仍看得到完整三格。 */
+  .anim .lockscr { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 2cqi; background: var(--navy); color: #fff; }
+  .anim .lockscr .lk { font-size: 15cqi; line-height: 1; }
+  .anim .lockscr .lt { font-family: var(--mono); font-size: 5.6cqi; opacity: .92; }
+  .anim .desk { position: absolute; inset: 0; padding: 11cqi 9cqi; display: grid; grid-template-columns: repeat(4,1fr); gap: 5cqi; align-content: start; background: #fff; }
+  .anim .desk span { display: block; aspect-ratio: 1; border-radius: 3cqi; background: var(--navy-bg); }
+  .anim .desk span.x { background: var(--red-bg); }
+  .anim .ban { position: absolute; left: 0; right: 0; bottom: 0; background: var(--red-bg); color: var(--red); font-family: var(--mono); font-size: 5cqi; text-align: center; padding: 2.4cqi 0; border-top: 1px solid var(--line); }
+  @keyframes loop-ban  { 0%, 26% { opacity: 0; } 42%, 100% { opacity: 1; } }
+  @keyframes loop-lock { 0%, 58% { opacity: 0; } 74%, 100% { opacity: 1; } }
+  .anim .ban.late      { animation: loop-ban 4.4s ease-out infinite; }
+  .anim .lockscr.back  { animation: loop-lock 4.4s ease-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .anim .ban.late, .anim .lockscr.back { animation: none; }
+  }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .bigquote { margin: 28px 4px; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>啟用鎖定的真相</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#verdict" class="active">00 · 30 秒結論</a>
+  <div class="grp">先看清楚</div>
+  <a href="#what">01 · 鎖到底在哪裡</a>
+  <a href="#methods">02 · 三類方法的結果</a>
+  <div class="grp">你這台呢</div>
+  <a href="#status">03 · 你這台的真實處境</a>
+  <a href="#official">04 · 官方唯一的那條路</a>
+  <a href="#stoploss">05 · 走不通時的停損</a>
+  <div class="grp">下次不要再遇到</div>
+  <a href="#inspect">06 · 收機時怎麼判斷</a>
+  <a href="#sources">來源與更新日期</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>我們每天收二手機，最有立場說這件事</div>
+      </div>
+      <div class="pills"><span>有鎖的機器我們一台都不收</span><span>缺點照實揭露</span><span>先講清楚再成交</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">客戶指南 / 啟用鎖定與二手交易</div>
+    <h1>iPad 啟用鎖定，<br>到底解不解得開？</h1>
+    <p class="subtitle">你正在搜「破解」，很可能也正打算付錢給某個解鎖服務。先花三分鐘看完這頁——我們把三條路照做之後會發生的事，全部攤開給你看，你自己判斷。</p>
+
+    <p class="lede">直接回答：<strong>沒有合法、也沒有安全的破解方法。</strong>因為那把鎖根本不在你手上這台機器裡，而是在 Apple 的伺服器上。Apple 官方說明寫得很白：「每次啟用或復原 iPhone 或 iPad 時，裝置都會聯絡 Apple 以確認是否已開啟『啟用鎖定』。」</p>
+    <p class="lede">所以網路上那些方法做的都不是「開鎖」，而是「讓機器這一次不要去問 Apple」。問題是，<strong>它下一次開機還是會再問一次</strong>。</p>
+    <p class="lede">這頁不打算說教。我們把三類方法各自會得到什麼、你這台還有沒有救、有正當來源的人該走哪條官方路，一次講完。</p>
+
+    <section id="verdict">
+      <div class="sec-label" style="--c:var(--navy)">verdict</div>
+      <h2>00 · 30 秒結論（趕時間看這段就好）</h2>
+      <div class="bigquote"><div class="qm">“</div><p>鎖不在機身裡，在 Apple 的伺服器上。<br>所有「繞過」都只是讓機器這一次別去問——重開機它就會再問一次。</p><small>下面四個數字，看完你大概就知道自己站在哪裡。</small><div class="rule"></div></div>
+      <div class="stats">
+        <div class="stat" style="--c:var(--red)"><div class="num">0</div><div class="lab">合法又永久有效的破解方法數量</div></div>
+        <div class="stat" style="--c:var(--amber)"><div class="num">A10X↓</div><div class="lab">繞過工具的 iPad 晶片天花板；A12 起與所有 M 系列連「半殘」都做不出來</div></div>
+        <div class="stat" style="--c:var(--teal)"><div class="num">2017</div><div class="lab">Apple 下架線上「啟用鎖定狀態查詢」的年份——今天沒有官方查詢工具</div></div>
+        <div class="stat" style="--c:var(--green)"><div class="num">哈囉</div><div class="lab">二手驗機唯一該看到的畫面，看到別的都先別付錢</div></div>
+      </div>
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--amber)"><div class="ct">你是買到有鎖機的買家</div>先<strong>停止付錢給任何解鎖服務</strong>。往下看<a class="inline" href="#status">第 03 節</a>做一次處境判定，再看<a class="inline" href="#stoploss">第 05 節</a>的停損順序。</div>
+        <div class="callout" style="--c:var(--green)"><div class="ct">你是忘記 Apple 帳號的原持有人</div>你是這篇裡最有機會救回來的人。直接跳<a class="inline" href="#official">第 04 節</a>——官方有一條正式管道，前提是你拿得出購買證明。</div>
+      </div>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">先確認你卡的是不是這個鎖</div>「進不去 iPad」有兩種完全不同的狀況，救法也完全不同。<strong>只有下表第二列才是這篇在講的事。</strong></div>
+      <table>
+        <tr><th>你在螢幕上看到什麼</th><th>這是哪一種鎖</th><th>這篇有沒有答</th></tr>
+        <tr><td>要你輸入 6 位數字的鍵盤<br>或「iPad 無法使用／已停用」</td><td>螢幕密碼鎖——<strong>機器是你的</strong>，只是你進不去</td><td class="good">✗ 那是另一個狀況，有官方解法可以走，不在這篇範圍</td></tr>
+        <tr><td>「啟用 iPad」要你輸入<strong>某個 Apple 帳號</strong><br>或「iPhone 已為擁有者鎖定」</td><td>啟用鎖定——<strong>機器認的是別人的帳號</strong></td><td class="bad">✓ 這篇講的就是它</td></tr>
+      </table>
+    </section>
+
+    <div class="part-div">先看清楚</div>
+
+    <section id="what">
+      <div class="sec-label" style="--c:var(--teal)">concept</div>
+      <h2>01 · 鎖到底在哪裡？（這一格搞懂，後面全部都通）</h2>
+      <p>大部分人以為啟用鎖定是「這台機器裡面被鎖住了」，所以直覺會去找「解鎖工具」。這個直覺剛好是反的。</p>
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">📱</div><div class="bt">你手上這台</div><div class="bv">iPad 本體</div></div>
+          <div class="arr">＋</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">🪪</div><div class="bt">存在 Apple 伺服器</div><div class="bv">上一位的帳號</div></div>
+          <div class="arr">＝</div>
+          <div class="box" style="--cbg:var(--red-bg)"><div class="bi">🔒</div><div class="bt">每次開機都比對</div><div class="bv">對不上就不給用</div></div>
+        </div>
+        <figcaption>鎖不在機身裡，而是在<b>中間那格</b>——Apple 伺服器上那筆「這台屬於誰」的紀錄。</figcaption>
+      </figure>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">Apple 官方原文</div>「開啟後，Apple 會將你的『Apple 帳號』安全地儲存在其啟用伺服器，並將『Apple 帳號』與你的裝置建立連結。」——所以要拿掉鎖，只有兩種可能：<strong>那個帳號自己來解，或 Apple 從伺服器端幫你拿掉</strong>。第三種不存在。</div>
+      <p>換個比喻：這台 iPad 像一間換了電子鎖的房子，而<strong>那把鑰匙的資料存在管理室（Apple）</strong>，不在門上。你把門把拆了、換了新的門把，管理室的紀錄一樣沒變——下次系統對帳，還是會告訴你「這間不是你的」。</p>
+      <details>
+        <summary>那為什麼 Apple 要設計得這麼死？（一句話：它解得開就沒用了）</summary>
+        <p>啟用鎖定的設計目的只有一個——<strong>讓偷來、搶來的裝置賣不掉</strong>。它跟「尋找」是同一套機制：你一開啟「尋找」，啟用鎖定就自動跟著開，就算小偷把整台遠端清除過，也照樣重新啟用不了。</p>
+        <p>這代表一件很現實的事：<strong>只要存在一個「不用原帳號也能解開」的方法，這套防盜就等於失效</strong>。所以每一次有人找到繞過的縫，Apple 就會補起來——它沒有不補的理由。你在網路上看到的「今年最新可用方法」，本質上都是在跟這件事賽跑。</p>
+        <p>順帶一提，這也是為什麼<strong>正派店家不會幫你「解 ID」</strong>。真的能解，那條產業鏈第一個受益的會是贓機通路，不會是你。</p>
+      </details>
+    </section>
+
+    <section id="methods">
+      <div class="sec-label" style="--c:var(--red)">what_happens</div>
+      <h2>02 · 你搜到的三類方法，照做之後會拿到什麼</h2>
+      <p>我們不評價你該不該試，只把結果攤開。你在 Google 上會看到的大致就是這三類，差別不在「有沒有效」，而在<strong>無效的方式不一樣</strong>：</p>
+      <table>
+        <tr><th>你搜到的方法</th><th>照做之後你會得到什麼</th><th>什麼時候破功</th><th>代價</th></tr>
+        <tr><td>DNS 繞過<br>（改一組 DNS 位址）</td><td>頂多進到一個側門網頁，摸得到幾個零星功能</td><td class="bad">重開機、或 Apple 端一調整就沒了</td><td>時間；照做時可能把流量交給陌生伺服器</td></tr>
+        <tr><td>解鎖軟體<br>（付費工具、宣稱一鍵）</td><td>老機型可能得到「這次開機」的半殘桌面</td><td class="bad">重開機就回到啟用鎖定畫面</td><td class="bad">付費；裝置被弄成越獄狀態</td></tr>
+        <tr><td>代解 ID<br>（真人服務、遠端處理）</td><td>對方要你的帳密、序號或先付訂金</td><td class="bad">多半在你付款之後</td><td class="bad">錢與帳號一起賠進去</td></tr>
+      </table>
+
+      <h3>A · DNS 繞過：它繞的不是鎖，是「這一次要問誰」</h3>
+      <p>DNS 繞過的原理是：把 iPad 在啟用時要連的伺服器位址，從 Apple 改指到別人的伺服器。你不是打開了門，而是<strong>被帶進一間側廳</strong>——那裡有個很陽春的網頁瀏覽器，讓你以為「進來了」。</p>
+      <figure class="fig anim">
+        <div class="flow">
+          <div class="box">
+            <div class="scr">
+              <div class="lockscr"><div class="lk">🔒</div><div class="lt">啟用 iPad</div></div>
+            </div>
+            <div class="bt">step_01</div>
+            <div class="bv">開機就卡在這一頁</div>
+          </div>
+          <div class="arr">→</div>
+          <div class="box">
+            <div class="scr">
+              <div class="desk"><span></span><span></span><span class="x"></span><span></span><span class="x"></span><span></span><span></span><span class="x"></span></div>
+              <div class="ban late">App Store ✕　更新 ✕</div>
+            </div>
+            <div class="bt">step_02</div>
+            <div class="bv">繞過後：半殘的畫面</div>
+          </div>
+          <div class="arr">→</div>
+          <div class="box">
+            <div class="scr">
+              <div class="desk"><span></span><span></span><span class="x"></span><span></span><span class="x"></span><span></span><span></span><span class="x"></span></div>
+              <div class="lockscr back"><div class="lk">🔒</div><div class="lt">啟用 iPad</div></div>
+            </div>
+            <div class="bt">step_03</div>
+            <div class="bv">重開機 → 又回到第一格</div>
+          </div>
+        </div>
+        <figcaption>繞過改掉的是「這一次要問誰」，不是那把鎖。<b>每次開機，機器都會再問一次 Apple。</b></figcaption>
+      </figure>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">現況：這招在現代機型上已經是死路（保留語氣）</div>DNS 繞過大約是 iOS 8～11 那個年代的產物，之後被 Apple 修補。<strong>連當年專門推廣這招的網站，自己都發文說漏洞已被補掉。</strong><br><br>我們必須誠實說：主流科技媒體近年已經不再報導它，所以<strong>沒有一份「2026 年現況」的權威專文可以引用</strong>。我們能確定的是 Apple 官方那句「每次啟用或復原時，裝置都會聯絡 Apple 確認」——只要這句話還成立，繞過就不可能變成永久解鎖。</div>
+
+      <h3>B · 解鎖軟體：它的極限寫在晶片上，不是寫在價目表上</h3>
+      <p>市面上那些付費工具（宣稱免密碼移除 Apple ID 的那種），幾乎都站在同一個地基上：一個叫 <code>checkm8</code> 的硬體漏洞。這個漏洞燒在晶片的唯讀區，Apple 沒辦法用軟體修補——但它<strong>只存在於 A5 到 A11 世代的舊晶片</strong>。</p>
+      <figure class="fig">
+        <div class="spectrum">
+          <div class="seg old">A5 – A11 世代<small>iPad 上大約到 A10X 為止：mini 4、Air 2、第 5～7 代、Pro 第 1～2 代</small><b>做得出「半殘」假象</b></div>
+          <div class="divider">A11 / A12<br>分水嶺</div>
+          <div class="seg new">A12 – M 系列<small>iPad Air 3 起、第 8 代起、mini 5 起、2018 後的 Pro、全部 M 系列</small><b>連假象都做不出來</b></div>
+        </div>
+        <figcaption>Apple 從 A12 起堵掉了觸發這個漏洞的路徑。<b>你的 iPad 落在右邊，工具連「暫時繞過」都辦不到。</b></figcaption>
+      </figure>
+      <div class="callout" style="--c:var(--red)"><div class="ct">最誠實的說明書，是廠商自己寫的</div>這些工具的官方頁面自己就寫著：繞過<strong>只對「本次開機」有效、重新開機就回到鎖定狀態</strong>，而且無法用新的 Apple 帳號登入 iCloud，還會讓裝置處於越獄狀態。<br><br>換句話說，你付錢買到的不是一台能用的 iPad，是一個<strong>不能更新、不能登入、一重開就消失的暫時狀態</strong>。</div>
+      <div class="callout" style="--c:var(--purple)"><div class="ct">怎麼一眼認出「這篇在賣東西」</div>看它敢不敢講三件事：<strong>支援到哪一顆晶片、重開機之後會怎樣、繞過後能不能登入 App Store</strong>。三個都避開不談、只放「3 步驟完成」動圖的，基本上就是廣告。</div>
+
+      <h3>C · 代解 ID：這一類的風險不在機器，在你的帳號和錢</h3>
+      <p>第三類是「找真人處理」——拍賣頁、私訊、社團裡都有。它們不需要技術，只需要你相信。下面幾條只要中一條，就別再往下走：</p>
+      <ul class="flags">
+        <li><b>要你先付訂金、或先付全額</b>——付款之後失聯是這類糾紛最常見的結局。</li>
+        <li><b>要你提供 Apple 帳號密碼或簡訊驗證碼</b>——這是釣魚，交出去等於連你自己的帳號一起賠。</li>
+        <li><b>宣稱「全機型通用、含最新 iPadOS」</b>——A12 以後連暫時繞過都做不到，敢說通用就是在唬人。</li>
+        <li><b>要你把機器寄過去「硬解」</b>——你會失去對裝置的控制，而且拿回來的東西無法查證做了什麼。</li>
+        <li><b>叫你安裝來路不明的描述檔（Profile）</b>——這是把設定權交給陌生人，跟解鎖無關。</li>
+      </ul>
+      <div class="callout" style="--c:var(--green)"><div class="ct">一個很好用的反問句</div>直接問對方：「解完之後我能不能登入我自己的 Apple 帳號、能不能更新 iPadOS？」<strong>能永久解開的人，這兩題會直接說可以。</strong>開始跟你解釋「這個要另外處理」「更新會鎖回去所以不要更新」的，答案已經出來了。</div>
+    </section>
+
+    <div class="part-div">你這台呢</div>
+
+    <section id="status">
+      <div class="sec-label" style="--c:var(--amber)">your_case</div>
+      <h2>03 · 你這台的真實處境（對號入座，30 秒有答案）</h2>
+      <p>能不能救，跟機型、跟你花多少錢都無關，只取決於一件事：<strong>你能不能證明或找到「那個帳號」</strong>。三種情境，結論差很大：</p>
+      <div class="grid g3">
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">情境 1 · 最好解</div><h4>聯絡得到上一位擁有者</h4>
+          <p>不管是賣家、家人還是前同事，只要他還記得帳號密碼，這件事五分鐘內就能結束。</p>
+          <span class="ex">→ 走第 04 節第 1、2 步</span>
+        </div>
+        <div class="card" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="c-tag">情境 2 · 有機會</div><h4>人找不到，但你有正式購買證明</h4>
+          <p>你自己就是原始買家、手上有經銷商開的發票或收據，可以向 Apple 提出正式的支援要求。</p>
+          <span class="ex">→ 走第 04 節第 3 步</span>
+        </div>
+        <div class="card" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="c-tag">情境 3 · 沒有官方路</div><h4>來源不明、也沒有原始憑證</h4>
+          <p>網拍面交、朋友轉手、來歷說不清楚的機器，多半落在這裡。<strong>沒有工具能改變這個結果</strong>，換一家解鎖服務也一樣。</p>
+          <span class="ex">→ 直接看第 05 節停損</span>
+        </div>
+      </div>
+      <div class="callout" style="--c:var(--red)"><div class="ct">請注意這件事：轉帳記錄不等於購買證明</div>Apple 認的是<strong>「Apple 授權經銷商核發」的原始銷售收據</strong>，不是你跟賣家的匯款截圖、也不是聊天室裡的成交對話。這一點很殘酷，但先知道，比付完錢才知道好。詳細欄位在<a class="inline" href="#official">下一節</a>。</div>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">還有一個很多人不知道的死角</div>就算你就是<strong>原持有人</strong>，如果帳號本身也回不去了，機器一樣救不回來。Apple 官方寫得很直白：「如果找不到『Apple 帳號』（或其他電子郵件地址或電話號碼），或無法重置密碼，你將無法存取帳號，也可能無法使用或重新啟用裝置。」</div>
+    </section>
+
+    <section id="official">
+      <div class="sec-label" style="--c:var(--green)">official_path</div>
+      <h2>04 · 官方唯一的那條路（有正當來源的人看這裡）</h2>
+      <p>Apple 只承認三種移除方式，而且是<strong>由上往下</strong>——能用第 1 步就別跳到第 3 步，因為愈往下愈慢、愈不確定：</p>
+      <div class="steps">
+        <div class="step" style="--c:var(--green)"><div class="n">1</div><div>
+          <h4>裝置在手邊、人也找得到 → 現場輸入就好</h4>
+          <p>Apple 的做法就一句：「請按照螢幕上的步驟，輸入你用於設定該裝置的『Apple 帳號』和密碼或裝置密碼。」<br>面交當下最有效的一招是：<strong>請賣家自己拿去輸入</strong>，不要拿他的帳密自己來。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">2</div><div>
+          <h4>人聯絡得到、但不在現場 → 請他用網頁遠端移除</h4>
+          <p>請對方在他自己的裝置上前往 iCloud 的「尋找」網頁，登入他的 Apple 帳號，選取這台裝置，按下「移除此裝置」。<br><strong>他不需要碰到機器，你也不需要知道他的密碼。</strong>這是最乾淨的做法。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">3</div><div>
+          <h4>人真的找不到 → 備齊購買證明，提出「啟用鎖定」支援要求</h4>
+          <p>Apple 官方原文：「如果你需要移除『啟用鎖定』的協助，並且持有購買證明文件，你可以提出『啟用鎖定』支援要求。」<br>這是 Apple 唯一公開的申訴入口，<strong>而「持有購買證明文件」是明寫的前提</strong>。</p></div></div>
+      </div>
+
+      <h3>Apple 對「購買證明」的要求，其實列得很清楚</h3>
+      <p>很多人以為隨便一張發票就行，其實 Apple 有一份明確清單。先照著檢查自己手上那張，比反覆送件有效：</p>
+      <table>
+        <tr><th>Apple 要求的欄位</th><th>白話講就是</th></tr>
+        <tr><td>裝置的詳細描述</td><td>寫得出是哪一台（機型、容量、顏色），不能只寫「平板一台」</td></tr>
+        <tr><td>裝置的購買日期</td><td>要有明確日期</td></tr>
+        <tr><td>發票或收據號碼</td><td>有編號、可回查的那種</td></tr>
+        <tr><td>裝置的價格</td><td>成交金額要在單據上</td></tr>
+        <tr><td>經銷商的聯絡資訊</td><td>Apple 另註明「我們也希望有經銷商的印章或標誌」</td></tr>
+        <tr><td>裝置序號</td><td>如果該經銷商通常會把序號印在收據上</td></tr>
+        <tr><td class="bad">整體條件</td><td class="bad">全部文件必須是「Apple 授權經銷商核發」，且清晰可辨</td></tr>
+      </table>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">誠實揭露：這條路沒有保證</div>Apple <strong>沒有公開</strong>「什麼情況會核准、什麼情況會被退」的標準，直營店的實際受理準則也不是公開文件。網路上找得到的「我送了發票結果被拒」是網友經驗，不是官方規則。<br><br>所以正確的期待值是：<strong>備齊文件、照官方管道送，但別把它當成一定會過的保險。</strong>任何跟你保證「一定申訴得下來、先付服務費」的第三方，請直接跳過。</div>
+      <div class="callout" style="--c:var(--purple)"><div class="ct">一個很多人漏掉的細節</div>如果這台是<strong>公司或學校配發</strong>的裝置，路徑完全不同——Apple 直接寫「請聯絡 IT 部門或經理」。這種機器上的鎖是由管理系統下的，個人怎麼送件都沒有用。</div>
+    </section>
+
+    <section id="stoploss">
+      <div class="sec-label" style="--c:var(--red)">stop_loss</div>
+      <h2>05 · 走不通的話，把損失停在這裡</h2>
+      <p>如果你落在情境 3，接下來要處理的其實不是那台 iPad，是<strong>不要再繼續賠下去</strong>。順序照這四步走：</p>
+      <div class="steps">
+        <div class="step" style="--c:var(--red)"><div class="n">1</div><div>
+          <h4>先停止一切付費解鎖</h4>
+          <p>包含「先付一半、成功再付尾款」。第 02 節 C 類講的那些條件，這時候會特別誘人——因為你已經賠了一筆，很想把它救回來。<strong>沉沒成本就是這樣愈滾愈大的。</strong></p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">2</div><div>
+          <h4>把證據整理成一包</h4>
+          <p>商品頁截圖、對話記錄、匯款證明、開機卡在啟用鎖定畫面的照片、機器序號。<br><strong>對話不要刪</strong>，也先別把「我要申訴」講在前面——先把該問的問完再說。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">3</div><div>
+          <h4>回頭找賣家，先給他一個機會</h4>
+          <p>很多情況其實是賣家自己忘了登出。直接問：「這台開機顯示已為擁有者鎖定，能請你用你的 iCloud『尋找』頁面把它移除嗎？」<br><strong>問法給台階，回收率比一開口就要求退款高。</strong></p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">4</div><div>
+          <h4>走你當初交易平台的申訴／退款機制</h4>
+          <p>電商與拍賣平台通常有自己的爭議處理流程，而且<strong>有時效限制</strong>——愈早提出愈有機會。面交、私下轉帳沒有平台可申訴的，就進到下面那格。</p></div></div>
+      </div>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">關於責任歸屬，我們不下判斷</div>「賣家賣有鎖的機器要負什麼責任」屬於法律問題，<strong>我們是賣二手機的，不是律師，不會在這裡幫任何人定性。</strong><br><br>能講的是可以做什麼：保留完整證據、與賣家協商、使用交易平台的申訴管道。如果想進一步主張權利，<strong>建議諮詢專業意見</strong>——政府的消費者服務專線、各縣市消費者服務中心，或律師，都能給你比我們準確的答案。</div>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">關於那台機器本身</div>誠實說：解不開的機器在二手市場上<strong>只剩零件價值</strong>，而且正派的收機通路（包含我們）都不會收。如果有人願意用接近正常行情的價格跟你收「有鎖機」，你應該擔心的是它接下來會被拿去做什麼。</div>
+    </section>
+
+    <div class="part-div">下次不要再遇到</div>
+
+    <section id="inspect">
+      <div class="sec-label" style="--c:var(--navy)">how_we_check</div>
+      <h2>06 · 果果收機時怎麼判斷（買二手，照這個做就好）</h2>
+      <p>我們每天在收二手 iPad，所以立場很單純：<strong>我們最不希望市面上有人買到有鎖的機</strong>——那會讓所有二手交易一起被懷疑。下面是我們實際在用的判斷法，你面交時照抄就行。</p>
+      <div class="callout" style="--c:var(--red)"><div class="ct">第一原則，也是 Apple 明寫的一句話</div>「請勿接手任何受『啟用鎖定』保護的二手 iPhone 或 iPad。」——注意用詞是<strong>「請勿接手」</strong>，不是「接手後再想辦法」。因為接手之後，就真的沒有辦法了。</div>
+
+      <h3>三個畫面決定要不要付錢</h3>
+      <p>不用懂技術，只要看賣家把機器交到你手上時，螢幕停在哪一頁：</p>
+      <table>
+        <tr><th>當場看到的畫面</th><th>代表什麼</th><th>怎麼做</th></tr>
+        <tr><td class="good">「哈囉」歡迎畫面</td><td>已經完全清除、也脫離原帳號</td><td class="good">✅ 這是唯一該看到的畫面，可以往下談</td></tr>
+        <tr><td>密碼鎖定畫面或主畫面</td><td>還沒清除，資料都還在</td><td>⚠️ 請賣家<strong>當場完整清除</strong>，清完再看一次</td></tr>
+        <tr><td class="bad">要求輸入某個 Apple 帳號<br>／「已為擁有者鎖定」</td><td>還綁在上一位的帳號上</td><td class="bad">🚩 當場退回，不要付款、不要收</td></tr>
+      </table>
+      <div class="callout" style="--c:var(--purple)"><div class="ct">關鍵是「清除完之後再看一次」</div>很多人踩雷的點在這裡：賣家在你面前按了「清除所有內容和設定」，畫面轉一圈回到設定精靈，看起來很乾淨——<strong>但如果原帳號沒有解除，走到啟用那一步才會跳出來要帳號</strong>。所以驗機不能停在「清完了」，要一路點到看見「哈囉」。</div>
+
+      <h3>下單前先問這五句（線上交易也適用）</h3>
+      <ul class="check">
+        <li><b>「這台的『尋找』關掉了嗎？Apple 帳號登出了嗎？」</b>兩件事其實是同一件——關掉「尋找」，啟用鎖定就跟著解除。答不出來的賣家，通常自己也沒弄清楚。</li>
+        <li><b>「可以拍一張走到『哈囉』畫面的影片給我嗎？」</b>要影片不要截圖。截圖可以是別台機器的，連續影片比較難造假。</li>
+        <li><b>「有原始購買發票或收據嗎？」</b>就算最後沒用上，有沒有這張單子，本身就是來源清不清楚的訊號。</li>
+        <li><b>「機身序號可以給我嗎？」</b>正常賣家不會迴避。願意給序號，代表他不擔心你去查。</li>
+        <li><b>「如果拿到手發現還鎖著，怎麼處理？」</b>在付錢<strong>之前</strong>先問，答案的態度比答案本身更有參考價值。</li>
+      </ul>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">為什麼不能「先查序號再說」</div>Apple 以前真的有一個線上頁面，輸入序號或 IMEI 就能查啟用鎖定狀態，<strong>但在 2017 年 1 月被下架了</strong>——因為那個工具反而被拿去反查偷來的裝置。<br><br>所以今天<strong>沒有任何官方查詢管道</strong>。看到有網站說能幫你「線上查啟用鎖定狀態」，先假設它想要的是你的序號。唯一可靠的驗證方式，還是把機器拿到手，走一次開機流程。</div>
+      <div class="bigquote"><div class="qm">”</div><p>二手機的價差可以談，<br>但「這台認不認你」這件事，沒有中間值。</p><small>看到「哈囉」再付錢，是這個市場裡最便宜的一道保險。</small><div class="rule"></div></div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label" style="--c:var(--muted)">sources</div>
+      <h2>來源與更新日期</h2>
+      <p class="updated">本文查證與撰寫：<b>2026 年 8 月</b>。⚠️ <b>這個主題的時效性特別短</b>——Apple 持續在封堵各種繞過手法，網路上「今年最新可用」的說法幾乎每隔幾個月就會換一輪。</p>
+      <p class="updated">因此本文對「某某方法還能不能用」一律採保留語氣。若你看到的資訊與本文不同，請以下方 Apple 官方頁面的最新版本為準，不要以第三方教學或工具廠商的說法為準。</p>
+      <p class="updated">另外要說明：Apple 官方<b>從未</b>公開直營店或線上申訴的核准標準，本文也不做任何推測；涉及責任歸屬的法律問題，本文一律不下判斷。</p>
+      <p class="sources">主要查證來源（Apple 官方為主，技術性事實另附獨立來源）：</p>
+      <ul class="sources">
+        <li>Apple〈iPhone 和 iPad 的「啟用鎖定」〉<a class="inline" href="https://support.apple.com/zh-tw/108794">support.apple.com/zh-tw/108794</a>（運作方式、二手購買前的檢查步驟、「請勿接手」原文。發佈日期 2026 年 5 月 4 日）</li>
+        <li>Apple〈如何移除「啟用鎖定」〉<a class="inline" href="https://support.apple.com/zh-tw/108934">support.apple.com/zh-tw/108934</a>（三種移除方式、憑購買證明提出支援要求。發佈日期 2026 年 6 月 1 日）</li>
+        <li>Apple〈購買 Apple 裝置後請保存收據〉<a class="inline" href="https://support.apple.com/zh-tw/102264">support.apple.com/zh-tw/102264</a>（購買證明必須載明的欄位清單。發佈日期 2025 年 3 月 20 日）</li>
+        <li>Apple〈如果物品或裝置已連接其他「Apple 帳號」〉<a class="inline" href="https://support.apple.com/zh-tw/102620">support.apple.com/zh-tw/102620</a>（配件與「尋找」網絡裝置的解除配對；此頁明寫「Apple 無法為你移除『尋找』鎖定」）</li>
+        <li>SecurityWeek〈Unpatchable iOS Bootrom Exploit〉<a class="inline" href="https://www.securityweek.com/unpatchable-ios-bootrom-exploit-allows-jailbreaking-many-iphones/">securityweek.com</a> 與 The Apple Wiki〈checkm8〉<a class="inline" href="https://theapplewiki.com/wiki/Checkm8_Exploit">theapplewiki.com</a>（漏洞涵蓋 A5–A11、A12 以後不受影響）</li>
+        <li>MacRumors〈Apple Removes Activation Lock Status Checker〉<a class="inline" href="https://www.macrumors.com/2017/01/29/apple-removes-activation-lock-status-checker/">macrumors.com</a>（2017 年 1 月下架線上查詢工具）</li>
+        <li>解鎖工具廠商自家說明頁（Tenorshare 4MeKey、iMyFone iBypasser 等）——本文僅引用其<b>自承的功能邊界</b>（只對本次開機有效、重開機回鎖、無法以新帳號登入 iCloud），不引用其效果宣稱</li>
+      </ul>
+
+      <h3>延伸觀看（YouTube 參考）</h3>
+      <p style="font-size:.9rem;color:var(--muted)">下面兩支都不是「教你解鎖」的影片，而是<strong>買二手蘋果裝置該怎麼當場檢查</strong>——也就是本文<a class="inline" href="#inspect">第 06 節</a>的實拍版。兩支都以 iPhone 示範，但啟用鎖定的檢查邏輯與 iPad 完全相同。</p>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=LPKT6Dm-5Ps" target="_blank" rel="noopener" data-yt="LPKT6Dm-5Ps" aria-label="播放：揭開二手 iPhone 最貴陷阱：教你如何檢查，以免買到鎖定機或贓機">
+          <img loading="lazy" src="https://i.ytimg.com/vi/LPKT6Dm-5Ps/sddefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/LPKT6Dm-5Ps/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>揭開二手 iPhone 最貴陷阱：教你如何檢查，以免買到鎖定機或贓機</b><small><span class="ch">頻道：iPhone News 愛瘋了</span> · 2023/10 · 約 4 分鐘</small><small>推薦理由：全片就在講「怎麼確認裝置已脫離前一位擁有者的帳號」，短、直接、依據 Apple 官方建議，沒有推銷任何解鎖工具。</small></div>
+      </div>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=Plgrf3nsF0U" target="_blank" rel="noopener" data-yt="Plgrf3nsF0U" aria-label="播放：二手 iPhone 陷阱很多？教你面交檢查重點">
+          <img loading="lazy" src="https://i.ytimg.com/vi/Plgrf3nsF0U/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/Plgrf3nsF0U/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>「二手 iPhone 陷阱很多？」教你面交檢查重點</b><small><span class="ch">頻道：陳寗 NingSelect</span> · 2022/03 · 約 16 分鐘</small><small>推薦理由：完整的面交驗機流程實拍，把「當場該看什麼、該請賣家做什麼」演一遍；該頻道自訂原則為開箱零業配，內容立場乾淨。</small></div>
+      </div>
+      <div class="callout" style="--c:var(--amber);margin-top:14px"><div class="ct">為什麼沒有放「啟用鎖定」的教學影片</div>因為誠實——我們實際搜過「iPad 啟用鎖定破解」「啟用鎖定 解除」這類關鍵字，<strong>YouTube 前二十筆幾乎全是解鎖軟體廠商自營頻道的宣傳片</strong>（同一家公司一年上好幾支、標題只換年份）。<br><br>放那種影片等於幫他們導流，跟這篇文章的立場完全相反。所以我們寧可只放兩支「怎麼不要買到有鎖機」的影片，也不塞數量。</div>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
