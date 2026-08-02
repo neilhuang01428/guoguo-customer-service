@@ -157,6 +157,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.guoguo.tw/guide/articles/charger-wattage-vs-port/</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.guoguo.tw/guide/tag/airtag/</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -217,6 +223,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.guoguo.tw/guide/tag/%E9%85%8D%E4%BB%B6%E6%8E%A8%E8%96%A6/</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.guoguo.tw/guide/tag/%E9%8D%B5%E7%9B%A4%E9%85%8D%E4%BB%B6/</loc>
     <lastmod>2026-08-02</lastmod>
     <changefreq>weekly</changefreq>
@@ -225,6 +237,12 @@
   <url>
     <loc>https://www.guoguo.tw/guide/tag/%E9%98%B2%E8%A9%90%E9%A8%99/</loc>
     <lastmod>2026-08-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.guoguo.tw/guide/tag/%E9%9B%BB%E6%B1%A0%E8%88%87%E7%BA%8C%E8%88%AA/</loc>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
