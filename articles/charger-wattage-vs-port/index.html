@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>大瓦數充電器會把 iPad 充壞嗎？先看孔，再看瓦數 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式（共用 assets/style.css 沒有的部分）── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 寬表格橫向捲動（比照站上既有文章） */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 620px; }
+
+  /* bigquote 置中引言版（比照站上既有文章） */
+  .bigquote { background: none; border-radius: 0; padding: 0; margin: 32px 40px; text-align: center; }
+  .bigquote .qm { font-size: 2.6rem; color: var(--navy); opacity: .2; font-weight: 800; line-height: .5; }
+  .bigquote p { font-size: 1.3rem; font-weight: 800; color: var(--ink); line-height: 1.5; margin: 10px 0; }
+  .bigquote small { display: block; color: var(--muted); font-size: .9rem; }
+  .bigquote .rule { width: 42px; height: 3px; background: var(--green); border-radius: 3px; margin: 14px auto 0; }
+
+  /* 影片卡加強版（比照站上既有文章） */
+  .vlite .thumb .pbtn { width: 66px; height: 46px; border-radius: 12px; box-shadow: 0 4px 14px rgba(0,0,0,.35); transition: .14s; }
+  .vlite .thumb:hover .pbtn { background: rgba(193,73,47,1); transform: translate(-50%,-50%) scale(1.06); }
+  .vlite .cap small { display: block; margin-top: 3px; }
+  .vlite .cap .ch { color: var(--navy); font-family: var(--mono); font-size: .68rem; }
+
+  /* 導言區放第二張結論卡（紅色的「但書」）：
+     共用檔已有 .lead-ans + .lead-ans 的間距規則，但我們中間隔了一段官方引用，
+     相鄰選擇器接不上，所以補一條 .lead-src 之後的間距。
+     為什麼兩張要等重：讀者看完第一張「不會壞」就會覺得問題解決、直接離開，
+     但果果真正要傳達的是第二張。 */
+  .lead .lead-src + .lead-ans { margin-top: 11px; }
+
+  /* ── 兩種孔的判別圖 ports ──
+     這篇的標題就是「先看孔」，而讀者第一個動作是低頭看自己那台。 */
+  .ports .p-g { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+  .ports .pt { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 11px; padding: 15px 15px 16px; text-align: center; }
+  .ports .hole { height: 58px; display: grid; place-items: center; }
+  /* 兩個孔用同一個比例尺畫（約 8px ≒ 1mm），比例取自實際尺寸：
+     Lightning 約 6.7×1.5mm、USB-C 約 8.4×2.6mm——USB-C 是又寬又厚，
+     這正是肉眼分辨的關鍵，所以不能把它畫得比 Lightning 窄。 */
+  .ports .hole i { display: block; background: var(--navy-deep); box-shadow: inset 0 1px 2px rgba(0,0,0,.5); }
+  .ports .hole i.lightning { width: 54px; height: 12px; border-radius: 6px; }
+  .ports .hole i.usbc { width: 67px; height: 21px; border-radius: 11px; }
+  .ports .pn { font-size: 1.02rem; font-weight: 800; color: var(--ink); margin-top: 6px; }
+  .ports .pw { font-family: var(--mono); font-size: 1.5rem; font-weight: 800; color: var(--c); line-height: 1.1; margin-top: 9px; }
+  .ports .pw small { display: block; font-family: var(--sans); font-size: .72rem; font-weight: 500; color: var(--muted); margin-top: 3px; }
+  .ports .pd { font-size: .84rem; color: var(--body); line-height: 1.6; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--grid); text-align: left; }
+
+  /* ── 橫條圖共用底 bars ──
+     第 02 節（充飽時間）與第 04 節（接頭發熱）共用同一套版型：
+     一張回答「值不值得買」、一張回答「會不會壞」，視覺一致，
+     讀者才會把它們讀成同一組證據。兩張都有紅色基準線。 */
+  .bars { margin: 6px 0 4px; }
+  .bars .r { display: grid; grid-template-columns: 104px 60px 1fr 52px; gap: 9px; align-items: center; margin-bottom: 8px; }
+  .bars .l { font-family: var(--mono); font-size: .74rem; color: var(--ink); text-align: right; }
+  .bars .a { font-family: var(--mono); font-size: .74rem; font-weight: 700; color: var(--teal); text-align: right; }
+  .bars .t { position: relative; height: 22px; background: #fff; border: 1px solid var(--line); border-radius: 5px; overflow: hidden; }
+  .bars .f { height: 100%; width: var(--w); background: var(--c, var(--navy)); border-radius: 5px; }
+  .bars .base { position: absolute; left: var(--b, 100%); top: 0; bottom: 0; width: 2px; margin-left: -2px; background: var(--red); }
+  .bars .v { font-family: var(--mono); font-size: .78rem; font-weight: 800; color: var(--c, var(--navy)); }
+  .bars-hd { display: grid; grid-template-columns: 104px 60px 1fr 52px; gap: 9px; font-family: var(--mono); font-size: .64rem; color: var(--muted); margin-bottom: 7px; }
+  .bars-hd span:nth-child(1), .bars-hd span:nth-child(2) { text-align: right; }
+  .bars-note { font-size: .74rem; color: var(--muted); margin-top: 10px; }
+  .bars-note b { color: var(--red); }
+
+  /* ── 乘數示意圖 mult（第 05 節的核心）──
+     三條風險路徑原本是並列的，讀者抓不到共同結構。
+     改用「前提 × 功率 = 後果」的算式排版，一眼看出：前提是 0 的時候，乘多大都還是 0。 */
+  .mult .m-hd, .mult .m-row { display: grid; grid-template-columns: 1fr 18px 54px 18px 1.05fr; gap: 7px; align-items: center; }
+  .mult .m-hd { font-family: var(--mono); font-size: .63rem; color: var(--muted); padding: 0 14px 7px; }
+  .mult .m-hd span:nth-child(1) { text-align: right; }
+  .mult .m-hd span:nth-child(3) { text-align: center; }
+  .mult .m-row { background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 9px; padding: 11px 13px; margin-bottom: 8px; font-size: .87rem; line-height: 1.45; }
+  .mult .m-row i { font-style: normal; font-family: var(--mono); font-size: .82rem; color: var(--muted); text-align: center; }
+  .mult .c { color: var(--ink); font-weight: 600; text-align: right; }
+  .mult .w { font-family: var(--mono); font-size: .84rem; font-weight: 800; color: var(--navy); text-align: center; }
+  .mult .rz { color: var(--c); font-weight: 700; }
+
+  /* ── 情境：PD 協商是一問一答（本篇唯一動畫）──
+     用動畫的理由：協商的本質是「先問、後答、再送電」的時間順序，
+     而讀者的誤解正好是「插上去就會被硬灌」——那是一個關於順序的誤解。
+     ★ 鐵則：基礎樣式＝動畫最終狀態，關掉動畫仍是完整的三格圖。 */
+  .nego .scr { display: grid; place-content: center; justify-items: center; gap: 7px; padding: 6px; }
+  .nego .who { font-family: var(--mono); font-size: 10px; font-size: 8cqi; color: var(--muted); }
+  .nego .bub { font-size: 11px; font-size: 9cqi; font-weight: 700; line-height: 1.35; text-align: center;
+    border-radius: 8px; padding: 5px 7px; max-width: 100%; }
+  /* 算式不能斷行：「20V × 2A」拆成兩行就讀不出那是一道乘法了。
+     寧可讓泡泡橫向長一點，也不要讓 × 跟後面的數字分家。 */
+  .nego .bub .fx { display: block; white-space: nowrap; }
+  .nego .bub.src { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber); }
+  .nego .bub.snk { background: var(--navy-bg); color: var(--navy); border: 1px solid var(--navy); }
+  /* 把「20V × 2A ＝ 40W」的算式補完：不是每個讀者都會自己乘。
+     40W 用綠色，跟第三格流過去的 40W 同色，讀者才連得起來是同一個數字。 */
+  .nego .bub .eq { display: block; margin-top: 2px; padding-top: 2px; border-top: 1px solid rgba(23,52,95,.18);
+    color: var(--green-deep); font-size: 10px; font-size: 8.4cqi; white-space: nowrap; }
+  .nego .flowline { display: flex; align-items: center; gap: 4px; font-family: var(--mono); font-size: 10px; font-size: 8cqi; color: var(--green-deep); font-weight: 700; }
+  .nego .flowline i { display: block; width: 26px; height: 3px; border-radius: 3px; background: var(--green); }
+  .nego .waste { font-family: var(--mono); font-size: 9px; font-size: 7.5cqi; color: var(--muted); }
+  @keyframes ng-ask  { 0%, 8%  { opacity: 0; transform: translateY(-20%); } 24%, 100% { opacity: 1; transform: none; } }
+  @keyframes ng-ans  { 0%, 34% { opacity: 0; transform: translateY(20%); }  50%, 100% { opacity: 1; transform: none; } }
+  @keyframes ng-flow { 0%, 62% { opacity: 0; }                              78%, 100% { opacity: 1; } }
+  .nego .bub.src.a1 { animation: ng-ask 4.4s ease-out infinite; }
+  .nego .bub.snk.a2 { animation: ng-ans 4.4s ease-out infinite; }
+  .nego .flowline.a3, .nego .waste.a3 { animation: ng-flow 4.4s ease-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .nego .bub.src.a1, .nego .bub.snk.a2, .nego .flowline.a3, .nego .waste.a3 { animation: none; }
+  }
+
+  /* ── 兩階段充電曲線 stage ──
+     為什麼用內嵌 SVG：兩條有轉折、而且轉折後必須平行的曲線，CSS 畫不出來。
+     viewBox 用 300 寬，手機上 1 單位≒1px，字級才不會縮到看不清楚。 */
+  .stage { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 13px 12px 6px; }
+  .stage svg { display: block; width: 100%; height: auto; }
+  .stage .grid line { stroke: var(--grid); stroke-width: 1; }
+  .stage .axis { stroke: var(--line); stroke-width: 1.2; }
+  .stage .lbl { font-family: var(--mono); font-size: 9px; fill: var(--muted); }
+  .stage .mark { stroke: var(--amber); stroke-width: 1.4; stroke-dasharray: 5 4; }
+  .stage .mark-t { font-family: var(--mono); font-size: 9px; fill: var(--amber); font-weight: 700; }
+  .stage .big-w { fill: none; stroke: var(--green); stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
+  .stage .small-w { fill: none; stroke: var(--navy); stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
+  .stage .zone { font-size: 9.5px; font-weight: 700; }
+  .stage .zone.p1 { fill: var(--green-deep); }
+  .stage .zone.p2 { fill: var(--muted); }
+  .stg-leg { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: .78rem; color: var(--body); margin-bottom: 11px; }
+  .stg-leg i { display: inline-block; width: 20px; height: 0; border-top: 3px solid var(--c); vertical-align: middle; margin-right: 7px; }
+
+  /* ── 三個前提 paths ── */
+  .paths { display: grid; gap: 11px; }
+  .paths .pa { background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 10px; padding: 13px 16px; }
+  .paths .pt2 { font-family: var(--mono); font-size: .66rem; color: var(--c); }
+  .paths .ph { font-size: .98rem; font-weight: 800; color: var(--ink); margin-top: 2px; }
+  .paths .pb { font-size: .88rem; color: var(--body); line-height: 1.65; margin-top: 6px; }
+  .paths .pf { font-size: .8rem; color: var(--muted); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--grid); }
+  .paths .pf b { color: var(--c); }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .bigquote { margin: 28px 4px; }
+    .ports .p-g { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    /* 三格分鏡在手機上讓 flex 自己換行會變成「兩小格＋一大格」，改成單欄、箭頭朝下 */
+    .nego .flow { flex-direction: column; align-items: stretch; }
+    .nego .flow .box { width: 100%; }
+    .nego .flow .arr { transform: rotate(90deg); }
+    .bars .r, .bars-hd { grid-template-columns: 72px 52px 1fr 44px; gap: 6px; }
+    .bars .l { font-size: .66rem; } .bars .a { font-size: .66rem; }
+    .mult .m-hd, .mult .m-row { grid-template-columns: 1fr 14px 44px 14px 1fr; gap: 4px; font-size: .78rem; }
+    .mult .m-row { padding: 9px 10px; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>大瓦數充電器</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#verdict" class="active">00 · 30 秒結論</a>
+  <div class="grp">先看你這台</div>
+  <a href="#port">01 · 你吃得到幾瓦</a>
+  <div class="grp">買大的划算嗎</div>
+  <a href="#howfast">02 · 實測能快多少</a>
+  <a href="#slow">03 · 為什麼再大也快不了</a>
+  <div class="grp">那會不會壞</div>
+  <a href="#harm">04 · 傷不傷充電孔</a>
+  <a href="#risk">05 · 風險不是零</a>
+  <div class="grp">動手之前</div>
+  <a href="#check">06 · 該檢查的是孔</a>
+  <a href="#buy">07 · 所以我該買幾瓦</a>
+  <a href="#sources">來源與更新日期</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>我們每天收二手機，看過的充電孔比多數人一輩子看到的多</div>
+      </div>
+      <div class="pills"><span>每台入庫都檢查充電孔</span><span>缺點照實揭露</span><span>不賣「越大越好」的話術</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">客戶指南 / 充電與配件</div>
+    <h1>大瓦數充電器會把 iPad 充壞嗎？</h1>
+    <p class="subtitle">你查到維修業者說「用大頭的機器充電孔特別容易壞」，於是不敢下單。這頁把實測攤開——它不會把你的 iPad 充壞，但多花的錢很可能一分鐘都換不到。</p>
+
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--navy)">
+        <div class="lt">直接回答</div>
+        <p class="big">不會壞。但你也買了沒用。</p>
+        <p class="sm">iPad 自己決定拿多少電，充電器只是報上限。實測：iPad 第 10 代從 <strong>29W 換到 67W 的充電器，充飽時間只差 1 分鐘</strong>。</p>
+        <p class="alias-line">你可能是用 <b>大瓦數</b>、<b>高功率</b>、<b>快充頭</b>、<b>PD 充電器</b> 這些名字找到這頁的——講的都是同一件事：USB-C 那顆標著 30W、65W 或 100W 的充電器。</p>
+      </div>
+      <blockquote class="lead-src">Apple 官方對「能不能用」寫得很清楚：「你也可以使用 <strong>Mac USB-C 電源轉接器</strong>，或符合相關安全標準的第三方轉接器。」——Mac 那些正是 70W、96W、140W 的大傢伙。<cite>Apple 官方〈關於 Apple USB 電源轉接器〉</cite></blockquote>
+      <div class="lead-ans" style="--c:var(--red)">
+        <div class="lt">可以用不代表「風險」不存在</div>
+        <p class="big">大瓦數不會製造問題，但會放大既有的問題。</p>
+        <p class="sm">孔乾淨、充電器合規的話，插多大都沒事。但只要這兩個前提有一個不成立，功率就會變成<strong>乘數</strong>——後果來得更快、更嚴重。而多數人並不知道自己的孔現在是什麼狀態。</p>
+      </div>
+    </div>
+
+    <div class="lead-map">
+      <div class="lm-t">所以這頁按你要做的決定，分三段講：</div>
+      <div class="lm-g">
+        <a href="#port"><i>01</i>你這台吃得到幾瓦</a>
+        <a href="#howfast"><i>02</i>買大的實際能快多少</a>
+        <a href="#risk"><i>03</i>風險到底在哪裡</a>
+      </div>
+    </div>
+
+    <section id="verdict">
+      <div class="sec-label" style="--c:var(--navy)">verdict</div>
+      <h2>00 · 30 秒結論（趕時間看這段就好）</h2>
+      <div class="bigquote"><div class="qm">“</div><p>買大瓦數的收益接近零，<br>而風險不是零。</p><small>這個交換不用算就知道不划算——不需要先證明它有多危險。</small><div class="rule"></div></div>
+      <div class="stats">
+        <div class="stat" style="--c:var(--red)"><div class="num">1<small style="font-size:.5em">分鐘</small></div><div class="lab">iPad 第 10 代從 29W 換到 67W 充電器，省下的充電時間</div></div>
+        <div class="stat" style="--c:var(--amber)"><div class="num">14<small style="font-size:.5em">W</small></div><div class="lab">Lightning 孔的 iPad 給 20W 原廠充電器，實測也只吃到這麼多</div></div>
+        <div class="stat" style="--c:var(--green)"><div class="num">2.02<small style="font-size:.5em">A</small></div><div class="lab">接 100W 充電器時充電孔的實測電流——功率翻倍，電流卻沒動</div></div>
+        <div class="stat" style="--c:var(--navy)"><div class="num">62<small style="font-size:.5em">分</small></div><div class="lab">iPad Pro M5 光是最後 20% 就花掉的時間，這段插多大都一樣</div></div>
+      </div>
+      <p>先把話講白：如果你買的是<strong>符合安全標準的充電器</strong>，瓦數再大都不會把 iPad 充壞——這裡的「充壞」指的是燒掉充電孔、把機器弄到不能用。</p>
+      <p>但這個問題其實可以繞過。<strong>因為就算完全安全，你多花的錢也換不到多少時間</strong>——收益接近零的時候，任何大於零的風險都不划算。</p>
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--teal)"><div class="ct">你正準備下單買充電器</div>先跳<a class="inline" href="#port">第 01 節</a>確認你這台的孔——很多人買了 65W 才發現自己的 iPad 根本吃不到。接著看<a class="inline" href="#howfast">第 02 節</a>的實測時間，那一節就足以做決定。</div>
+        <div class="callout" style="--c:var(--green)"><div class="ct">你剛買二手 iPad，擔心前一手怎麼對待那個孔</div>那個擔心是對的，而且比擔心瓦數更值得。<a class="inline" href="#check">第 06 節</a>有自己就能做的檢查方法。</div>
+      </div>
+    </section>
+
+    <div class="part-div">先看你這台</div>
+
+    <section id="port">
+      <div class="sec-label" style="--c:var(--teal)">which_port</div>
+      <h2>01 · 先看孔：你這台根本吃不到那麼多瓦</h2>
+      <p>在討論該買幾瓦之前，先低頭看一眼你 iPad 底下那個孔。它決定了後面所有討論對你有沒有意義。</p>
+      <figure class="fig ports">
+        <div class="p-g">
+          <div class="pt" style="--c:var(--amber)">
+            <div class="hole"><i class="lightning"></i></div>
+            <div class="pn">Lightning</div>
+            <div class="pw">約 14W<small>實測上限</small></div>
+            <div class="pd">扁扁長長、比較細。iPad 第 5～9 代、Air 3、mini 5、Pro 10.5 吋與 12.9 吋第 2 代都是這種孔。<strong>買再大的充電器都沒用。</strong></div>
+          </div>
+          <div class="pt" style="--c:var(--navy)">
+            <div class="hole"><i class="usbc"></i></div>
+            <div class="pn">USB-C</div>
+            <div class="pw">30–40W<small>依機型而定</small></div>
+            <div class="pd">明顯比較胖、上下對稱。iPad 第 10 代之後、所有 Air 第 4 代之後、mini 6 之後、2018 年後的 Pro 都是這種孔。</div>
+          </div>
+        </div>
+        <figcaption>圖是照實際尺寸比例畫的——<b>USB-C 又寬又厚，Lightning 窄而扁</b>，擺在一起一眼就分得出來。而它們能吃的功率差了將近三倍。</figcaption>
+      </figure>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">Lightning 的 iPad：連原廠 20W 都吃不滿</div>充電頭網用電表實測 iPad（第 8 代）：官方隨附的就是 20W 充電器，但實際充電功率只有 <strong>12.99W 到 14.58W</strong>，走的是舊的 Apple 2.4A 模式，<strong>根本沒有觸發 9V 的 PD 快充</strong>。<br><br>換句話說，這類機型買 30W、65W、100W 的充電器，多花的錢一分都不會變成充電速度。這一節對你來說已經結束了。</div>
+      <p>USB-C 的 iPad 就有差別了，但也沒有大家想像的那麼大。下面這張表是實測值，不是規格表上的數字：</p>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>機型</th><th>孔</th><th>實測最大充電功率</th><th>那時候的電壓／電流</th></tr>
+          <tr><td>iPad（第 8 代・2020）</td><td>Lightning</td><td class="bad">約 13～14.6W</td><td>5V 附近（Apple 2.4A 模式）</td></tr>
+          <tr><td>iPad（第 10 代・2022）</td><td>USB-C</td><td>約 30W</td><td>15.02V／2.0A</td></tr>
+          <tr><td>iPad Pro（2018）</td><td>USB-C</td><td>約 35W</td><td>15.06V／2.33A</td></tr>
+          <tr><td>iPad Pro（M5・2025）</td><td>USB-C</td><td class="good">峰值 60W、日常約 40W</td><td>19.5～19.7V／約 2A</td></tr>
+        </table>
+      </div>
+      <p>最後一列值得多看一眼：Apple 官方說 iPad Pro（M5）要「60W 或更高功率」的充電器才能快充，實測也確實在剛開機的低電量瞬間碰到過 60W。</p>
+      <p>但那只是<strong>一瞬間</strong>。整趟充電下來，穩定功率是 40W 上下——這正是「標示瓦數」與「你實際拿得到的功率」被混為一談最典型的例子。</p>
+    </section>
+
+    <div class="part-div">買大的划算嗎</div>
+
+    <section id="howfast">
+      <div class="sec-label" style="--c:var(--purple)">how_much_faster</div>
+      <h2>02 · 買大的到底能快多少？（這一節就足以做決定）</h2>
+      <p>前面都在講「能不能」，這一節直接回答「值不值得」。而這個問題有實測答案。</p>
+      <p>充電頭網把 iPad 第 10 代接上 Apple 各種瓦數的充電器，從沒電一路記錄到充飽。結果長這樣：</p>
+      <figure class="fig">
+        <div class="bars-hd"><span>充電器</span><span>穩定功率</span><span>從沒電到充飽的總時間</span><span></span></div>
+        <div class="bars">
+          <div class="r" style="--c:var(--red)">
+            <div class="l">原廠 20W</div><div class="a">19W</div>
+            <div class="t"><div class="f" style="--w:100%"></div><div class="base" style="--b:88%"></div></div>
+            <div class="v">2:32</div>
+          </div>
+          <div class="r" style="--c:var(--green)">
+            <div class="l">Apple 29W</div><div class="a">27W</div>
+            <div class="t"><div class="f" style="--w:88%"></div><div class="base" style="--b:88%"></div></div>
+            <div class="v">2:14</div>
+          </div>
+          <div class="r" style="--c:var(--green)">
+            <div class="l">Apple 35W</div><div class="a">29W</div>
+            <div class="t"><div class="f" style="--w:89%"></div><div class="base" style="--b:88%"></div></div>
+            <div class="v">2:15</div>
+          </div>
+          <div class="r" style="--c:var(--green)">
+            <div class="l">Apple 67W</div><div class="a">30W</div>
+            <div class="t"><div class="f" style="--w:89%"></div><div class="base" style="--b:88%"></div></div>
+            <div class="v">2:15</div>
+          </div>
+        </div>
+        <p class="bars-note"><b>紅線＝29W 的成績。</b>往上加碼到 35W、67W，三條長條幾乎完全重疊——<b>多花的錢，換到的是 1 分鐘</b>。</p>
+        <figcaption>20W 到 29W 之間確實有感（省 18 分鐘）；但 <b>29W 之後就整片平坦了</b>。這張圖就是「該買幾瓦」的完整答案。</figcaption>
+      </figure>
+      <p>換句話說，這件事有一個明確的天花板，而那個天花板落在 <strong>30W 附近</strong>——不是 65W，也不是 100W。</p>
+      <p>充電頭網自己下的結論也一樣：第十代 iPad 需要 30W 以上的 PD 充電器，全程約兩小時出頭，而隨附的 20W 會多花 20 分鐘左右。</p>
+      <div class="callout" style="--c:var(--green)"><div class="ct">所以「該買幾瓦」其實不用糾結</div>你只需要跨過 <strong>30W 這道門檻</strong>，跨過之後買再大都是同一個成績。<br><br>而 20W 也不是不能用——它只是慢 18 分鐘。如果你多半是睡前充、隔天早上拔，那 18 分鐘你根本不會遇到。</div>
+      <details>
+        <summary>那更小的呢？12W 的舊充電器可以嗎（一個跟直覺相反的補充）</summary>
+        <p>可以，但會慢到你有感。同一批實測裡，拿舊款 12W 的 USB-A 充電器去充 2018 年的 iPad Pro，因為協定對不上，實際功率只有 <strong>7.26W</strong>——比原廠 18W 慢了五倍，充了四個多小時還在同一個功率平台上。</p>
+        <p>所以「越小越安全」也不成立。而且分界不是瓦數，<strong>是有沒有走 PD</strong>：那顆 12W 之所以只跑出 7.26W，是因為它是舊的 USB-A、協定對不上，只能走最低的 5V 模式。只要是走 PD 的 20W 充電器，就已經在正常區間裡了。</p>
+      </details>
+    </section>
+
+    <section id="slow">
+      <div class="sec-label" style="--c:var(--teal)">why_capped</div>
+      <h2>03 · 為什麼再大也快不了？兩道天花板</h2>
+      <p>上一節的長條為什麼會平掉？因為 iPad 身上有兩道煞車，而且兩道都不是充電器能繞過的。</p>
+
+      <h3>天花板一：拿多少電，是 iPad 說了算</h3>
+      <p>USB-C 供電不是插上去就開始送電，而是<strong>先問、後答、再送電</strong>——關鍵在順序。</p>
+      <figure class="fig anim nego">
+        <div class="flow">
+          <div class="box">
+            <div class="scr">
+              <div class="who">充電器</div>
+              <div class="bub src a1">我最多能給<br>100W</div>
+            </div>
+            <div class="bt">step_01</div>
+            <div class="bv">充電器先<b>報上限</b></div>
+          </div>
+          <div class="arr">→</div>
+          <div class="box">
+            <div class="scr">
+              <div class="who">iPad</div>
+              <div class="bub snk a2">我只要<span class="fx">20V × 2A</span><span class="eq">＝ 40W</span></div>
+            </div>
+            <div class="bt">step_02</div>
+            <div class="bv">iPad <b>自己開口要</b></div>
+          </div>
+          <div class="arr">→</div>
+          <div class="box">
+            <div class="scr">
+              <div class="flowline a3"><i></i>40W<i></i></div>
+              <div class="waste a3">剩下的 60W<br>沒有進去</div>
+            </div>
+            <div class="bt">step_03</div>
+            <div class="bv">照 iPad 要的<b>送</b></div>
+          </div>
+        </div>
+        <figcaption>充電器只報上限，真正決定拿多少的是 iPad。<b>多出來的瓦數就只是沒有被用到。</b></figcaption>
+      </figure>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">一個好記的比喻</div>充電器的瓦數像<strong>水龍頭能開多大</strong>，iPad 像<strong>杯子</strong>。水龍頭開得再大，杯子也只裝得下一杯——多出來的水不會硬擠進去。<br><br>這也是為什麼 Apple 敢直接寫「你也可以使用 Mac USB-C 電源轉接器」。它回答的是<strong>能不能用</strong>，不是<strong>值不值得買</strong>。</div>
+
+      <h3>天花板二：充到 80% 之後，Apple 主動把電流收掉</h3>
+      <p>就算送得進去，還有第二道煞車，而且這道是 Apple 寫在官網上的。</p>
+      <blockquote class="lead-src">「你的 Apple 鋰離子電池運用快速充電方式，將其蓄電量<strong>快速充達 80%，然後再轉成較慢的涓流充電方式</strong>。」<br>階段 1：快速充電——更快速提供你更多電力。<strong>階段 2：涓流充電——減緩電流以延長電池壽命。</strong><cite>Apple 官方〈電池 — 為何選用鋰離子電池〉</cite></blockquote>
+      <p>這件事的份量比想像中大。iPad Pro M5 在 25°C 恆溫箱、接 40W 的實測曲線是這樣的：</p>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>充到</th><th>花了多久</th><th>這一段的性質</th></tr>
+          <tr><td>20%</td><td>12 分鐘</td><td rowspan="4">階段 1・大瓦數在這裡發揮</td></tr>
+          <tr><td>50%</td><td>30 分鐘</td></tr>
+          <tr><td>70%</td><td>50 分鐘</td></tr>
+          <tr><td class="good">80%</td><td class="good">64 分鐘</td></tr>
+          <tr><td class="bad">100%</td><td class="bad">2 小時 6 分</td><td class="bad">階段 2・插多大都一樣慢</td></tr>
+        </table>
+      </div>
+      <p>看最後兩列：<strong>前 80% 花了 64 分鐘，最後那 20% 花了 62 分鐘</strong>——幾乎一半的時間，耗在大瓦數幫不上忙的區間。</p>
+      <figure class="fig">
+        <div class="stage">
+          <div class="stg-leg">
+            <span style="--c:var(--green)"><i></i>大瓦數充電器</span>
+            <span style="--c:var(--navy)"><i></i>20W 充電器</span>
+          </div>
+          <svg viewBox="0 0 300 160" role="img" aria-label="兩階段充電示意圖：0 到 80% 的快速充電階段，大瓦數明顯比較快；80% 之後轉為涓流充電，兩條曲線的斜率一樣，差距不再擴大">
+            <g class="grid">
+              <line x1="30" y1="10" x2="292" y2="10"/>
+              <line x1="30" y1="70" x2="292" y2="70"/>
+              <line x1="30" y1="100" x2="292" y2="100"/>
+            </g>
+            <line class="axis" x1="30" y1="130" x2="292" y2="130"/>
+            <line class="axis" x1="30" y1="10" x2="30" y2="130"/>
+            <g class="lbl">
+              <text x="26" y="13" text-anchor="end">100%</text>
+              <text x="26" y="73" text-anchor="end">50%</text>
+              <text x="26" y="133" text-anchor="end">0%</text>
+              <text x="30" y="146" text-anchor="middle">插上</text>
+              <text x="292" y="146" text-anchor="end">充飽</text>
+            </g>
+            <line class="mark" x1="30" y1="34" x2="292" y2="34"/>
+            <text class="mark-t" x="34" y="31">80%</text>
+            <polyline class="big-w" points="30,130 70,96 110,62 150,34 180,22 205,15 230,10"/>
+            <polyline class="small-w" points="30,130 90,96 150,62 212,34 242,22 267,15 292,10"/>
+            <text class="zone p1" x="120" y="120" text-anchor="middle">階段 1：差距在這裡拉開</text>
+            <text class="zone p2" x="258" y="47" text-anchor="middle">階段 2：兩條一樣斜</text>
+          </svg>
+        </div>
+        <figcaption>關鍵在虛線<b>上方</b>：兩條曲線變成平行的——<b>大瓦數在階段 1 領先多少，到最後就只領先多少，不會再拉開。</b>（示意圖，實測數字見上表）</figcaption>
+      </figure>
+      <div class="callout" style="--c:var(--green)"><div class="ct">客服現場最常被問的一句：「最後 20% 怎麼充那麼久，是不是電池壞了？」</div>不是壞了，<strong>那是 Apple 設計成這樣的</strong>。80% 之後主動減緩電流，用慢一點換電池壽命長一點。<br><br>所以如果你發現前面充得飛快、最後一段慢吞吞，那正是它正常運作的樣子。真正該警覺的是<strong>整段都很慢</strong>，或是<strong>充電時接頭很燙</strong>——那才跟孔或充電器有關。</div>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">網路上常看到的「70% 就轉涓滴充電」是錯的</div>Apple 官方寫的分界是 <strong>80%</strong>，用詞是「涓流充電」。這個數字常被寫成 70%，也常被拿去推出相反的結論——「所以要買更大瓦數的充電器」。但邏輯剛好反過來：<strong>既然 80% 之後會主動降速，大瓦數能發揮的區間就更小了</strong>。</div>
+      <details>
+        <summary>為什麼非要慢下來不可？（一句話：電池快滿的時候最怕硬灌）</summary>
+        <p>鋰電池在接近滿電時，繼續用大電流灌會讓電池承受較大的壓力，長期下來加速老化。所以充電控制的標準做法是：前段用大電流快速填滿，後段把電流慢慢收掉。</p>
+        <p>Apple 對這件事的說法很直接——階段 2 的目的就是「減緩電流以延長電池壽命」。同一頁還提到，<strong>當電池超過建議溫度時，軟體可能會限制充電超過 80%</strong>。所以你偶爾看到它卡在 80% 不動，也可能是機器太熱在保護自己。</p>
+      </details>
+    </section>
+
+    <div class="part-div">那會不會壞</div>
+
+    <section id="harm">
+      <div class="sec-label" style="--c:var(--green)">measured</div>
+      <h2>04 · 傷不傷充電孔？把電表接上去看</h2>
+      <p>到這裡「值不值得買」已經有答案了。但你來的時候問的是另一件事——會不會壞。這一節把它了結。</p>
+      <p>維修現場最常見的說法是「大瓦數 → 電流大 → 燒壞孔」。那就直接量電流。</p>
+      <figure class="fig">
+        <div class="bars-hd"><span>充電器</span><span>實測電流</span><span>接頭發熱指數（各自的 20W ＝ 100）</span><span></span></div>
+        <div class="bars">
+          <div class="r" style="--c:var(--navy)">
+            <div class="l">M5・20W</div><div class="a">2.12A</div>
+            <div class="t"><div class="f" style="--w:100%"></div><div class="base"></div></div>
+            <div class="v">100</div>
+          </div>
+          <div class="r" style="--c:var(--green)">
+            <div class="l">M5・40W</div><div class="a">1.96A</div>
+            <div class="t"><div class="f" style="--w:85%"></div><div class="base"></div></div>
+            <div class="v">85</div>
+          </div>
+          <div class="r" style="--c:var(--green)">
+            <div class="l">M5・100W</div><div class="a">2.02A</div>
+            <div class="t"><div class="f" style="--w:91%"></div><div class="base"></div></div>
+            <div class="v">91</div>
+          </div>
+          <div class="r" style="--c:var(--green)">
+            <div class="l">M5・140W</div><div class="a">2.04A</div>
+            <div class="t"><div class="f" style="--w:93%"></div><div class="base"></div></div>
+            <div class="v">93</div>
+          </div>
+          <div class="r" style="--c:var(--navy)">
+            <div class="l">第 10 代・20W</div><div class="a">2.19A</div>
+            <div class="t"><div class="f" style="--w:100%"></div><div class="base"></div></div>
+            <div class="v">100</div>
+          </div>
+          <div class="r" style="--c:var(--green)">
+            <div class="l">第 10 代・29W</div><div class="a">1.95A</div>
+            <div class="t"><div class="f" style="--w:79%"></div><div class="base"></div></div>
+            <div class="v">79</div>
+          </div>
+          <div class="r" style="--c:var(--green)">
+            <div class="l">第 10 代・67W</div><div class="a">2.00A</div>
+            <div class="t"><div class="f" style="--w:83%"></div><div class="base"></div></div>
+            <div class="v">83</div>
+          </div>
+        </div>
+        <p class="bars-note"><b>紅線＝各自機型用 20W 時的水準。</b>兩台機型、七組量測，沒有任何一組超過那條線。要老實說：這些 5～20% 的差距已經接近電表誤差範圍，<b>站得住的結論是「沒有上升」，不是「一定更低」</b>。</p>
+        <figcaption>兩台不同世代的 iPad、從 20W 到 140W，<b>孔裡的電流全部落在 1.95～2.19A 這個窄帶</b>，沒有跟著瓦數往上跑。</figcaption>
+      </figure>
+
+      <h3>等一下，「瓦數越高電流越大」不是基本物理嗎？</h3>
+      <p>是，而且你的直覺完全正確——<strong>在電壓固定的情況下</strong>。舊的 USB-A 充電器就是這個世界：電壓鎖死在 5V，想要 20W 就得拉到 4A，想要 100W 就得拉到 20A。線會燒起來。</p>
+      <p><strong>USB-C 的 PD 規格就是為了繞開這件事發明的。</strong>它準備了四個固定電壓檔，讓功率往上爬的時候<strong>去換更高的電壓檔，而不是加電流</strong>：</p>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>PD 電壓檔</th><th>一般 USB-C 線（電流上限 3A）</th><th>有 e-marker 晶片的線（5A）</th></tr>
+          <tr><td>5V</td><td>最高 15W</td><td>最高 25W</td></tr>
+          <tr><td>9V</td><td>最高 27W</td><td>最高 45W</td></tr>
+          <tr><td>15V</td><td>最高 45W</td><td>最高 75W</td></tr>
+          <tr><td>20V</td><td>最高 60W</td><td class="good">最高 100W</td></tr>
+        </table>
+      </div>
+      <p>看那兩個欄位標題就懂了：<strong>電流那一欄是被規格封頂的</strong>。功率要往上，只能往表格下面走、去拿更高的電壓。而 PD 這樣設計的理由，剛好就是你熟悉的那條物理：<strong>線路上的功率損耗與電流的平方成正比</strong>。</p>
+
+      <h3>但要先把兩種「熱」分開，下一節才不會打架</h3>
+      <p>「充電時會發熱」其實是兩件事，發生在不同的地方，而大瓦數對它們的影響完全相反：</p>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>哪裡的熱</th><th>由什麼決定</th><th>大瓦數會讓它變嚴重嗎</th><th>會傷到什麼</th></tr>
+          <tr><td><b>接頭的熱</b><br>（充電孔與線頭）</td><td>電流² × 接觸電阻</td><td class="good">不會。電流被規格卡住，實測沒有上升</td><td>充電孔、線材</td></tr>
+          <tr><td><b>電池的熱</b><br>（整台機器）</td><td>充電總功率＋你在做什麼＋環境溫度</td><td class="bad">會。功率越高，同一段時間內產生的熱越多</td><td>電池容量（永久性）</td></tr>
+        </table>
+      </div>
+      <p>這一整節講的都是<strong>上面那一列</strong>——會不會把孔燒掉。答案是不會，而且有兩台機型、七組量測撐著。</p>
+      <p>但<strong>下面那一列是另一回事</strong>。它是下一節三個前提裡的其中一個，也是全篇唯一一條「大瓦數真的有影響」的路徑。</p>
+      <details>
+        <summary>那為什麼實測有一組是 2.33A？（不同機型挑不同檔，不是矛盾）</summary>
+        <p>2018 年的 iPad Pro 實測是 <strong>15.06V／2.33A／35W</strong>，電流比其他組都高。原因不是它接了更大的充電器，而是<strong>它挑的電壓檔不一樣</strong>——它停在 15V，而 M5 跳到 20V。同樣要 35～40W，走 15V 就得多要一點電流。</p>
+        <p>換句話說，決定電流的是<strong>裝置挑了哪一檔電壓</strong>，不是充電器標幾瓦。而不管挑哪一檔，iPad 實測的電流全部落在 1.95A 到 2.33A 這個窄帶裡，離規格的 3A 上限都還有距離。</p>
+      </details>
+    </section>
+
+    <section id="risk">
+      <div class="sec-label" style="--c:var(--red)">amplifier</div>
+      <h2>05 · 風險不是零：大瓦數是乘數，不是原因</h2>
+      <p>我們不打算否認維修現場的觀察。我們自己收機也有同樣的印象——出問題的機器，主人常常在用大瓦數的雜牌充電器。</p>
+      <p>但把它拆開之後會發現：<strong>大瓦數不是那些故障的原因，它是一個乘數</strong>。前提條件是零的時候，乘再大都還是零；前提條件不是零，它才會把後果放大。</p>
+      <figure class="fig mult">
+        <div class="m-hd"><span>前提條件</span><span></span><span>功率</span><span></span><span>後果</span></div>
+        <div class="m-row" style="--c:var(--green)">
+          <span class="c">孔乾淨、充電器合規</span><i>×</i><span class="w">100W</span><i>=</i><span class="rz">沒事</span>
+        </div>
+        <div class="m-row" style="--c:var(--amber)">
+          <span class="c">孔已經髒了、鬆了</span><i>×</i><span class="w">100W</span><i>=</i><span class="rz">更快出事</span>
+        </div>
+        <div class="m-row" style="--c:var(--red)">
+          <span class="c">那顆充電器不合規</span><i>×</i><span class="w">100W</span><i>=</i><span class="rz">失效時破壞力更大</span>
+        </div>
+        <div class="m-row" style="--c:var(--amber)">
+          <span class="c">邊充邊玩、高溫環境</span><i>×</i><span class="w">100W</span><i>=</i><span class="rz">電池容量掉更快</span>
+        </div>
+        <figcaption>看第一列：<b>前提是零的時候，乘上再大的功率還是零。</b>大瓦數本身不製造問題——它放大的是<b>已經存在</b>的問題。</figcaption>
+      </figure>
+      <p>這也解釋了為什麼維修現場的觀察是真的、卻不能拿來當因果：<strong>會拿大瓦數雜牌充電器的人，通常那幾個前提條件也同時成立</strong>。三件事一起出現，最顯眼的那個就被記成了兇手。</p>
+      <div class="paths">
+        <div class="pa" style="--c:var(--amber)">
+          <div class="pt2">前提 01 · 最常被忽略</div>
+          <div class="ph">孔在日常使用中慢慢變髒、變鬆</div>
+          <div class="pb">充電孔的狀態<strong>會隨著使用一直變化</strong>：口袋棉絮、桌上灰塵、每天插拔的累積，都會讓接觸電阻慢慢上升。同樣的電流通過，發熱是按電阻等比例增加的——一個乾淨的孔跟一個塞滿棉絮的孔，發熱可以差好幾倍。</div>
+          <div class="pf">大瓦數放大了什麼：<b>整機更熱的環境，會讓一個已經接觸不良的孔更快出事</b>。而孔一變髒充電就變慢，人的直覺又是「換一顆大的」——因果常常是反過來的。</div>
+        </div>
+        <div class="pa" style="--c:var(--red)">
+          <div class="pt2">前提 02 · 真正的風險所在</div>
+          <div class="ph">那顆充電器根本不合規</div>
+          <div class="pb">合格的 PD 充電器會乖乖照協商結果送電；沒有做好保護的劣質品可能電壓不穩、沒有過壓保護，甚至假報自己支援的規格。Apple 官方對這件事的用詞很重：不符合安全標準的轉接器，<strong>「可能會有死亡或人身傷害的風險」</strong>。</div>
+          <div class="pf">大瓦數放大了什麼：<b>一旦失效，能量擺在那裡</b>——同樣是保護失效，100W 的破壞力遠大於 20W。而且便宜的雜牌大瓦數充電器充斥市場，買 199 元 65W 充電頭的人，跟買原廠 20W 的人本來就是不同兩群人。</div>
+        </div>
+        <div class="pa" style="--c:var(--amber)">
+          <div class="pt2">前提 03 · 慢性、但真實</div>
+          <div class="ph">熱——但是電池的熱，不是接頭的熱</div>
+          <div class="pb">這裡講的是<a class="inline" href="#harm">上一節那張對照表</a>的下面那一列。接頭的熱不會因為換大瓦數而增加，<strong>但整台機器的熱會</strong>。再加上邊充邊玩遊戲、夏天放車上，溫度就會疊上去。Apple 官方明講：暴露在高於 35°C 的環境「<strong>可能會永久損害電池的蓄電量</strong>」。</div>
+          <div class="pf">大瓦數放大了什麼：<b>這是三個前提裡唯一直接跟瓦數有關的</b>——但它傷的是電池容量、不是充電孔，而且是長期慢慢累積的，不會今天充明天就壞。</div>
+        </div>
+      </div>
+      <div class="callout" style="--c:var(--green)"><div class="ct">所以這篇不是要嚇你別用大瓦數</div>把界線劃清楚：<strong>如果你的孔乾淨、充電器有正式認證，大瓦數對你不構成風險</strong>——放心用，包括筆電那顆。<br><br>我們要你做的只有一件事：<strong>先確認那兩個前提</strong>。而多數人從來沒檢查過自己的孔，這才是真正的問題所在。</div>
+
+      <h3>那不合規到底會怎樣？保固條款寫得很明白</h3>
+      <p>前提 02 的後果不只是機器壞掉，還包括「壞了誰負責」。Apple 的一年有限保固條款直接寫著：</p>
+      <blockquote class="lead-src">「本保固不適用於：⋯⋯(c) <strong>搭配使用不符合 Apple 產品規格的第三方組件或產品所造成的損壞</strong>⋯⋯(d) 因意外事故、濫用、不當使用、火災、液體侵入、地震或其他外在原因導致的損壞。」<br>同一份條款還把「(b) 外觀損壞，包括但不限於<strong>連接埠上的刮痕</strong>、凹痕以及塑膠破損」也排除在外。<cite>Apple 一年有限保固條款（繁體中文）</cite></blockquote>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">如果你的 iPad 已經過保（多數二手機都是）</div>那上面那段對你的意義只剩一件事：<strong>沒有人會幫你分攤這個風險</strong>。過保之後不管是原廠還是外面的維修，費用都自己出。<br><br>換句話說，保固還在的人有一層安全網，過保的人沒有——<strong>而二手機的持有者，正好是最需要在買充電器這一步就把風險擋掉的那群。</strong>一顆有認證的充電器跟一顆雜牌的價差幾百塊，充電孔的維修遠不只這個數字。</div>
+
+      <h3>補充：那 Android 大廠的高瓦數充電頭呢？</h3>
+      <p>這是我們客服最常被問的延伸問題——手邊有一顆 OPPO、小米或三星的快充頭，能不能拿來充 iPad？</p>
+      <p>技術上可以，但你會發現它幾乎沒有比較快。原因在於<strong>兩套快充走的是完全相反的路線</strong>：</p>
+      <figure class="fig">
+        <div class="spectrum">
+          <div class="seg old">USB-PD（iPad 走這套）<small>靠拉高電壓，電流壓在 2A 附近</small><b>高電壓・低電流</b></div>
+          <div class="divider">兩套<br>相反</div>
+          <div class="seg new">VOOC／SuperVOOC 等私有協定<small>SuperVOOC 2.0 約 10V／6.5A</small><b>低電壓・高電流</b></div>
+        </div>
+        <figcaption>Android 旗艦的招牌快充多半是<b>自家私有協定</b>，而且走的是低電壓、高電流那條路——跟 USB-PD 剛好相反。</figcaption>
+      </figure>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你拿它充 iPad 時</th><th>會發生什麼</th></tr>
+          <tr><td>那顆 100W 的招牌快充</td><td class="bad">不會啟動。私有協定需要自家手機＋自家線材才會握手</td></tr>
+          <tr><td>實際走的協定</td><td>退回標準 USB-PD，跟一般 PD 充電器沒兩樣</td></tr>
+          <tr><td>比較舊的 VOOC／Dash 充電器</td><td class="bad">專用線的第五支腳沒接上時，可能被限制在 5V／1.5A（約 7.5W）——比原廠 20W 還慢一倍以上</td></tr>
+          <tr><td>大品牌、有支援 PD 的新款</td><td class="good">實測正常。充電頭網量到 OnePlus 100W 充 iPad Pro 是 19.60V／2.02A／39.65W，跟其他 PD 充電器一致</td></tr>
+        </table>
+      </div>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">我們的觀察，跟我們對它的解讀</div>我們收機時，看到出狀況的機器<strong>確實常常配著 Android 大廠的高瓦數充電頭</strong>。但必須誠實說明兩件事。<br><br>第一，實測數據不支持「大廠 PD 充電器會傷 iPad」——上表最後一列就是反例。第二，這類充電頭在台灣家庭裡數量龐大（每支手機都附一顆），<strong>隨手抓一顆來充 iPad 時，抓到它的機率本來就最高</strong>；而它的仿冒品流通量也遠大於 Apple 原廠。「出問題的機器旁邊有它」，跟「它造成問題」是兩件事。</div>
+      <div class="callout" style="--c:var(--green)"><div class="ct">所以我們給的建議是</div>iPad 就配一顆<strong>單純的 PD 充電器</strong>。不是因為 Android 快充頭會壞機，而是：它的招牌功率你一瓦都用不到、舊款還可能讓你充得更慢、多協定混在一顆裡也多一層不確定。<strong>花一樣的錢，買一顆你真的用得到的。</strong></div>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">我們也要誠實說：這是解釋，不是證明</div>我們手上沒有「同一批機器、分成兩組、用不同充電器充兩年」的對照實驗，任何人都沒有。上面的乘數模型與三個前提，是用實測數據與官方文件推導出來的<strong>合理解釋</strong>，不是因果證明。如果哪天有人做出那個實驗、而結果跟這裡寫的不同，我們會改。</div>
+    </section>
+
+    <div class="part-div">動手之前</div>
+
+    <section id="check">
+      <div class="sec-label" style="--c:var(--teal)">check_port</div>
+      <h2>06 · 真正該檢查的：你那個孔還好嗎</h2>
+      <p>上一節的三個前提裡，只有第一個是你現在就能自己確認的。而它也是最少人檢查的。</p>
+      <p>USB-C 的規格要求接頭要能撐過 <strong>10,000 次插拔</strong>（對照組是舊的 USB-A，只要求 1,500 次）。聽起來很多，但有兩件事要說明白。</p>
+      <p>第一，那是<strong>實驗室條件</strong>下測出來的——固定速率、乾淨環境、測完不能有物理損傷。你口袋裡的棉絮、桌上的灰塵、斜著插進去的那幾次，都不在那個測試裡。</p>
+      <p>第二，10,000 次是「還沒壞」的門檻，不是「還跟新的一樣」的門檻。<strong>接觸電阻會在遠低於這個次數時就開始上升</strong>，而發熱正是跟著接觸電阻走的。</p>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">Lightning 的機型呢？</div>Lightning 是 Apple 自家規格，<strong>沒有公開的耐插拔次數</strong>，所以沒辦法給你對照數字。<br><br>但實務上要看的東西完全一樣：鬆不鬆、髒不髒、充電時燙不燙。而 Lightning 的孔更窄更淺，<strong>反而更容易卡棉絮</strong>——下面四個動作，Lightning 機型同樣適用，甚至更該做。</div>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">二手機的孔，有前一手的里程，也有你的</div>先講清楚一件常被誤解的事：<strong>充電孔不是「買來就定生死」的零件</strong>。它的狀態會隨著之後的使用一直變化——你接手之後每天的插拔、口袋裡的棉絮，一樣在累積。</div>
+      <p>但二手機確實有一段你看不到的里程。這也是為什麼我們收機時不只看外觀，會實際插拔、實際充電——外觀檢查看得到刮痕與凹陷，看不到接觸電阻。</p>
+      <p>對買家來說，好消息是<strong>這件事你在面交現場自己就能做</strong>，而且做完之後，接下來的保養就在你手上了。</p>
+      <div class="steps">
+        <div class="step" style="--c:var(--green)"><div class="n">01</div><div><h4>用手感受鬆緊</h4><p>插進去應該有明確的「到底」感，拔出來要有一點阻力。插上去晃一晃就掉、或是要喬角度才會充電，代表接點已經鬆了。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">02</div><div><h4>拿手電筒往裡面照</h4><p>看得到棉絮、灰塵、金屬變色或發黑，都是警訊。發黑特別要注意，那通常代表曾經高溫過。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">03</div><div><h4>充電時摸一下接頭</h4><p>正常充電時接頭會微溫，這是正常的。但如果<strong>燙到不能一直握著</strong>，或是充電線的頭比機身還燙，那就該停下來檢查。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">04</div><div><h4>要清潔，先關機、用非金屬工具</h4><p>木製或塑膠牙籤輕輕撥出棉絮就好。<strong>不要用針、迴紋針或任何金屬</strong>去戳，也不要往孔裡噴清潔劑。</p></div></div>
+      </div>
+      <ul class="flags">
+        <li><b>充電時接頭燙到不能碰</b>——先停用那組充電器與線，換一組原廠或有認證的再試。如果換了還是燙，問題在孔。</li>
+        <li><b>要喬角度、壓著線才會充</b>——接點已經鬆或髒了，繼續用只會讓接觸電阻更高、更熱。</li>
+        <li><b>孔裡看得到發黑或焦痕</b>——這是已經發生過高溫的痕跡，別再拿大功率充電器去測試它。</li>
+      </ul>
+    </section>
+
+    <section id="buy">
+      <div class="sec-label" style="--c:var(--navy)">what_to_buy</div>
+      <h2>07 · 所以我到底該買幾瓦？</h2>
+      <p>把前面全部收成一張表。先找你的孔，再看那一列：</p>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你的 iPad</th><th>我們建議買</th><th>再往上加碼</th><th>為什麼</th></tr>
+          <tr><td>Lightning 孔<br>（第 5～9 代、Air 3、mini 5⋯）</td><td class="good">20W</td><td class="bad">完全沒用</td><td>實測連 20W 都吃不滿</td></tr>
+          <tr><td>USB-C 一般機型<br>（第 10 代、Air 4 之後、mini 6 之後）</td><td class="good">30W</td><td class="bad">實測只差 1 分鐘</td><td>20W 也能用，只是慢 18 分鐘</td></tr>
+          <tr><td>USB-C Pro 機型</td><td class="good">30～45W</td><td>差幾分鐘而已</td><td>實測吃到 35～40W 才到頂</td></tr>
+          <tr><td>iPad Pro（M5）</td><td class="good">40～45W</td><td>官方快充門檻是 60W</td><td>峰值會碰到 60W，但日常穩定在 40W</td></tr>
+        </table>
+      </div>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">為什麼我們不建議一路往上加碼</div>因為那是一個<strong>零收益、非零風險</strong>的交換。<br><br><strong>收益那一側：</strong>實測 29W 換到 67W 只省 1 分鐘；而且大瓦數只能在前 80% 發揮，最後那段誰都一樣慢。<br><br><strong>風險那一側：</strong>每多買一顆，就多開一次「會不會買到不合規品」的門，而那顆的功率越大，一旦失效後果越嚴重。<br><br>不需要證明大瓦數危險，光是「換不到時間」這一點就夠了。這是我們的立場，不是 Apple 的建議。</div>
+      <p>如果你手上<strong>已經有</strong>一顆大瓦數充電器（例如筆電的），那就直接拿來充，不用另外買一顆小的。Apple 官方明講可以用 Mac 的電源轉接器。</p>
+      <p>差別在於「已經有」跟「特地去買」是兩回事。前者零風險零成本，後者你得先確定買到的是合規品。</p>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">「手邊已經有的直接用」有一個前提</div>那顆充電器要是<strong>走標準 PD 的</strong>——筆電充電器、行動電源、車充多半都是。<br><br>但如果是 Android 旗艦的招牌快充頭（SuperVOOC、HyperCharge 那類），情況不同：它的高瓦數是私有協定，iPad 一瓦都用不到，<strong>舊款甚至可能讓你充得比原廠 20W 還慢</strong>。那種情況下「手邊有」就不是理由了。</div>
+      <ul class="check">
+        <li><b>看認證標示，不要看瓦數數字</b>包裝或本體上找得到 BSMI 商品檢驗標識（台灣強制）、以及 USB-IF 或原廠授權的標示。找不到任何一個，就別買。</li>
+        <li><b>線也要算進去</b>一條不合規的線一樣會發熱，而且它比充電器更常被忽略。買線的錢別省。</li>
+        <li><b>邊充邊跑重度遊戲，比充電器大小更值得改</b>那是熱疊加最嚴重的情境，而熱才是真正會永久扣電池容量的那一項。</li>
+        <li><b>買二手機時，把充電孔列進檢查項目</b>看外觀、感受鬆緊、當場充一次。這件事比追問前一手用幾瓦充電器實際得多。</li>
+      </ul>
+      <div class="bigquote"><div class="qm">”</div><p>大瓦數不會把你的 iPad 充壞，<br>但它也換不到你的時間。</p><small>該檢查的是那顆充電器是誰做的、你那個孔還好不好——兩件事都比瓦數重要。</small><div class="rule"></div></div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label" style="--c:var(--muted)">sources</div>
+      <h2>來源與更新日期</h2>
+      <p class="updated">本文查證與撰寫：<b>2026 年 8 月</b>。Apple 的官方規格與保固條款會隨版本調整，以官方最新頁面為準。</p>
+      <p class="updated">另外要說明：第 05 節的乘數模型與三個前提，是<b>根據實測數據與官方文件推導的解釋</b>，不是對照實驗證明的因果。涉及個別機器損壞責任歸屬的認定，本文一律不下判斷。</p>
+      <p class="sources">事實性內容以 Apple 官方頁面為主，充電功率與時間數據來自第三方實測：</p>
+      <ul class="sources">
+        <li>Apple〈關於 Apple USB 電源轉接器〉<a class="inline" href="https://support.apple.com/zh-tw/120548">support.apple.com/zh-tw/120548</a>（「你也可以使用 Mac USB-C 電源轉接器」原文、各機型隨附轉接器瓦數、以及不符合安全標準的轉接器「可能會有死亡或人身傷害的風險」）</li>
+        <li>Apple〈電池 — 為何選用鋰離子電池〉<a class="inline" href="https://www.apple.com/tw/batteries/why-lithium-ion/">apple.com/tw/batteries/why-lithium-ion</a>（第 03 節的兩階段充電原文：快速充達 80% 後轉為涓流充電、「減緩電流以延長電池壽命」）</li>
+        <li>Apple〈為 iPad 快速充電〉<a class="inline" href="https://support.apple.com/zh-tw/125066">support.apple.com/zh-tw/125066</a>（iPad Pro M5 快充需要 60W 或更高功率的 USB-C 相容電源轉接器。發佈日期 2025 年 10 月 29 日）</li>
+        <li>Apple〈一 (1) 年有限保固〉<a class="inline" href="https://www.apple.com/legal/warranty/products/ios-warranty-rest-of-apac-traditional-chinese.html">apple.com/legal/warranty</a>（第 05 節引用的排除條款 (b)(c)(d) 繁體中文原文）</li>
+        <li>Apple〈電池 — 最大化電池效能〉<a class="inline" href="https://www.apple.com/tw/batteries/maximizing-performance/">apple.com/tw/batteries/maximizing-performance</a>（高於 35°C「可能會永久損害電池的蓄電量」）</li>
+        <li>充電頭網（ChargerLAB）iPad 第 10 代充電評測<a class="inline" href="https://www.chongdiantou.com/archives/185740.html">chongdiantou.com</a>（第 02 節的四組充飽時間與電流，以 POWER-Z 電表全程記錄）</li>
+        <li>充電頭網 iPad Pro 11 M5 充電評測<a class="inline" href="https://www.chongdiantou.com/archives/1762737832984.html">chongdiantou.com</a>（第 03 節的電量對時間曲線：64 分鐘 80%、2 小時 6 分充滿；峰值 60W、日常 40W）</li>
+        <li>充電頭網 iPad Pro M5 充電相容性實測<a class="inline" href="https://www.chongdiantou.com/archives/1763378178707.html">chongdiantou.com</a>（第 04 節 M5 那四組電壓／電流）</li>
+        <li>充電頭網 新 iPad Pro 充電實測<a class="inline" href="https://www.chongdiantou.com/archives/30324.html">chongdiantou.com</a>（2018 年 iPad Pro 最大 35W／15.06V／2.33A、12W USB-A 只有 7.26W）</li>
+        <li>充電頭網 iPad 2020 充電實測<a class="inline" href="https://www.chongdiantou.com/archives/60187.html">chongdiantou.com</a>（Lightning 機型實測 12.99～14.58W、未觸發 PD 快充）</li>
+        <li>USB Type-C 連接器規格：耐插拔 10,000 次為 USB-IF 規格要求（對照 USB Type-A 為 1,500 次）</li>
+      </ul>
+
+      <h3>延伸觀看（YouTube 參考）</h3>
+      <p style="font-size:.9rem;color:var(--muted)">兩支都是<strong>拿電表實測</strong>的內容，不是規格朗讀。兩支都以 iPhone 示範，但「高瓦數不一定比較快」與「溫度才是關鍵」這兩件事，在 iPad 上完全同一套邏輯。</p>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=Q0_3Jx4oK3g" target="_blank" rel="noopener" data-yt="Q0_3Jx4oK3g" aria-label="播放：充電器對決 20W、30W 有線還是 MagSafe 無線？怎麼充電最不傷電池">
+          <img loading="lazy" src="https://i.ytimg.com/vi/Q0_3Jx4oK3g/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/Q0_3Jx4oK3g/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>充電器對決：「20W、30W 有線」還是「MagSafe 無線」？怎麼充電最不傷電池？</b><small><span class="ch">頻道：彼得森</span> · 2024/04 · 約 13 分鐘</small><small>推薦理由：它同時測了充電速度<strong>與電池溫度</strong>——而溫度正是本文<a class="inline" href="#risk">第 05 節</a>第三個前提的主角。想知道「快一點值不值得多熱那幾度」，看這支。</small></div>
+      </div>
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=Yq0PbbnS7Mw" target="_blank" rel="noopener" data-yt="Yq0PbbnS7Mw" aria-label="播放：Type-C 充電頭挑選教學，高瓦數不一定快，6 款快充頭功率實測">
+          <img loading="lazy" src="https://i.ytimg.com/vi/Yq0PbbnS7Mw/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/Yq0PbbnS7Mw/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>Type-C 充電頭必買？高瓦數不一定快？6 款快充頭開箱功率實測</b><small><span class="ch">頻道：宇恩 yu_n</span> · 2023/09 · 約 20 分鐘</small><small>推薦理由：把六款充電頭一顆一顆接上電表量實際功率，用畫面證明「標示瓦數 ≠ 進到裝置的瓦數」——也就是本文<a class="inline" href="#howfast">第 02 節</a>那張圖在講的事。</small></div>
+      </div>
+      <div class="callout" style="--c:var(--amber);margin-top:14px"><div class="ct">為什麼沒放「大瓦數傷不傷機」的專門影片</div>因為誠實——我們搜過，這個題目的中文影片幾乎分成兩種：充電器品牌的業配（結論一律是越大越好），以及維修店的恐嚇式短影音（結論一律是別用大的）。<strong>兩種都有立場，而且都沒有拿電表證明給你看。</strong><br><br>與其放這些，不如放兩支真的量給你看的。</div>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
