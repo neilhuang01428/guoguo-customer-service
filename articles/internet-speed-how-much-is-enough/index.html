@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>網速多少才夠用？六個數字看懂你為什麼卡 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式 ── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 表格橫向捲動 */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 640px; }
+  .tbl-wrap table.wide { min-width: 760px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+
+  /* 六格儀表板：模擬測速結果的樣子 */
+  .dash { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 18px 0; }
+  .dash .d { background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .dash .d b { display: block; font-size: .78rem; color: var(--muted); font-weight: 400; }
+  .dash .d span { display: block; font-family: var(--mono); font-size: 1.15rem; color: var(--ink); font-weight: 700; margin: 3px 0 5px; }
+  .dash .d i { font-style: normal; font-family: var(--mono); font-size: .62rem; color: var(--c); border: 1px solid var(--c); background: var(--cbg); border-radius: 4px; padding: 1px 6px; }
+
+  /* 指標階梯：一個指標一條，四段色塊 */
+  .grade { margin: 16px 0; }
+  .grade .grow { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .grade .gname { width: 132px; flex: none; font-size: .84rem; color: var(--ink); }
+  .grade .gbar { flex: 1; display: flex; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); }
+  .grade .gbar span { flex: 1; text-align: center; font-family: var(--mono); font-size: .64rem; padding: 5px 2px; color: #fff; }
+  .grade .gbar span.g1 { background: var(--green); }
+  .grade .gbar span.g2 { background: #7cc198; color: var(--ink); }
+  .grade .gbar span.g3 { background: var(--amber); }
+  .grade .gbar span.g4 { background: var(--red); }
+
+  /* 需求尺 */
+  .ruler { margin: 18px 0; }
+  .ruler .rrow { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+  .ruler .rname { width: 148px; flex: none; font-size: .84rem; color: var(--ink); }
+  .ruler .rbar { flex: 1; height: 15px; background: var(--panel2); border-radius: 4px; overflow: hidden; }
+  .ruler .rbar i { display: block; height: 100%; width: var(--w); background: var(--c); }
+  .ruler .rval { width: 96px; flex: none; font-family: var(--mono); font-size: .76rem; color: var(--c); text-align: right; }
+
+  /* ── 動態分鏡 1：三種慢的車道 ──
+     鐵則：每顆點的基礎 left 就是動畫的最終狀態（--x），動畫只是把它倒帶重演。
+     關掉動畫看到的仍是三張看得懂的靜態圖。 */
+  .lanes { display: grid; gap: 11px; }
+  .lane3 { display: flex; align-items: center; gap: 10px; }
+  .lane3 .lb { width: 108px; flex: none; font-size: .8rem; color: var(--ink); line-height: 1.35; }
+  .lane3 .lb small { display: block; color: var(--muted); font-size: .7rem; }
+  .lane3 .road { position: relative; flex: 1; border-radius: 20px; background: #fff; border: 1px solid var(--line); overflow: hidden; height: 22px; }
+  .lane3 .road.thin { height: 12px; }
+  .lane3 .road i { position: absolute; top: 50%; left: var(--x); width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; background: var(--c); }
+  .lane3 .road.thin i { width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; }
+  .lane3 .road i.lost { background: transparent; border: 1.5px dashed var(--red); }
+  @keyframes ln-run { 0%, 6% { left: 3%; } 64%, 100% { left: var(--x); } }
+  .anim .lane3 .road i { animation: ln-run 4.4s ease-in-out infinite backwards; }
+  .anim .lane3.slow .road i { animation-timing-function: linear; }
+  .anim .lane3.slow .road i:nth-child(2) { animation-delay: .45s; }
+  .anim .lane3.wobble .road i { animation-timing-function: cubic-bezier(.9,.03,.1,.97); }
+  .anim .lane3.wobble .road i:nth-child(2) { animation-delay: .38s; }
+  .anim .lane3.wobble .road i:nth-child(3) { animation-delay: .12s; }
+  .anim .lane3.wobble .road i:nth-child(4) { animation-delay: .58s; }
+  .anim .lane3.wobble .road i:nth-child(5) { animation-delay: .2s; }
+
+  /* ── 動態分鏡 2：一趟來回要等多久（橫條長度＝時間）──
+     為什麼用長度不用高度：高度在視覺上代表「多、好、強」，
+     拿來畫延遲會反過來——柱子越高感覺越厲害，但延遲越高其實越糟。
+     長度＝時間是所有人都懂的語彙（進度條、甘特圖），而且動畫可以讓
+     長條真的「長很久才長完」，讀者會直接感覺到那個等待。
+     同一條鐵則：條的基礎 width 就是最終狀態（--w），關掉動畫仍看得懂。 */
+  .lat { display: grid; gap: 5px; }
+  .lat .lgrp { font-family: var(--mono); font-size: .64rem; margin: 6px 0 2px; }
+  .lat .lgrp:first-child { margin-top: 0; }
+  .lat .lgrp.idle { color: var(--green-deep); }
+  .lat .lgrp.busy { color: var(--red); }
+  .lat .lrow { display: flex; align-items: center; gap: 9px; }
+  .lat .lrow .ln { width: 46px; flex: none; font-family: var(--mono); font-size: .6rem; color: var(--muted); }
+  .lat .lrow .lbar { flex: 1; height: 13px; background: #fff; border: 1px solid var(--line); border-radius: 7px; overflow: hidden; }
+  .lat .lrow .lbar i { display: block; height: 100%; width: var(--w); min-width: 12px; border-radius: 7px; background: var(--c); }
+  .lat .lrow .lv { width: 62px; flex: none; font-family: var(--mono); font-size: .68rem; color: var(--c); text-align: right; }
+  @keyframes lat-fast { 0% { width: 0; } 8%, 100% { width: var(--w); } }
+  @keyframes lat-slow { 0% { width: 0; } 74%, 100% { width: var(--w); } }
+  .anim .lat .lrow.q .lbar i { animation: lat-fast 4.4s linear infinite backwards; }
+  .anim .lat .lrow.s .lbar i { animation: lat-slow 4.4s linear infinite backwards; }
+  .anim .lat .lrow:nth-child(7) .lbar i { animation-delay: .12s; }
+  .anim .lat .lrow:nth-child(8) .lbar i { animation-delay: .06s; }
+  .anim .lat .lrow:nth-child(9) .lbar i { animation-delay: .18s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .anim .lane3 .road i, .anim .lat .lrow .lbar i { animation: none; }
+  }
+
+  /* 主畫面 App 反黑示意（新機還原中的樣子） */
+  .home { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px 14px; max-width: 300px; margin: 0 auto; }
+  .home span { display: block; }
+  .home span i { display: block; aspect-ratio: 1; border-radius: 22%; background: var(--navy-bg); border: 1px solid var(--line); }
+  .home span b { display: block; font-size: .58rem; color: var(--muted); text-align: center; margin-top: 4px; font-weight: 400; }
+  .home span.dl i { background: repeating-linear-gradient(45deg, #dfe5ee 0 5px, #eef2f8 5px 10px); position: relative; }
+  .home span.dl i::after { content: ''; position: absolute; left: 22%; right: 22%; top: 50%; height: 3px; margin-top: -1.5px; border-radius: 3px; background: var(--muted); opacity: .5; }
+  .home span.dl b { color: var(--amber); }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .dash { grid-template-columns: 1fr 1fr; }
+    .ruler .rname { width: 100px; font-size: .76rem; }
+    .ruler .rval { width: 78px; font-size: .7rem; }
+    .grade .gname { width: 92px; font-size: .75rem; }
+    .lane3 .lb { width: 88px; font-size: .75rem; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>網速多少才夠用</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#triage" class="active">00 · 30 秒分流</a>
+  <div class="grp">先測對</div>
+  <a href="#tool">01 · 該用哪個測速工具</a>
+  <a href="#six">02 · 看懂六個數字</a>
+  <a href="#diagnose">03 · 哪個數字不對，會卡什麼</a>
+  <div class="grp">要多少才夠</div>
+  <a href="#tasks">04 · 每件事各自吃哪個數字</a>
+  <a href="#tiers">05 · 下載速度的五個級距</a>
+  <a href="#killers">06 · 頻寬以外的三個殺手</a>
+  <a href="#wait">07 · 會讓步的與不會讓步的</a>
+  <div class="grp">售後現場</div>
+  <a href="#guoguo">08 · 新機開箱那一小時</a>
+  <a href="#fix">09 · 對症下藥與該不該升級</a>
+  <a href="#watch">延伸觀看</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>六個數字的診斷對照表</span><span>官方評分門檻全公開</span><span>教你自己找出卡在哪</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">iPad 連網與網速 / 頻寬診斷</div>
+    <h1>網速多少才夠用</h1>
+    <p class="subtitle">測速不是只有一個數字。真正決定順不順的有六個，而「下載速度」只管得到其中一件事——你能不能看 4K。</p>
+
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--navy)">
+        <div class="lt">直接回答</div>
+        <p class="big">日常大小事，下載 25 Mbps 就綽綽有餘。真正讓你卡的，多半是延遲、抖動、封包遺失這三個沒人看的數字。</p>
+        <p class="sm">從傳訊息到看 1080p 影片，全部塞進 5 Mbps 就結束了；4K 要 15～25 Mbps。再往上加只對一件事有感——下載 App 與系統更新。而遊戲卡、視訊斷字這兩種痛，加再多頻寬都不會好。</p>
+        <p class="alias-line">你可能是用別的說法找到這頁的：<b>網速幾 M 才夠</b>、<b>測速多少才不會卡</b>、<b>ping 值多少算正常</b>。它們問的是同一件事——「我螢幕上這些數字，哪一個有問題？」</p>
+      </div>
+      <blockquote class="lead-src">這不是我們的看法。Cloudflare 把它測速工具的評分演算法完整開源，裡面寫得很清楚：「串流影片」的評分才看下載速度，「線上遊戲」與「視訊通話」的評分<strong>完全不看頻寬</strong>——只看延遲、負載下延遲增加量、抖動與封包遺失。<cite>cloudflare/speedtest 原始碼 · AIM 評分定義</cite></blockquote>
+      <p class="lede">所以「網速多少才夠」這個問題，得先拆成六個。這頁教你用一個免費工具一次量出這六個數字，再照著對照表找出你是哪一種卡。</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat" style="--c:var(--green)"><div class="num">5</div><div class="lab">Mbps · 下載<br>日常九成的事都夠了</div></div>
+      <div class="stat" style="--c:var(--teal)"><div class="num">25</div><div class="lab">Mbps · 下載<br>連 4K 都涵蓋</div></div>
+      <div class="stat" style="--c:var(--amber)"><div class="num">6</div><div class="lab">個指標<br>決定順不順</div></div>
+      <div class="stat" style="--c:var(--red)"><div class="num">0</div><div class="lab">遊戲與視訊評分<br>看頻寬的比重</div><span class="badge">Cloudflare 官方</span></div>
+    </div>
+
+    <div class="lead-map">
+      <div class="lm-t">這頁分成三件事：</div>
+      <div class="lm-g">
+        <a href="#tool"><i>01</i>用對工具，量出六個數字</a>
+        <a href="#diagnose"><i>03</i>對照表：你卡在哪一個</a>
+        <a href="#tiers"><i>05</i>下載速度的五個級距</a>
+      </div>
+    </div>
+
+    <p class="updated">本文查證：<b>2026 年 8 月</b>。各服務的建議頻寬取自官方說明頁，評分門檻取自 Cloudflare 公開原始碼，遊戲延遲門檻取自同儕審查論文。數字都會隨版本調整。<a class="inline" href="#sources">來源列在文末</a>。</p>
+
+    <section id="triage">
+      <div class="sec-label" style="--c:var(--teal)">triage</div>
+      <h2>00 · 30 秒分流：你的症狀屬於哪一種</h2>
+      <p>不同的卡法，兇手完全不一樣。先在這張表上找到你的症狀，再決定要看哪一節。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你遇到的狀況</th><th>最可能的兇手</th><th>直接看這裡</th></tr>
+          <tr><td>影片轉圈圈、畫質自己變糊</td><td class="good">下載速度不足<small>這是唯一真的跟頻寬有關的症狀</small></td><td><a class="inline" href="#tiers">05 節</a>級距</td></tr>
+          <tr><td>遊戲角色瞬移、按下去慢半拍</td><td class="bad">延遲太高，跟頻寬無關</td><td><a class="inline" href="#killers">06 節</a>三個殺手</td></tr>
+          <tr><td>視訊聲音斷字、像機器人</td><td class="bad">抖動或封包遺失</td><td><a class="inline" href="#killers">06 節</a>三個殺手</td></tr>
+          <tr><td>有人在下載時，全家一起卡</td><td class="bad">負載下延遲暴增（緩衝區膨脹）</td><td><a class="inline" href="#diagnose">03 節</a>診斷表</td></tr>
+          <tr><td>視訊時對方說你很糊、備份很慢</td><td>上傳速度不足</td><td><a class="inline" href="#tasks">04 節</a>情境表</td></tr>
+          <tr><td>新機 App 一直反黑、系統更新跑很久</td><td>純粹是檔案大＋下載慢</td><td><a class="inline" href="#guoguo">08 節</a>新機開箱</td></tr>
+          <tr><td>不知道自己卡在哪</td><td class="good">先量六個數字再說</td><td><a class="inline" href="#tool">01 節</a>測速工具</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">全篇最重要的一句話</div>
+        測速結果有六個數字，<strong>只有一個看得出「能不能看 4K」，另外五個決定「順不順」</strong>。多數人卡住的原因，都躲在那五個裡面——而那五個，加錢升級方案通常救不到。
+      </div>
+    </section>
+
+    <div class="part-div">先測對</div>
+
+    <section id="tool">
+      <div class="sec-label" style="--c:var(--navy)">the_tool</div>
+      <h2>01 · 該用哪個測速工具</h2>
+      <p>多數人用的測速站只給下載速度，那等於只拿到六分之一的資訊。要診斷卡在哪，工具得一次量出六個指標。</p>
+
+      <div class="tbl-wrap">
+        <table class="wide">
+          <tr><th>工具</th><th>下載</th><th>上傳</th><th>閒置延遲</th><th>負載下延遲</th><th>抖動</th><th>封包遺失</th><th>直接判讀好壞</th></tr>
+          <tr><td>Cloudflare 測速<small>speed.cloudflare.com</small></td><td class="good">✓</td><td class="good">✓</td><td class="good">✓</td><td class="good">✓</td><td class="good">✓</td><td class="good">✓</td><td class="good">✓ 串流／遊戲／視訊<br>各給一個等級</td></tr>
+          <tr><td>Fast.com<small>Netflix 出的</small></td><td>✓</td><td>✓<small>要點「顯示更多資訊」</small></td><td>✓</td><td>✓</td><td class="bad">✗</td><td class="bad">✗</td><td class="bad">✗</td></tr>
+          <tr><td>Ookla Speedtest</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓<small>App 版才有</small></td><td class="bad">✗</td></tr>
+          <tr><td>Waveform 緩衝膨脹測試</td><td>✓</td><td>✓</td><td>✓</td><td class="good">✓</td><td>—</td><td>—</td><td>✓ 給 A+ 到 F 的等級</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">建議：用 Cloudflare 那個</div>
+        網址是 <code>speed.cloudflare.com</code>，用 iPad 或手機的瀏覽器打開就能跑，不用裝 App、不用註冊。跑完大約一分半，六個數字全部到齊，<strong>而且它會直接告訴你「你這條線拿來串流／打遊戲／視訊各是什麼等級」</strong>。
+      </div>
+
+      <p>它最特別的地方是評分邏輯完全公開。Cloudflare 把演算法放在公開的程式碼倉庫裡，任何人都查得到它用什麼門檻打分數——這在測速工具裡很少見，也是我們敢拿它當標準的原因。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--amber)"><div class="ct">測之前先做三件事</div>先關掉正在跑的下載與雲端備份；把裝置拿到路由器附近測一次、再回到你平常坐的位置測一次；兩個位置各測三次，取中間那次。</div>
+        <div class="callout" style="--c:var(--red)"><div class="ct">單看一次沒有意義</div>三次結果差很多，本身就是一個答案——那代表你的線路不穩定，這比平均值低更難處理。</div>
+      </div>
+    </section>
+
+    <section id="six">
+      <div class="sec-label" style="--c:var(--teal)">six_numbers</div>
+      <h2>02 · 看懂六個數字</h2>
+      <p>跑完之後你會拿到大概像這樣的一組結果。每個數字管的事情完全不同，下面一個一個講。</p>
+
+      <div class="dash">
+        <div class="d" style="--c:var(--green);--cbg:var(--green-bg)"><b>下載</b><span>184 Mbps</span><i>很好</i></div>
+        <div class="d" style="--c:var(--green);--cbg:var(--green-bg)"><b>上傳</b><span>96 Mbps</span><i>很好</i></div>
+        <div class="d" style="--c:var(--green);--cbg:var(--green-bg)"><b>閒置延遲</b><span>8 ms</span><i>很好</i></div>
+        <div class="d" style="--c:var(--red);--cbg:var(--red-bg)"><b>負載下延遲增加</b><span>+310 ms</span><i>很糟</i></div>
+        <div class="d" style="--c:var(--amber);--cbg:var(--amber-bg)"><b>抖動</b><span>24 ms</span><i>普通</i></div>
+        <div class="d" style="--c:var(--green);--cbg:var(--green-bg)"><b>封包遺失</b><span>0%</span><i>很好</i></div>
+      </div>
+      <p style="font-size:.86rem;color:var(--muted)">這組數字是個很典型的例子：下載將近 200 Mbps、延遲只有 8 ms，看起來是條好線路——但只要有人開始下載東西，延遲就會暴增 310 ms。這種線路看 Netflix 完全正常，<strong>打遊戲和視訊卻會通通掛掉</strong>，而且從第一個數字完全看不出來。</p>
+
+      <h3>一個一個講</h3>
+      <div class="grid">
+        <div class="card" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="c-tag">指標 1</div><h4>下載速度</h4>
+          <p>一次能搬多少東西進來。決定你看得了幾 K 的影片、下載要等多久。這是六個裡面唯一「越大越好、加錢有用」的。</p>
+          <span class="ex">單位 Mbps</span>
+        </div>
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">指標 2</div><h4>上傳速度</h4>
+          <p>能把多少東西送出去。視訊時你自己的畫面、雲端備份、傳檔案、直播全靠它。看影片幾乎不用。</p>
+          <span class="ex">單位 Mbps</span>
+        </div>
+        <div class="card" style="--c:var(--teal);--cbg:var(--teal-bg)">
+          <div class="c-tag">指標 3</div><h4>閒置延遲</h4>
+          <p>網路沒事做的時候，資料跑一趟來回要多久。決定「按下去多久有反應」，跟頻寬完全無關。</p>
+          <span class="ex">單位 ms（毫秒）</span>
+        </div>
+        <div class="card" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="c-tag">指標 4 · 最容易被忽略</div><h4>負載下延遲增加量</h4>
+          <p>開始傳大量資料之後，延遲多了多少。這個數字大，代表「只要有人在用，其他人就卡」。</p>
+          <span class="ex">單位 ms · 越接近 0 越好</span>
+        </div>
+        <div class="card" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="c-tag">指標 5</div><h4>抖動</h4>
+          <p>每一份資料抵達的時間差多少。影片有緩衝所以不太怕，但即時通話與遊戲會直接變成斷字與頓挫。</p>
+          <span class="ex">單位 ms</span>
+        </div>
+        <div class="card" style="--c:var(--purple);--cbg:var(--purple-bg)">
+          <div class="c-tag">指標 6</div><h4>封包遺失</h4>
+          <p>有多少資料在路上不見了。不見的要重送，於是通話斷字、遊戲回檔、下載也會跟著變慢。</p>
+          <span class="ex">單位 %</span>
+        </div>
+      </div>
+
+      <h3>各自的健康區間</h3>
+      <p>下面這張色階不是我們定的，是從 Cloudflare 評分演算法的實際分界點抄出來的。左邊綠色是它給最高分的區間，右邊紅色是會被扣分的區間。</p>
+
+      <div class="grade">
+        <div class="grow"><div class="gname">下載／上傳</div><div class="gbar"><span class="g1">≥100 Mbps</span><span class="g2">50–100</span><span class="g3">10–50</span><span class="g4">&lt;10</span></div></div>
+        <div class="grow"><div class="gname">閒置延遲</div><div class="gbar"><span class="g1">&lt;10 ms</span><span class="g2">10–20</span><span class="g3">20–100</span><span class="g4">≥100</span></div></div>
+        <div class="grow"><div class="gname">負載下延遲增加</div><div class="gbar"><span class="g1">&lt;10 ms</span><span class="g2">10–20</span><span class="g3">20–100</span><span class="g4">≥100</span></div></div>
+        <div class="grow"><div class="gname">抖動</div><div class="gbar"><span class="g1">&lt;10 ms</span><span class="g2">10–20</span><span class="g3">20–100</span><span class="g4">≥100</span></div></div>
+        <div class="grow"><div class="gname">封包遺失</div><div class="gbar"><span class="g1">&lt;1%</span><span class="g2">1–5%</span><span class="g3">5–25%</span><span class="g4">≥25%</span></div></div>
+      </div>
+      <p style="font-size:.86rem;color:var(--muted)">要注意的是，這是<strong>評分用的分界</strong>，不是「及格線」。以家用來說，延遲與抖動在 20 ms 以內、封包遺失 0%、負載下延遲增加不超過 50 ms，體感上就已經很順了；下載則看你要做什麼，見 <a class="inline" href="#tiers">05 節</a>。</p>
+    </section>
+
+    <section id="diagnose">
+      <div class="sec-label" style="--c:var(--red)">diagnose</div>
+      <h2>03 · 哪個數字不對，會卡什麼</h2>
+      <p>這是全篇最實用的一張表。測完之後找出你那個「不太好看」的數字，往右看就知道它會害你卡在哪、以及哪些事其實不會受影響。</p>
+
+      <div class="tbl-wrap">
+        <table class="wide">
+          <tr><th>不對勁的數字</th><th>你會遇到</th><th>這些其實不受影響</th><th>怎麼處理</th></tr>
+          <tr><td>下載低</td><td class="bad">4K 轉圈或降畫質、下載 App 與系統更新很久</td><td class="good">遊戲、視訊、通話多半正常</td><td>唯一該考慮升級方案的情況</td></tr>
+          <tr><td>上傳低</td><td class="bad">視訊時對方看你很糊、雲端備份很慢、直播掉幀</td><td class="good">看影片、瀏覽網頁完全正常</td><td>挑上下行對稱的方案</td></tr>
+          <tr><td>閒置延遲高</td><td class="bad">遊戲瞬移、網頁點下去要頓一下、視訊互相搶話</td><td class="good">4K 可能還是很順</td><td>換連線方式、避開 VPN、確認不是連到國外節點</td></tr>
+          <tr><td>負載下延遲增加大</td><td class="bad">只要有人在下載或備份，全家一起卡</td><td class="good">沒人用的時候一切正常</td><td>路由器開 QoS／SQM，這一項花錢升速沒用</td></tr>
+          <tr><td>抖動大</td><td class="bad">視訊聲音斷字像機器人、遊戲一頓一頓</td><td class="good">下載速度可能還是很快</td><td>改用 5GHz、離開干擾源、有線最徹底</td></tr>
+          <tr><td>封包遺失 &gt; 1%</td><td class="bad">通話掉字、遊戲回檔、下載忽快忽慢</td><td>—</td><td>先換 Wi-Fi 頻段，仍有就報修線路</td></tr>
+        </table>
+      </div>
+
+      <h3>最常見的假象：數字都漂亮，就是會卡</h3>
+      <p>如果六個數字裡有五個都很好、只有「負載下延遲增加」很難看，那你遇到的是緩衝區膨脹。這是家用網路最常見、也最容易被誤判成「網速不夠」的問題。</p>
+      <p>它的原理是：資料塞爆了路由器裡的佇列，後面的每一個封包都得排在幾 MB 的資料後面。頻寬還在，但每一趟都要等很久。</p>
+
+      <figure class="fig anim">
+        <div class="lat">
+          <div class="lgrp idle">沒人在用的時候 · 每一趟來回</div>
+          <div class="lrow q" style="--c:var(--green)"><span class="ln">第 1 趟</span><div class="lbar"><i style="--w:2.3%"></i></div><span class="lv">8 ms</span></div>
+          <div class="lrow q" style="--c:var(--green)"><span class="ln">第 2 趟</span><div class="lbar"><i style="--w:2.6%"></i></div><span class="lv">9 ms</span></div>
+          <div class="lrow q" style="--c:var(--green)"><span class="ln">第 3 趟</span><div class="lbar"><i style="--w:2%"></i></div><span class="lv">7 ms</span></div>
+          <div class="lgrp busy">有人開始下載東西之後 · 同樣的來回</div>
+          <div class="lrow s" style="--c:var(--red)"><span class="ln">第 4 趟</span><div class="lbar"><i style="--w:63%"></i></div><span class="lv">220 ms</span></div>
+          <div class="lrow s" style="--c:var(--red)"><span class="ln">第 5 趟</span><div class="lbar"><i style="--w:89%"></i></div><span class="lv">310 ms</span></div>
+          <div class="lrow s" style="--c:var(--red)"><span class="ln">第 6 趟</span><div class="lbar"><i style="--w:77%"></i></div><span class="lv">270 ms</span></div>
+          <div class="lrow s" style="--c:var(--red)"><span class="ln">第 7 趟</span><div class="lbar"><i style="--w:100%"></i></div><span class="lv">350 ms</span></div>
+        </div>
+        <figcaption>條的長度是<b>一趟來回要等多久</b>。上面三條是網路閒著的時候，短到只剩一小截；<b>只要有人開始下載，同樣一趟就要等上幾十倍的時間。</b>你的測速工具如果只報上面那三條，就會告訴你「一切正常」。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">給這個現象取個名字：安靜時的假象</div>
+        測速要嘛在深夜、要嘛在家裡沒人用的時候跑，量到的就是左半邊。<strong>但你真正在用網路的時候，家裡通常不只你一個人在用</strong>——那時候的體感對應的是右半邊。這就是「測起來很快、用起來很卡」最常見的來源。
+      </div>
+    </section>
+
+    <div class="part-div">要多少才夠</div>
+
+    <section id="tasks">
+      <div class="sec-label" style="--c:var(--navy)">by_task</div>
+      <h2>04 · 每件事各自吃哪個數字</h2>
+      <p>把日常會做的事從最省的排到最兇的。看得出來從傳訊息到 1080p 影片，整整跨了幾百倍，卻全部塞得進 5 Mbps。</p>
+
+      <div class="tbl-wrap">
+        <table class="wide">
+          <tr><th>你在做的事</th><th>下載</th><th>上傳</th><th>對延遲敏感嗎</th><th>數字出處</th></tr>
+          <tr><td>傳文字訊息、收 Email</td><td class="good">幾乎不吃</td><td class="good">幾乎不吃</td><td>不敏感</td><td>一則訊息不到 1 KB</td></tr>
+          <tr><td>語音通話（純聲音）</td><td class="good">0.1 Mbps</td><td class="good">0.1 Mbps</td><td class="bad">很敏感</td><td>Google Meet 官方</td></tr>
+          <tr><td>聽音樂 一般／高音質</td><td class="good">0.096／0.16 Mbps</td><td>—</td><td>不敏感</td><td>Spotify 官方</td></tr>
+          <tr><td>聽音樂 極高音質</td><td class="good">0.32 Mbps</td><td>—</td><td>不敏感</td><td>Spotify 官方</td></tr>
+          <tr><td>聽無損音樂</td><td>約 1.4 Mbps 起<small>Apple Music 用 ALAC，最高到 24 位元／192 kHz</small></td><td>—</td><td>不敏感</td><td>Apple 官方</td></tr>
+          <tr><td>瀏覽網頁</td><td>一頁中位數 2.1 MB<small>5 Mbps 約 3.5 秒、20 Mbps 約 0.9 秒</small></td><td>—</td><td>中等<small>延遲高會覺得「點了才慢慢動」</small></td><td>HTTP Archive</td></tr>
+          <tr><td>YouTube 360p／480p／720p</td><td class="good">0.7／1.1／2.5 Mbps</td><td>—</td><td>不敏感</td><td>YouTube 官方</td></tr>
+          <tr><td>看 1080p 影片</td><td>5 Mbps</td><td>—</td><td>不敏感</td><td>三家一致</td></tr>
+          <tr><td>視訊會議 720p／1080p</td><td>1.2／3.0 Mbps</td><td>1.2／3.8 Mbps</td><td class="bad">很敏感</td><td>Zoom 官方</td></tr>
+          <tr><td>看 4K 影片</td><td class="bad">15～25 Mbps</td><td>—</td><td>不敏感</td><td>Netflix 15／YouTube 20／Disney+ 25</td></tr>
+          <tr><td>直播 720p／1080p／4K</td><td>—</td><td class="bad">4／10／30 Mbps</td><td>中等</td><td>YouTube 官方</td></tr>
+          <tr><td>雲端遊戲串流</td><td class="bad">最低 10、建議 20 Mbps</td><td>—</td><td class="bad">極敏感</td><td>Xbox Cloud Gaming 官方</td></tr>
+          <tr><td>下載 App、系統更新、還原新機</td><td class="bad">越大越有感，沒有上限</td><td>—</td><td>不敏感</td><td>見 <a class="inline" href="#wait">07 節</a></td></tr>
+        </table>
+      </div>
+
+      <h3>遊戲要特別拆開講，因為差很多</h3>
+      <p>「打遊戲要多少網速」這個問題沒有單一答案，因為不同類型的遊戲差了十倍。頻寬面倒是都很省——任天堂官方拿來比對的基準是下載 3 Mbps、上傳 1 Mbps，比看一部 1080p 影片還低。</p>
+      <p>真正差很多的是對延遲的容忍度。這方面有一篇經典的同儕審查研究做過分類，依「玩家怎麼看這個遊戲世界」把遊戲分成三類：</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>遊戲類型</th><th>代表</th><th>延遲敏感度</th><th>可接受的延遲門檻</th></tr>
+          <tr><td>第一人稱視角</td><td>FPS 射擊、賽車</td><td class="bad">高</td><td class="bad">約 100 ms</td></tr>
+          <tr><td>第三人稱視角</td><td>運動、角色扮演</td><td>中</td><td>約 500 ms</td></tr>
+          <tr><td>全知視角</td><td>即時戰略、模擬經營</td><td class="good">低</td><td class="good">約 1000 ms</td></tr>
+        </table>
+      </div>
+      <p style="font-size:.86rem;color:var(--muted)">出自 Claypool &amp; Claypool 發表於 Communications of the ACM 的研究，門檻是「效能下降到不可接受」的分界。原文也註明：確切門檻仍會因遊戲與玩家而異，同一款遊戲裡不同動作的敏感度也不同——瞄準射擊比移動探索敏感得多。</p>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">所以「打遊戲要辦多快」的正確回答是</div>
+        先問是哪一種遊戲。<strong>玩 FPS 的人該在意的是延遲有沒有壓在 100 ms 以內，不是頻寬有幾百 M</strong>；玩模擬經營的人幾乎怎麼樣都順。而雲端遊戲是完全不同的東西——它等於在看一部即時算出來的影片，頻寬與延遲兩邊都要。
+      </div>
+    </section>
+
+    <section id="tiers">
+      <div class="sec-label" style="--c:var(--green)">tiers</div>
+      <h2>05 · 下載速度的五個級距</h2>
+      <p>六個數字裡，只有下載這一項適合切成級距——因為只有它是「越高越好」。下面每一級都假設另外五個數字正常；如果不正常，級距再高也沒用。</p>
+
+      <div class="tbl-wrap">
+        <table class="wide">
+          <tr><th>下載速度</th><th>這一級叫什麼</th><th>看影片</th><th>遊戲與視訊</th><th>下載與更新</th></tr>
+          <tr><td class="bad">1 Mbps 以下</td><td>只剩文字還活著</td><td class="bad">360p，一直轉圈</td><td>其實還能玩<small>它們吃的不是頻寬</small></td><td class="bad">一個 App 要一小時</td></tr>
+          <tr><td>1–5 Mbps</td><td>日常大致可用</td><td>720p 穩、1080p 在門檻上</td><td class="good">完全沒問題</td><td class="bad">1.2 GB 要 30 分鐘</td></tr>
+          <tr><td class="good">5–25 Mbps</td><td>看影片這件事全部解決</td><td class="good">1080p 舒服，上緣進到 4K</td><td class="good">完全沒問題</td><td>大型手遊 19 分鐘</td></tr>
+          <tr><td class="good">25–100 Mbps</td><td>全家同時用也無感</td><td class="good">全家 4K 一起看</td><td class="good">完全沒問題</td><td>新機還原 27～100 分</td></tr>
+          <tr><td class="good">100 Mbps 以上</td><td>只剩下載感覺得到</td><td class="good">跟上一級沒有差別</td><td class="good">跟上一級沒有差別</td><td class="good">新機還原 9～27 分</td></tr>
+        </table>
+      </div>
+
+      <div class="grade">
+        <div class="grow"><div class="gname">影片需求</div><div class="gbar"><span class="g4">1M↓</span><span class="g3">1–5M</span><span class="g1">5–25M · 全部滿足</span><span class="g1">25M↑ · 沒有更好</span></div></div>
+        <div class="grow"><div class="gname">遊戲／視訊</div><div class="gbar"><span class="g1">1M↓ 就夠了，看的是另外五個數字</span></div></div>
+        <div class="grow"><div class="gname">下載／更新</div><div class="gbar"><span class="g4">1M↓</span><span class="g4">1–5M</span><span class="g3">5–25M</span><span class="g2">25–100M</span><span class="g1">100M↑</span></div></div>
+      </div>
+      <p style="font-size:.86rem;color:var(--muted)">三條線一起看就很清楚：影片需求在 25 Mbps 就到頂，遊戲與視訊從頭到尾都是綠的，只有「下載與更新」<strong>一路往右延伸</strong>。換句話說，你升級方案買到的其實只有第三條線，前兩條再加錢也不會變色。</p>
+
+      <h3>第 1 級 · 1 Mbps 以下：只剩文字還活著</h3>
+      <p>訊息、Email、一般音質的音樂都還能用（Spotify 一般音質只要 0.096 Mbps）。網頁會很痛苦——一頁中位數 2.1 MB，在 1 Mbps 上要等 17 秒。影片只剩 360p，而且會一直轉圈。</p>
+      <div class="callout" style="--c:var(--red)"><div class="ct">這一級通常不是方案問題</div>
+        家用光纖不會這麼慢。測到這個數字，多半是 Wi-Fi 訊號太弱、走到收訊死角、或行動網路方案到量被降速了。<strong>先換個位置重測，不要急著打電話升級。</strong>
+      </div>
+
+      <h3>第 2 級 · 1–5 Mbps：日常大致可用，影片開始受限</h3>
+      <p>網頁、社群、通訊軟體、語音通話、音樂串流全部正常。影片可以看到 720p（YouTube 官方 2.5 Mbps），1080p 剛好在門檻上、遇到尖峰就會降畫質。</p>
+      <p>遊戲完全沒問題，因為它吃的不是頻寬。視訊 720p 也可以（Zoom 官方 1.2 Mbps）。真正會痛的是下載——一個 1.2 GB 的 App 要等半小時以上。</p>
+
+      <h3>第 3 級 · 5–25 Mbps：看影片這件事全部解決</h3>
+      <p>1080p 穩了，4K 在這一級的上緣進來（Netflix 官方 15 Mbps）。1080p 視訊、多人通話、雲端遊戲都在範圍內。</p>
+      <div class="callout" style="--c:var(--green)"><div class="ct">這一級是分水嶺</div>
+        <strong>絕大多數「內容消費」型的需求，到這一級就全部滿足了。</strong>再往上加，看影片不會更清楚、遊戲不會更順、視訊不會更穩——只有「下載與更新的等待時間」會縮短。
+      </div>
+
+      <h3>第 4 級 · 25–100 Mbps：全家同時用也無感</h3>
+      <p>一台看 4K、一台看 1080p、一場視訊、幾支手機在滑，加起來大約 25 Mbps，在這一級完全吃得下。下載一個大型手遊從 12 分鐘降到 6 分鐘以內。</p>
+      <p>台灣入門的家用光纖方案就落在這一級的中段，所以多數家庭其實一開始就在這裡了。</p>
+
+      <h3>第 5 級 · 100 Mbps 以上：只剩下載感覺得到</h3>
+      <p>Cloudflare 的評分演算法在這裡給「串流」項目最高等級，門檻正好是 100 Mbps。但同一套演算法裡，遊戲與視訊的分數<strong>一分都不會因此增加</strong>。</p>
+      <p>這一級唯一真正有感的是：iPadOS 更新從 17 分鐘降到 5 分鐘、新機還原從半小時降到 9 分鐘。如果你常換機、常更新，這個差別很實在；如果你主要是追劇上網，你不會察覺。</p>
+
+      <div class="bigquote">
+        <div class="qm">“</div>
+        <p>頻寬買的是「等待時間」，不是「順暢度」。</p>
+        <small>順不順是另外五個數字在決定的，而它們不在方案價目表上。</small>
+      </div>
+    </section>
+
+    <section id="killers">
+      <div class="sec-label" style="--c:var(--red)">the_killers</div>
+      <h2>06 · 頻寬以外的三個殺手</h2>
+      <p>延遲、抖動、封包遺失，再加上負載下延遲增加量。這幾個是遊戲卡、視訊斷字的真正兇手，而且它們有一個共同點——加錢升級方案通常<strong>一點忙都幫不上</strong>，因為你買的是管子的粗細，缺的卻是路程與穩定度。</p>
+
+      <figure class="fig anim">
+        <div class="lanes">
+          <div class="lane3" style="--c:var(--green)">
+            <div class="lb">正常<small>六個數字都健康</small></div>
+            <div class="road"><i style="--x:20%"></i><i style="--x:40%"></i><i style="--x:60%"></i><i style="--x:80%"></i><i style="--x:97%"></i></div>
+          </div>
+          <div class="lane3 slow" style="--c:var(--amber)">
+            <div class="lb">下載不足<small>管子太細</small></div>
+            <div class="road thin"><i style="--x:26%"></i><i style="--x:52%"></i></div>
+          </div>
+          <div class="lane3 wobble" style="--c:var(--red)">
+            <div class="lb">抖動與丟包<small>管子一樣粗</small></div>
+            <div class="road"><i style="--x:18%"></i><i style="--x:25%"></i><i class="lost" style="--x:55%"></i><i style="--x:78%"></i><i style="--x:96%"></i></div>
+          </div>
+        </div>
+        <figcaption>同樣送五份資料出去：<b>第一排順順地到齊；第二排管子細，同一時間只擠得過去兩份；第三排管子一樣粗，但抵達的間距忽寬忽窄，還掉了一份（虛線那顆）。</b>第二排的症狀是變糊變卡，第三排的症狀是斷音、瞬移——修法完全不同。</figcaption>
+      </figure>
+
+      <h3>官方演算法怎麼看這三個</h3>
+      <p>Cloudflare 把三種用途的評分公式寫在公開原始碼裡。把它翻成白話就是下面這張表——注意最右邊那兩欄，遊戲與視訊的計分項目裡<strong>完全沒有頻寬</strong>。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>計分項目</th><th>串流影片</th><th>線上遊戲</th><th>視訊通話</th></tr>
+          <tr><td>下載速度</td><td class="good">計入</td><td class="bad">不計</td><td class="bad">不計</td></tr>
+          <tr><td>閒置延遲</td><td>計入</td><td class="good">計入</td><td class="good">計入</td></tr>
+          <tr><td>負載下延遲增加量</td><td>計入</td><td class="good">計入</td><td class="good">計入</td></tr>
+          <tr><td>抖動</td><td class="bad">不計</td><td class="bad">不計</td><td class="good">計入</td></tr>
+          <tr><td>封包遺失</td><td>計入</td><td class="good">計入</td><td class="good">計入</td></tr>
+        </table>
+      </div>
+
+      <h3>用它的公式實際跑幾組看看</h3>
+      <p>下面幾組是照 Cloudflare 公開的計分規則算出來的結果，可以自己驗算。看第一列跟最後兩列的對比就好。</p>
+
+      <div class="tbl-wrap">
+        <table class="wide">
+          <tr><th>這條線路</th><th>串流</th><th>遊戲</th><th>視訊</th><th>白話翻譯</th></tr>
+          <tr><td>10 Mbps，延遲 15 ms，其餘乾淨</td><td>good</td><td class="good">最高等級</td><td class="good">最高等級</td><td>頻寬只有 10M，遊戲視訊卻是滿分</td></tr>
+          <tr><td>80 Mbps，延遲 15 ms，其餘乾淨</td><td>good</td><td class="good">最高等級</td><td class="good">最高等級</td><td>跟上面一列比，只有串流分數變高</td></tr>
+          <tr><td>120 Mbps，延遲 15 ms，其餘乾淨</td><td class="good">最高等級</td><td class="good">最高等級</td><td class="good">最高等級</td><td>串流跨過 100M 才拿到滿分</td></tr>
+          <tr><td>300 Mbps，但負載下延遲 +300 ms</td><td>good</td><td class="bad">倒數第二級</td><td>普通</td><td class="bad">頻寬三百萬，遊戲照樣爛</td></tr>
+          <tr><td>100 Mbps，但延遲 120 ms</td><td>普通</td><td class="bad">最低等級</td><td class="bad">最低等級</td><td class="bad">延遲一高，遊戲視訊直接歸零</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">這張表想講的一句話</div>
+        第一列的 10 Mbps 跟倒數第二列的 300 Mbps 比一比：<strong>頻寬差三十倍，但遊戲體驗是前者贏</strong>。這就是為什麼「升級到 500M 還是會卡」——你買的東西，跟你缺的東西不是同一個。
+      </div>
+
+      <details>
+        <summary>抖動（Jitter）到底是什麼？為什麼它比丟一點資料還討厭</summary>
+        <p>抖動是「連續封包之間延遲的平均變化量」。看影片時抖動不太有感，因為播放器會先把內容存一段起來慢慢播；但即時通話與遊戲沒有這個緩衝空間——資料早到晚到都會直接變成聽得見、看得見的異常。這就是為什麼同一條網路可以「看 Netflix 完全正常，開視訊卻像鬼打牆」。</p>
+      </details>
+
+      <details>
+        <summary>微軟公告過一組門檻，可以拿來對照</summary>
+        <p>微軟針對即時通話公告的網路效能需求是：來回時間小於 60 ms 為理想、大於 500 ms 為很差；平均封包遺失小於 0.5% 為理想、大於 10% 為很差；抖動小於 3 ms 為理想、大於 30 ms 為很差。</p>
+        <p>這組數字出自微軟官方文件（原掛在 Skype for Business Online 之下，該產品已退場、頁面現為封存狀態）。家用環境不必事事達到「理想」欄，它比較適合當「壞到什麼程度該處理」的參考線。</p>
+      </details>
+    </section>
+
+    <section id="wait">
+      <div class="sec-label" style="--c:var(--amber)">two_kinds</div>
+      <h2>07 · 會讓步的需求，和不會讓步的需求</h2>
+      <p>前面講的都是「順不順」。但還有一整類需求跟順不順無關，只跟「要等多久」有關——而它就是果果客服最常遇到的痛點。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">🎬</div><div class="bt">會讓步</div><div class="bv">串流・視訊・遊戲<br>頻寬不夠就降畫質</div></div>
+          <div class="arr">vs</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">📥</div><div class="bt">不會讓步</div><div class="bv">下載 App・系統更新<br>頻寬不夠就等更久</div></div>
+        </div>
+        <figcaption>影片有「降畫質」這條退路，所以它有一個很低的門檻；<b>下載沒有退路，10 GB 就是 10 GB，網速砍一半、時間就乘兩倍。</b></figcaption>
+      </figure>
+
+      <h3>這些東西實際上有多大</h3>
+      <p>下面的 App 容量取自 Apple 官方的 App Store 查詢介面，是實際的下載大小。</p>
+
+      <div class="tbl-wrap">
+        <table class="wide">
+          <tr><th>要下載的東西</th><th>大小</th><th>5 Mbps</th><th>25 Mbps</th><th>100 Mbps</th><th>300 Mbps</th></tr>
+          <tr><td>Netflix App</td><td>210 MB</td><td>5.6 分</td><td class="good">67 秒</td><td class="good">17 秒</td><td class="good">6 秒</td></tr>
+          <tr><td>Procreate</td><td>1.2 GB</td><td class="bad">32 分</td><td>6.4 分</td><td class="good">1.6 分</td><td class="good">32 秒</td></tr>
+          <tr><td>大型手遊<small>例如原神、崩壞：星穹鐵道</small></td><td>3.5 GB</td><td class="bad">1.6 小時</td><td class="bad">19 分</td><td>4.7 分</td><td class="good">1.6 分</td></tr>
+          <tr><td>iPadOS 完整韌體</td><td>10.5 GB</td><td class="bad">4.7 小時</td><td class="bad">56 分</td><td>14 分</td><td class="good">4.7 分</td></tr>
+          <tr><td>新機還原 30 個 App</td><td>20 GB</td><td class="bad">8.9 小時</td><td class="bad">1.8 小時</td><td>27 分</td><td class="good">9 分</td></tr>
+        </table>
+      </div>
+      <p style="font-size:.86rem;color:var(--muted)">這是理論上限，實際只會更久——App Store 會同時抓好幾個、還要扣掉 Wi-Fi 損耗與伺服器端限制。另外提醒一個常見誤會：方案上的 100M 是 100 Mbps，下載軟體顯示的 MB/s 差了八倍，100M 換算最快是 12.5 MB/s。</p>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">Apple 官方也把網速列為變數</div>
+        還原備份的官方說明寫著「進度列可能需要幾分鐘至一小時才能完成，視備份的大小和<strong>網路速度</strong>而定」，設定完成後「App、照片、音樂等內容⋯⋯將持續在背景中回復，這可能需要<strong>幾小時或幾天時間</strong>」。所以看到主畫面一片反黑不用緊張，那是設計如此——只是網速決定了它是十幾分鐘還是半天。
+      </div>
+    </section>
+
+    <div class="part-div">售後現場</div>
+
+    <section id="guoguo">
+      <div class="sec-label" style="--c:var(--teal)">from_our_desk</div>
+      <h2>08 · 新機開箱那一小時：果果最常接到的網速詢問</h2>
+      <p>果果客服跟網速有關的訊息裡，最大宗的不是「看 YouTube 會卡」，而是這一句：「iPad 設定完之後，桌面上的 App 圖示全部是灰灰暗暗的，下面寫下載中，按了也打不開，是不是機器有問題？」</p>
+      <p>不是。那是 iPadOS 從 iCloud 備份把 App 抓回來的過程，Apple 設計本來就這樣。真正決定體驗的是這個過程要跑多久——而那只跟下載速度有關，跟另外五個指標無關。</p>
+
+      <figure class="fig">
+        <div class="home">
+          <span><i></i><b>設定</b></span>
+          <span class="dl"><i></i><b>下載中</b></span>
+          <span class="dl"><i></i><b>下載中</b></span>
+          <span><i></i><b>相機</b></span>
+          <span class="dl"><i></i><b>下載中</b></span>
+          <span class="dl"><i></i><b>下載中</b></span>
+          <span class="dl"><i></i><b>下載中</b></span>
+          <span class="dl"><i></i><b>下載中</b></span>
+          <span class="dl"><i></i><b>下載中</b></span>
+          <span class="dl"><i></i><b>下載中</b></span>
+          <span><i></i><b>相片</b></span>
+          <span class="dl"><i></i><b>下載中</b></span>
+        </div>
+        <figcaption>新機還原後主畫面的樣子：<b>只有系統內建 App 是正常的，其餘全部灰底加一條進度線。</b>這不是故障，是 App 還在背景一個一個下載。</figcaption>
+      </figure>
+
+      <p>對照 07 節那張表就很清楚：20 GB 的還原量在 25 Mbps 上要一個多小時，在 100 Mbps 上是 27 分鐘。這是果果交機時會先幫客人確認網速的原因——不是因為 iPad 平常需要很快的網路，而是因為開箱那一小時，是整個使用週期裡<strong>唯一真的吃頻寬的時刻</strong>。之後的日子裡，你多半用不到那個速度。</p>
+
+      <h3>新機到手，我們會請客人先做這四件事</h3>
+      <div class="steps">
+        <div class="step" style="--c:var(--green)"><div class="n">1</div><div><h4>接家裡 Wi-Fi，不要用手機熱點</h4><p>Apple 明講從 iCloud 備份還原無法透過行動網路進行；熱點方案到量後還會被壓到 5～10 Mbps。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">2</div><div><h4>接上電源，然後去做別的事</h4><p>Apple 官方的建議就是「經常連線至 Wi-Fi 並接上電源，讓整個程序順利完成」。盯著看不會比較快。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">3</div><div><h4>先把 iPadOS 更新做掉，再還原 App</h4><p>兩件事都是幾 GB 起跳，分開做才知道進度跑到哪；同時跑只會互相搶頻寬。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">4</div><div><h4>看到反黑不要重開機</h4><p>重開會讓下載佇列重來。真的懷疑卡住，先測一次網速——多數時候答案就在下載那一格。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">我們的立場：先勸你別花錢</div>
+        果果每台機器都會做完整檢測，Wi-Fi 收發當然在檢測項目裡。但我們也習慣把話講在前面：<strong>檢測能證明 iPad 的無線功能正常，不能讓它跑得比上游那條線更快</strong>。電信商的資料多半只想讓你升級速率，我們沒有這個動機——所以我們會照實說，看影片和玩遊戲你多半不缺頻寬；真的會痛的是開箱、更新那幾個小時，而那一年也遇不到幾次。
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">給正在挑二手或福利 iPad 的人</div>
+        擔心「舊機型網路會不會比較慢」的話，判斷點是 Wi-Fi 世代不是年份數字。Apple 官方規格頁標的 iPad 第 9 代（Wi-Fi 5）上限是 866 Mbps、iPad Air 第 5 代（Wi-Fi 6）是 1.2 Gbps，<strong>都比台灣一般家用方案還高</strong>。真正有感的差別在 Wi-Fi 6E 之後多出來的 6GHz 頻段，那是「人多的環境比較不會塞」，不是「數字比較大」。
+      </div>
+    </section>
+
+    <section id="fix">
+      <div class="sec-label" style="--c:var(--purple)">what_to_do</div>
+      <h2>09 · 對症下藥，以及該不該升級</h2>
+      <p>照「免費且快」到「要花錢」排序。每做完一步就重測一次，不要一次全改，否則你不會知道是哪一招有效。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--green)"><div class="n">1</div><div><h4>先用 Cloudflare 測速量出六個數字</h4><p>知道是哪一個不對，才知道要修什麼。跳過這一步的排查，八成會白做。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">2</div><div><h4>確認是「全家都慢」還是「只有這一台」</h4><p>拿另一台裝置站在同一個位置測。只有一台慢，問題在那台或它的連線方式，跟方案無關。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">3</div><div><h4>用網路線直接接一次</h4><p>有線正常、無線很慢，那你要修的是 Wi-Fi。這一步也能順便看出抖動與封包遺失是不是無線那段造成的。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">4</div><div><h4>負載下延遲爆掉，就在路由器開 QoS／SQM</h4><p>這是唯一能治緩衝區膨脹的做法。加大頻寬不會有幫助，反而可能更嚴重。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">5</div><div><h4>照 Apple 的建議設定調路由器</h4><p>安全性設 WPA3 或 WPA2／WPA3 轉換（官方明講過時協定「降低網路的穩定與效能」）；各頻段用同一個 SSID；頻道自動；2.4GHz 頻寬 20 MHz；WMM 保持啟用。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">6</div><div><h4>讓裝置連 5GHz 或 6GHz</h4><p>2.4GHz 穿牆好但擁擠、易受干擾，抖動通常都出在這裡。頻段名稱設成一樣，裝置才不會黏在慢的那個。</p></div></div>
+        <div class="step" style="--c:var(--purple)"><div class="n">7</div><div><h4>只有「下載那一格」不夠時，才考慮升級</h4><p>其他五個數字不好，加錢救不到。決策表在下面。</p></div></div>
+      </div>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你的情況</th><th>升級有沒有用</th><th>該做的事</th></tr>
+          <tr><td>常換機、常還原備份、常更新系統</td><td class="good">有用，而且最有感</td><td>這一類是純頻寬，往上升一級很實在</td></tr>
+          <tr><td>全家常同時看 4K，還有人在下載大檔</td><td class="good">有用</td><td>25 Mbps 以上就夠，不用衝到最高檔</td></tr>
+          <tr><td>常視訊、備份、傳大檔、直播</td><td class="good">有用，但要挑對</td><td>看的是上傳那一欄，挑上下行對稱的方案</td></tr>
+          <tr><td>遊戲瞬移、按下去慢半拍</td><td class="bad">沒用</td><td>延遲問題，頻寬加大不會讓那一趟變短</td></tr>
+          <tr><td>視訊聲音像機器人、畫面凍住又跳過</td><td class="bad">沒用</td><td>抖動或丟包，先修無線那一段</td></tr>
+          <tr><td>有人下載時全家一起卡</td><td class="bad">沒用，可能更糟</td><td>緩衝區膨脹，開 QoS／SQM</td></tr>
+          <tr><td>只有一台裝置慢，其他正常</td><td class="bad">沒用</td><td>修那台的連線與擺位</td></tr>
+        </table>
+      </div>
+
+      <h3>聽到這幾句話，先停一下</h3>
+      <ul class="flags">
+        <li><b>「升到 1G 就保證不卡了」</b>——如果你卡的是延遲或緩衝區膨脹，1G 一樣卡，只是帳單變貴。</li>
+        <li><b>「打遊戲一定要辦最快的」</b>——連線遊戲吃的是延遲，官方基準的頻寬只要 3 Mbps；雲端遊戲才是例外。</li>
+        <li><b>「訊號滿格就代表網路沒問題」</b>——格數只說明你收得到，不代表延遲低、也不代表穩定。</li>
+        <li><b>「裝這個 App 可以加速你的網路」</b>——家用線路的頻寬上限寫在合約裡，不是軟體改得動的。</li>
+        <li><b>「舊 iPad 跑不動現在的網路」</b>——Wi-Fi 5 的理論上限就有 866 Mbps，先排除擺位與頻段再說。</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">最後一句實話</div>
+        升級方案保證會改善的只有一件事：<strong>下載與更新的等待時間</strong>。順不順是另外五個數字決定的，而那五個要靠調整、不是靠付錢。如果你主要是追劇、上網、玩遊戲，省下來的月租拿去換一台會做流量管理的路由器，體感差距會大得多。
+      </div>
+    </section>
+
+    <section id="watch">
+      <div class="sec-label" style="--c:var(--purple)">watch</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p style="font-size:.9rem;color:var(--muted)">本文給的是量測方法與官方數字；下面三支影片補的是實際操作與畫面。影片皆為第三方製作，內容與實測環境以影片當下為準。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=j-IgYqW15T4" target="_blank" rel="noopener" data-yt="j-IgYqW15T4" aria-label="播放：都升級到中華500M的網速了，為什麼看影片還是會卡頓">
+          <img loading="lazy" src="https://i.ytimg.com/vi/j-IgYqW15T4/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/j-IgYqW15T4/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>都升級到中華500M的網速了，為什麼看影片還是會卡頓？花錢解決問題也要花在對的地方！</b><small>頻道：分享家-羽 · 推薦原因：跟本文 05、06 節同一個結論——「會順的不升級一樣會順，該頓的就算有升級依然會頓」。想先聽人講一遍再看數字的，從這支開始 · 繁中</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=ammDzCbnoM0" target="_blank" rel="noopener" data-yt="ammDzCbnoM0" aria-label="播放：Ping 抖動 丟包 這些線上遊戲的參數代表什麼">
+          <img loading="lazy" src="https://i.ytimg.com/vi/ammDzCbnoM0/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/ammDzCbnoM0/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>遊戲加速! Ping | 抖動 | 丟包 這些線上遊戲的參數代表什麼 有沒有方式可以優化?</b><small>頻道：Wilson說給你聽 · 推薦原因：對應 02 與 06 節的延遲、抖動、封包遺失三個指標。本文只給了門檻，這支把三個參數怎麼看、怎麼優化講得更完整 · 繁中</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=OMtwllrQIqE" target="_blank" rel="noopener" data-yt="OMtwllrQIqE" aria-label="播放：為什麼我申請100M的網速下載時卻連10M都不到">
+          <img loading="lazy" src="https://i.ytimg.com/vi/OMtwllrQIqE/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/OMtwllrQIqE/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>【羽講知識EP5】為什麼我申請100M的網速，下載時卻連10Ｍ都不到呢？</b><small>頻道：分享家-羽 · 推薦原因：專門講 07 節那個最常見的誤會——Mbps 與 MB/s 差八倍；如果你正為了「辦 100M 卻只有 12MB/s」而懷疑被騙，先看這支 · 繁中</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">本文的頻寬與容量數字取自各服務的官方說明頁；評分門檻取自 Cloudflare 公開原始碼；遊戲延遲門檻取自同儕審查論文。查證日期 2026 年 8 月：</p>
+      <ul class="sources">
+        <li><a href="https://speed.cloudflare.com/">Cloudflare Speed Test</a>（本文建議的測速工具，一次量出六個指標並給出串流／遊戲／視訊三種用途的等級）</li>
+        <li><a href="https://github.com/cloudflare/speedtest">cloudflare/speedtest 原始碼</a>（AIM 評分定義：各指標的分界值、三種用途各自的計分項目與分級門檻。本文的健康區間色階與計分對照表皆由此而來）</li>
+        <li><a href="https://developers.cloudflare.com/speed/aim/">Cloudflare Speed 文件 · Aggregated Internet Measurement</a>（AIM 的六項量測指標與 bad／poor／average／good／great 五級分類）</li>
+        <li><a href="https://web.cs.wpi.edu/~claypool/papers/precision-deadline/tr-06-13.pdf">Claypool &amp; Claypool · On Latency and Player Actions in Online Games</a>（論文全文 PDF，同一研究發表於 Communications of the ACM 2006 年 11 月號。Table 1 依視角把遊戲分成三類，延遲門檻分別約 100／500／1000 ms）</li>
+        <li><a href="https://help.netflix.com/zh-tw/node/306">Netflix 說明中心 · 建議的網路速度</a>（720p 3 Mbps 以上、1080p 5 Mbps 以上、4K 15 Mbps 以上）</li>
+        <li><a href="https://support.google.com/youtube/answer/78358?hl=zh-Hant">YouTube 說明 · 系統需求與支援裝置</a>（建議連線速度：4K 20、1080p 5、720p 2.5、480p 1.1、360p 0.7 Mbps）</li>
+        <li><a href="https://support.google.com/youtube/answer/2853702?hl=zh-Hant">YouTube 說明 · 直播的編碼器設定</a>（建議位元速率：4K 30 fps 為 30 Mbps、1080p 30 fps 為 10 Mbps、720p 30 fps 為 4 Mbps）</li>
+        <li><a href="https://help.disneyplus.com/article/disneyplus-recommended-speeds">Disney+ Help Center · Internet speed recommendations</a>（HD 5.0 Mbps、直播內容 8.0 Mbps、4K UHD 25.0 Mbps）</li>
+        <li><a href="https://support.zoom.com/hc/en/article?id=zm_kb&amp;sysparm_article=KB0060748">Zoom Support · System requirements</a>（一對一 720p 1.2 Mbps、一對一 1080p 上傳 3.8／下載 3.0 Mbps、群組 720p 上傳 2.6／下載 1.8 Mbps）</li>
+        <li><a href="https://knowledge.workspace.google.com/admin/meet/prepare-your-network-for-meet-meetings-and-live-streams">Google Workspace 管理說明 · 為 Meet 準備你的網路</a>（1080p 最高 3.6 Mbps、720p 最高 1.7 Mbps、純音訊 100 Kbps）</li>
+        <li><a href="https://support.spotify.com/us/article/audio-quality/">Spotify Support · Audio quality</a>（低 24 kbit/s、一般 96、高 160、極高 320 kbit/s；無損最高 24 位元／44.1 kHz FLAC）</li>
+        <li><a href="https://support.apple.com/zh-tw/118295">Apple 支援 · 關於 Apple Music 中的保真壓縮音訊</a>（ALAC 從 16 位元／44.1 kHz 到 24 位元／192 kHz；官方註明串流保真壓縮「會明顯消耗更多數據」）</li>
+        <li><a href="https://almanac.httparchive.org/en/2025/page-weight">HTTP Archive · 2025 Web Almanac 頁面重量</a>（中位數：桌機 2,412 KB、行動 2,164 KB）</li>
+        <li><a href="https://en-americas-support.nintendo.com/app/answers/detail/a_id/22400/">Nintendo Support · Troubleshooting Slow Download and Upload Speeds</a>（官方拿來比對的基準為下載 3 Mbps、上傳 1 Mbps）</li>
+        <li><a href="https://www.xbox.com/en-US/cloud-gaming">Xbox Cloud Gaming 官方頁</a>（最低 10 Mbps 下載；行動裝置 10 Mbps、主機／電腦／平板 20 Mbps 效果最佳）</li>
+        <li><a href="https://learn.microsoft.com/zh-tw/microsoftteams/prepare-network">Microsoft Learn · 針對 Teams 準備組織的網路</a>（可在低於 1.5 Mbps 提供 HD 視訊；頻寬不足時優先保音訊；「聲音聽起來像機器人」對應抖動或封包遺失）</li>
+        <li><a href="https://learn.microsoft.com/en-us/previous-versions/skypeforbusiness/optimizing-your-network/media-quality-and-network-connectivity-performance">Microsoft Learn · Media Quality and Network Connectivity Performance</a>（RTT、封包遺失、抖動的理想與很差門檻。原屬 Skype for Business Online 文件，產品已退場、頁面現為封存狀態）</li>
+        <li><a href="https://support.apple.com/zh-tw/118105">Apple 支援 · 從備份回復 iPhone、iPad 或 iPod touch</a>（進度列需時「視備份的大小和網路速度而定」；設定完成後 App 等內容「持續在背景中回復，這可能需要幾小時或幾天時間」；無法透過行動網路回復）</li>
+        <li><a href="https://itunes.apple.com/lookup?id=425073498&amp;country=tw">Apple · App Store 查詢介面</a>（App 實際下載大小：Netflix 約 210 MB、Procreate 約 1.2 GB、大型手遊約 3.5 GB。查詢於 2026 年 8 月）</li>
+        <li><a href="https://api.ipsw.me/v4/device/iPad14,3?type=ipsw">Apple 簽署韌體檔案大小彙整（ipsw.me API）</a>（iPad Pro 11 吋第 4 代的 iPadOS 26.6 完整韌體約 10.5 GB）</li>
+        <li><a href="https://support.apple.com/en-us/111898">Apple · iPad（第 9 代）技術規格</a>（Wi-Fi 5／802.11ac，2x2 MIMO，最高 866 Mbps）</li>
+        <li><a href="https://support.apple.com/en-us/111887">Apple · iPad Air（第 5 代）技術規格</a>（Wi-Fi 6／802.11ax，2x2 MIMO，最高 1.2 Gbps）</li>
+        <li><a href="https://support.apple.com/zh-tw/102766">Apple · Wi-Fi 路由器和存取點的建議設定</a>（安全性設 WPA3 個人級或 WPA2／WPA3 轉換；過時協定「降低網路的穩定與效能」；各頻段同一 SSID；頻道自動；2.4GHz 頻寬 20 MHz；WMM 啟用）</li>
+        <li><a href="https://fast.com/zh/tw/">Netflix · FAST.com</a>（測試對象為 Netflix 伺服器；「顯示更多資訊」提供上傳速度與未載入／已載入延遲，兩者差異即緩衝區膨脹）</li>
+      </ul>
+      <p class="updated">本文第 06 節的評分結果，是依 Cloudflare 公開原始碼中的計分規則自行代入計算的示例，用來說明各指標的相對權重，<b>不是實際測試某條線路的結果</b>。</p>
+      <p class="updated">各服務的建議頻寬、App 容量與工具功能都可能調整，一律以官方最新公告為準。本文查證：<b>2026 年 8 月</b>，實際條件請以你自己的線路、服務設定與裝置系統版本為準。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
