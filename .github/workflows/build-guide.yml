@@ -7,6 +7,12 @@ name: build-guide
 # build-all.sh 內含 build-neutral 的洩漏檢查守門；產出的 commit 帶 [skip ci]，不會再觸發自己。
 
 on:
+  # 手動補跑：後台的「首圖更新／導購設定」若和自動重生撞在同一分鐘，
+  # 自動重生那次的 git push 會被遠端擋掉（non-fast-forward）而整個 job 失敗，
+  # 且之後的 commit 多半不命中下方 paths、不會再觸發，index.html 就會停在舊版。
+  # 遇到這種情況（首頁卡片還是 emoji 而不是首圖），到 Actions 頁按 Run workflow 補跑一次即可。
+  workflow_dispatch:
+
   push:
     branches: [main]
     paths:
