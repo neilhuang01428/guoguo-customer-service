@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>通用剪貼板沒反應？七個必要條件一次查 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式（共用 style.css 沒有的才寫在這裡）── */
+
+  /* masthead：內斂卡片版（同站內其他疑難排解文） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 七條件表：編號欄窄一點、垂直置中，掃起來像清單而不是文件 */
+  table.cond td:first-child { width: 34px; text-align: center; font-family: var(--mono); color: var(--navy); }
+  table.cond td { vertical-align: top; }
+  .lv { font-family: var(--mono); font-size: .6rem; border-radius: 4px; padding: 1px 6px; white-space: nowrap; display: inline-block; }
+  .lv.off { color: var(--green-deep); background: var(--green-bg); border: 1px solid #c3e4cf; }   /* 官方明文 */
+  .lv.prac { color: var(--amber); background: var(--amber-bg); border: 1px solid #e6d3a6; }        /* 實務推論 */
+
+  /* 情境 H 動畫的裝置列：本篇要標「哪一關卡住」，加一行小標 */
+  .anim .relay + .rl { font-family: var(--mono); font-size: .62rem; color: var(--muted); display: flex; justify-content: space-between; margin-top: 2px; }
+  .anim .relay + .rl b { color: var(--red); font-weight: 700; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>通用剪貼板失效</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#check" class="active">01 · 七個條件檢查表</a>
+  <a href="#silent">02 · 為什麼它不報錯</a>
+  <div class="grp">動手修</div>
+  <a href="#path">03 · 兩個開關在哪</a>
+  <a href="#ladder">04 · 全打勾還是不行</a>
+  <div class="grp">果果的角度</div>
+  <a href="#secondhand">05 · 二手機不是元兇</a>
+  <a href="#confuse">06 · 別跟這三個搞混</a>
+  <a href="#traps">07 · 雷區與例外</a>
+  <a href="#sources">來源與更新日期</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>買回去接不上生態系，我們也一起處理</div>
+      </div>
+      <div class="pills"><span>七個條件逐項對官方</span><span>二手機常見誤判釐清</span><span>終身售後諮詢</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">iPad 疑難排解 / 跨裝置與生態系</div>
+    <h1>通用剪貼板沒反應？</h1>
+    <p class="subtitle">在 iPhone 上複製一段文字，換到 iPad 想貼上，卻只跳出你上次複製的舊東西——而且畫面上完全沒有任何錯誤訊息。這不是玄學，是七個條件裡有一個沒成立。</p>
+
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--red)">
+        <div class="lt">直接回答</div>
+        <p class="big">七個條件要同時成立，它才會動；少一個就安靜失敗。</p>
+        <p class="sm">兩台登入同一個 Apple 帳號、兩台都開藍牙、兩台都開 Wi-Fi、兩台都開「接力」、彼此在 10 公尺內、兩台都在解鎖使用中，而且複製後盡快貼上。任何一項沒過，<strong>系統不會提醒你</strong>，貼上鍵就只是給你舊內容。</p>
+        <p class="alias-line">名字先對一下：官方叫<b>通用剪貼板</b>（Universal Clipboard），你可能是用「iPhone 複製 iPad 貼上」「跨裝置複製貼上」找到這頁的。它掛在<b>「接力」</b>（Handoff）底下，<b>不是 iCloud 同步</b>——這個誤會是後面所有麻煩的源頭。</p>
+      </div>
+      <blockquote class="lead-src">「『通用剪貼板』適用於任何符合『通用剪貼板』系統需求的 Mac、iPhone、iPad 或 Apple Vision Pro。只要裝置設定如下，即可使用此功能：裝置互相靠近。每部裝置均以相同的『Apple 帳號』登入。每個裝置均已開啟藍牙和 Wi-Fi。每部裝置均開啟『接力』（此功能預設為開啟）。」<cite>Apple 支援〈使用「通用剪貼板」在 Apple 裝置之間拷貝與貼上內容〉，2026/02/23</cite></blockquote>
+      <p class="lede">為什麼要特別強調「不是 iCloud」？因為一旦你以為它是雲端同步，就會往「帳號壞了」「iCloud 沒同步」的方向修——重登帳號、關開 iCloud、甚至懷疑二手機沒清乾淨。那些都白費力氣。</p>
+      <p class="lede">它其實是一個<strong>近距離</strong>功能：兩台裝置靠藍牙互相看見、再用 Wi-Fi 把內容遞過去。所以真正的修法是逐條打勾，而不是動帳號。</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat" style="--c:var(--red)"><div class="num">7</div><div class="lab">必要條件<br>缺一不可</div></div>
+      <div class="stat" style="--c:var(--navy)"><div class="num">10m</div><div class="lab">官方寫的<br>最遠距離</div></div>
+      <div class="stat" style="--c:var(--amber)"><div class="num">0</div><div class="lab">失敗時的<br>錯誤提示</div></div>
+      <div class="stat" style="--c:var(--green)"><div class="num">2012</div><div class="lab">這之後的 iPad<br>幾乎都支援</div></div>
+    </div>
+
+    <div class="lead-map">
+      <div class="lm-t">現在正貼不上的話，看前兩節就夠了：</div>
+      <div class="lm-g">
+        <a href="#check"><i>01</i>七個條件檢查表</a>
+        <a href="#path"><i>03</i>兩個開關在哪裡</a>
+        <a href="#secondhand"><i>05</i>二手機不是元兇</a>
+      </div>
+    </div>
+
+    <p class="updated">本文查證：<b>2026 年 8 月</b>。七個條件、10 公尺距離與設定路徑逐條核對 Apple 官方支援文件與使用手冊（最近更新日 2026/02～06）。Apple 隨時可能調整選單名稱，操作時以你機器上的實際畫面為準。<a class="inline" href="#sources">來源列在文末</a>。</p>
+
+    <section id="check">
+      <div class="sec-label" style="--c:var(--red)">checklist</div>
+      <h2>01 · 七個條件檢查表：一項一項打勾</h2>
+      <p>下面這張表就是全篇的核心。請<strong>由上往下依序確認</strong>，因為越前面的項目越常出問題，也越容易在 30 秒內看完。</p>
+
+      <table class="cond">
+        <tr><th>#</th><th>條件</th><th>30 秒怎麼確認</th><th>沒過會怎樣</th></tr>
+        <tr>
+          <td>1</td>
+          <td>兩台同一個 Apple 帳號 <span class="lv off">官方明文</span></td>
+          <td>兩台都打開「設定」，看最上面那格顯示的名字與電子郵件是不是同一組。Mac 在「系統設定」最上方看。</td>
+          <td class="bad">完全不會動。這是最常見的一項，尤其學生的舊 iPad 常還登著爸媽的帳號。</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>兩台都開藍牙 <span class="lv off">官方明文</span></td>
+          <td>控制中心的藍牙圖示要是亮的。注意：控制中心「關掉」只是暫時斷開，要確認設定裡的藍牙總開關也是開的。</td>
+          <td class="bad">兩台互相看不見對方，等於不存在。</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>兩台都開 Wi-Fi <span class="lv off">官方明文</span></td>
+          <td>Wi-Fi 開關要是開的。<strong>官方沒有要求兩台連到同一個 Wi-Fi 網路</strong>，只要求「開啟」。</td>
+          <td class="bad">藍牙找得到對方，但內容遞不過去。</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>兩台都開「接力」 <span class="lv off">官方明文</span></td>
+          <td>iPhone／iPad：設定 → 一般 → AirPlay 與接續互通 → 接力。Mac：系統設定 → 一般 → AirDrop 與接續互通。</td>
+          <td class="bad">最容易被忽略的一項。它預設是開的，但重設過設定、或跟著網路教學關過的人常常忘記開回來。</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>距離 10 公尺以內 <span class="lv off">官方明文</span></td>
+          <td>Apple 的 Mac 使用手冊寫得很直白：「裝置彼此必須在 10 公尺（30 英尺）以內。」中間隔牆會再打折。</td>
+          <td class="bad">在同一個房間通常沒事；iPad 放房間、人在客廳用手機就會開始時靈時不靈。</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>兩台都在解鎖使用中 <span class="lv prac">實務條件</span></td>
+          <td>要貼上的那台當然是解鎖的；重點是<strong>複製來源那台不能被鎖住或收起來</strong>。</td>
+          <td class="bad">來源鎖屏後就拿不到內容。這條 Apple 在「接力」頁明說要解鎖，通用剪貼板頁沒逐字寫，我們照實標成實務條件。</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>複製後盡快貼上 <span class="lv off">官方明文</span></td>
+          <td>官方原文只寫「拷貝的內容只會在剪貼板上保留一段時間」，<strong>沒有公布秒數</strong>。習慣上複製完就馬上換手貼。</td>
+          <td class="bad">中間去回個訊息、泡杯咖啡再回來貼，很可能已經過期了。</td>
+        </tr>
+      </table>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">還有一個「第 0 條」：機型與系統版本</div>兩台都要符合官方的系統需求：<strong>iPhone 5 以後、iPad 第 4 代以後（含所有 iPad Air、iPad Pro、iPad mini 2 以後）、iOS 10 或以上、macOS Sierra 10.12 或以上</strong>。實務上這條幾乎不會卡住任何人——2012 年之後的 iPad 全都在名單內。所以先別急著懷疑「我這台太舊」。</div>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">🪪</div><div class="bt">同一組帳號</div><div class="bv">兩台都是你</div></div>
+          <div class="arr">＋</div>
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">📶</div><div class="bt">藍牙＋Wi-Fi＋接力</div><div class="bv">三個開關全開</div></div>
+          <div class="arr">＋</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">📏</div><div class="bt">距離與時間</div><div class="bv">靠近、馬上貼</div></div>
+          <div class="arr">＝</div>
+          <div class="box" style="--cbg:var(--panel)"><div class="bi">📋</div><div class="bt">結果</div><div class="bv">貼得上</div></div>
+        </div>
+        <figcaption>七個條件是<b>「而且」不是「或者」</b>——四格中任何一格垮掉，最後一格就不會發生。</figcaption>
+      </figure>
+    </section>
+
+    <div class="part-div">為什麼你會找不到問題</div>
+
+    <section id="silent">
+      <div class="sec-label" style="--c:var(--purple)">why_silent</div>
+      <h2>02 · 它不是壞掉，是「安靜地」失敗</h2>
+      <p>大部分功能壞掉會跳警告，通用剪貼板不會。你按下貼上，出現的是<strong>上一次在這台複製過的舊內容</strong>——看起來就像這個功能根本不存在，而不是「這一次沒有成功」。</p>
+      <p>這正是它最折磨人的地方：你沒有線索，只能亂試。下面這張圖把「成功」跟「失敗」擺在一起看。</p>
+
+      <figure class="fig anim">
+        <div class="flow">
+          <div class="box">
+            <div class="relay"><span>📱</span><span>🔵</span><span>📶</span><span>💻</span><i class="sig"></i></div>
+            <div class="rl"><span>複製</span><span>貼得上</span></div>
+            <div class="bt">七項全過</div>
+            <div class="bv">內容跑到另一台</div>
+          </div>
+          <div class="arr">vs</div>
+          <div class="box">
+            <div class="relay dead"><span>📱</span><span class="off">🔵</span><span class="off">📶</span><span class="off">💻</span><i class="sig"></i></div>
+            <div class="rl"><span>複製</span><b>停在這裡</b></div>
+            <div class="bt">缺一項（例：接力關著）</div>
+            <div class="bv">沒有任何提示</div>
+          </div>
+        </div>
+        <figcaption>左邊訊號一路傳到另一台；右邊<b>卡在第一關就退回來</b>——而你的畫面上，兩種情況長得一模一樣。</figcaption>
+      </figure>
+
+      <h3>為什麼 Apple 不做個提示就好？</h3>
+      <p>官方沒有解釋過原因，以下是我們的理解：系統分不出你「本來就只想在這台貼」還是「想跨裝置卻失敗了」。你一天複製幾十次，其中絕大多數根本沒有要跨裝置。</p>
+      <p>如果每次跨不過去都跳一個提示，那會變成一天幾十則沒有意義的通知。權衡之下，安靜失敗對多數人比較不吵——代價就是真的要用時，你查不到原因。</p>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">先幫自己做一次「成功基準」</div>把兩台放在同一張桌子上、都解鎖、都開著螢幕，在 iPhone 複製一小段文字，<strong>三秒內</strong>換到 iPad 貼上。這一次成功了，代表七個條件目前全部成立。<br><br>之後再失敗時，你就有得比對：是走遠了？還是剛剛拿起來時還鎖著？<strong>有基準才有辦法除錯，沒有基準就只能瞎猜。</strong></div>
+    </section>
+
+    <div class="part-div">動手修</div>
+
+    <section id="path">
+      <div class="sec-label" style="--c:var(--navy)">settings</div>
+      <h2>03 · 「接力」的開關到底在哪裡</h2>
+      <p>七項裡最常中的就是這一個，偏偏它藏得最深。而且這個選單的名字<strong>會隨系統版本換</strong>，Apple 官方文件自己就同時列了兩種寫法，所以認路徑比認字面重要。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">01</div><div><h4>iPhone / iPad</h4><p>設定 → 一般 →「AirPlay 與接續互通」（舊版叫「AirPlay 與接力」）→ 把<strong>「接力」</strong>打開。兩台都要各做一次，只開一台沒有用。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">02</div><div><h4>Mac（macOS Ventura 13 以後）</h4><p>「蘋果」選單 → 系統設定 → 側邊欄「一般」→ 右側「AirDrop 與接續互通」（或「AirDrop 與接力」）→ 打開「允許在這部 Mac 和你的 iCloud 裝置之間使用『接力』功能」這一項。名字很長，但它就是 Mac 端的接力總開關。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">03</div><div><h4>找不到那一格？</h4><p>先確認你在「一般」裡面而不是「藍牙」裡面。真的沒有這個選項，代表那台裝置太舊、不支援接力——去看第 01 節的「第 0 條」。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">為什麼開關會被關掉</div>接力<strong>出廠預設是開的</strong>，所以會被關掉通常有跡可循：重設過「所有設定」、照著某篇「省電密技」把接續互通關掉、或是公司／學校配發的裝置被管理描述檔限制。前兩種自己開回來就好。</div>
+    </section>
+
+    <section id="ladder">
+      <div class="sec-label" style="--c:var(--amber)">repair_ladder</div>
+      <h2>04 · 七項都打勾了，還是貼不上</h2>
+      <p>到這裡代表七個條件都沒問題，是兩台之間的連線狀態卡住了。請<strong>照順序做，做完一步就測一次</strong>，不要一口氣全部做完——那樣你永遠不會知道是哪一步救回來的，下次再壞又要重來一遍。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--teal)"><div class="n">01</div><div><h4>兩台的藍牙、Wi-Fi 各關再開</h4><p>從設定裡關（不是控制中心），等三秒再開。這一步就能解決大半的「昨天還好好的」。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">02</div><div><h4>接力關掉再打開</h4><p>兩台都做。等於把接續互通的連線重新握手一次。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">03</div><div><h4>兩台都重新啟動</h4><p>Apple 官方的排除步驟就明列這一條，別跳過。重開之後記得再做一次「成功基準」測試。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">04</div><div><h4>更新系統</h4><p>官方排除步驟的第一項其實是這個。兩台版本差很多時，接續互通的相容性問題會變多。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">05</div><div><h4>最後才動帳號</h4><p>前面四步都無效，才考慮在其中一台登出 Apple 帳號後重新登入。這是最後手段，<strong>不是第一步</strong>。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">登出帳號前，先停下來想三秒</div>登出 Apple 帳號會牽動 iCloud 上的一大串東西（照片、備忘錄、鑰匙圈、尋找）。為了一個剪貼板去動它，風險遠大於好處。<br><br><strong>只有在你確定其他六項都對、而且帳號那格顯示怪怪的（例如需要重新驗證）時才做</strong>，並且事前確認你記得 Apple 帳號的密碼。</div>
+    </section>
+
+    <div class="part-div">果果的角度</div>
+
+    <section id="secondhand">
+      <div class="sec-label" style="--c:var(--green)">second_hand</div>
+      <h2>05 · 剛買的二手 iPad 貼不上，跟前一位使用者無關</h2>
+      <p>這是我們客服信箱裡真實出現最多次的版本：客人買了二手 iPad，第一件想試的就是「跟我 iPhone 互通」，結果貼不上，心裡冒出來的第一個念頭是——<strong>「這台是不是沒清乾淨？」</strong></p>
+      <p>心情完全可以理解。但這個推論在邏輯上不成立，原因很單純。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--navy)"><div class="ct">帳號沒清乾淨的機器，長相不是這樣</div>前一位使用者的 Apple 帳號如果還在機器上，你會卡在<strong>「啟用鎖定」</strong>——開機設定流程走不完，直接被要求輸入前任的帳號密碼。你根本走不到「試試看剪貼板」這一步。</div>
+        <div class="callout" style="--c:var(--green)"><div class="ct">你能正常使用，就代表它是乾淨的</div>能開機、能登入自己的帳號、能下載 App，代表這台已經完整脫離前一位使用者。剪貼板不通是<strong>設定問題</strong>，不是身世問題。</div>
+      </div>
+
+      <p>那實際上是什麼原因？我們把處理過的狀況整理成下面這張表——順序就是發生頻率的高低。</p>
+
+      <table>
+        <tr><th>客人描述的症狀</th><th>實際查出來的原因</th><th>怎麼修</th></tr>
+        <tr><td>「新買的 iPad 完全貼不上」</td><td class="bad">iPad 上登的是另一個 Apple 帳號（自己的舊帳號、或家人的）</td><td class="good">兩台改成同一組帳號即可</td></tr>
+        <tr><td>「一開始可以，後來就不行」</td><td class="bad">iPad 放在房間充電，人拿手機在客廳——超過 10 公尺</td><td class="good">拿到同一個空間再試</td></tr>
+        <tr><td>「時靈時不靈」</td><td class="bad">複製完隔了一段時間才去貼，剪貼板內容已經過期</td><td class="good">複製後三秒內換手</td></tr>
+        <tr><td>「怎麼弄都沒反應」</td><td class="bad">接力被關著（多半是重設過設定）</td><td class="good">兩台都打開接力</td></tr>
+      </table>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">果果出貨前本來就會確認這件事</div>每台機器在檢測流程裡都會確認<strong>前一位使用者的 Apple 帳號與啟用鎖已完整移除</strong>——這是能不能賣的門檻，不是加分項。<br><br>所以你收到機器之後遇到的互通問題，九成九是這頁上面那七個條件之一。真的排不掉也不用一個人硬撐，售後諮詢是終身的，我們陪你一項一項查。</div>
+    </section>
+
+    <section id="confuse">
+      <div class="sec-label" style="--c:var(--teal)">not_the_same</div>
+      <h2>06 · 別跟這三個功能搞混</h2>
+      <p>很多人之所以修錯方向，是因為把下面這四件事混成了一件。它們的觸發條件其實各不相同，搞混就會<strong>拿錯的方法去修對的問題</strong>，怎麼弄都不會好。</p>
+
+      <table>
+        <tr><th>功能</th><th>它在做什麼</th><th>要同帳號嗎</th><th>要靠近嗎</th><th>失敗時有提示嗎</th></tr>
+        <tr><td>通用剪貼板</td><td>複製的內容能在另一台貼上</td><td>要</td><td>要（10 公尺內）</td><td class="bad">沒有</td></tr>
+        <tr><td>AirDrop</td><td>把整個檔案傳給附近的裝置</td><td>不用（可傳給別人）</td><td>要</td><td class="good">有，會看到傳送進度與失敗</td></tr>
+        <tr><td>通用控制</td><td>用一組鍵鼠同時操作 Mac 與 iPad</td><td>要</td><td>要</td><td class="good">有，游標過不去看得出來</td></tr>
+        <tr><td>iCloud 同步</td><td>備忘錄、照片等資料在雲端保持一致</td><td>要</td><td class="good">不用，隔著太平洋也行</td><td class="bad">通常沒有，但會慢慢補上</td></tr>
+      </table>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">最實用的分辨法</div>問自己一句：<strong>「這件事需要兩台在同一個房間嗎？」</strong>需要，那它就屬於接續互通家族（剪貼板、AirDrop、通用控制），修的方向是藍牙／Wi-Fi／接力／距離。不需要，那才是 iCloud 的事，修的方向是帳號與網路。</div>
+
+      <details>
+        <summary>那我要傳的是一整份檔案、或很大的東西呢？</summary>
+        <p>官方定位很清楚：通用剪貼板「最適合用來在裝置之間分享小部份的文字或拷貝的影像」。要傳整份檔案或多個檔案，AirDrop 或 iCloud 雲碟才是對的工具。另外，用通用剪貼板在兩台 Mac 之間拷貝<strong>整個檔案</strong>，官方要求每台 Mac 都是 macOS High Sierra 10.13 或以上。</p>
+      </details>
+    </section>
+
+    <section id="traps">
+      <div class="sec-label" style="--c:var(--red)">traps</div>
+      <h2>07 · 雷區與例外：這幾點官方文件沒放在一起</h2>
+      <p>下面幾條散在不同的官方頁面裡，但每一條都害人白花過時間。</p>
+
+      <ul class="flags">
+        <li><b>開著 VPN 可能會擋住它。</b>Apple 在 iPad 使用手冊裡直接提醒：使用 VPN 時「因 VPN 可能會影響部分『接續互通』功能，請確定其設定不會妨礙區域網路」。公司 VPN 或全域代理最容易中——先關掉測一次就知道是不是它。</li>
+        <li><b>Apple Watch 不算在內。</b>官方的通用剪貼板系統需求只列了 iPhone、iPad、Mac 與 Apple Vision Pro，沒有 watchOS。手錶能接力其他工作，但不是剪貼板的成員。</li>
+        <li><b>兩台不同帳號就是不行，沒有變通做法。</b>情侶、同事之間想互傳，請用 AirDrop。網路上「登入同一個 iCloud 就好」的說法本質上就是要你共用帳號，那會連照片、備忘錄一起共用，不建議。</li>
+        <li><b>「開著 Wi-Fi」不等於「連同一個 Wi-Fi」。</b>官方條件寫的是開啟 Wi-Fi，沒有要求同網路。所以「兩台不同網路」不該是你懷疑的第一個對象；反過來說，把 Wi-Fi 整個關掉只留行動網路，就一定不會動。</li>
+        <li><b>系統選單名稱會改。</b>「AirPlay 與接續互通」在舊版叫「AirPlay 與接力」，Apple 官方頁面現在兩種寫法並列。認「設定 → 一般」這條路徑，比背名字可靠。</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">一句話帶走</div>通用剪貼板不是「有 iCloud 就會動」的雲端功能，而是<strong>掛在「接力」底下的近距離功能</strong>。修它的時候，眼睛要看藍牙、Wi-Fi、接力、距離——不是看帳號。</div>
+
+      <h3>延伸觀看（YouTube 參考）</h3>
+      <p style="font-size:.9rem;color:var(--muted)">條件表適合對照，影片適合看一次操作畫面就有畫面感。下面三支都是繁體中文，第一支講整個「接續互通」家族（通用剪貼板就在其中），後兩支是 iPhone 搭 iPad、iPhone 搭 Mac 的實際連動示範。影片為第三方製作，設定名稱仍以你機上的系統版本為準。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=rYys3T195_U" target="_blank" rel="noopener" data-yt="rYys3T195_U" aria-label="播放：果粉必學的「接續互通」功能教學">
+          <img loading="lazy" src="https://i.ytimg.com/vi/rYys3T195_U/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/rYys3T195_U/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>【神來點蘋】果粉必學的「接續互通」功能教學，串聯你的 iPhone、iPad 與 Mac</b><small>頻道：神腦國際 Senao Taiwan · 推薦原因：把通用剪貼板放回「接續互通」家族一起講，正好對應本文「它掛在接力底下、不是 iCloud」的主軸 · 繁中</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=ExBLv2SEOlI" target="_blank" rel="noopener" data-yt="ExBLv2SEOlI" aria-label="播放：iPhone + iPad 的 8 大必學連動技巧">
+          <img loading="lazy" src="https://i.ytimg.com/vi/ExBLv2SEOlI/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/ExBLv2SEOlI/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>iPhone + iPad 的 8 大必學連動技巧！這樣整合超好用</b><small>頻道：塔科女子 · 推薦原因：本文的主場景就是「iPhone 複製、iPad 貼上」，這支有實際操作畫面，看得到成功時應該長什麼樣子 · 繁中</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=JCgbioJk9MY" target="_blank" rel="noopener" data-yt="JCgbioJk9MY" aria-label="播放：iPhone 結合 Mac 必學連動法">
+          <img loading="lazy" src="https://i.ytimg.com/vi/JCgbioJk9MY/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/JCgbioJk9MY/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>iPhone 結合 Mac　2025 最新 9 個必學連動法｜提升工作效率</b><small>頻道：UNWIRE.HK · 推薦原因：補上 Mac 那一端的畫面（本文第 03 節的 Mac 設定路徑），也順帶示範同家族的其他功能 · 繁中</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>來源與更新日期</h2>
+      <p class="updated">本文查證：<b>2026 年 8 月 9 日</b>。七個條件、10 公尺距離、系統需求與設定路徑皆逐條核對 Apple 官方支援文件與使用手冊；文中標示<span class="lv prac">實務條件</span>的第 6 條，官方在「接力」頁明說裝置需解鎖、但通用剪貼板頁未逐字寫明，故照實分開標註。剪貼板保留時間官方只寫「一段時間」、未公布秒數，本文不編造數字。</p>
+            <details class="src-fold">
+        <summary>參考資料來源<span class="n">5 筆</span></summary>
+        <ul class="sources">
+          <li><a href="https://support.apple.com/zh-tw/102430">Apple 支援 ·〈使用「通用剪貼板」在 Apple 裝置之間拷貝與貼上內容〉</a>（四個設定條件、內容只保留片刻、官方排除步驟；頁面日期 2026/02/23）</li>
+          <li><a href="https://support.apple.com/zh-tw/102426">Apple 支援 ·〈使用「接力」在其他 Apple 裝置上繼續工作〉</a>（iPhone／iPad 與 Mac 的接力開關路徑、接力預設開啟、接續裝置需解鎖；頁面日期 2026/06/24）</li>
+          <li><a href="https://support.apple.com/zh-tw/108046">Apple 支援 ·〈Apple 裝置的「接續互通」功能和需求〉</a>（通用剪貼板的機型與系統版本需求、跨 Mac 拷貝檔案需 macOS High Sierra；頁面日期 2026/03/30）</li>
+          <li><a href="https://support.apple.com/zh-tw/guide/mac-help/mchl70368996/mac">Mac 使用手冊 ·〈在 Mac 和其他 Apple 裝置之間拷貝和貼上〉</a>（「裝置彼此必須在 10 公尺（30 英尺）以內」這句的出處）</li>
+          <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipad2a173dfb/ipados">iPad 使用手冊 ·〈在 iPad 和其他 Apple 裝置之間拷貝和貼上〉</a>（VPN 可能影響接續互通的官方提醒、剪貼板內容只保留一段時間）</li>
+        </ul>
+      </details>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
