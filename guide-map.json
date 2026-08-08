@@ -1,669 +1,791 @@
 {
- "_readme": "每篇文章的導購商品對應表。key=文章資料夾名(slug)；heading=版位標題；products=商品 id 陣列(對應 products.json 的 id，順序=顯示順序，長度=數量)。之後可在 guide-dashboard 用點選方式維護。只被導外版 Worker 讀取。另有 _groups=商品組合定義(後台專用)：文章 entry 若帶 group 欄=商品跟著該組合自動更新，products 仍是展開後的快照，Worker 只讀 products、完全不受影響。",
- "_groups": {
-  "apple-konnector-coverbuddy": {
-   "name": "Apple鍵盤、Konnector、CoverBuddy",
-   "products": [
-    "apple-magic-keyboard-brand-new",
-    "apple-smart-keyboard",
-    "apple-magic-keyboard-folio",
-    "novaplus-konnecter-pro-keyboard-case",
-    "mageasy-coverbuddy-ipad-case"
-   ]
+  "_readme": "每篇文章的導購商品對應表。key=文章資料夾名(slug)；heading=版位標題；products=商品 id 陣列(對應 products.json 的 id，順序=顯示順序，長度=數量)。之後可在 guide-dashboard 用點選方式維護。只被導外版 Worker 讀取。另有 _groups=商品組合定義(後台專用)：文章 entry 若帶 group 欄=商品跟著該組合自動更新，products 仍是展開後的快照，Worker 只讀 products、完全不受影響。",
+  "_groups": {
+    "apple-konnector-coverbuddy": {
+      "name": "Apple鍵盤、Konnector、CoverBuddy",
+      "products": [
+        "apple-magic-keyboard-brand-new",
+        "apple-smart-keyboard",
+        "apple-magic-keyboard-folio",
+        "novaplus-konnecter-pro-keyboard-case",
+        "mageasy-coverbuddy-ipad-case"
+      ]
+    },
+    "g20260726180505": {
+      "name": "觸控筆相關",
+      "products": [
+        "apple-pencil-refurbished",
+        "novaplus-a6-ipad-pencil",
+        "novaplus-a8se-ipad-pencil",
+        "novaplus-a8pro-ipad-pencil",
+        "novaplus-pencil-a5",
+        "novaplus-a7pro-ipad-pencil",
+        "apple-pencil-tip-set",
+        "apple-pencil-color-case",
+        "apple-pencil-fruit-case",
+        "novaplus-nx-metal-tip-pencil",
+        "novaplus-a5-pencil-tips",
+        "apple-pencil-1-typec-adapter",
+        "apple-pencil-1-cap"
+      ]
+    },
+    "ipad-ipados-16-5": {
+      "name": "越獄的高性能iPad(iPadOS 16.5以下）推薦",
+      "products": [
+        "ipad-pro-5th-2021-refurbished-M1",
+        "ipad-pro-11-3th-2021-refurbished-M1",
+        "ipad-pro-4th-2020-refurbished",
+        "ipad-mini-6-2021-refurbished"
+      ]
+    },
+    "ipad": {
+      "name": "iPad基本款",
+      "products": [
+        "ipad-6-2018-refurbished",
+        "ipad-7-2019-refurbished",
+        "ipad-8-2020-refurbished",
+        "ipad-9-2021-refurbished",
+        "ipad-10-2022-refurbished",
+        "ipad-A16-2025-refurbished"
+      ]
+    },
+    "ipad-air": {
+      "name": "iPad Air",
+      "products": [
+        "ipad-air-4-2020-refurbished",
+        "ipad-air-5-2021-refurbished",
+        "ipad-air-11-M2-2024-refurbished",
+        "ipad-air-13-M2-2024-refurbished",
+        "ipad-air-11-2025-refurbished",
+        "ipad-air-13-M3-2025-refurbished"
+      ]
+    },
+    "ipad-pro": {
+      "name": "iPad Pro",
+      "products": [
+        "ipad-pro-3th-2018-refurbished",
+        "ipad-pro-4th-2020-refurbished",
+        "ipad-pro-11-3th-2021-refurbished-M1",
+        "ipad-pro-5th-2021-refurbished-M1",
+        "ipad-pro-11-4th-2018-refurbished-M2",
+        "ipad-pro-6th-2022-refurbished-M2",
+        "ipad-pro-11-2024-refurbished-M4",
+        "ipad-pro-13-2024-refurbished-M4"
+      ]
+    },
+    "ipad-mini": {
+      "name": "iPad mini",
+      "products": [
+        "ipad-mini-5-2019-refurbished",
+        "ipad-mini-6-2021-refurbished",
+        "ipad-mini-7-2024-refurbished"
+      ]
+    },
+    "ipad-2": {
+      "name": "iPad 全型號",
+      "products": [
+        "ipad-6-2018-refurbished",
+        "ipad-7-2019-refurbished",
+        "ipad-8-2020-refurbished",
+        "ipad-9-2021-refurbished",
+        "ipad-10-2022-refurbished",
+        "ipad-A16-2025-refurbished",
+        "ipad-mini-5-2019-refurbished",
+        "ipad-mini-6-2021-refurbished",
+        "ipad-mini-7-2024-refurbished",
+        "ipad-air-4-2020-refurbished",
+        "ipad-air-5-2021-refurbished",
+        "ipad-air-11-M2-2024-refurbished",
+        "ipad-air-13-M2-2024-refurbished",
+        "ipad-air-11-2025-refurbished",
+        "ipad-air-13-M3-2025-refurbished",
+        "ipad-pro-4th-2020-refurbished",
+        "ipad-pro-11-3th-2021-refurbished-M1",
+        "ipad-pro-5th-2021-refurbished-M1",
+        "ipad-pro-11-4th-2018-refurbished-M2",
+        "ipad-pro-6th-2022-refurbished-M2",
+        "ipad-pro-11-2024-refurbished-M4",
+        "ipad-pro-13-2024-refurbished-M4"
+      ]
+    }
   },
-  "g20260726180505": {
-   "name": "觸控筆相關",
-   "products": [
-    "apple-pencil-refurbished",
-    "novaplus-a6-ipad-pencil",
-    "novaplus-a8se-ipad-pencil",
-    "novaplus-a8pro-ipad-pencil",
-    "novaplus-pencil-a5",
-    "novaplus-a7pro-ipad-pencil",
-    "apple-pencil-tip-set",
-    "apple-pencil-color-case",
-    "apple-pencil-fruit-case",
-    "novaplus-nx-metal-tip-pencil",
-    "novaplus-a5-pencil-tips",
-    "apple-pencil-1-typec-adapter",
-    "apple-pencil-1-cap"
-   ]
+  "ipad-jianying-pencil-guide": {
+    "heading": "果果也有賣 Apple Pencil ✏️ 原廠福利品＋高 CP 值副廠都有",
+    "group": "g20260726180505",
+    "products": [
+      "apple-pencil-refurbished",
+      "novaplus-a6-ipad-pencil",
+      "novaplus-a8se-ipad-pencil",
+      "novaplus-a8pro-ipad-pencil",
+      "novaplus-pencil-a5",
+      "novaplus-a7pro-ipad-pencil",
+      "apple-pencil-tip-set",
+      "apple-pencil-color-case",
+      "apple-pencil-fruit-case",
+      "novaplus-nx-metal-tip-pencil",
+      "novaplus-a5-pencil-tips",
+      "apple-pencil-1-typec-adapter",
+      "apple-pencil-1-cap"
+    ]
   },
-  "ipad-ipados-16-5": {
-   "name": "越獄的高性能iPad(iPadOS 16.5以下）推薦",
-   "products": [
-    "ipad-pro-5th-2021-refurbished-M1",
-    "ipad-pro-11-3th-2021-refurbished-M1",
-    "ipad-pro-4th-2020-refurbished",
-    "ipad-mini-6-2021-refurbished"
-   ]
+  "ipad-magic-keyboard-guide": {
+    "heading": "在找 iPad 鍵盤？果果這幾款可以看看 ⌨️",
+    "group": "apple-konnector-coverbuddy",
+    "products": [
+      "apple-magic-keyboard-brand-new",
+      "apple-smart-keyboard",
+      "apple-magic-keyboard-folio",
+      "novaplus-konnecter-pro-keyboard-case",
+      "mageasy-coverbuddy-ipad-case"
+    ]
   },
-  "ipad": {
-   "name": "iPad基本款",
-   "products": [
-    "ipad-6-2018-refurbished",
-    "ipad-7-2019-refurbished",
-    "ipad-8-2020-refurbished",
-    "ipad-9-2021-refurbished",
-    "ipad-10-2022-refurbished",
-    "ipad-A16-2025-refurbished"
-   ]
+  "ipad-jailbreak-guide": {
+    "heading": "有機會可越獄的高性能iPad(iPadOS 16.5以下）推薦",
+    "group": "ipad-ipados-16-5",
+    "products": [
+      "ipad-pro-5th-2021-refurbished-M1",
+      "ipad-pro-11-3th-2021-refurbished-M1",
+      "ipad-pro-4th-2020-refurbished",
+      "ipad-mini-6-2021-refurbished"
+    ]
   },
-  "ipad-air": {
-   "name": "iPad Air",
-   "products": [
-    "ipad-air-4-2020-refurbished",
-    "ipad-air-5-2021-refurbished",
-    "ipad-air-11-M2-2024-refurbished",
-    "ipad-air-13-M2-2024-refurbished",
-    "ipad-air-11-2025-refurbished",
-    "ipad-air-13-M3-2025-refurbished"
-   ]
+  "ipad-appstore-china-guide": {
+    "heading": "",
+    "group": "ipad-2",
+    "products": [
+      "ipad-6-2018-refurbished",
+      "ipad-7-2019-refurbished",
+      "ipad-8-2020-refurbished",
+      "ipad-9-2021-refurbished",
+      "ipad-10-2022-refurbished",
+      "ipad-A16-2025-refurbished",
+      "ipad-mini-5-2019-refurbished",
+      "ipad-mini-6-2021-refurbished",
+      "ipad-mini-7-2024-refurbished",
+      "ipad-air-4-2020-refurbished",
+      "ipad-air-5-2021-refurbished",
+      "ipad-air-11-M2-2024-refurbished",
+      "ipad-air-13-M2-2024-refurbished",
+      "ipad-air-11-2025-refurbished",
+      "ipad-air-13-M3-2025-refurbished",
+      "ipad-pro-4th-2020-refurbished",
+      "ipad-pro-11-3th-2021-refurbished-M1",
+      "ipad-pro-5th-2021-refurbished-M1",
+      "ipad-pro-11-4th-2018-refurbished-M2",
+      "ipad-pro-6th-2022-refurbished-M2",
+      "ipad-pro-11-2024-refurbished-M4",
+      "ipad-pro-13-2024-refurbished-M4"
+    ]
   },
-  "ipad-pro": {
-   "name": "iPad Pro",
-   "products": [
-    "ipad-pro-3th-2018-refurbished",
-    "ipad-pro-4th-2020-refurbished",
-    "ipad-pro-11-3th-2021-refurbished-M1",
-    "ipad-pro-5th-2021-refurbished-M1",
-    "ipad-pro-11-4th-2018-refurbished-M2",
-    "ipad-pro-6th-2022-refurbished-M2",
-    "ipad-pro-11-2024-refurbished-M4",
-    "ipad-pro-13-2024-refurbished-M4"
-   ]
+  "smart-vs-magic-keyboard": {
+    "heading": "",
+    "group": "apple-konnector-coverbuddy",
+    "products": [
+      "apple-magic-keyboard-brand-new",
+      "apple-smart-keyboard",
+      "apple-magic-keyboard-folio",
+      "novaplus-konnecter-pro-keyboard-case",
+      "mageasy-coverbuddy-ipad-case"
+    ]
   },
-  "ipad-mini": {
-   "name": "iPad mini",
-   "products": [
-    "ipad-mini-5-2019-refurbished",
-    "ipad-mini-6-2021-refurbished",
-    "ipad-mini-7-2024-refurbished"
-   ]
+  "magic-keyboard-shortcuts": {
+    "heading": "",
+    "group": "apple-konnector-coverbuddy",
+    "products": [
+      "apple-magic-keyboard-brand-new",
+      "apple-smart-keyboard",
+      "apple-magic-keyboard-folio",
+      "novaplus-konnecter-pro-keyboard-case",
+      "mageasy-coverbuddy-ipad-case"
+    ]
   },
-  "ipad-2": {
-   "name": "iPad 全型號",
-   "products": [
-    "ipad-6-2018-refurbished",
-    "ipad-7-2019-refurbished",
-    "ipad-8-2020-refurbished",
-    "ipad-9-2021-refurbished",
-    "ipad-10-2022-refurbished",
-    "ipad-A16-2025-refurbished",
-    "ipad-mini-5-2019-refurbished",
-    "ipad-mini-6-2021-refurbished",
-    "ipad-mini-7-2024-refurbished",
-    "ipad-air-4-2020-refurbished",
-    "ipad-air-5-2021-refurbished",
-    "ipad-air-11-M2-2024-refurbished",
-    "ipad-air-13-M2-2024-refurbished",
-    "ipad-air-11-2025-refurbished",
-    "ipad-air-13-M3-2025-refurbished",
-    "ipad-pro-4th-2020-refurbished",
-    "ipad-pro-11-3th-2021-refurbished-M1",
-    "ipad-pro-5th-2021-refurbished-M1",
-    "ipad-pro-11-4th-2018-refurbished-M2",
-    "ipad-pro-6th-2022-refurbished-M2",
-    "ipad-pro-11-2024-refurbished-M4",
-    "ipad-pro-13-2024-refurbished-M4"
-   ]
+  "find-my-device-tiers": {
+    "heading": "",
+    "products": [
+      "apple-pencil-refurbished"
+    ]
+  },
+  "apple-pencil-pro-unbinding": {
+    "heading": "",
+    "group": "g20260726180505",
+    "products": [
+      "apple-pencil-refurbished",
+      "novaplus-a6-ipad-pencil",
+      "novaplus-a8se-ipad-pencil",
+      "novaplus-a8pro-ipad-pencil",
+      "novaplus-pencil-a5",
+      "novaplus-a7pro-ipad-pencil",
+      "apple-pencil-tip-set",
+      "apple-pencil-color-case",
+      "apple-pencil-fruit-case",
+      "novaplus-nx-metal-tip-pencil",
+      "novaplus-a5-pencil-tips",
+      "apple-pencil-1-typec-adapter",
+      "apple-pencil-1-cap"
+    ]
+  },
+  "pencil-pro-locked-worth-buying": {
+    "heading": "",
+    "group": "g20260726180505",
+    "products": [
+      "apple-pencil-refurbished",
+      "novaplus-a6-ipad-pencil",
+      "novaplus-a8se-ipad-pencil",
+      "novaplus-a8pro-ipad-pencil",
+      "novaplus-pencil-a5",
+      "novaplus-a7pro-ipad-pencil",
+      "apple-pencil-tip-set",
+      "apple-pencil-color-case",
+      "apple-pencil-fruit-case",
+      "novaplus-nx-metal-tip-pencil",
+      "novaplus-a5-pencil-tips",
+      "apple-pencil-1-typec-adapter",
+      "apple-pencil-1-cap"
+    ]
+  },
+  "reset-all-settings-vs-erase": {
+    "heading": "",
+    "group": "ipad-2",
+    "products": [
+      "ipad-6-2018-refurbished",
+      "ipad-7-2019-refurbished",
+      "ipad-8-2020-refurbished",
+      "ipad-9-2021-refurbished",
+      "ipad-10-2022-refurbished",
+      "ipad-A16-2025-refurbished",
+      "ipad-mini-5-2019-refurbished",
+      "ipad-mini-6-2021-refurbished",
+      "ipad-mini-7-2024-refurbished",
+      "ipad-air-4-2020-refurbished",
+      "ipad-air-5-2021-refurbished",
+      "ipad-air-11-M2-2024-refurbished",
+      "ipad-air-13-M2-2024-refurbished",
+      "ipad-air-11-2025-refurbished",
+      "ipad-air-13-M3-2025-refurbished",
+      "ipad-pro-4th-2020-refurbished",
+      "ipad-pro-11-3th-2021-refurbished-M1",
+      "ipad-pro-5th-2021-refurbished-M1",
+      "ipad-pro-11-4th-2018-refurbished-M2",
+      "ipad-pro-6th-2022-refurbished-M2",
+      "ipad-pro-11-2024-refurbished-M4",
+      "ipad-pro-13-2024-refurbished-M4"
+    ]
+  },
+  "find-my-hidden-features": {
+    "heading": "",
+    "group": "ipad-2",
+    "products": [
+      "ipad-6-2018-refurbished",
+      "ipad-7-2019-refurbished",
+      "ipad-8-2020-refurbished",
+      "ipad-9-2021-refurbished",
+      "ipad-10-2022-refurbished",
+      "ipad-A16-2025-refurbished",
+      "ipad-mini-5-2019-refurbished",
+      "ipad-mini-6-2021-refurbished",
+      "ipad-mini-7-2024-refurbished",
+      "ipad-air-4-2020-refurbished",
+      "ipad-air-5-2021-refurbished",
+      "ipad-air-11-M2-2024-refurbished",
+      "ipad-air-13-M2-2024-refurbished",
+      "ipad-air-11-2025-refurbished",
+      "ipad-air-13-M3-2025-refurbished",
+      "ipad-pro-4th-2020-refurbished",
+      "ipad-pro-11-3th-2021-refurbished-M1",
+      "ipad-pro-5th-2021-refurbished-M1",
+      "ipad-pro-11-4th-2018-refurbished-M2",
+      "ipad-pro-6th-2022-refurbished-M2",
+      "ipad-pro-11-2024-refurbished-M4",
+      "ipad-pro-13-2024-refurbished-M4"
+    ]
+  },
+  "hotspot-slower-than-phone": {
+    "heading": "",
+    "group": "ipad-2",
+    "products": [
+      "ipad-6-2018-refurbished",
+      "ipad-7-2019-refurbished",
+      "ipad-8-2020-refurbished",
+      "ipad-9-2021-refurbished",
+      "ipad-10-2022-refurbished",
+      "ipad-A16-2025-refurbished",
+      "ipad-mini-5-2019-refurbished",
+      "ipad-mini-6-2021-refurbished",
+      "ipad-mini-7-2024-refurbished",
+      "ipad-air-4-2020-refurbished",
+      "ipad-air-5-2021-refurbished",
+      "ipad-air-11-M2-2024-refurbished",
+      "ipad-air-13-M2-2024-refurbished",
+      "ipad-air-11-2025-refurbished",
+      "ipad-air-13-M3-2025-refurbished",
+      "ipad-pro-4th-2020-refurbished",
+      "ipad-pro-11-3th-2021-refurbished-M1",
+      "ipad-pro-5th-2021-refurbished-M1",
+      "ipad-pro-11-4th-2018-refurbished-M2",
+      "ipad-pro-6th-2022-refurbished-M2",
+      "ipad-pro-11-2024-refurbished-M4",
+      "ipad-pro-13-2024-refurbished-M4"
+    ]
+  },
+  "ipad-5g-wifi-vs-cellular": {
+    "heading": "",
+    "group": "ipad-2",
+    "products": [
+      "ipad-6-2018-refurbished",
+      "ipad-7-2019-refurbished",
+      "ipad-8-2020-refurbished",
+      "ipad-9-2021-refurbished",
+      "ipad-10-2022-refurbished",
+      "ipad-A16-2025-refurbished",
+      "ipad-mini-5-2019-refurbished",
+      "ipad-mini-6-2021-refurbished",
+      "ipad-mini-7-2024-refurbished",
+      "ipad-air-4-2020-refurbished",
+      "ipad-air-5-2021-refurbished",
+      "ipad-air-11-M2-2024-refurbished",
+      "ipad-air-13-M2-2024-refurbished",
+      "ipad-air-11-2025-refurbished",
+      "ipad-air-13-M3-2025-refurbished",
+      "ipad-pro-4th-2020-refurbished",
+      "ipad-pro-11-3th-2021-refurbished-M1",
+      "ipad-pro-5th-2021-refurbished-M1",
+      "ipad-pro-11-4th-2018-refurbished-M2",
+      "ipad-pro-6th-2022-refurbished-M2",
+      "ipad-pro-11-2024-refurbished-M4",
+      "ipad-pro-13-2024-refurbished-M4"
+    ]
+  },
+  "promotion-120hz-who-feels-it": {
+    "heading": "",
+    "group": "ipad-2",
+    "products": [
+      "ipad-6-2018-refurbished",
+      "ipad-7-2019-refurbished",
+      "ipad-8-2020-refurbished",
+      "ipad-9-2021-refurbished",
+      "ipad-10-2022-refurbished",
+      "ipad-A16-2025-refurbished",
+      "ipad-mini-5-2019-refurbished",
+      "ipad-mini-6-2021-refurbished",
+      "ipad-mini-7-2024-refurbished",
+      "ipad-air-4-2020-refurbished",
+      "ipad-air-5-2021-refurbished",
+      "ipad-air-11-M2-2024-refurbished",
+      "ipad-air-13-M2-2024-refurbished",
+      "ipad-air-11-2025-refurbished",
+      "ipad-air-13-M3-2025-refurbished",
+      "ipad-pro-4th-2020-refurbished",
+      "ipad-pro-11-3th-2021-refurbished-M1",
+      "ipad-pro-5th-2021-refurbished-M1",
+      "ipad-pro-11-4th-2018-refurbished-M2",
+      "ipad-pro-6th-2022-refurbished-M2",
+      "ipad-pro-11-2024-refurbished-M4",
+      "ipad-pro-13-2024-refurbished-M4"
+    ]
+  },
+  "procreate-pressure-not-working": {
+    "heading": "",
+    "group": "g20260726180505",
+    "products": [
+      "apple-pencil-refurbished",
+      "novaplus-a6-ipad-pencil",
+      "novaplus-a8se-ipad-pencil",
+      "novaplus-a8pro-ipad-pencil",
+      "novaplus-pencil-a5",
+      "novaplus-a7pro-ipad-pencil",
+      "apple-pencil-tip-set",
+      "apple-pencil-color-case",
+      "apple-pencil-fruit-case",
+      "novaplus-nx-metal-tip-pencil",
+      "novaplus-a5-pencil-tips",
+      "apple-pencil-1-typec-adapter",
+      "apple-pencil-1-cap"
+    ]
+  },
+  "apple-pencil-pressure-troubleshooting": {
+    "heading": "",
+    "group": "g20260726180505",
+    "products": [
+      "apple-pencil-refurbished",
+      "novaplus-a6-ipad-pencil",
+      "novaplus-a8se-ipad-pencil",
+      "novaplus-a8pro-ipad-pencil",
+      "novaplus-pencil-a5",
+      "novaplus-a7pro-ipad-pencil",
+      "apple-pencil-tip-set",
+      "apple-pencil-color-case",
+      "apple-pencil-fruit-case",
+      "novaplus-nx-metal-tip-pencil",
+      "novaplus-a5-pencil-tips",
+      "apple-pencil-1-typec-adapter",
+      "apple-pencil-1-cap"
+    ]
+  },
+  "procreate-brush-studio-basics": {
+    "heading": "",
+    "group": "g20260726180505",
+    "products": [
+      "apple-pencil-refurbished",
+      "novaplus-a6-ipad-pencil",
+      "novaplus-a8se-ipad-pencil",
+      "novaplus-a8pro-ipad-pencil",
+      "novaplus-pencil-a5",
+      "novaplus-a7pro-ipad-pencil",
+      "apple-pencil-tip-set",
+      "apple-pencil-color-case",
+      "apple-pencil-fruit-case",
+      "novaplus-nx-metal-tip-pencil",
+      "novaplus-a5-pencil-tips",
+      "apple-pencil-1-typec-adapter",
+      "apple-pencil-1-cap"
+    ]
+  },
+  "procreate-stroke-looks-wrong": {
+    "heading": "",
+    "group": "g20260726180505",
+    "products": [
+      "apple-pencil-refurbished",
+      "novaplus-a6-ipad-pencil",
+      "novaplus-a8se-ipad-pencil",
+      "novaplus-a8pro-ipad-pencil",
+      "novaplus-pencil-a5",
+      "novaplus-a7pro-ipad-pencil",
+      "apple-pencil-tip-set",
+      "apple-pencil-color-case",
+      "apple-pencil-fruit-case",
+      "novaplus-nx-metal-tip-pencil",
+      "novaplus-a5-pencil-tips",
+      "apple-pencil-1-typec-adapter",
+      "apple-pencil-1-cap"
+    ]
+  },
+  "forgot-passcode-rescue-ladder": {
+    "heading": "",
+    "group": "ipad-2",
+    "products": [
+      "ipad-6-2018-refurbished",
+      "ipad-7-2019-refurbished",
+      "ipad-8-2020-refurbished",
+      "ipad-9-2021-refurbished",
+      "ipad-10-2022-refurbished",
+      "ipad-A16-2025-refurbished",
+      "ipad-mini-5-2019-refurbished",
+      "ipad-mini-6-2021-refurbished",
+      "ipad-mini-7-2024-refurbished",
+      "ipad-air-4-2020-refurbished",
+      "ipad-air-5-2021-refurbished",
+      "ipad-air-11-M2-2024-refurbished",
+      "ipad-air-13-M2-2024-refurbished",
+      "ipad-air-11-2025-refurbished",
+      "ipad-air-13-M3-2025-refurbished",
+      "ipad-pro-4th-2020-refurbished",
+      "ipad-pro-11-3th-2021-refurbished-M1",
+      "ipad-pro-5th-2021-refurbished-M1",
+      "ipad-pro-11-4th-2018-refurbished-M2",
+      "ipad-pro-6th-2022-refurbished-M2",
+      "ipad-pro-11-2024-refurbished-M4",
+      "ipad-pro-13-2024-refurbished-M4"
+    ]
+  },
+  "activation-lock-truth": {
+    "heading": "",
+    "group": "ipad-2",
+    "products": [
+      "ipad-6-2018-refurbished",
+      "ipad-7-2019-refurbished",
+      "ipad-8-2020-refurbished",
+      "ipad-9-2021-refurbished",
+      "ipad-10-2022-refurbished",
+      "ipad-A16-2025-refurbished",
+      "ipad-mini-5-2019-refurbished",
+      "ipad-mini-6-2021-refurbished",
+      "ipad-mini-7-2024-refurbished",
+      "ipad-air-4-2020-refurbished",
+      "ipad-air-5-2021-refurbished",
+      "ipad-air-11-M2-2024-refurbished",
+      "ipad-air-13-M2-2024-refurbished",
+      "ipad-air-11-2025-refurbished",
+      "ipad-air-13-M3-2025-refurbished",
+      "ipad-pro-4th-2020-refurbished",
+      "ipad-pro-11-3th-2021-refurbished-M1",
+      "ipad-pro-5th-2021-refurbished-M1",
+      "ipad-pro-11-4th-2018-refurbished-M2",
+      "ipad-pro-6th-2022-refurbished-M2",
+      "ipad-pro-11-2024-refurbished-M4",
+      "ipad-pro-13-2024-refurbished-M4"
+    ]
+  },
+  "keyboard-not-responding": {
+    "heading": "",
+    "group": "apple-konnector-coverbuddy",
+    "products": [
+      "apple-magic-keyboard-brand-new",
+      "apple-smart-keyboard",
+      "apple-magic-keyboard-folio",
+      "novaplus-konnecter-pro-keyboard-case",
+      "mageasy-coverbuddy-ipad-case"
+    ]
+  },
+  "frozen-force-restart": {
+    "heading": "",
+    "group": "ipad-2",
+    "products": [
+      "ipad-6-2018-refurbished",
+      "ipad-7-2019-refurbished",
+      "ipad-8-2020-refurbished",
+      "ipad-9-2021-refurbished",
+      "ipad-10-2022-refurbished",
+      "ipad-A16-2025-refurbished",
+      "ipad-mini-5-2019-refurbished",
+      "ipad-mini-6-2021-refurbished",
+      "ipad-mini-7-2024-refurbished",
+      "ipad-air-4-2020-refurbished",
+      "ipad-air-5-2021-refurbished",
+      "ipad-air-11-M2-2024-refurbished",
+      "ipad-air-13-M2-2024-refurbished",
+      "ipad-air-11-2025-refurbished",
+      "ipad-air-13-M3-2025-refurbished",
+      "ipad-pro-4th-2020-refurbished",
+      "ipad-pro-11-3th-2021-refurbished-M1",
+      "ipad-pro-5th-2021-refurbished-M1",
+      "ipad-pro-11-4th-2018-refurbished-M2",
+      "ipad-pro-6th-2022-refurbished-M2",
+      "ipad-pro-11-2024-refurbished-M4",
+      "ipad-pro-13-2024-refurbished-M4"
+    ]
+  },
+  "battery-health-vs-cycle-count": {
+    "heading": "",
+    "group": "ipad-2",
+    "products": [
+      "ipad-6-2018-refurbished",
+      "ipad-7-2019-refurbished",
+      "ipad-8-2020-refurbished",
+      "ipad-9-2021-refurbished",
+      "ipad-10-2022-refurbished",
+      "ipad-A16-2025-refurbished",
+      "ipad-mini-5-2019-refurbished",
+      "ipad-mini-6-2021-refurbished",
+      "ipad-mini-7-2024-refurbished",
+      "ipad-air-4-2020-refurbished",
+      "ipad-air-5-2021-refurbished",
+      "ipad-air-11-M2-2024-refurbished",
+      "ipad-air-13-M2-2024-refurbished",
+      "ipad-air-11-2025-refurbished",
+      "ipad-air-13-M3-2025-refurbished",
+      "ipad-pro-4th-2020-refurbished",
+      "ipad-pro-11-3th-2021-refurbished-M1",
+      "ipad-pro-5th-2021-refurbished-M1",
+      "ipad-pro-11-4th-2018-refurbished-M2",
+      "ipad-pro-6th-2022-refurbished-M2",
+      "ipad-pro-11-2024-refurbished-M4",
+      "ipad-pro-13-2024-refurbished-M4"
+    ]
+  },
+  "charger-wattage-vs-port": {
+    "heading": "",
+    "group": "ipad-2",
+    "products": [
+      "ipad-6-2018-refurbished",
+      "ipad-7-2019-refurbished",
+      "ipad-8-2020-refurbished",
+      "ipad-9-2021-refurbished",
+      "ipad-10-2022-refurbished",
+      "ipad-A16-2025-refurbished",
+      "ipad-mini-5-2019-refurbished",
+      "ipad-mini-6-2021-refurbished",
+      "ipad-mini-7-2024-refurbished",
+      "ipad-air-4-2020-refurbished",
+      "ipad-air-5-2021-refurbished",
+      "ipad-air-11-M2-2024-refurbished",
+      "ipad-air-13-M2-2024-refurbished",
+      "ipad-air-11-2025-refurbished",
+      "ipad-air-13-M3-2025-refurbished",
+      "ipad-pro-4th-2020-refurbished",
+      "ipad-pro-11-3th-2021-refurbished-M1",
+      "ipad-pro-5th-2021-refurbished-M1",
+      "ipad-pro-11-4th-2018-refurbished-M2",
+      "ipad-pro-6th-2022-refurbished-M2",
+      "ipad-pro-11-2024-refurbished-M4",
+      "ipad-pro-13-2024-refurbished-M4"
+    ]
+  },
+  "internet-speed-how-much-is-enough": {
+    "heading": "",
+    "group": "ipad-2",
+    "products": [
+      "ipad-6-2018-refurbished",
+      "ipad-7-2019-refurbished",
+      "ipad-8-2020-refurbished",
+      "ipad-9-2021-refurbished",
+      "ipad-10-2022-refurbished",
+      "ipad-A16-2025-refurbished",
+      "ipad-mini-5-2019-refurbished",
+      "ipad-mini-6-2021-refurbished",
+      "ipad-mini-7-2024-refurbished",
+      "ipad-air-4-2020-refurbished",
+      "ipad-air-5-2021-refurbished",
+      "ipad-air-11-M2-2024-refurbished",
+      "ipad-air-13-M2-2024-refurbished",
+      "ipad-air-11-2025-refurbished",
+      "ipad-air-13-M3-2025-refurbished",
+      "ipad-pro-4th-2020-refurbished",
+      "ipad-pro-11-3th-2021-refurbished-M1",
+      "ipad-pro-5th-2021-refurbished-M1",
+      "ipad-pro-11-4th-2018-refurbished-M2",
+      "ipad-pro-6th-2022-refurbished-M2",
+      "ipad-pro-11-2024-refurbished-M4",
+      "ipad-pro-13-2024-refurbished-M4"
+    ]
+  },
+  "charging-stops-at-80": {
+    "heading": "",
+    "group": "ipad-2",
+    "products": [
+      "ipad-6-2018-refurbished",
+      "ipad-7-2019-refurbished",
+      "ipad-8-2020-refurbished",
+      "ipad-9-2021-refurbished",
+      "ipad-10-2022-refurbished",
+      "ipad-A16-2025-refurbished",
+      "ipad-mini-5-2019-refurbished",
+      "ipad-mini-6-2021-refurbished",
+      "ipad-mini-7-2024-refurbished",
+      "ipad-air-4-2020-refurbished",
+      "ipad-air-5-2021-refurbished",
+      "ipad-air-11-M2-2024-refurbished",
+      "ipad-air-13-M2-2024-refurbished",
+      "ipad-air-11-2025-refurbished",
+      "ipad-air-13-M3-2025-refurbished",
+      "ipad-pro-4th-2020-refurbished",
+      "ipad-pro-11-3th-2021-refurbished-M1",
+      "ipad-pro-5th-2021-refurbished-M1",
+      "ipad-pro-11-4th-2018-refurbished-M2",
+      "ipad-pro-6th-2022-refurbished-M2",
+      "ipad-pro-11-2024-refurbished-M4",
+      "ipad-pro-13-2024-refurbished-M4"
+    ]
+  },
+  "apple-pencil-not-working": {
+    "heading": "",
+    "group": "g20260726180505",
+    "products": [
+      "apple-pencil-refurbished",
+      "novaplus-a6-ipad-pencil",
+      "novaplus-a8se-ipad-pencil",
+      "novaplus-a8pro-ipad-pencil",
+      "novaplus-pencil-a5",
+      "novaplus-a7pro-ipad-pencil",
+      "apple-pencil-tip-set",
+      "apple-pencil-color-case",
+      "apple-pencil-fruit-case",
+      "novaplus-nx-metal-tip-pencil",
+      "novaplus-a5-pencil-tips",
+      "apple-pencil-1-typec-adapter",
+      "apple-pencil-1-cap"
+    ]
+  },
+  "ipad10-apple-pencil-1-pairing": {
+    "heading": "",
+    "group": "g20260726180505",
+    "products": [
+      "apple-pencil-refurbished",
+      "novaplus-a6-ipad-pencil",
+      "novaplus-a8se-ipad-pencil",
+      "novaplus-a8pro-ipad-pencil",
+      "novaplus-pencil-a5",
+      "novaplus-a7pro-ipad-pencil",
+      "apple-pencil-tip-set",
+      "apple-pencil-color-case",
+      "apple-pencil-fruit-case",
+      "novaplus-nx-metal-tip-pencil",
+      "novaplus-a5-pencil-tips",
+      "apple-pencil-1-typec-adapter",
+      "apple-pencil-1-cap"
+    ]
+  },
+  "ipad-wifi-or-cellular-buying": {
+    "heading": "",
+    "group": "ipad-2",
+    "products": [
+      "ipad-6-2018-refurbished",
+      "ipad-7-2019-refurbished",
+      "ipad-8-2020-refurbished",
+      "ipad-9-2021-refurbished",
+      "ipad-10-2022-refurbished",
+      "ipad-A16-2025-refurbished",
+      "ipad-mini-5-2019-refurbished",
+      "ipad-mini-6-2021-refurbished",
+      "ipad-mini-7-2024-refurbished",
+      "ipad-air-4-2020-refurbished",
+      "ipad-air-5-2021-refurbished",
+      "ipad-air-11-M2-2024-refurbished",
+      "ipad-air-13-M2-2024-refurbished",
+      "ipad-air-11-2025-refurbished",
+      "ipad-air-13-M3-2025-refurbished",
+      "ipad-pro-4th-2020-refurbished",
+      "ipad-pro-11-3th-2021-refurbished-M1",
+      "ipad-pro-5th-2021-refurbished-M1",
+      "ipad-pro-11-4th-2018-refurbished-M2",
+      "ipad-pro-6th-2022-refurbished-M2",
+      "ipad-pro-11-2024-refurbished-M4",
+      "ipad-pro-13-2024-refurbished-M4"
+    ]
+  },
+  "iphone-charge-limit": {
+    "heading": "",
+    "group": "ipad-2",
+    "products": [
+      "ipad-6-2018-refurbished",
+      "ipad-7-2019-refurbished",
+      "ipad-8-2020-refurbished",
+      "ipad-9-2021-refurbished",
+      "ipad-10-2022-refurbished",
+      "ipad-A16-2025-refurbished",
+      "ipad-mini-5-2019-refurbished",
+      "ipad-mini-6-2021-refurbished",
+      "ipad-mini-7-2024-refurbished",
+      "ipad-air-4-2020-refurbished",
+      "ipad-air-5-2021-refurbished",
+      "ipad-air-11-M2-2024-refurbished",
+      "ipad-air-13-M2-2024-refurbished",
+      "ipad-air-11-2025-refurbished",
+      "ipad-air-13-M3-2025-refurbished",
+      "ipad-pro-4th-2020-refurbished",
+      "ipad-pro-11-3th-2021-refurbished-M1",
+      "ipad-pro-5th-2021-refurbished-M1",
+      "ipad-pro-11-4th-2018-refurbished-M2",
+      "ipad-pro-6th-2022-refurbished-M2",
+      "ipad-pro-11-2024-refurbished-M4",
+      "ipad-pro-13-2024-refurbished-M4"
+    ]
+  },
+  "apple-charge-protection-map": {
+    "heading": "",
+    "group": "ipad-2",
+    "products": [
+      "ipad-6-2018-refurbished",
+      "ipad-7-2019-refurbished",
+      "ipad-8-2020-refurbished",
+      "ipad-9-2021-refurbished",
+      "ipad-10-2022-refurbished",
+      "ipad-A16-2025-refurbished",
+      "ipad-mini-5-2019-refurbished",
+      "ipad-mini-6-2021-refurbished",
+      "ipad-mini-7-2024-refurbished",
+      "ipad-air-4-2020-refurbished",
+      "ipad-air-5-2021-refurbished",
+      "ipad-air-11-M2-2024-refurbished",
+      "ipad-air-13-M2-2024-refurbished",
+      "ipad-air-11-2025-refurbished",
+      "ipad-air-13-M3-2025-refurbished",
+      "ipad-pro-4th-2020-refurbished",
+      "ipad-pro-11-3th-2021-refurbished-M1",
+      "ipad-pro-5th-2021-refurbished-M1",
+      "ipad-pro-11-4th-2018-refurbished-M2",
+      "ipad-pro-6th-2022-refurbished-M2",
+      "ipad-pro-11-2024-refurbished-M4",
+      "ipad-pro-13-2024-refurbished-M4"
+    ]
   }
- },
- "ipad-jianying-pencil-guide": {
-  "heading": "果果也有賣 Apple Pencil ✏️ 原廠福利品＋高 CP 值副廠都有",
-  "group": "g20260726180505",
-  "products": [
-   "apple-pencil-refurbished",
-   "novaplus-a6-ipad-pencil",
-   "novaplus-a8se-ipad-pencil",
-   "novaplus-a8pro-ipad-pencil",
-   "novaplus-pencil-a5",
-   "novaplus-a7pro-ipad-pencil",
-   "apple-pencil-tip-set",
-   "apple-pencil-color-case",
-   "apple-pencil-fruit-case",
-   "novaplus-nx-metal-tip-pencil",
-   "novaplus-a5-pencil-tips",
-   "apple-pencil-1-typec-adapter",
-   "apple-pencil-1-cap"
-  ]
- },
- "ipad-magic-keyboard-guide": {
-  "heading": "在找 iPad 鍵盤？果果這幾款可以看看 ⌨️",
-  "group": "apple-konnector-coverbuddy",
-  "products": [
-   "apple-magic-keyboard-brand-new",
-   "apple-smart-keyboard",
-   "apple-magic-keyboard-folio",
-   "novaplus-konnecter-pro-keyboard-case",
-   "mageasy-coverbuddy-ipad-case"
-  ]
- },
- "ipad-jailbreak-guide": {
-  "heading": "有機會可越獄的高性能iPad(iPadOS 16.5以下）推薦",
-  "group": "ipad-ipados-16-5",
-  "products": [
-   "ipad-pro-5th-2021-refurbished-M1",
-   "ipad-pro-11-3th-2021-refurbished-M1",
-   "ipad-pro-4th-2020-refurbished",
-   "ipad-mini-6-2021-refurbished"
-  ]
- },
- "ipad-appstore-china-guide": {
-  "heading": "",
-  "group": "ipad-2",
-  "products": [
-   "ipad-6-2018-refurbished",
-   "ipad-7-2019-refurbished",
-   "ipad-8-2020-refurbished",
-   "ipad-9-2021-refurbished",
-   "ipad-10-2022-refurbished",
-   "ipad-A16-2025-refurbished",
-   "ipad-mini-5-2019-refurbished",
-   "ipad-mini-6-2021-refurbished",
-   "ipad-mini-7-2024-refurbished",
-   "ipad-air-4-2020-refurbished",
-   "ipad-air-5-2021-refurbished",
-   "ipad-air-11-M2-2024-refurbished",
-   "ipad-air-13-M2-2024-refurbished",
-   "ipad-air-11-2025-refurbished",
-   "ipad-air-13-M3-2025-refurbished",
-   "ipad-pro-4th-2020-refurbished",
-   "ipad-pro-11-3th-2021-refurbished-M1",
-   "ipad-pro-5th-2021-refurbished-M1",
-   "ipad-pro-11-4th-2018-refurbished-M2",
-   "ipad-pro-6th-2022-refurbished-M2",
-   "ipad-pro-11-2024-refurbished-M4",
-   "ipad-pro-13-2024-refurbished-M4"
-  ]
- },
- "smart-vs-magic-keyboard": {
-  "heading": "",
-  "group": "apple-konnector-coverbuddy",
-  "products": [
-   "apple-magic-keyboard-brand-new",
-   "apple-smart-keyboard",
-   "apple-magic-keyboard-folio",
-   "novaplus-konnecter-pro-keyboard-case",
-   "mageasy-coverbuddy-ipad-case"
-  ]
- },
- "magic-keyboard-shortcuts": {
-  "heading": "",
-  "group": "apple-konnector-coverbuddy",
-  "products": [
-   "apple-magic-keyboard-brand-new",
-   "apple-smart-keyboard",
-   "apple-magic-keyboard-folio",
-   "novaplus-konnecter-pro-keyboard-case",
-   "mageasy-coverbuddy-ipad-case"
-  ]
- },
- "find-my-device-tiers": {
-  "heading": "",
-  "products": [
-   "apple-pencil-refurbished"
-  ]
- },
- "apple-pencil-pro-unbinding": {
-  "heading": "",
-  "group": "g20260726180505",
-  "products": [
-   "apple-pencil-refurbished",
-   "novaplus-a6-ipad-pencil",
-   "novaplus-a8se-ipad-pencil",
-   "novaplus-a8pro-ipad-pencil",
-   "novaplus-pencil-a5",
-   "novaplus-a7pro-ipad-pencil",
-   "apple-pencil-tip-set",
-   "apple-pencil-color-case",
-   "apple-pencil-fruit-case",
-   "novaplus-nx-metal-tip-pencil",
-   "novaplus-a5-pencil-tips",
-   "apple-pencil-1-typec-adapter",
-   "apple-pencil-1-cap"
-  ]
- },
- "pencil-pro-locked-worth-buying": {
-  "heading": "",
-  "group": "g20260726180505",
-  "products": [
-   "apple-pencil-refurbished",
-   "novaplus-a6-ipad-pencil",
-   "novaplus-a8se-ipad-pencil",
-   "novaplus-a8pro-ipad-pencil",
-   "novaplus-pencil-a5",
-   "novaplus-a7pro-ipad-pencil",
-   "apple-pencil-tip-set",
-   "apple-pencil-color-case",
-   "apple-pencil-fruit-case",
-   "novaplus-nx-metal-tip-pencil",
-   "novaplus-a5-pencil-tips",
-   "apple-pencil-1-typec-adapter",
-   "apple-pencil-1-cap"
-  ]
- },
- "reset-all-settings-vs-erase": {
-  "heading": "",
-  "group": "ipad-2",
-  "products": [
-   "ipad-6-2018-refurbished",
-   "ipad-7-2019-refurbished",
-   "ipad-8-2020-refurbished",
-   "ipad-9-2021-refurbished",
-   "ipad-10-2022-refurbished",
-   "ipad-A16-2025-refurbished",
-   "ipad-mini-5-2019-refurbished",
-   "ipad-mini-6-2021-refurbished",
-   "ipad-mini-7-2024-refurbished",
-   "ipad-air-4-2020-refurbished",
-   "ipad-air-5-2021-refurbished",
-   "ipad-air-11-M2-2024-refurbished",
-   "ipad-air-13-M2-2024-refurbished",
-   "ipad-air-11-2025-refurbished",
-   "ipad-air-13-M3-2025-refurbished",
-   "ipad-pro-4th-2020-refurbished",
-   "ipad-pro-11-3th-2021-refurbished-M1",
-   "ipad-pro-5th-2021-refurbished-M1",
-   "ipad-pro-11-4th-2018-refurbished-M2",
-   "ipad-pro-6th-2022-refurbished-M2",
-   "ipad-pro-11-2024-refurbished-M4",
-   "ipad-pro-13-2024-refurbished-M4"
-  ]
- },
- "find-my-hidden-features": {
-  "heading": "",
-  "group": "ipad-2",
-  "products": [
-   "ipad-6-2018-refurbished",
-   "ipad-7-2019-refurbished",
-   "ipad-8-2020-refurbished",
-   "ipad-9-2021-refurbished",
-   "ipad-10-2022-refurbished",
-   "ipad-A16-2025-refurbished",
-   "ipad-mini-5-2019-refurbished",
-   "ipad-mini-6-2021-refurbished",
-   "ipad-mini-7-2024-refurbished",
-   "ipad-air-4-2020-refurbished",
-   "ipad-air-5-2021-refurbished",
-   "ipad-air-11-M2-2024-refurbished",
-   "ipad-air-13-M2-2024-refurbished",
-   "ipad-air-11-2025-refurbished",
-   "ipad-air-13-M3-2025-refurbished",
-   "ipad-pro-4th-2020-refurbished",
-   "ipad-pro-11-3th-2021-refurbished-M1",
-   "ipad-pro-5th-2021-refurbished-M1",
-   "ipad-pro-11-4th-2018-refurbished-M2",
-   "ipad-pro-6th-2022-refurbished-M2",
-   "ipad-pro-11-2024-refurbished-M4",
-   "ipad-pro-13-2024-refurbished-M4"
-  ]
- },
- "hotspot-slower-than-phone": {
-  "heading": "",
-  "group": "ipad-2",
-  "products": [
-   "ipad-6-2018-refurbished",
-   "ipad-7-2019-refurbished",
-   "ipad-8-2020-refurbished",
-   "ipad-9-2021-refurbished",
-   "ipad-10-2022-refurbished",
-   "ipad-A16-2025-refurbished",
-   "ipad-mini-5-2019-refurbished",
-   "ipad-mini-6-2021-refurbished",
-   "ipad-mini-7-2024-refurbished",
-   "ipad-air-4-2020-refurbished",
-   "ipad-air-5-2021-refurbished",
-   "ipad-air-11-M2-2024-refurbished",
-   "ipad-air-13-M2-2024-refurbished",
-   "ipad-air-11-2025-refurbished",
-   "ipad-air-13-M3-2025-refurbished",
-   "ipad-pro-4th-2020-refurbished",
-   "ipad-pro-11-3th-2021-refurbished-M1",
-   "ipad-pro-5th-2021-refurbished-M1",
-   "ipad-pro-11-4th-2018-refurbished-M2",
-   "ipad-pro-6th-2022-refurbished-M2",
-   "ipad-pro-11-2024-refurbished-M4",
-   "ipad-pro-13-2024-refurbished-M4"
-  ]
- },
- "ipad-5g-wifi-vs-cellular": {
-  "heading": "",
-  "group": "ipad-2",
-  "products": [
-   "ipad-6-2018-refurbished",
-   "ipad-7-2019-refurbished",
-   "ipad-8-2020-refurbished",
-   "ipad-9-2021-refurbished",
-   "ipad-10-2022-refurbished",
-   "ipad-A16-2025-refurbished",
-   "ipad-mini-5-2019-refurbished",
-   "ipad-mini-6-2021-refurbished",
-   "ipad-mini-7-2024-refurbished",
-   "ipad-air-4-2020-refurbished",
-   "ipad-air-5-2021-refurbished",
-   "ipad-air-11-M2-2024-refurbished",
-   "ipad-air-13-M2-2024-refurbished",
-   "ipad-air-11-2025-refurbished",
-   "ipad-air-13-M3-2025-refurbished",
-   "ipad-pro-4th-2020-refurbished",
-   "ipad-pro-11-3th-2021-refurbished-M1",
-   "ipad-pro-5th-2021-refurbished-M1",
-   "ipad-pro-11-4th-2018-refurbished-M2",
-   "ipad-pro-6th-2022-refurbished-M2",
-   "ipad-pro-11-2024-refurbished-M4",
-   "ipad-pro-13-2024-refurbished-M4"
-  ]
- },
- "promotion-120hz-who-feels-it": {
-  "heading": "",
-  "group": "ipad-2",
-  "products": [
-   "ipad-6-2018-refurbished",
-   "ipad-7-2019-refurbished",
-   "ipad-8-2020-refurbished",
-   "ipad-9-2021-refurbished",
-   "ipad-10-2022-refurbished",
-   "ipad-A16-2025-refurbished",
-   "ipad-mini-5-2019-refurbished",
-   "ipad-mini-6-2021-refurbished",
-   "ipad-mini-7-2024-refurbished",
-   "ipad-air-4-2020-refurbished",
-   "ipad-air-5-2021-refurbished",
-   "ipad-air-11-M2-2024-refurbished",
-   "ipad-air-13-M2-2024-refurbished",
-   "ipad-air-11-2025-refurbished",
-   "ipad-air-13-M3-2025-refurbished",
-   "ipad-pro-4th-2020-refurbished",
-   "ipad-pro-11-3th-2021-refurbished-M1",
-   "ipad-pro-5th-2021-refurbished-M1",
-   "ipad-pro-11-4th-2018-refurbished-M2",
-   "ipad-pro-6th-2022-refurbished-M2",
-   "ipad-pro-11-2024-refurbished-M4",
-   "ipad-pro-13-2024-refurbished-M4"
-  ]
- },
- "procreate-pressure-not-working": {
-  "heading": "",
-  "group": "g20260726180505",
-  "products": [
-   "apple-pencil-refurbished",
-   "novaplus-a6-ipad-pencil",
-   "novaplus-a8se-ipad-pencil",
-   "novaplus-a8pro-ipad-pencil",
-   "novaplus-pencil-a5",
-   "novaplus-a7pro-ipad-pencil",
-   "apple-pencil-tip-set",
-   "apple-pencil-color-case",
-   "apple-pencil-fruit-case",
-   "novaplus-nx-metal-tip-pencil",
-   "novaplus-a5-pencil-tips",
-   "apple-pencil-1-typec-adapter",
-   "apple-pencil-1-cap"
-  ]
- },
- "apple-pencil-pressure-troubleshooting": {
-  "heading": "",
-  "group": "g20260726180505",
-  "products": [
-   "apple-pencil-refurbished",
-   "novaplus-a6-ipad-pencil",
-   "novaplus-a8se-ipad-pencil",
-   "novaplus-a8pro-ipad-pencil",
-   "novaplus-pencil-a5",
-   "novaplus-a7pro-ipad-pencil",
-   "apple-pencil-tip-set",
-   "apple-pencil-color-case",
-   "apple-pencil-fruit-case",
-   "novaplus-nx-metal-tip-pencil",
-   "novaplus-a5-pencil-tips",
-   "apple-pencil-1-typec-adapter",
-   "apple-pencil-1-cap"
-  ]
- },
- "procreate-brush-studio-basics": {
-  "heading": "",
-  "group": "g20260726180505",
-  "products": [
-   "apple-pencil-refurbished",
-   "novaplus-a6-ipad-pencil",
-   "novaplus-a8se-ipad-pencil",
-   "novaplus-a8pro-ipad-pencil",
-   "novaplus-pencil-a5",
-   "novaplus-a7pro-ipad-pencil",
-   "apple-pencil-tip-set",
-   "apple-pencil-color-case",
-   "apple-pencil-fruit-case",
-   "novaplus-nx-metal-tip-pencil",
-   "novaplus-a5-pencil-tips",
-   "apple-pencil-1-typec-adapter",
-   "apple-pencil-1-cap"
-  ]
- },
- "procreate-stroke-looks-wrong": {
-  "heading": "",
-  "group": "g20260726180505",
-  "products": [
-   "apple-pencil-refurbished",
-   "novaplus-a6-ipad-pencil",
-   "novaplus-a8se-ipad-pencil",
-   "novaplus-a8pro-ipad-pencil",
-   "novaplus-pencil-a5",
-   "novaplus-a7pro-ipad-pencil",
-   "apple-pencil-tip-set",
-   "apple-pencil-color-case",
-   "apple-pencil-fruit-case",
-   "novaplus-nx-metal-tip-pencil",
-   "novaplus-a5-pencil-tips",
-   "apple-pencil-1-typec-adapter",
-   "apple-pencil-1-cap"
-  ]
- },
- "forgot-passcode-rescue-ladder": {
-  "heading": "",
-  "group": "ipad-2",
-  "products": [
-   "ipad-6-2018-refurbished",
-   "ipad-7-2019-refurbished",
-   "ipad-8-2020-refurbished",
-   "ipad-9-2021-refurbished",
-   "ipad-10-2022-refurbished",
-   "ipad-A16-2025-refurbished",
-   "ipad-mini-5-2019-refurbished",
-   "ipad-mini-6-2021-refurbished",
-   "ipad-mini-7-2024-refurbished",
-   "ipad-air-4-2020-refurbished",
-   "ipad-air-5-2021-refurbished",
-   "ipad-air-11-M2-2024-refurbished",
-   "ipad-air-13-M2-2024-refurbished",
-   "ipad-air-11-2025-refurbished",
-   "ipad-air-13-M3-2025-refurbished",
-   "ipad-pro-4th-2020-refurbished",
-   "ipad-pro-11-3th-2021-refurbished-M1",
-   "ipad-pro-5th-2021-refurbished-M1",
-   "ipad-pro-11-4th-2018-refurbished-M2",
-   "ipad-pro-6th-2022-refurbished-M2",
-   "ipad-pro-11-2024-refurbished-M4",
-   "ipad-pro-13-2024-refurbished-M4"
-  ]
- },
- "activation-lock-truth": {
-  "heading": "",
-  "group": "ipad-2",
-  "products": [
-   "ipad-6-2018-refurbished",
-   "ipad-7-2019-refurbished",
-   "ipad-8-2020-refurbished",
-   "ipad-9-2021-refurbished",
-   "ipad-10-2022-refurbished",
-   "ipad-A16-2025-refurbished",
-   "ipad-mini-5-2019-refurbished",
-   "ipad-mini-6-2021-refurbished",
-   "ipad-mini-7-2024-refurbished",
-   "ipad-air-4-2020-refurbished",
-   "ipad-air-5-2021-refurbished",
-   "ipad-air-11-M2-2024-refurbished",
-   "ipad-air-13-M2-2024-refurbished",
-   "ipad-air-11-2025-refurbished",
-   "ipad-air-13-M3-2025-refurbished",
-   "ipad-pro-4th-2020-refurbished",
-   "ipad-pro-11-3th-2021-refurbished-M1",
-   "ipad-pro-5th-2021-refurbished-M1",
-   "ipad-pro-11-4th-2018-refurbished-M2",
-   "ipad-pro-6th-2022-refurbished-M2",
-   "ipad-pro-11-2024-refurbished-M4",
-   "ipad-pro-13-2024-refurbished-M4"
-  ]
- },
- "keyboard-not-responding": {
-  "heading": "",
-  "group": "apple-konnector-coverbuddy",
-  "products": [
-   "apple-magic-keyboard-brand-new",
-   "apple-smart-keyboard",
-   "apple-magic-keyboard-folio",
-   "novaplus-konnecter-pro-keyboard-case",
-   "mageasy-coverbuddy-ipad-case"
-  ]
- },
- "frozen-force-restart": {
-  "heading": "",
-  "group": "ipad-2",
-  "products": [
-   "ipad-6-2018-refurbished",
-   "ipad-7-2019-refurbished",
-   "ipad-8-2020-refurbished",
-   "ipad-9-2021-refurbished",
-   "ipad-10-2022-refurbished",
-   "ipad-A16-2025-refurbished",
-   "ipad-mini-5-2019-refurbished",
-   "ipad-mini-6-2021-refurbished",
-   "ipad-mini-7-2024-refurbished",
-   "ipad-air-4-2020-refurbished",
-   "ipad-air-5-2021-refurbished",
-   "ipad-air-11-M2-2024-refurbished",
-   "ipad-air-13-M2-2024-refurbished",
-   "ipad-air-11-2025-refurbished",
-   "ipad-air-13-M3-2025-refurbished",
-   "ipad-pro-4th-2020-refurbished",
-   "ipad-pro-11-3th-2021-refurbished-M1",
-   "ipad-pro-5th-2021-refurbished-M1",
-   "ipad-pro-11-4th-2018-refurbished-M2",
-   "ipad-pro-6th-2022-refurbished-M2",
-   "ipad-pro-11-2024-refurbished-M4",
-   "ipad-pro-13-2024-refurbished-M4"
-  ]
- },
- "battery-health-vs-cycle-count": {
-  "heading": "",
-  "group": "ipad-2",
-  "products": [
-   "ipad-6-2018-refurbished",
-   "ipad-7-2019-refurbished",
-   "ipad-8-2020-refurbished",
-   "ipad-9-2021-refurbished",
-   "ipad-10-2022-refurbished",
-   "ipad-A16-2025-refurbished",
-   "ipad-mini-5-2019-refurbished",
-   "ipad-mini-6-2021-refurbished",
-   "ipad-mini-7-2024-refurbished",
-   "ipad-air-4-2020-refurbished",
-   "ipad-air-5-2021-refurbished",
-   "ipad-air-11-M2-2024-refurbished",
-   "ipad-air-13-M2-2024-refurbished",
-   "ipad-air-11-2025-refurbished",
-   "ipad-air-13-M3-2025-refurbished",
-   "ipad-pro-4th-2020-refurbished",
-   "ipad-pro-11-3th-2021-refurbished-M1",
-   "ipad-pro-5th-2021-refurbished-M1",
-   "ipad-pro-11-4th-2018-refurbished-M2",
-   "ipad-pro-6th-2022-refurbished-M2",
-   "ipad-pro-11-2024-refurbished-M4",
-   "ipad-pro-13-2024-refurbished-M4"
-  ]
- },
- "charger-wattage-vs-port": {
-  "heading": "",
-  "group": "ipad-2",
-  "products": [
-   "ipad-6-2018-refurbished",
-   "ipad-7-2019-refurbished",
-   "ipad-8-2020-refurbished",
-   "ipad-9-2021-refurbished",
-   "ipad-10-2022-refurbished",
-   "ipad-A16-2025-refurbished",
-   "ipad-mini-5-2019-refurbished",
-   "ipad-mini-6-2021-refurbished",
-   "ipad-mini-7-2024-refurbished",
-   "ipad-air-4-2020-refurbished",
-   "ipad-air-5-2021-refurbished",
-   "ipad-air-11-M2-2024-refurbished",
-   "ipad-air-13-M2-2024-refurbished",
-   "ipad-air-11-2025-refurbished",
-   "ipad-air-13-M3-2025-refurbished",
-   "ipad-pro-4th-2020-refurbished",
-   "ipad-pro-11-3th-2021-refurbished-M1",
-   "ipad-pro-5th-2021-refurbished-M1",
-   "ipad-pro-11-4th-2018-refurbished-M2",
-   "ipad-pro-6th-2022-refurbished-M2",
-   "ipad-pro-11-2024-refurbished-M4",
-   "ipad-pro-13-2024-refurbished-M4"
-  ]
- },
- "internet-speed-how-much-is-enough": {
-  "heading": "",
-  "group": "ipad-2",
-  "products": [
-   "ipad-6-2018-refurbished",
-   "ipad-7-2019-refurbished",
-   "ipad-8-2020-refurbished",
-   "ipad-9-2021-refurbished",
-   "ipad-10-2022-refurbished",
-   "ipad-A16-2025-refurbished",
-   "ipad-mini-5-2019-refurbished",
-   "ipad-mini-6-2021-refurbished",
-   "ipad-mini-7-2024-refurbished",
-   "ipad-air-4-2020-refurbished",
-   "ipad-air-5-2021-refurbished",
-   "ipad-air-11-M2-2024-refurbished",
-   "ipad-air-13-M2-2024-refurbished",
-   "ipad-air-11-2025-refurbished",
-   "ipad-air-13-M3-2025-refurbished",
-   "ipad-pro-4th-2020-refurbished",
-   "ipad-pro-11-3th-2021-refurbished-M1",
-   "ipad-pro-5th-2021-refurbished-M1",
-   "ipad-pro-11-4th-2018-refurbished-M2",
-   "ipad-pro-6th-2022-refurbished-M2",
-   "ipad-pro-11-2024-refurbished-M4",
-   "ipad-pro-13-2024-refurbished-M4"
-  ]
- },
- "charging-stops-at-80": {
-  "heading": "",
-  "group": "ipad-2",
-  "products": [
-   "ipad-6-2018-refurbished",
-   "ipad-7-2019-refurbished",
-   "ipad-8-2020-refurbished",
-   "ipad-9-2021-refurbished",
-   "ipad-10-2022-refurbished",
-   "ipad-A16-2025-refurbished",
-   "ipad-mini-5-2019-refurbished",
-   "ipad-mini-6-2021-refurbished",
-   "ipad-mini-7-2024-refurbished",
-   "ipad-air-4-2020-refurbished",
-   "ipad-air-5-2021-refurbished",
-   "ipad-air-11-M2-2024-refurbished",
-   "ipad-air-13-M2-2024-refurbished",
-   "ipad-air-11-2025-refurbished",
-   "ipad-air-13-M3-2025-refurbished",
-   "ipad-pro-4th-2020-refurbished",
-   "ipad-pro-11-3th-2021-refurbished-M1",
-   "ipad-pro-5th-2021-refurbished-M1",
-   "ipad-pro-11-4th-2018-refurbished-M2",
-   "ipad-pro-6th-2022-refurbished-M2",
-   "ipad-pro-11-2024-refurbished-M4",
-   "ipad-pro-13-2024-refurbished-M4"
-  ]
- }
 }
