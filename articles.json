@@ -1582,7 +1582,8 @@
         "q": "什麼時候該送修，不要再自己試？",
         "a": "Apple 給的停止點很明確：照官方配對流程走完，「配對」按鈕仍然沒有出現，就可能需要維修。另外幾種情況也建議直接停手——摔過或進水之後才開始的、筆尖螺牙轉不緊的，以及把同一支筆拿到另一台相容且正常的 iPad 上測試也一樣不行的。這些用軟體步驟處理不了。"
       }
-    ]
+    ],
+    "ogImage": "assets/og/apple-pencil-not-working-cover.png"
   },
   {
     "slug": "ipad-wifi-or-cellular-buying",
