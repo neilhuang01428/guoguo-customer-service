@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>iPad 玩遊戲要買哪一台？依遊戲類型分的最低門檻 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式（共用 style.css 沒有的才寫在這）── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 寬表格橫向捲動（全型號對照表欄位多，窄螢幕要能左右滑） */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 640px; }
+  td.y { color: var(--green-deep); font-weight: 700; }
+  td.n { color: var(--red); font-weight: 700; }
+  td.mid { color: var(--amber); font-weight: 700; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+
+  /* RAM 級距徽章：讓 2/3/4/6/8GB 在表裡一眼分群 */
+  .rb { font-family: var(--mono); font-size: .74rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; display: inline-block; white-space: nowrap; }
+  .rb.r2 { color: var(--red); background: var(--red-bg); }
+  .rb.r3 { color: var(--amber); background: var(--amber-bg); }
+  .rb.r4 { color: var(--green-deep); background: var(--green-bg); }
+  .rb.r8 { color: var(--navy); background: var(--navy-bg); }
+  .rb.rx { color: var(--muted); background: var(--panel2); }
+
+  /* 導言：迷你目錄（窄螢幕沒有左側 nav，這排就是導覽） */
+  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0 24px; }
+  .toc a { display: flex; align-items: baseline; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 14px; text-decoration: none; color: var(--ink); font-size: .93rem; transition: .12s; }
+  .toc a:hover { border-color: var(--navy); background: var(--navy-bg); }
+  .toc a i { font-family: var(--mono); font-style: normal; font-size: .72rem; color: var(--navy); font-weight: 700; flex: none; }
+
+  /* ── 動態分鏡：情境 K「記憶體被吃滿 → App 被系統關掉」 ──
+     為什麼要動畫：閃退的知識點本身是一段有時間差的因果（先吃滿 → 再超線 → 才被關掉），
+     靜態圖只能用文字寫「然後…」。沿用共用檔的 .scr / .home / .appwin 零件，
+     只新增記憶體槽 .mem，節奏一樣 4.4s 一輪。
+     鐵則：每格的基礎樣式＝動畫最終狀態，關掉動畫也看得懂三格圖。 */
+  .anim .mem { position: absolute; left: 8%; right: 8%; top: 50%; transform: translateY(-50%); }
+  .anim .mem .cap2 { font-family: var(--mono); font-size: 5.2cqi; color: var(--muted); margin-bottom: 3cqi; display: flex; justify-content: space-between; }
+  .anim .mem .track2 { position: relative; height: 13cqi; border-radius: 3cqi; background: var(--panel2); border: 1px solid var(--line); overflow: hidden; }
+  .anim .mem .fill2 { position: absolute; left: 0; top: 0; bottom: 0; width: 58%; background: var(--navy); }
+  .anim .mem .fill2.over { width: 100%; background: var(--red); }
+  .anim .mem .line2 { position: absolute; top: -2cqi; bottom: -2cqi; left: 78%; width: 2px; background: var(--red); }
+  .anim .mem .tagline2 { font-family: var(--mono); font-size: 4.6cqi; color: var(--red); margin-top: 3cqi; text-align: right; }
+  @keyframes m-fill { 0%, 8% { width: 6%; }  52%, 100% { width: 58%; } }
+  @keyframes m-over { 0%, 8% { width: 6%; }  46%, 100% { width: 100%; } }
+  .anim .mem .fill2 { animation: m-fill 4.4s ease-in-out infinite; }
+  .anim .mem .fill2.over { animation: m-over 4.4s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) { .anim .mem .fill2, .anim .mem .fill2.over { animation: none; } }
+  /* 第三格的 .appwin 是「正在跑的遊戲」，縮走後露出底下的桌面。
+     共用檔給的是純白底，看起來像空框；這裡讓它長得像一個遊戲畫面，
+     「遊戲被關掉 → 回桌面」的故事才讀得出來。 */
+  .anim .appwin { background: var(--navy-deep); display: grid; place-items: center; }
+  .anim .appwin::after { content: '🎮'; font-size: 9cqi; opacity: .85; }
+
+  /* ── 分類卡：結論在最前面、遊戲舉例在後面 ──
+     原本把遊戲名寫在第一句，讀者要讀完整段才知道「所以我該買哪台」。
+     改成 verdict（買哪台）→ why（為什麼是這條線）→ egs（例子）三段，
+     這張卡被單獨截圖傳給客人時也讀得懂。 */
+  .card .verdict { background: var(--cbg); border: 1px solid var(--c); border-radius: 8px; padding: 10px 13px; margin: 11px 0 13px; font-size: .95rem; color: var(--ink); line-height: 1.5; }
+  .card .verdict b { color: var(--c); font-weight: 800; }
+  .card .verdict small { display: block; font-family: var(--mono); font-size: .68rem; color: var(--muted); margin-top: 3px; }
+  .card .why { font-size: .92rem; color: var(--body); margin: 0 0 12px; line-height: 1.72; }
+  .card .why strong { color: var(--ink); }
+  .card .eglab { font-family: var(--mono); font-size: .66rem; color: var(--muted); margin-bottom: 6px; }
+  .card .egs { display: flex; flex-wrap: wrap; gap: 5px; }
+  .card .egs span { font-size: .78rem; color: var(--body); background: var(--panel2); border-radius: 5px; padding: 3px 9px; }
+  .card details.more { background: none; border: 0; border-radius: 0; padding: 0; margin: 9px 0 0; }
+  .card details.more summary { color: var(--c); font-weight: 600; font-size: .8rem; }
+  .card details.more .egs { margin-top: 8px; }
+
+  /* ── 症狀診斷對照 dx：兩種症狀 → 兩種病因 ──
+     「慢」和「消失」是兩個完全不同的問題，對應兩種不同的建議。
+     這是全篇最該被一眼記住的分辨法，所以不留在段落裡。 */
+  .dx { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .dxi { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 10px; padding: 15px 17px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .dxi .s { font-family: var(--mono); font-size: .66rem; color: var(--muted); }
+  .dxi .big2 { display: block; font-size: 1.3rem; color: var(--c); font-weight: 800; line-height: 1.3; margin: 3px 0 8px; }
+  .dxi p { font-size: .89rem; color: var(--body); margin: 0 0 12px; line-height: 1.65; }
+  .dxi .d { font-size: .9rem; color: var(--ink); font-weight: 700; border-top: 1px solid var(--grid); padding-top: 10px; }
+  .dxi .d::before { content: '→ '; color: var(--c); }
+  .dxi .d small { display: block; font-weight: 400; color: var(--muted); font-size: .8rem; margin-top: 3px; }
+
+  /* 實測結果條：延遲感受的四段對照 */
+  .lagrow { display: flex; align-items: center; gap: 12px; margin-bottom: 9px; }
+  .lagrow .nm { flex: 0 0 156px; font-size: .88rem; color: var(--ink); font-weight: 600; }
+  .lagrow .bar { flex: 1; height: 26px; background: var(--panel2); border-radius: 6px; overflow: hidden; }
+  .lagrow .fill { height: 100%; width: var(--w); background: var(--c); display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; color: #fff; font-family: var(--mono); font-size: .72rem; font-weight: 700; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .dx { grid-template-columns: 1fr; }   /* 共用 style.css 的 media query 只收 .grid/.cgrid/.stats，自訂的多欄容器要自己加 */
+    .lagrow .nm { flex: 0 0 108px; font-size: .8rem; }
+  }
+  @media (max-width: 560px) { .toc { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>玩遊戲買哪台</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#answer" class="active">00 · 先對號入座</a>
+  <div class="grp">為什麼是這條線</div>
+  <a href="#three">01 · 只有三個數字</a>
+  <a href="#ram">02 · RAM 是硬門檻</a>
+  <div class="grp">全型號</div>
+  <a href="#table">03 · 一台一台對照</a>
+  <a href="#test">04 · 我們自己測的</a>
+  <a href="#aaa">05 · 主機移植大作</a>
+  <a href="#storage">06 · 容量怎麼選</a>
+  <div class="grp">下單前</div>
+  <a href="#avoid">07 · 買之前的取捨</a>
+  <a href="#check">08 · 30 秒自我檢查</a>
+  <a href="#honest">09 · 我們不保證的事</a>
+  <a href="#video">延伸觀看</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>2018–2026 全型號在售</span><span>資訊透明・缺點揭露</span><span>終身售後諮詢</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">客戶指南 / iPad 選購 · 遊戲用途</div>
+    <h1>iPad 玩遊戲要買哪一台？</h1>
+    <p class="subtitle">不必一律買 Pro。依你要玩的遊戲類型對號入座，就知道二手最低買到哪一年、哪一台就夠——以及哪幾台買了會後悔。</p>
+
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--red)">
+        <div class="lt">直接回答</div>
+        <p class="big">休閒益智、卡牌、團隊對戰這幾類，iPad 第 8 代（2020）就夠；原神這種主流 3D 手遊，要挑到 <b>4GB 記憶體</b>的機型，二手最低是 iPad 第 10 代或 iPad Air 第 4 代；惡靈古堡那種從 PS5 移植過來的大作，只有 M 系列或 A17 Pro 的 iPad 裝得起來。</p>
+        <p class="sm">同樣是「玩遊戲」，這三條線差了整整六年的機型。差別不在晶片跑分，而在記憶體夠不夠——那正是 Apple 規格表上沒有的那一欄。</p>
+        <p class="alias-line">你可能是用別的說法找到這頁的：<b>iPad 玩遊戲 推薦</b>、<b>iPad 跑原神</b>、<b>平板玩遊戲會不會卡</b>、<b>買便宜舊 iPad 給小孩玩</b>——講的都是同一件事。</p>
+      </div>
+      <blockquote class="lead-src">「最低配置：iPad mini（第 5 代）或 iPad Air（第 3 代）或 iPad（第 8 代）以上機型、搭載 Apple A12 以上 SoC、記憶體 3GB 以上、iPadOS 13.0 以上、儲存空間需保留 40GB 以上。」<cite>《原神》台灣 App Store 商品頁官方標示，查核 2026/08/09</cite></blockquote>
+      <p class="lede">（「SoC」就是晶片的正式說法，你可以直接讀成「A12 以上的晶片」。）請注意官方那句話裡藏了兩個條件：晶片<strong>和</strong>記憶體。很多人只看晶片，結果買到「晶片有過、記憶體沒過」的機型——遊戲裝得起來、玩得起來，但玩一玩就自己關掉。</p>
+      <p class="lede">這頁會把 2018 到 2026 年每一台 iPad 攤開來對，告訴你各類遊戲的最低門檻落在哪一台、哪幾台現在買回來會踩雷，以及我們自己拿四台 iPad 跑原神的結果。</p>
+    </div>
+
+    <div class="toc">
+      <a href="#answer"><i>00</i>四類遊戲的最低機型</a>
+      <a href="#ram"><i>02</i>為什麼是 RAM 不是晶片</a>
+      <a href="#table"><i>03</i>全型號一台一台對照</a>
+      <a href="#avoid"><i>07</i>這幾台別買來玩遊戲</a>
+    </div>
+
+    <section id="answer">
+      <div class="sec-label" style="--c:var(--navy)">match_yourself</div>
+      <h2>00 · 先對號入座：你要玩哪一類？</h2>
+      <p>先找到你（或你小孩）主要在玩的那一類，看它的最低門檻。四類的門檻差很多，別用最重的那類去決定預算。</p>
+
+      <div class="grid">
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">類型 1 · 門檻最低</div>
+          <h4>休閒益智・卡牌・沙盒</h4>
+          <div class="verdict">最低買到 <b>iPad 第 8 代</b> 就夠<small>2020 年的入門款</small></div>
+          <p class="why">這類遊戲本身要求極低，官方門檻多半停在 iPadOS 12～15。<strong>真正該卡的是「這台還升不升得上最新系統」</strong>——第 8 代是最舊、還在 iPadOS 26 名單上的一般款 iPad。</p>
+          <div class="eglab">常見的有</div>
+          <div class="egs"><span>Candy Crush</span><span>Roblox</span><span>Minecraft</span><span>明日方舟</span></div>
+          <details class="more"><summary>還有哪些也屬於這類</summary>
+            <div class="egs"><span>MONOPOLY GO!</span><span>天堂 M</span><span>天堂 W</span><span>聯盟戰棋</span><span>新楓之谷 M</span><span>Pokémon GO</span><span>開心消消樂</span><span>動物森友會 口袋露營廣場</span></div>
+          </details>
+        </div>
+        <div class="card" style="--c:var(--teal);--cbg:var(--teal-bg)">
+          <div class="c-tag">類型 2 · 門檻也很低</div>
+          <h4>團隊對戰・射擊競技</h4>
+          <div class="verdict">最低買到 <b>iPad 第 8 代</b> 就夠<small>2020 年的入門款</small></div>
+          <p class="why">就是常聽到的「<strong>MOBA</strong>」（多人連線競技，5 對 5 那種）和射擊對戰遊戲。這類為了衝玩家人數，<strong>門檻壓得特別低</strong>——激鬥峽谷官方只要求 2GB 記憶體，比原神還寬鬆。</p>
+          <div class="eglab">常見的有</div>
+          <div class="egs"><span>傳說對決</span><span>英雄聯盟：激鬥峽谷</span><span>第五人格</span><span>PUBG Mobile</span></div>
+        </div>
+        <div class="card" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="c-tag">類型 3 · 真正的分水嶺</div>
+          <h4>開放世界 3D 手遊</h4>
+          <div class="verdict">最低要 <b>iPad 第 10 代</b> 或 <b>Air 第 4 代</b><small>關鍵是 4GB 記憶體，不是年份</small></div>
+          <p class="why">官方需求同時寫了晶片<strong>和記憶體</strong>兩個條件，而記憶體那格是 3GB 起跳、<strong>4GB 才安穩</strong>。只看晶片會挑到「晶片過關、記憶體不過關」的機型。</p>
+          <div class="eglab">常見的有</div>
+          <div class="egs"><span>原神</span><span>絕區零</span><span>鳴潮</span><span>崩壞：星穹鐵道</span><span>Fortnite</span></div>
+        </div>
+        <div class="card" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="c-tag">類型 4 · 直接鎖機型</div>
+          <h4>主機移植的大作</h4>
+          <div class="verdict">最低要 <b>iPad Air 第 5 代</b>（M1）<small>或任何 M 系列／A17 Pro 機型</small></div>
+          <p class="why">就是本來在 PS5、Xbox 上玩的那種大遊戲，業界俗稱「<strong>3A 大作</strong>」。App Store 直接寫死「需要 <strong>M 系列或 A17 Pro</strong> 晶片」，不符合的機型連下載鍵都不會出現。</p>
+          <div class="eglab">目前有這幾款</div>
+          <div class="egs"><span>惡靈古堡 4 重製版</span><span>惡靈古堡 8</span><span>惡靈古堡 7</span><span>死亡擱淺</span><span>刺客教條：幻象</span></div>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">為什麼類型 3 才是分水嶺</div>類型 1、2 的門檻十年沒怎麼動；類型 4 從一開始就寫死機型，反而很好判斷。<strong>難的是類型 3</strong>——它的門檻寫在「晶片＋記憶體」兩格上，而記憶體那格 Apple 官方從不公布，買家想對照也對照不到。下面兩節就在解這件事。</div>
+    </section>
+
+    <div class="part-div">為什麼是這條線</div>
+
+    <section id="three">
+      <div class="sec-label" style="--c:var(--teal)">three_numbers</div>
+      <h2>01 · 決定的其實只有三個數字</h2>
+      <p>iPad 的規格表很長，但決定「這台能不能玩這款遊戲」的其實只有三格。它們是有順序的——前面沒過，後面再強都沒用。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--red-bg)"><div class="bi">🧠</div><div class="bt">關卡 1 · 能不能玩</div><div class="bv">記憶體 RAM</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">📲</div><div class="bt">關卡 2 · 裝不裝得上</div><div class="bv">iPadOS 版本</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">⚡</div><div class="bt">關卡 3 · 好不好玩</div><div class="bv">晶片代數</div></div>
+        </div>
+        <figcaption>前兩關是<b>是非題</b>——沒過就是裝不了或一直被關掉；第三關才是<b>程度題</b>，決定畫質能開多高。</figcaption>
+      </figure>
+
+      <table>
+        <tr><th>這一格</th><th>沒過會怎樣</th><th>過了代表</th></tr>
+        <tr><td>記憶體 RAM</td><td class="bad">玩到一半自己跳回桌面，或某些遊戲直接不給裝</td><td class="good">遊戲能待在記憶體裡不被系統回收</td></tr>
+        <tr><td>iPadOS 版本上限</td><td class="bad">App Store 顯示「與此裝置不相容」，連下載鍵都沒有</td><td class="good">遊戲更新到最新版你也跟得上</td></tr>
+        <tr><td>晶片代數</td><td class="mid">不是不能玩，是要把畫質調低、畫面會頓</td><td class="good">畫質開得高、長時間玩比較穩</td></tr>
+      </table>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">還有第四格，但它不是效能</div>容量。原神官方要你留 40GB、建議 60GB，一款惡靈古堡 4 就 30GB。這格跟順不順無關，但它決定你「同時裝得下幾款」，第 06 節單獨講。</div>
+    </section>
+
+    <section id="ram">
+      <div class="sec-label" style="--c:var(--red)">why_ram</div>
+      <h2>02 · 為什麼 RAM 是硬門檻，而不是晶片</h2>
+      <p>客服最常接到的問題是「我這台跑得動嗎」，而最常聽到的抱怨不是「很慢」，是<strong>「玩一玩自己關掉」</strong>。這兩件事的原因不一樣，而且對應到完全不同的建議。</p>
+
+      <div class="dx">
+        <div class="dxi" style="--c:var(--amber)">
+          <div class="s">症狀 A</div>
+          <span class="big2">慢</span>
+          <p>畫面會頓、動作有延遲、載入很久——但遊戲還在畫面上，沒有消失。</p>
+          <div class="d">晶片代數不夠<small>把畫質調低通常就能救，不一定要換機</small></div>
+        </div>
+        <div class="dxi" style="--c:var(--red)">
+          <div class="s">症狀 B</div>
+          <span class="big2">消失</span>
+          <p>畫面一黑，直接跳回桌面。不是卡住不動，是整個遊戲不見了。</p>
+          <div class="d">記憶體不夠<small>調畫質沒用，只能換到記憶體更大的機型</small></div>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">一句話帶走</div><strong>症狀是「慢」＝晶片問題；症狀是「不見了」＝記憶體問題。</strong>後者不是遊戲寫壞了，是 iPadOS 主動把它關掉的——下面解釋為什麼。</div>
+
+      <figure class="fig anim">
+        <div class="flow">
+          <div class="box">
+            <div class="scr">
+              <div class="mem">
+                <div class="cap2"><span>記憶體</span><span>上限</span></div>
+                <div class="track2"><div class="line2"></div><div class="fill2"></div></div>
+              </div>
+            </div>
+            <div class="bt">step_01</div>
+            <div class="bv">遊戲一路吃記憶體</div>
+          </div>
+          <div class="arr">→</div>
+          <div class="box">
+            <div class="scr">
+              <div class="mem">
+                <div class="cap2"><span>記憶體</span><span>上限</span></div>
+                <div class="track2"><div class="line2"></div><div class="fill2 over"></div></div>
+                <div class="tagline2">超過上限</div>
+              </div>
+            </div>
+            <div class="bt">step_02</div>
+            <div class="bv">越過系統設的那條線</div>
+          </div>
+          <div class="arr">→</div>
+          <div class="box">
+            <div class="scr">
+              <div class="home"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+              <div class="appwin"></div>
+            </div>
+            <div class="bt">step_03</div>
+            <div class="bv">系統把它關掉，回桌面</div>
+          </div>
+        </div>
+        <figcaption>Apple 官方文件把這叫 <code>jetsam</code>：記憶體壓力持續時，<b>系統會終止 App 來回收記憶體</b>。所以那不是「當機」，是「被關掉」。</figcaption>
+      </figure>
+
+      <p>Apple 的開發者文件寫得很白：當 App 用掉的記憶體超過系統給的上限，或前景 App 需要更多記憶體時，系統會直接終止其他 App。官方甚至把這兩種情況歸類成「終止」而不是「當掉」，並說明後者是 App 生命週期的正常一環。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--navy)"><div class="ct">per-process-limit</div>單一 App 超過系統對它設的記憶體上限——上限跟這台的實體記憶體綁在一起，RAM 越小、上限越低。</div>
+        <div class="callout" style="--c:var(--navy)"><div class="ct">vm-pageshortage</div>系統整體記憶體不夠，需要挪給你正在用的那個 App，於是先關掉背景的。你切出去回 LINE 再切回來，遊戲重新讀取，就是這個。</div>
+      </div>
+
+      <p>這就是為什麼遊戲官方會把記憶體單獨列成一條需求。《絕區零》台灣 App Store 明寫支援規格是「iPad 搭載 A12 及更高效能處理器，<strong>4GB 記憶體</strong>」；Epic 對 Fortnite 的官方需求也是「最低 4GB RAM」。這些數字不是建議，是門票。</p>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">最容易誤判的一句話：「A12 以上就可以」</div>
+        iPad 第 8 代（A12）、第 9 代（A13）晶片都過關，但兩台都只有 3GB 記憶體。用《絕區零》官方那條「A12 ＋ 4GB」去對，晶片欄過了、記憶體欄沒過。
+      </div>
+      <div class="callout" style="--c:var(--red)"><div class="ct">Fortnite 講得更白</div>
+        台灣 App Store 的相容機型清單從「iPad 第 10 代」起跳，<strong>第 9 代根本不在名單裡</strong>。而第 10 代跟第 9 代之間，差的正是 4GB 對 3GB。
+      </div>
+
+      <div class="bigquote"><div class="qm">“</div><p>晶片決定你玩得順不順，記憶體決定你玩不玩得成。</p><small>買二手 iPad 玩遊戲，先看記憶體那一欄——雖然規格表上根本沒有它。</small></div>
+    </section>
+
+    <div class="part-div">全型號一台一台講</div>
+
+    <section id="table">
+      <div class="sec-label" style="--c:var(--navy)">all_models</div>
+      <h2>03 · 2018–2026 全型號對照表</h2>
+      <p>Apple 只在 M 系列機型的規格頁上寫記憶體，A 系列的 iPad 與 iPad mini 一律不寫。下表的記憶體數字來自拆解報告與規格資料庫，我們把來源等級標在表下——這是全表唯一不是官方明文的一欄，我們不假裝它是。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>機型</th><th>年份</th><th>晶片</th><th>記憶體</th><th>iPadOS 上限</th><th>3D 手遊（原神級）</th><th>移植大作</th></tr>
+          <tr><td>iPad（第 6 代）</td><td>2018</td><td>A10</td><td><span class="rb r2">2GB</span></td><td class="n">17</td><td class="n">不行</td><td class="n">不行</td></tr>
+          <tr><td>iPad（第 7 代）</td><td>2019</td><td>A10</td><td><span class="rb r3">3GB</span></td><td class="n">18</td><td class="n">不行</td><td class="n">不行</td></tr>
+          <tr><td>iPad Air（第 3 代）</td><td>2019</td><td>A12</td><td><span class="rb r3">3GB</span></td><td class="y">26</td><td class="mid">勉強</td><td class="n">不行</td></tr>
+          <tr><td>iPad mini（第 5 代）</td><td>2019</td><td>A12</td><td><span class="rb r3">3GB</span></td><td class="y">26</td><td class="mid">勉強</td><td class="n">不行</td></tr>
+          <tr><td>iPad（第 8 代）</td><td>2020</td><td>A12</td><td><span class="rb r3">3GB</span></td><td class="y">26</td><td class="mid">勉強</td><td class="n">不行</td></tr>
+          <tr><td>iPad Air（第 4 代）</td><td>2020</td><td>A14</td><td><span class="rb r4">4GB</span></td><td class="y">26</td><td class="y">可以</td><td class="n">不行</td></tr>
+          <tr><td>iPad（第 9 代）</td><td>2021</td><td>A13</td><td><span class="rb r3">3GB</span></td><td class="y">26</td><td class="mid">勉強</td><td class="n">不行</td></tr>
+          <tr><td>iPad mini（第 6 代）</td><td>2021</td><td>A15</td><td><span class="rb r4">4GB</span></td><td class="y">26</td><td class="y">可以</td><td class="n">不行</td></tr>
+          <tr><td>iPad Pro 11"（第 3 代）<small>／12.9"（第 5 代）</small></td><td>2021</td><td>M1</td><td><span class="rb r8">8GB</span></td><td class="y">26</td><td class="y">可以</td><td class="y">可以</td></tr>
+          <tr><td>iPad（第 10 代）</td><td>2022</td><td>A14</td><td><span class="rb r4">4GB</span></td><td class="y">26</td><td class="y">可以</td><td class="n">不行</td></tr>
+          <tr><td>iPad Air（第 5 代）</td><td>2022</td><td>M1</td><td><span class="rb r8">8GB</span></td><td class="y">26</td><td class="y">可以</td><td class="y">可以</td></tr>
+          <tr><td>iPad Pro 11"（第 4 代）<small>／12.9"（第 6 代）</small></td><td>2022</td><td>M2</td><td><span class="rb r8">8GB</span></td><td class="y">26</td><td class="y">可以</td><td class="y">可以</td></tr>
+          <tr><td>iPad Air（M2）</td><td>2024</td><td>M2</td><td><span class="rb r8">8GB</span></td><td class="y">26</td><td class="y">可以</td><td class="y">可以</td></tr>
+          <tr><td>iPad Pro（M4）</td><td>2024</td><td>M4</td><td><span class="rb r8">8GB</span><small>1TB 以上為 16GB</small></td><td class="y">26</td><td class="y">可以</td><td class="y">可以</td></tr>
+          <tr><td>iPad mini（A17 Pro）</td><td>2024</td><td>A17 Pro</td><td><span class="rb r8">8GB</span></td><td class="y">26</td><td class="y">可以</td><td class="y">可以</td></tr>
+          <tr><td>iPad Air（M3）</td><td>2025</td><td>M3</td><td><span class="rb r8">8GB</span></td><td class="y">26</td><td class="y">可以</td><td class="y">可以</td></tr>
+          <tr><td>iPad（A16）</td><td>2025</td><td>A16</td><td><span class="rb r4">6GB</span></td><td class="y">26</td><td class="y">可以</td><td class="n">不行</td></tr>
+          <tr><td>iPad Pro（M5）</td><td>2025</td><td>M5</td><td><span class="rb r8">12GB</span><small>1TB 以上為 16GB</small></td><td class="y">26</td><td class="y">可以</td><td class="y">可以</td></tr>
+          <tr><td>iPad Air（M4）</td><td>2026</td><td>M4</td><td><span class="rb r8">12GB</span></td><td class="y">26</td><td class="y">可以</td><td class="y">可以</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">「勉強」是什麼意思</div>
+        指<strong>符合官方最低配置、但不符合建議配置</strong>的機型。原神最低是 3GB，這幾台過得了；但《絕區零》最低就寫 4GB，它們不符合，Fortnite 的相容清單也沒有它們。
+        白話講：舊遊戲能玩、新遊戲會被一款一款擋掉，而且擋掉的速度只會越來越快。
+      </div>
+
+      <details>
+        <summary>表格沒放進去的機型，以及為什麼</summary>
+        <p>2018 與 2020 年的 iPad Pro（A12X／A12Z）沒有列入。這兩代 Apple 同樣不公布記憶體，而我們這輪查證沒有取得夠可靠的拆解數字，所以不填——寧可留白，也不寫沒把握的數字。實務上它們的晶片代數足以應付 3D 手遊，但主機移植大作那條線要 M 系列，它們一樣不在名單內。</p>
+      </details>
+    </section>
+
+    <section id="test">
+      <div class="sec-label" style="--c:var(--green)">our_test</div>
+      <h2>04 · 我們自己拿四台去跑原神</h2>
+      <p>上面那些是官方數字。實際玩起來差多少？我們拿手上四台不同代數的 iPad，同樣開到<strong>極高畫質</strong>跑原神，錄下來比對。結果幾乎完全對上記憶體那一欄。</p>
+
+      <div class="lagrow"><div class="nm">iPad 6（2GB／A10）</div><div class="bar"><div class="fill" style="--c:var(--red);--w:100%">延遲特別高</div></div></div>
+      <div class="lagrow"><div class="nm">iPad 7（3GB／A10）</div><div class="bar"><div class="fill" style="--c:var(--amber);--w:75%">延遲高</div></div></div>
+      <div class="lagrow"><div class="nm">iPad 8（3GB／A12）</div><div class="bar"><div class="fill" style="--c:var(--teal);--w:45%">些許延遲</div></div></div>
+      <div class="lagrow"><div class="nm">iPad 10（4GB／A14）</div><div class="bar"><div class="fill" style="--c:var(--green);--w:12%">沒有延遲</div></div></div>
+
+      <p>先講最有意思的一點：iPad 6 和 iPad 7 都在原神官方最低配置<strong>之下</strong>（官方要 A12，它們是 A10），但它們都跑得起來。這正好對上官方那句話——低於最低規格的裝置仍可能啟動遊戲，只是會頓、不穩、甚至閃退。</p>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">最容易被誤解的一件事</div><strong>「能不能開起來」跟「能不能玩」是兩回事。</strong>舊機不是打不開，是打開之後不想玩。所以「我朋友那台舊 iPad 也能跑」不能當成買它的理由——問題是他玩得下去嗎。</div>
+
+      <p>第二，iPad 7 和 iPad 8 是同樣的 3GB，但 iPad 8 換上 A12 之後明顯好一截——這就是晶片決定「順不順」的部分。</p>
+      <p>第三，真正跨過那條線的是 iPad 10。它的晶片只比 iPad 8 新兩代，記憶體卻從 3GB 變成 4GB，剛好越過原神官方的建議配置。體感上就是從「有延遲」變成「沒延遲」。</p>
+
+      <table>
+        <tr><th>實測機型</th><th>對照原神官方配置</th><th>實際感受</th></tr>
+        <tr><td>iPad 6（A10／2GB）</td><td class="bad">低於最低（晶片、記憶體都不到）</td><td class="bad">延遲特別高</td></tr>
+        <tr><td>iPad 7（A10／3GB）</td><td class="bad">低於最低（晶片不到）</td><td class="bad">延遲高</td></tr>
+        <tr><td>iPad 8（A12／3GB）</td><td class="mid">剛好等於最低配置</td><td class="mid">些許延遲</td></tr>
+        <tr><td>iPad 10（A14／4GB）</td><td class="good">達到建議配置</td><td class="good">沒有延遲</td></tr>
+      </table>
+
+      <h3>實測影片：四台同時跑，一次看完差別</h3>
+      <p>文字形容不出「延遲特別高」和「沒有延遲」差多少，直接看畫面最快。四台機器並排，同一個場景、同樣的極高畫質設定：</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=NLlTQEyX73A" target="_blank" rel="noopener" data-yt="NLlTQEyX73A" aria-label="播放：果果國際 iPad 原神性能測試 iPad 6 7 8 10 代">
+          <img loading="lazy" src="https://i.ytimg.com/vi/NLlTQEyX73A/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/NLlTQEyX73A/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>【果果國際】iPad 原神性能測試 iPad 6, 7, 8, 10 代</b><small>我們自己錄的 · 四宮格並排，每一格標了該台的記憶體與晶片。左上 iPad 6（2GB）延遲最明顯，右下 iPad 10（4GB）幾乎無感 · 繁中</small></div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">這份實測的邊界，先說清楚</div>
+        這是我們自己在店裡錄的，不是實驗室數據：單次測試、沒有控制環境溫度、沒有量化的流暢度數據，只有可以看得出來的體感差異。
+        而且遊戲版本會一直更新，同一台機器一年後的表現不會跟今天一樣。<strong>當方向參考，別當保證。</strong>
+      </div>
+    </section>
+
+    <section id="aaa">
+      <div class="sec-label" style="--c:var(--purple)">console_games</div>
+      <h2>05 · 主機移植的大作：只有這幾台裝得起來</h2>
+      <p>惡靈古堡 4 重製版、惡靈古堡 8、惡靈古堡 7、死亡擱淺、刺客教條：幻象——這幾款是真的把 PS5、Xbox 上的大遊戲搬到 iPad 上（業界俗稱「<strong>3A 大作</strong>」，指開發成本最高的那一級）。它們不用你自己判斷，App Store 直接寫死。</p>
+
+      <blockquote class="lead-src">「Requires iPadOS 17.0 or later and a device with an M-series or A17 Pro chip.」（刺客教條：幻象為 iPadOS 17.4）<cite>五款遊戲的 App Store 商品頁，用字完全一致，查核 2026/08/09</cite></blockquote>
+
+      <figure class="fig">
+        <div class="spectrum">
+          <div class="seg old">A 系列 iPad<small>iPad 全系列入門款、Air 第 4 代以前、mini 第 6 代以前</small><b>下載不了</b></div>
+          <div class="divider">M 系列<br>或 A17 Pro</div>
+          <div class="seg new">iPad Air 第 5 代起<small>Pro 11" 第 3 代起、Pro 12.9" 第 5 代起、mini（A17 Pro）</small><b>可以玩</b></div>
+        </div>
+        <figcaption>這條線畫在<b>晶片</b>上，不是記憶體。iPad（A16）有 6GB 記憶體，比 M1 少不了多少，但因為不是 M 系列，一樣進不去。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">那個「或」字很關鍵</div>
+        官方寫的是「M 系列<strong>或</strong> A17 Pro」，不是「M 系列以上」。這是為了容納 <strong>iPad mini（A17 Pro）</strong>——它沒有 M 晶片，卻在名單裡。
+        反過來說 iPad（A16）有 6GB 記憶體，比 M1 少不了多少，但因為既不是 M 系列也不是 A17 Pro，一樣進不去。<strong>這條線畫在晶片型號上，不是效能高低上。</strong>
+      </div>
+
+      <p>不符合的話你在 App Store 上不會看到「你的記憶體不夠」這種說明，只會看到一句「與此裝置不相容」，連下載鍵都不給。這是 Apple 提供給開發者的官方機制。</p>
+
+      <details>
+        <summary>技術上是怎麼擋的？（想知道原理再看）</summary>
+        <p>Apple 在 App 的設定檔裡開放了三個「最低效能」旗標，開發者挑一個勾起來就好：</p>
+        <ul class="styled">
+          <li><code>ipad-minimum-performance-m1</code>　要求 iPad 有 <b>M1 或更新</b>晶片</li>
+          <li><code>iphone-ipad-minimum-performance-a12</code>　要求 <b>A12 以上</b></li>
+          <li><code>iphone-performance-gaming-tier</code>　要求相當於 iPhone 15 Pro 的繪圖能力，<b>在 iPad 上等同要求 M1</b></li>
+        </ul>
+        <p style="margin-top:10px">開發者勾了哪一個，App Store 就照那條線擋。有趣的是連開發者自己也看不到被擋掉的裝置清單，只知道擋了——所以你在商品頁上看到的那句「不相容」，其實已經是雙方都能拿到的全部資訊。</p>
+      </details>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">想玩移植大作，最省的那條路</div>不是買最新的 Pro。<strong>iPad Air 第 5 代（2022，M1）</strong>就已經在名單裡，跟當年的 iPad Pro 用同一顆 M1、同樣 8GB 記憶體。想要 120Hz 螢幕才需要往 Pro 走，那是另一個決定。</div>
+    </section>
+
+    <section id="storage">
+      <div class="sec-label" style="--c:var(--amber)">storage</div>
+      <h2>06 · 容量：64GB 這個選項，遊戲族請直接跳過</h2>
+      <p>這節是最多人低估的一格，而且誤會的點很固定：</p>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">最常見的誤會</div><strong>App Store 上顯示的「大小」不等於這款遊戲會佔多少空間</strong>，兩者常常差十倍以上。安裝檔只是把遊戲的「殼」下載下來，開起來之後才會陸續抓語音、地圖、劇情這些資源。</div>
+
+      <table>
+        <tr><th>遊戲</th><th>App Store 顯示</th><th>實際要留的空間</th></tr>
+        <tr><td>原神</td><td>約 3.5 GB</td><td class="bad">官方最低要求留 <strong>40 GB</strong>，建議 60 GB</td></tr>
+        <tr><td>惡靈古堡 4 重製版</td><td>—</td><td class="bad">App Store 標示遊戲本體約 <strong>30 GB</strong></td></tr>
+        <tr><td>崩壞：星穹鐵道</td><td>約 3.7 GB</td><td class="mid">下載完資源後遠大於此，官方未給單一數字</td></tr>
+        <tr><td>傳說對決</td><td>約 434 MB</td><td class="good">輕量，容量幾乎不用煩惱</td></tr>
+        <tr><td>天堂 M</td><td>約 206 MB</td><td class="good">輕量</td></tr>
+      </table>
+
+      <p>差別在於：安裝檔只是把遊戲的「殼」下載下來，開起來之後才會陸續抓語音、地圖、劇情這些資源。原神官方直接把這件事寫進最低配置，要你留 40GB。</p>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">64GB 的實際處境</div>扣掉 iPadOS 本身和系統保留，能用的大概剩五十幾 GB。一款原神就把它吃光了，而且沒有空間讓它更新——iPadOS 更新時空間不足還會直接失敗。<strong>如果主要用途是玩 3D 大型手遊，128GB 是起跳，256GB 才舒服。</strong></div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">反過來說</div>如果只玩傳說對決、天堂 M、卡牌那類，這幾款加起來不到 2GB。64GB 完全夠用，把預算留給更好的機型或配件更划算。</div>
+    </section>
+
+    <div class="part-div">下單之前</div>
+
+    <section id="avoid">
+      <div class="sec-label" style="--c:var(--red)">red_flags</div>
+      <h2>07 · 買之前要先知道的取捨</h2>
+      <p>我們同時在賣 2018 到 2026 年的機型，所以可以直說哪些組合容易後悔。<strong>不是這些機器不好，是「買它的理由」要跟「它能做的事」對得上。</strong></p>
+
+      <ul class="flags">
+        <li><b>拿 iPad 第 6 代（2018）當主力遊戲機</b>——只有 2GB 記憶體，連原神官方最低的 3GB 都不到；系統也停在 iPadOS 17，未來遊戲一旦要求 iPadOS 18 以上就會被擋。<strong>輕量遊戲今天還跑得動，但它沒有未來。</strong></li>
+        <li><b>以為 iPad 第 7 代（2019）比較新所以撐得久</b>——記憶體補到 3GB，但晶片還是 A10，系統上限只到 iPadOS 18。它是「同年份裡最先出局」的那一台：同樣 2019 年的 iPad Air 第 3 代和 mini 第 5 代因為換了 A12，現在還跟得上 iPadOS 26。<strong>買二手看年份沒用，要看晶片。</strong></li>
+        <li><b>買 3GB 機型（iPad 8／9、Air 3、mini 5）當長期遊戲機</b>——今天還能玩，但《絕區零》要 4GB、Fortnite 的相容清單也沒有它們。這條淘汰線只會往上，不會往下。想撐三年以上，直接跳到 4GB 起跳的機型。</li>
+        <li><b>為了玩主機移植大作買 iPad（A16）或 iPad 第 10 代</b>——這兩台跑主流手遊完全沒問題，但那條線畫在 M 系列，它們永遠進不去。<strong>買錯方向比買錯代數更貴。</strong></li>
+        <li><b>只看容量便宜挑 64GB</b>——見上一節。省下來的錢，通常會在半年後變成「東西刪不完」的煩躁。</li>
+      </ul>
+
+      <h3>那 iPad 6、iPad 7 什麼情況下反而是好選擇？</h3>
+      <p>這兩台我們也還在賣，而且賣得掉是有原因的。它們不適合當主力遊戲機，但下面這幾種情境它們其實很合適：</p>
+
+      <div class="grid">
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">情境 1</div>
+          <h4>給國小以下的小朋友</h4>
+          <p class="why">小小孩玩的本來就是輕量遊戲，這兩台跑得動。而且<strong>孩子摔壞的機率很高</strong>——用便宜的機器換心情上的餘裕，比買貴的天天提心吊膽划算。</p>
+          <div class="eglab">這些都跑得動</div>
+          <div class="egs"><span>Candy Crush</span><span>開心消消樂</span><span>Minecraft</span><span>Roblox</span><span>動物森友會 口袋露營廣場</span></div>
+        </div>
+        <div class="card" style="--c:var(--teal);--cbg:var(--teal-bg)">
+          <div class="c-tag">情境 2</div>
+          <h4>遊戲只是順便</h4>
+          <p class="why">主要拿來追劇、看 YouTube、上線上課程、當第二螢幕，偶爾玩一下小遊戲。這種需求買到 4GB 機型反而是浪費——<strong>把差額留給保護殼或更大的容量更實在。</strong></p>
+          <div class="eglab">但要有心理準備</div>
+          <div class="egs"><span>不能跑原神級</span><span>Roblox 未來可能被淘汰</span></div>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">買這兩台之前，只要確認一件事</div>
+        先問自己：<strong>「我期待它撐幾年？」</strong>如果答案是一兩年、或它壞了你不會太心痛，那它很划算。
+        如果你希望這台用五年、還要跟得上之後的新遊戲，那多加一點跳到 4GB 起跳的機型，才不會兩年後又要再買一台。
+      </div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">我們的立場</div><strong>我們不會勸你買超過需求的機型</strong>——如果你玩的是休閒、卡牌、團隊對戰那幾類，iPad 第 8 代這種 2020 年的機器真的夠用，省下來的錢很有感。我們只希望你知道自己買的是「三年機」還是「一年機」，然後自己決定。</div>
+    </section>
+
+    <section id="check">
+      <div class="sec-label" style="--c:var(--teal)">checklist</div>
+      <h2>08 · 下單前 30 秒自我檢查</h2>
+      <p>照這四步走一遍，就不會買錯。順序有意義，別跳。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">1</div><div><h4>去 App Store 翻那款遊戲的「相容性」</h4><p>直接看它寫「需要 iPadOS 幾點幾」。這是第一手、最新、而且免費的資訊，比任何攻略文都準。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">2</div><div><h4>看商品頁下方有沒有寫記憶體</h4><p>原神、絕區零這類會把最低與建議配置寫在說明欄裡。看到「4GB 記憶體」就直接對照本文第 03 節的表。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">3</div><div><h4>決定要「最低可玩」還是「建議配置」</h4><p>只想玩得動，抓最低那條；想開高畫質、想撐三年，抓建議那條。原神的建議配置是 iPad 第 9 代以上、4GB 記憶體。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">4</div><div><h4>最後才選容量</h4><p>3D 大型手遊 128GB 起跳；輕量遊戲 64GB 夠用。容量不影響順暢度，但買小了無法後悔——iPad 不能加記憶卡。</p></div></div>
+      </div>
+
+      <ul class="check">
+        <li><b>我要玩的是哪一類？</b>對到第 00 節的四張卡其中一張了嗎？</li>
+        <li><b>這台的記憶體是幾 GB？</b>3GB 和 4GB 是完全不同的兩件事，不是「差一點點」。</li>
+        <li><b>它還能升到 iPadOS 26 嗎？</b>不行的話，等於買了一台會被慢慢鎖住的機器。</li>
+        <li><b>容量夠裝我想玩的那幾款嗎？</b>把它們的實際佔用加起來，再加 20GB 給系統喘息。</li>
+      </ul>
+    </section>
+
+    <section id="honest">
+      <div class="sec-label" style="--c:var(--red)">honest</div>
+      <h2>09 · 我們不能保證的事</h2>
+      <p>這節寫給認真在比較的人。上面每條門檻都有官方出處，但有些事情<strong>沒有人能保證</strong>，包括我們。</p>
+
+      <table>
+        <tr><th>這件事</th><th>實際情況</th></tr>
+        <tr><td>「買這台就一定順」</td><td class="bad">符合官方需求只代表「能玩」。實際順不順還受畫質設定、環境溫度、背景 App、遊戲當下版本影響。</td></tr>
+        <tr><td>「iPad 不會發熱降頻」</td><td class="bad">會。iPad 沒有風扇。媒體實測 iPad Pro M4 跑惡靈古堡 4 約 9 分鐘就開始降頻，M5 版本撐到約 17 分鐘——連最新的 Pro 都會，何況入門機。</td></tr>
+        <tr><td>「今天的門檻明年也一樣」</td><td class="mid">不會。Roblox 這幾年一路把最低 iOS 從 9 拉到 14，寶可夢 GO 拉到 15。門檻只會往上。</td></tr>
+        <tr><td>「跑分高就一定好玩」</td><td class="mid">跨代的繪圖效能差幾倍，我們這輪沒有查到夠乾淨、可互相比較的實測數據，所以本文<strong>不列任何效能倍數</strong>——寧可不寫，也不寫沒把握的數字。</td></tr>
+      </table>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">降頻其實不是壞消息</div>它是 Apple 的保護機制，代表機器在保護電池和自己。真正該注意的是：如果你要長時間、每天玩重度 3D 遊戲，散熱空間比較大的機型（大尺寸、Pro）撐得比較久——這是一個真實存在的差別，但別期待「完全不降」。</div>
+
+      <p class="updated">本文查證：<b>2026 年 8 月 9 日</b>。遊戲需求取自各遊戲官方頁與台灣 App Store 商品頁，iPad 相容性取自 Apple 官方支援頁。<b>遊戲需求與 iPadOS 相容清單每年都會變動，以你查看當下的官方頁面為準。</b></p>
+    </section>
+
+    <section id="video">
+      <div class="sec-label" style="--c:var(--muted)">video</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p>我們自己錄的原神實測影片放在<a class="inline" href="#test">第 04 節</a>。下面兩支是選購角度的整理，補上本文沒展開的螢幕、尺寸與價位取捨。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=pkKqnQvKrrU" target="_blank" rel="noopener" data-yt="pkKqnQvKrrU" aria-label="播放：2025 全 iPad 選購指南 該買哪一台">
+          <img loading="lazy" src="https://i.ytimg.com/vi/pkKqnQvKrrU/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/pkKqnQvKrrU/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>2025 全 iPad 選購指南！該買 iPad A16 / iPad Air M3 / iPad mini / iPad Pro M4 哪一台？</b><small>頻道：阿康爸的平安科技日常 GOODSKANG · 推薦原因：本文只談遊戲門檻，這支補上螢幕、尺寸、配件相容性這些同樣會影響決定的面向 · 繁中</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=j7JrRMG6QTY" target="_blank" rel="noopener" data-yt="j7JrRMG6QTY" aria-label="播放：iPad A16 入門款值得推薦嗎 還是直上 Air">
+          <img loading="lazy" src="https://i.ytimg.com/vi/j7JrRMG6QTY/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/j7JrRMG6QTY/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>這台 iPad A16 終於值得推薦了？！入門選它還是多花 8 千直上 Air 會更好？</b><small>頻道：APPLEFANS蘋果迷 · 推薦原因：正好對應本文第 07 節最後一條——入門款跑手遊夠用、但移植大作那條線在 M 系列。這支把「要不要為了升級多花錢」講得很具體 · 繁中</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">遊戲需求取自各遊戲官方頁與台灣 App Store 商品頁，iPad 相容性與記憶體機制取自 Apple 官方頁面，記憶體容量取自拆解報告與規格資料庫（已在第 03 節標明證據等級）。查證日期 2026 年 8 月 9 日：</p>
+      <details class="src-fold">
+        <summary>參考資料來源<span class="n">15 筆</span></summary>
+        <ul class="sources">
+          <li><a href="https://apps.apple.com/tw/app/id1517783697">台灣 App Store ·《原神》商品頁</a>（第 00、02、03、06、08 節的最低與建議配置：A12／3GB／iPadOS 13.0／40GB，建議 iPad 第 9 代／A13／4GB／60GB）</li>
+          <li><a href="https://apps.apple.com/tw/app/id1606356401">台灣 App Store ·《絕區零》商品頁</a>（第 02、03 節的「A12 及更高效能處理器，4GB 記憶體」與 iOS 14.0 門檻）</li>
+          <li><a href="https://apps.apple.com/tw/app/id1599719154">台灣 App Store ·《崩壞：星穹鐵道》商品頁</a>（第 06 節的 iPadOS 13.0 與 3.7GB 安裝檔大小）</li>
+          <li><a href="https://www.epicgames.com/help/c-202300000001639/c-202300000001734/what-are-the-system-requirements-for-fortnite-on-ios-a202300000010926">Epic Games 官方 · Fortnite iOS 系統需求</a>（第 02 節的「最低 4GB RAM」官方門檻）</li>
+          <li><a href="https://apps.apple.com/tw/app/fortnite/id6483539426">台灣 App Store · Fortnite 商品頁</a>（第 02、03 節的相容機型清單：iPad Pro 10.5" 起、Air 第 4 代起、iPad 第 10 代起、mini 第 6 代起）</li>
+          <li><a href="https://wildrift.leagueoflegends.com/en-us/news/game-updates/wild-rift-minimum-device-specification-requirements-update/">Riot Games 官方公告 ·《激鬥峽谷》最低裝置需求更新</a>（2025-11-24 發布，第 00 節的 iOS 15／2GB 記憶體／A9 門檻）</li>
+          <li><a href="https://apps.apple.com/tw/app/garena-%E5%82%B3%E8%AA%AA%E5%B0%8D%E6%B1%BA-%E5%85%A8%E5%85%83%E9%80%B2%E6%93%8A%E7%89%88%E6%9C%AC/id1089079153">台灣 App Store ·《Garena 傳說對決》商品頁</a>（第 00、06 節的 iPadOS 12.2 門檻與 434MB 大小）</li>
+          <li><a href="https://apps.apple.com/tw/app/%E5%A4%A9%E5%A0%82m/id1276508585">台灣 App Store ·《天堂 M》商品頁</a>（第 00、06 節的 iPadOS 13.0 門檻與 206MB 大小）</li>
+          <li><a href="https://apps.apple.com/us/app/resident-evil-4/id6462360082">App Store ·《惡靈古堡 4 重製版》商品頁</a>（第 05 節的「iPadOS 17.0＋M 系列或 A17 Pro」與相容機型清單、第 06 節的約 30GB）</li>
+          <li><a href="https://apps.apple.com/us/app/resident-evil-village/id6450980545">App Store ·《惡靈古堡 8：村莊》商品頁</a>（第 05 節五款大作用字一致的交叉比對）</li>
+          <li><a href="https://apps.apple.com/us/app/roblox/id431946152">App Store · Roblox 商品頁</a>（第 09 節的 iPadOS 14.0 現行門檻）</li>
+          <li><a href="https://apps.apple.com/us/app/pok%C3%A9mon-go/id1094591345">App Store · Pokémon GO 商品頁</a>（第 09 節的 iPadOS 15.0 現行門檻）</li>
+          <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipad213a25b2/26/ipados/26">Apple 官方 · iPadOS 26 相容機型</a>（第 03 節整欄「iPadOS 上限」；一般款 iPad 自第八代起，不含第六、七代）</li>
+          <li><a href="https://developer.apple.com/documentation/xcode/identifying-high-memory-use-with-jetsam-event-reports">Apple 開發者文件 · Jetsam 事件報告</a>（第 02 節的記憶體壓力終止機制、per-process-limit 與 vm-pageshortage）</li>
+          <li><a href="https://developer.apple.com/documentation/BundleResources/Information-Property-List/UIRequiredDeviceCapabilities">Apple 開發者文件 · UIRequiredDeviceCapabilities</a>（第 05 節的三個最低效能旗標與 App Store 擋下載機制）</li>
+        </ul>
+      </details>
+      <p class="sources" style="margin-top:14px">記憶體容量（Apple 官方不公布 A 系列機型）另參考：<a href="https://9to5mac.com/ipad-ram-list-2/">9to5Mac · iPad RAM 對照表</a>、<a href="https://appleinsider.com/articles/19/09/27/seventh-generation-ipad-teardown-reveals-3gb-ram-same-battery">AppleInsider 轉述 iFixit 拆解 · iPad 第 7 代 3GB</a>、Everymac 機型資料庫。發熱降頻實測參考 <a href="https://www.notebookcheck.net/iPad-Pro-M5-AAA-gaming-test-shows-Death-Stranding-running-at-1080p-high-settings-without-any-upscaling-or-thermal-throttling.1145228.0.html">Notebookcheck · iPad Pro M5 AAA 遊戲壓力測試</a>。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
