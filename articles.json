@@ -1802,7 +1802,8 @@
         "q": "通用剪貼板和 AirDrop 有什麼不一樣？",
         "a": "通用剪貼板是把「複製的內容」送到另一台，要兩台同一個 Apple 帳號，失敗時完全沒有提示；AirDrop 是傳「整個檔案」，可以傳給別人、不需要同帳號，而且傳送過程與失敗都看得到。要傳一整份檔案或多個檔案時，官方也建議用 AirDrop 或 iCloud 雲碟，通用剪貼板適合的是小段文字和影像。"
       }
-    ]
+    ],
+    "ogImage": "assets/og/universal-clipboard-not-working-cover.png"
   },
   {
     "slug": "hot-ipad-normal-or-not",
