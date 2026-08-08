@@ -1531,6 +1531,7 @@
         "q": "AirPods 的充電保護要去哪裡設定？",
         "a": "在 iPhone 或 iPad 裡，不在耳機上。耳機沒有螢幕，所以官方的做法是：戴上 AirPods 並確認已連接手機，然後到「設定」，選取你的 AirPods，點一下「電池」。AirPods Pro 和 AirPods 3 或後續機型有「最佳化電池充電」，iOS 15 以上預設開啟；AirPods Pro 3 另外還有會依使用情況調整的「最佳化充電上限」，可以完全關閉或只關閉一天。"
       }
-    ]
+    ],
+    "ogImage": "assets/og/apple-charge-protection-map-cover.png"
   }
 ]
