@@ -462,6 +462,24 @@
   ul.sources li:last-child { border-bottom: 0; }
   ul.sources li::before { content: '·'; position: absolute; left: 5px; color: var(--navy); font-weight: 700; }
   .updated { font-family: var(--mono); font-size: .68rem; color: var(--muted); }
+  /* 來源清單摺疊 details.src-fold：來源動輒 20 筆，全展開會把後面的常見問題、
+     延伸觀看與導購推到看不見的地方。預設收合、點一下展開；<details> 是原生元素，
+     沒有 JS 也能開合，內容仍在 DOM 裡 → 搜尋引擎與 Pagefind 照樣讀得到。 */
+  details.src-fold { margin: 8px 0 0; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+  details.src-fold > summary { display: flex; align-items: center; gap: 8px; cursor: pointer;
+    padding: 11px 14px; font-size: .86rem; font-weight: 700; color: var(--navy);
+    list-style: none; border-radius: 10px; transition: background .14s; }
+  details.src-fold > summary::-webkit-details-marker { display: none; }
+  details.src-fold > summary::before { content: '›'; font-size: 1.15rem; line-height: 1;
+    color: var(--navy); transition: transform .18s; flex: none; }
+  details.src-fold[open] > summary::before { transform: rotate(90deg); }
+  details.src-fold > summary:hover { background: var(--navy-bg); }
+  details.src-fold > summary:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+  details.src-fold > summary .n { margin-left: auto; font-family: var(--mono); font-weight: 400;
+    font-size: .74rem; color: var(--muted); }
+  details.src-fold[open] > summary { border-bottom: 1px solid var(--line); border-radius: 10px 10px 0 0; }
+  details.src-fold ul.sources { margin: 0; padding: 4px 14px 10px; }
+  @media (prefers-reduced-motion: reduce) { details.src-fold > summary::before { transition: none; } }
   .updated b { color: var(--amber); }
 
   @media (max-width: 860px) {

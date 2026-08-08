@@ -856,7 +856,9 @@
       <div class="sec-label">sources</div>
       <h2>資料來源</h2>
       <p class="sources">本文的規格、官方步驟、售價與保固條款皆取自 Apple 官方頁面；訊號鏈原理取自 Apple 開發者文件，技術結構部分取自 iFixit 拆解，Procreate 的部分取自其官方手冊與支援文件。查證日期 2026 年 7 月 31 日：</p>
-      <ul class="sources">
+      <details class="src-fold">
+        <summary>參考資料來源<span class="n">23 筆</span></summary>
+        <ul class="sources">
         <li><a href="https://developer.apple.com/documentation/uikit/tracking-the-force-of-3d-touch-events">Apple 開發者文件 · Tracking the force of 3D Touch events</a>（力道沒有專用管線：標題是 3D Touch，Apple Pencil 於括號中補述「會把筆尖的受力回報給連接的裝置」）</li>
         <li><a href="https://developer.apple.com/documentation/uikit/uitouch/estimatedproperties">Apple 開發者文件 · UITouch.estimatedProperties</a>（力道必須透過空中傳回 iPad，延遲可能導致力道資訊比觸碰事件更晚抵達——第 01 節時間軸圖的依據）</li>
         <li><a href="https://developer.apple.com/documentation/uikit/handling-input-from-apple-pencil">Apple 開發者文件 · Handling input from Apple Pencil</a>（命令句：若使用 Apple Pencil 的高度、方位或力道資訊，開發者「必須」明確處理估計值）</li>
@@ -881,6 +883,7 @@
         <li><a href="https://www.apple.com/legal/warranty/products/accessory-warranty-traditional-chinese.html">Apple 一（1）年有限保固 · 配件（繁體中文）</a>（一年保固、「不涵蓋電池等消耗品零件的正常耗損」、維修／更換／退款三種處理方式）</li>
         <li><a href="https://support.apple.com/zh-tw/repair">Apple 台灣 · 產品服務與維修資訊</a>（可查詢維修的十二類產品中未列 Apple Pencil，官網無公開保固外費率）</li>
       </ul>
+      </details>
       <p class="updated">介面文字與功能可能隨 iPadOS 版本調整，售價以 Apple 官網當下標示為準；標示為「合理推論」與「待驗證」的說法請見<a class="inline" href="#honest">第 07 節</a>。</p>
     </section>
   </div>

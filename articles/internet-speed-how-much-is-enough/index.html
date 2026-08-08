@@ -665,7 +665,9 @@
       <div class="sec-label">sources</div>
       <h2>資料來源</h2>
       <p class="sources">本文的頻寬與容量數字取自各服務的官方說明頁；評分門檻取自 Cloudflare 公開原始碼；遊戲延遲門檻取自同儕審查論文。查證日期 2026 年 8 月：</p>
-      <ul class="sources">
+      <details class="src-fold">
+        <summary>參考資料來源<span class="n">24 筆</span></summary>
+        <ul class="sources">
         <li><a href="https://speed.cloudflare.com/">Cloudflare Speed Test</a>（本文建議的測速工具，一次量出六個指標並給出串流／遊戲／視訊三種用途的等級）</li>
         <li><a href="https://github.com/cloudflare/speedtest">cloudflare/speedtest 原始碼</a>（AIM 評分定義：各指標的分界值、三種用途各自的計分項目與分級門檻。本文的健康區間色階與計分對照表皆由此而來）</li>
         <li><a href="https://developers.cloudflare.com/speed/aim/">Cloudflare Speed 文件 · Aggregated Internet Measurement</a>（AIM 的六項量測指標與 bad／poor／average／good／great 五級分類）</li>
@@ -691,6 +693,7 @@
         <li><a href="https://support.apple.com/zh-tw/102766">Apple · Wi-Fi 路由器和存取點的建議設定</a>（安全性設 WPA3 個人級或 WPA2／WPA3 轉換；過時協定「降低網路的穩定與效能」；各頻段同一 SSID；頻道自動；2.4GHz 頻寬 20 MHz；WMM 啟用）</li>
         <li><a href="https://fast.com/zh/tw/">Netflix · FAST.com</a>（測試對象為 Netflix 伺服器；「顯示更多資訊」提供上傳速度與未載入／已載入延遲，兩者差異即緩衝區膨脹）</li>
       </ul>
+      </details>
       <p class="updated">本文第 06 節的評分結果，是依 Cloudflare 公開原始碼中的計分規則自行代入計算的示例，用來說明各指標的相對權重，<b>不是實際測試某條線路的結果</b>。</p>
       <p class="updated">各服務的建議頻寬、App 容量與工具功能都可能調整，一律以官方最新公告為準。本文查證：<b>2026 年 8 月</b>，實際條件請以你自己的線路、服務設定與裝置系統版本為準。</p>
     </section>
