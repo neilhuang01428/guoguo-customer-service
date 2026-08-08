@@ -181,6 +181,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.guoguo.tw/guide/articles/apple-charge-protection-map/</loc>
+    <lastmod>2026-08-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.guoguo.tw/guide/tag/airtag/</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -195,6 +201,12 @@
   <url>
     <loc>https://www.guoguo.tw/guide/tag/procreate/</loc>
     <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.guoguo.tw/guide/tag/iphone/</loc>
+    <lastmod>2026-08-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -218,7 +230,7 @@
   </url>
   <url>
     <loc>https://www.guoguo.tw/guide/tag/%E7%9B%B8%E5%AE%B9%E5%B0%8D%E7%85%A7/</loc>
-    <lastmod>2026-08-02</lastmod>
+    <lastmod>2026-08-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
