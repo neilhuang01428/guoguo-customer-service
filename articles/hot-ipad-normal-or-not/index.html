@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>iPad 發燙正常嗎？看時機不看溫度 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式 ── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 表格橫向捲動 */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 620px; }
+  .tbl-wrap table.wide { min-width: 700px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+
+  /* 證據等級小標籤：讓讀者一眼分辨「官方明說」與「果果經驗」 */
+  .lv { display: inline-block; font-family: var(--mono); font-size: .58rem; font-weight: 700;
+        padding: 1px 6px; border-radius: 4px; vertical-align: middle; white-space: nowrap; }
+  .lv.o { color: var(--navy); background: var(--navy-bg); border: 1px solid #cfdaea; }   /* 官方原文 */
+  .lv.g { color: var(--purple); background: var(--purple-bg); border: 1px solid #d8cbf3; } /* 果果經驗 */
+  .lv.i { color: var(--amber); background: var(--amber-bg); border: 1px solid #e8d7ae; }   /* 合理推論 */
+
+  /* ── 動態分鏡：為什麼要「看時機」而不是「看幾度」 ──
+     為什麼這裡值得動畫：這一節的知識點本身就是「兩條隨時間變化的曲線的差別」——
+     正常的熱是跟著任務起、跟著任務落；異常的熱是任務早就結束了它還下不來。
+     靜態圖只能各給一張截圖，讀者看到的是兩個「結果」，看不到「跟不跟得上任務」這個因果。
+     鐵則：兩格的基礎樣式就是動畫的最終狀態——
+     左格靜止時＝任務條滿格（做完了）＋溫度條低；右格靜止時＝任務條空的＋溫度條高。
+     關掉動畫、系統開了「減少動態效果」時，看到的仍是一張讀得懂的對照圖，資訊一點不少。 */
+  .tj { display: grid; gap: 9px; padding: 2px 0 0; }
+  .tj .row { display: flex; align-items: center; gap: 9px; }
+  .tj .lab { font-family: var(--mono); font-size: .6rem; color: var(--muted); min-width: 46px; text-align: right; flex: none; }
+  .tj .track { position: relative; flex: 1; height: 13px; border-radius: 7px; background: var(--panel2); border: 1px solid var(--line); overflow: hidden; }
+  .tj .track i { display: block; height: 100%; border-radius: 7px; }
+  .tj .job i  { width: 100%; background: linear-gradient(90deg, #93b6de, var(--navy)); }
+  .tj .heat i { width: 18%;  background: linear-gradient(90deg, #edd0a0, var(--amber)); }
+  .tj.bad .job i  { width: 0; }
+  .tj.bad .heat i { width: 86%; background: linear-gradient(90deg, #e5a892, var(--red)); }
+  .tj .verdict { font-size: .76rem; line-height: 1.5; color: var(--body); margin-top: 4px; padding-top: 8px; border-top: 1px solid var(--line); }
+  .tj .verdict b { display: block; font-family: var(--mono); font-size: .6rem; color: var(--c); margin-bottom: 2px; }
+  @keyframes tj-job     { 0%, 6%  { width: 0; }   54%, 100% { width: 100%; } }
+  @keyframes tj-heat    { 0%, 6%  { width: 18%; } 30%, 54% { width: 76%; } 84%, 100% { width: 18%; } }
+  @keyframes tj-heatbad { 0%, 100% { width: 86%; } 48% { width: 93%; } }
+  .anim .tj.ok  .job i  { animation: tj-job 4.4s ease-in-out infinite; }
+  .anim .tj.ok  .heat i { animation: tj-heat 4.4s ease-in-out infinite; }
+  .anim .tj.bad .heat i { animation: tj-heatbad 4.4s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .anim .tj.ok .job i, .anim .tj.ok .heat i, .anim .tj.bad .heat i { animation: none; }
+  }
+  .fig.anim .flow .box { max-width: 320px; }
+
+  /* 72 小時時間軸 */
+  .tl { display: grid; gap: 9px; margin: 20px 0; }
+  .tl .t { display: flex; gap: 13px; align-items: flex-start; background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 10px; padding: 13px 16px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .tl .t .when { font-family: var(--mono); font-size: .68rem; font-weight: 700; color: var(--c); min-width: 74px; flex: none; padding-top: 3px; }
+  .tl .t h4 { font-size: .97rem; color: var(--ink); font-weight: 700; margin-bottom: 3px; }
+  .tl .t p { font-size: .87rem; color: var(--body); margin: 0; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .tl .t { flex-direction: column; gap: 4px; }
+    .tl .t .when { padding-top: 0; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>iPad 發燙正常嗎</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#calm" class="active">00 · 發熱是工作，不是故障</a>
+  <div class="grp">怎麼判斷</div>
+  <a href="#timing">01 · 看時機，不看幾度</a>
+  <a href="#normal">02 · 正常發熱清單</a>
+  <a href="#firstday">03 · 二手機第一天特別篇</a>
+  <a href="#autopilot">04 · 太燙時 iPad 會自己做的事</a>
+  <div class="grp">什麼時候該動作</div>
+  <a href="#red">05 · 四條異常紅線</a>
+  <a href="#nowwhat">06 · 燙的當下怎麼處理</a>
+  <a href="#service">07 · 該不該送檢</a>
+  <a href="#closing">08 · 一句話心法</a>
+  <a href="#watch">延伸觀看</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>官方正常發熱清單逐字對照</span><span>二手機頭 72 小時觀察法</span><span>四條該停用送檢的紅線</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">iPad 故障排除 / 發熱與電池</div>
+    <h1>iPad 發燙，正常嗎</h1>
+    <p class="subtitle">判斷關鍵不是「幾度」，是「什麼時候燙」。你手上沒有溫度計，但你一定知道自己剛剛在做什麼——這篇就用這件事來判斷。</p>
+
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--green)">
+        <div class="lt">直接回答</div>
+        <p class="big">多數時候是正常的。機器正在做大工程的時候燙，那是它在幹活，不是壞掉。</p>
+        <p class="sm">初次設定、從備份回復、剛更新完系統、邊充電邊玩重度 App——這些時候溫熱到微燙都合理，Apple 官方文件自己就把它們列在「正常」那一欄。真正要警覺的是<strong>時機不對的燙</strong>：什麼都沒做也燙、跳出溫度警告、燙又掉電飛快。</p>
+        <p class="alias-line">你可能是用別的說法找到這頁的：<b>iPad 好燙</b>、<b>iPad 過熱</b>、<b>平板發熱</b>、<b>機背燙手</b>。講的都是同一件事。</p>
+      </div>
+      <blockquote class="lead-src">Apple 官方繁中支援文件在列完六種會變熱的情境之後，直接寫：「上述情況皆屬正常。處理完畢或你完成活動時，裝置便會冷卻下來。如果裝置沒有顯示溫度警告，即可繼續使用裝置。」<cite>Apple 支援 · 如果 iPhone 或 iPad 過熱或過冷</cite></blockquote>
+      <p class="lede">會嚇到人，是因為網路上關於發燙的討論幾乎都在講「幾度才正常」。但一般人手邊沒有測溫工具，就算有，摸到的也是外殼溫度、不是晶片溫度——量了也不知道該怎麼解讀。</p>
+      <p class="lede">所以這頁換一個你真的用得上的方法：<strong>按發生時機判斷</strong>。下面給你正常時機清單、二手機到手頭三天的觀察表，以及四條該停用送檢的紅線。</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat" style="--c:var(--navy)"><div class="num">0–35</div><div class="lab">°C 官方標示的<br>操作環境溫度</div><span class="badge">官方規格</span></div>
+      <div class="stat" style="--c:var(--green)"><div class="num">6</div><div class="lab">種官方列為<br>「正常會變熱」的情境</div><span class="badge">官方原文</span></div>
+      <div class="stat" style="--c:var(--amber)"><div class="num">35</div><div class="lab">°C 以上「可能會<br>永久損害電池的蓄電量」</div><span class="badge">官方原文</span></div>
+      <div class="stat" style="--c:var(--red)"><div class="num">53.3</div><div class="lab">°C 台灣停車場實測<br>車內靜置半小時</div></div>
+    </div>
+
+    <div class="lead-map">
+      <div class="lm-t">這頁分成三件事：</div>
+      <div class="lm-g">
+        <a href="#timing"><i>01</i>為什麼看時機比看幾度準</a>
+        <a href="#normal"><i>02</i>哪些燙是正常的</a>
+        <a href="#red"><i>05</i>哪些燙要立刻處理</a>
+      </div>
+    </div>
+
+    <p class="updated">本文查證：<b>2026 年 8 月</b>。溫度範圍、正常情境清單、警告畫面文案與電池安全警語，皆逐字取自 Apple 官方繁體中文支援文件與台灣官網。<a class="inline" href="#sources">來源列在文末</a>。標示為<span class="lv g">果果經驗</span>的段落是我們整備二手機時的觀察，不是 Apple 的說法，兩者本文都會分開標。</p>
+
+    <section id="calm">
+      <div class="sec-label" style="--c:var(--green)">first_things_first</div>
+      <h2>00 · 先安心：發熱是工作，不是故障</h2>
+      <p>先講一個很多人沒想過的事實：iPad 裡面<strong>沒有風扇</strong>。</p>
+      <p>桌機和部分筆電熱了會轉風扇把熱吹走，你聽得到聲音，也不會摸到燙。iPad 為了做薄、做安靜、做防塵，選的是另一條路——把整片金屬背蓋當成散熱片，讓熱直接從機殼表面散掉。</p>
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">⚙️</div><div class="bt">step_01</div><div class="bv">晶片在幹活</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--panel2)"><div class="bi">🚫🌀</div><div class="bt">step_02</div><div class="bv">沒有風扇可吹</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">✋</div><div class="bt">step_03</div><div class="bv">熱從機殼散出<br>你就摸到了</div></div>
+        </div>
+        <figcaption>換句話說：<b>你摸得到熱，代表散熱正在運作</b>——熱跑到表面，才有機會離開機器。真正該擔心的反而是熱出不來、卡在裡面。</figcaption>
+      </figure>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">核心觀念</div>
+        「摸起來溫溫的」不是症狀，是設計。iPad 的機殼本來就兼任散熱片，所以它會熱是預期內的事——問題永遠不在「有沒有熱」，而在「這個時間點該不該熱」。
+      </div>
+      <p>這也解釋了為什麼你在網路上查不到一個「幾度算異常」的官方數字：Apple 沒有公布晶片溫度門檻，官方給的判斷方式是另一套，我們下一節就講。</p>
+    </section>
+
+    <section id="timing">
+      <div class="sec-label" style="--c:var(--amber)">the_method</div>
+      <h2>01 · 看時機，不看幾度</h2>
+      <p>正常的熱和異常的熱，差別不在「摸起來多燙」，而在<strong>它跟不跟得上工作</strong>。</p>
+      <p>機器在跑大工程時升溫、工程結束後幾分鐘內慢慢降回來——這是健康的反應。反過來，什麼工作都沒有卻一直維持高溫、放著也不降，那才是訊號。</p>
+
+      <figure class="fig anim">
+        <div class="flow">
+          <div class="box" style="--c:var(--green)">
+            <div class="tj ok">
+              <div class="row"><span class="lab">背景工作</span><span class="track job"><i></i></span></div>
+              <div class="row"><span class="lab">機身溫度</span><span class="track heat"><i></i></span></div>
+              <div class="verdict" style="--c:var(--green)"><b>正常</b>工作跑完，溫度跟著降下來</div>
+            </div>
+            <div class="bt">case_01</div>
+            <div class="bv">熱跟著任務走</div>
+          </div>
+          <div class="arr">vs</div>
+          <div class="box" style="--c:var(--red)">
+            <div class="tj bad">
+              <div class="row"><span class="lab">背景工作</span><span class="track job"><i></i></span></div>
+              <div class="row"><span class="lab">機身溫度</span><span class="track heat"><i></i></span></div>
+              <div class="verdict" style="--c:var(--red)"><b>異常</b>沒有任務，溫度卻一直下不來</div>
+            </div>
+            <div class="bt">case_02</div>
+            <div class="bv">熱跟任務脫鉤</div>
+          </div>
+        </div>
+        <figcaption>左邊那格，溫度是<b>跟著</b>工作條走的；右邊那格，工作條是空的、溫度卻卡在高點。<b>你要判斷的是這個關係，不是溫度條有多長。</b></figcaption>
+      </figure>
+
+      <p>把它變成一句可以隨身帶著走的問句：<strong>「我剛剛五到十分鐘，讓它做了什麼？」</strong></p>
+      <p>答得出來——在下載一堆 App、在回復備份、剛更新完系統、在剪影片、在充電——那就是正常發熱，繼續觀察。答不出來，或答案是「它就放在桌上」，那才進入下一階段的檢查。</p>
+
+      <figure class="fig">
+        <div class="spectrum">
+          <div class="seg old">時機對<small>有大工程正在跑 · 剛做完重度操作 · 邊充邊用</small><b>觀察就好</b></div>
+          <div class="divider">分水嶺</div>
+          <div class="seg new">時機不對<small>待機也燙 · 跳溫度警告 · 燙又掉電飛快</small><b>要動作</b></div>
+        </div>
+        <figcaption>這條線是全篇的主軸：<b>時機對＝觀察，時機不對＝行動。</b>後面每一節都在幫你把手上那台歸到左邊或右邊。</figcaption>
+      </figure>
+      <div class="callout" style="--c:var(--purple)"><div class="ct">為什麼官方不給你一個溫度數字</div>
+        Apple 的支援文件從頭到尾沒有寫「幾度算過熱」，它給的是一個更好用的二分法：<strong>有沒有跳出溫度警告</strong>。官方原話是「如果裝置沒有顯示溫度警告，即可繼續使用裝置。」——把門檻交給機器自己的感測器判斷，比要你用手背估溫度可靠得多。<span class="lv o">官方原文</span>
+      </div>
+    </section>
+
+    <section id="normal">
+      <div class="sec-label" style="--c:var(--green)">normal_list</div>
+      <h2>02 · 正常發熱清單：這些時候燙，別緊張</h2>
+      <p>下面前六項是 Apple 官方繁中文件逐字列出的情境，後三項是我們整備二手機時反覆遇到、但官方沒有寫進清單的狀況——兩者用標籤分開，你自己判斷要採信到什麼程度。</p>
+
+      <div class="tbl-wrap">
+        <table class="wide">
+          <tr><th>什麼時候</th><th>為什麼會熱</th><th>大概持續多久</th><th>依據</th></tr>
+          <tr><td>初次設定裝置</td><td>系統第一次啟動、建立索引、下載你的設定與資料，幾乎所有元件同時滿載。</td><td>官方未給時間<small>我們的經驗多在數十分鐘到數小時</small></td><td><span class="lv o">官方原文</span></td></tr>
+          <tr><td>從備份回復</td><td>大量資料寫入儲存空間，同時解壓縮、重建資料庫。</td><td>看備份大小<small>官方未給時間</small></td><td><span class="lv o">官方原文</span></td></tr>
+          <tr><td>完成軟體更新<br>尤其是重大版本</td><td>更新後裝置要在背景「為資料和檔案建立索引，方便你搜尋」、下載新內容、更新 App。</td><td>官方只說「暫時性」<small>沒有給幾小時或幾天</small></td><td><span class="lv o">官方原文</span></td></tr>
+          <tr><td>為裝置無線充電</td><td>無線充電本身的能量轉換效率較低，損失的部分會變成熱。</td><td>整個充電過程</td><td><span class="lv o">官方原文</span></td></tr>
+          <tr><td>跑吃效能的 App、遊戲或功能<br>（含相機 App）</td><td>繪圖與處理器長時間高負載，這是它該有的表現。</td><td>你用多久就熱多久</td><td><span class="lv o">官方原文</span></td></tr>
+          <tr><td>串流播放高畫質影片</td><td>持續解碼＋螢幕全亮＋網路連線不中斷。</td><td>播多久熱多久</td><td><span class="lv o">官方原文</span></td></tr>
+          <tr><td>邊充電邊用重度 App</td><td>充電發熱和運算發熱疊在一起，是日常最容易「摸起來嚇一跳」的組合。</td><td>停掉其中一邊就會降</td><td><span class="lv g">果果經驗</span></td></tr>
+          <tr><td>剛裝好一批新 App</td><td>App Store 下載完還要各自解壓、建立資料、跑首次啟動。</td><td>裝完後再一陣子</td><td><span class="lv g">果果經驗</span></td></tr>
+          <tr><td>夏天在室外或無冷氣空間使用</td><td>環境溫度本身就逼近官方標示的 35°C 上限，機器沒有溫差可以散熱。</td><td>回到涼處就會降</td><td><span class="lv i">合理推論</span></td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">誠實揭露：官方沒有給你「多久」</div>
+        很多文章會寫「更新後 24～48 小時就會回穩」「1～2 天後正常」。我們去查了 Apple 的原始文件，官方從頭到尾只寫「暫時性的變化」，<strong>沒有給任何天數或時數</strong>。那些數字全部來自第三方媒體與網友歸納。上表「大概持續多久」那一欄，凡是官方沒說的，我們就照實寫「官方未給時間」。
+      </div>
+
+      <details>
+        <summary>想看官方原文長什麼樣子？（點開）</summary>
+        <p>Apple 官方繁中文件〈如果 iPhone 或 iPad 過熱或過冷〉的原句是：「在進行下列操作時，你可能會感覺裝置變得更熱……」，接著條列這六項：</p>
+        <ul class="styled">
+          <li>初次設定裝置</li>
+          <li>從備份回復</li>
+          <li>完成軟體更新，尤其是重大版本</li>
+          <li>為裝置無線充電</li>
+          <li>使用高度耗費繪圖處理效能或處理器效能的 App、遊戲或功能，包括相機 App</li>
+          <li>串流播放高畫質影片</li>
+        </ul>
+        <p>另一份文件〈關於 Apple 軟體更新〉則寫：「完成更新（尤其是重大版本）後的當下，你可能會發現電池續航力和散熱效能出現暫時性的變化。這是正常現象，因為裝置需要時間在背景完成設定程序」，並把背景作業列為「為資料和檔案建立索引，方便你搜尋」「下載新內容」「更新 App」三項。</p>
+      </details>
+    </section>
+
+    <section id="firstday">
+      <div class="sec-label" style="--c:var(--purple)">guoguo_field_notes</div>
+      <h2>03 · 二手機第一天特別篇：一生中最忙的一天</h2>
+      <p>這一節是我們天天出二手機才會知道的事，也是最多客人在到手當天傳訊息問我們的狀況。</p>
+      <p>剛拿到一台 iPad 的第一天，其實是它整個使用週期裡<strong>負載最重的一天</strong>。因為上面那張清單裡的項目，會在同一個下午一起發生：初次設定、從備份回復、幾十個 App 排隊下載安裝、照片與檔案同步、系統順手更新一次——而且你多半還插著電，一邊充一邊等。</p>
+      <p>換成任何一台全新機，這天一樣會燙。但因為機器是二手的，人的解讀就完全不同了：「果然有問題」「電池是不是老化了」「是不是該退貨」。<span class="lv g">果果經驗</span></p>
+
+      <div class="tl">
+        <div class="t" style="--c:var(--navy)">
+          <div class="when">第 1 小時</div>
+          <div><h4>最燙的時候，也最正常</h4><p>設定、回復、下載三件事全部擠在一起。此時摸到機背溫熱甚至微燙，是預期內的。先把保護殼拿掉，讓它散熱。</p></div>
+        </div>
+        <div class="t" style="--c:var(--teal)">
+          <div class="when">第 1 天</div>
+          <div><h4>背景還在跑，別急著下結論</h4><p>App 陸續裝完後，系統還會繼續建立搜尋索引、分析照片、同步 iCloud。放著不動它也可能溫溫的，這一天不適合當作判斷基準。</p></div>
+        </div>
+        <div class="t" style="--c:var(--green)">
+          <div class="when">第 2–3 天</div>
+          <div><h4>觀察期：溫度應該開始下來</h4><p>正常情況下，待機時的溫度會明顯回落，續航也會比第一天好。你在這兩天要做的只有一件事——注意「沒在用的時候」它燙不燙。</p></div>
+        </div>
+        <div class="t" style="--c:var(--red)">
+          <div class="when">第 4 天起</div>
+          <div><h4>還是燙，才是真的要處理</h4><p>背景工程都該結束了，如果放著不動仍然發燙、或電量掉得異常快，這時候的異常才有意義。往下一節的四條紅線對照。</p></div>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">果果整備現場的視角</div>
+        我們出貨前的檢測，看的從來不是「摸起來幾度」，而是<strong>負載結束後降不降得下來</strong>——跑完壓力測試、把工作停掉，機器有沒有在合理時間內回到常溫。這件事你在家也做得到，而且比買一支測溫槍有用得多。<span class="lv g">果果經驗</span>
+      </div>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">給二手買家的實話</div>
+        鑑賞期是拿來排除真問題的，不是拿來排除第一天的發熱的。用第一天的溫度去判斷一台機器好壞，<strong>幾乎一定會誤判</strong>——請把判斷點放在第三天以後。當然，如果出現下一節的紅線，那不用等，隨時可以聯絡賣方。
+      </div>
+    </section>
+
+    <section id="autopilot">
+      <div class="sec-label" style="--c:var(--teal)">built_in_protection</div>
+      <h2>04 · 太燙的時候，iPad 會自己做五件事</h2>
+      <p>很多人以為機器熱到極限會直接壞掉。實際上 iPadOS 有一整套內建保護，會在你察覺之前就先自己踩煞車。</p>
+      <p>知道這份清單有個實際好處：這些現象出現時，你不會誤以為機器故障。它們其實是保護機制正在運作的證據。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你會看到什麼</th><th>其實是什麼</th></tr>
+          <tr><td>充電變慢或停止<br>（包括無線充電）</td><td>優先保護電池。官方另有一句寫得更直接：「若超過建議的電池溫度，軟體可能會限制裝置不得充電超過 80%。」</td></tr>
+          <tr><td>螢幕變暗，或整個變黑</td><td>螢幕是機器裡最大的發熱源之一，調暗＝少發一點熱。</td></tr>
+          <tr><td>行動網路訊號變弱</td><td>行動網路無線電會進入低耗能狀態，這段期間訊號可能變弱。（僅行動網路版機型）</td></tr>
+          <tr><td>相機閃光燈用不了</td><td>閃光燈會暫時停用，涼了就會恢復。</td></tr>
+          <tr><td>遊戲或 AR 變卡</td><td>高負載的繪圖與擴增實境功能效能會下降，這是主動降速換降溫。</td></tr>
+        </table>
+      </div>
+      <p style="font-size:.86rem;color:var(--muted)">以上五項均為 Apple 官方文件列出的行為。<span class="lv o">官方原文</span></p>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">最高等級：溫度警告畫面</div>
+        真的超過門檻時，畫面會被接管，出現溫度警告。官方頁面寫的文案是<strong>「溫度：iPhone 需要冷卻」</strong>，並註明「顯示此訊息的 iPhone 可能還是可以撥打緊急電話。」看到這一頁，代表已經不是「觀察」的層級了，請照下一節的做法降溫。
+      </div>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">一個容易讓人以為自己查錯資料的細節</div>
+        Apple 這份文件標題明明是「如果 iPhone <strong>或 iPad</strong> 過熱或過冷」，內文也一再同時提到兩者，但它引用警告畫面文案時<strong>只寫了 iPhone 字樣</strong>，沒有另外給一句「溫度：iPad 需要冷卻」。所以如果你的 iPad 跳出來的字跟這裡不完全一樣，不要懷疑自己找錯頁——官方頁面就是沒有寫 iPad 版本的確切字串。<span class="lv i">合理推論：機制相同，文案細節可能因裝置而異</span>
+      </div>
+      <div class="callout" style="--c:var(--green)"><div class="ct">另外兩句你可能會遇到的提示</div>
+        鎖定畫面上的「已暫停充電。[裝置] 回復到正常溫度後將繼續充電」，以及設定新機時的「已暫停回復。在此 [裝置] 冷卻後將繼續從 iCloud 回復。」——兩句都是官方原文，都代表系統在等機器降溫，不是卡住也不是壞掉。<span class="lv o">官方原文</span>
+      </div>
+    </section>
+
+    <section id="red">
+      <div class="sec-label" style="--c:var(--red)">red_flags</div>
+      <h2>05 · 四條異常紅線</h2>
+      <p>前面講的都是「可以觀察」的情況。下面四條不一樣，它們的共同特徵是<strong>熱和工作已經脫鉤</strong>，或者機器結構本身出現變化。</p>
+
+      <ul class="flags">
+        <li><b>什麼都沒做也燙。</b>放在桌上、螢幕關著、沒有下載也沒有更新，超過三天還是持續溫熱——這是最典型的「時機不對」。可能是某個 App 在背景失控運作，也可能是電池或主機板的問題。</li>
+        <li><b>燙＋電量掉很快。</b>兩件事同時發生比單獨發生更有意義：發熱代表有東西在耗電，掉電快代表這個消耗是真實的、不是你的錯覺。單純只有其中一項，通常還有其他解釋。</li>
+        <li><b>跳出溫度警告，而且是在日常使用中跳的。</b>在大太陽下曬了一小時後跳警告，那是環境問題；在室內冷氣房只是滑個網頁就跳警告，那是機器問題。</li>
+        <li><b>機身出現結構變化。</b>螢幕邊緣翹起、背蓋鼓起、機殼縫隙變寬、放在桌上會晃不平——這幾項不必再觀察，請直接停止使用與充電。</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">關於最後一條，Apple 官方是這樣寫的</div>
+        iPad 使用手冊的「重要安全資訊」逐字寫著：「若你有 iPad 或電池可能受損的疑慮，<strong>請停止使用 iPad</strong>，因為可能會造成過熱或傷害。」同一段還寫「為避免可能導致過熱、火災和傷害的電池損壞，iPad 電池只能由經過訓練的技術人員進行更換。」<span class="lv o">官方原文</span>
+      </div>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">但要說清楚：那幾個「外觀徵兆」不是官方寫的</div>
+        我們查遍了 Apple 官方支援站：Apple <strong>並沒有一篇專門講電池膨脹的文章</strong>，也沒有逐字列出「螢幕翹起、背蓋鼓起」這類徵兆清單。官方用的是概括的「受損」兩個字。上面那條紅線裡的具體外觀描述，來自維修與整備現場的通用經驗，不是 Apple 的說法——我們寧可標清楚，也不想拿業界共識冒充官方口徑。<span class="lv g">果果經驗</span>
+      </div>
+
+      <h3>怎麼查「是不是某個 App 在搞鬼」</h3>
+      <p>紅線第一條和第二條，多數時候可以自己查出兇手。官方提供的路徑是從電池設定看用量分佈：</p>
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">01</div><div><h4>打開「設定」，點一下「電池」</h4><p>「每日用量」圖表會總結今天的電池用量，並與過去七天的使用情況比較。異常那天會很明顯地凸出來。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">02</div><div><h4>點「檢視所有電池用量」</h4><p>可以看過去八天的每日用量，往下捲會列出各 App 的耗電佔比。點單一 App 還能看它每天的用量與活動細節。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">03</div><div><h4>看看有沒有「解析」提示</h4><p>iPadOS 18 以後，官方原文是「你可以透過『解析』，了解背景中可能會暫時影響電池續航力和散熱效能的活動。」——系統有時會直接告訴你是誰在忙。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">04</div><div><h4>抓到嫌犯就先關掉它的背景權限</h4><p>路徑是「設定」→「一般」→「背景 App 重新整理」。先關掉可疑的那個，觀察一兩天溫度有沒有變。</p></div></div>
+      </div>
+
+      <details>
+        <summary>你的 iPad 看得到「電池健康度」嗎？（只有部分機型有）</summary>
+        <p>路徑是「打開『設定』，然後依序點一下『電池』和『電池健康度』」，裡面會顯示電池健康度狀態、最大容量、循環使用次數、製造日期與首次使用日期。</p>
+        <p>但這個頁面<strong>不是每台 iPad 都有</strong>。Apple 官方列出的支援機型是：iPad Pro（M4 和 M5）、iPad Air（M2、M3 和 M4）、iPad mini（A17 Pro）、iPad（A16）。</p>
+        <p>更早的機型——包括 M1 的 iPad Air 5、iPad 第 9 代這些很常見的二手機——在設定裡是找不到這一頁的。這不是故障，也不是被動過手腳。</p>
+        <p>找不到這頁的機器，就回到最可靠的土法煉鋼：記錄「充飽電後，正常使用能撐多久」，連續記三天，比任何單一數字都準。</p>
+      </details>
+    </section>
+
+    <section id="nowwhat">
+      <div class="sec-label" style="--c:var(--navy)">right_now</div>
+      <h2>06 · 燙的當下怎麼處理</h2>
+      <p>先講結論：降溫要用「<strong>移開熱源</strong>」，不要用「製造冷源」。前者安全，後者可能把一個溫度問題換成一個進水問題。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">正確做法 · 依序做</div>
+          ① 把保護殼、鍵盤保護套拿掉——包覆式的殼等於幫它蓋棉被。<br>
+          ② 停掉正在跑的重度 App、關掉螢幕。<br>
+          ③ 拔掉電源，先別充。<br>
+          ④ 移到陰涼、不直曬的地方，放著等它自己降。
+        </div>
+        <div class="callout" style="--c:var(--red)"><div class="ct">別做 · 每一項都有代價</div>
+          ✕ 放冰箱或冷凍庫。<br>
+          ✕ 冷氣或電風扇對著吹到冰涼。<br>
+          ✕ 貼冰袋、用濕毛巾包。<br>
+          ✕ 一邊燙一邊繼續充電、繼續玩。
+        </div>
+      </div>
+
+      <p>官方對第四步的說法很簡單：「將 iPad 移到未直接暴露於陽光下、且較涼爽的地點，並等候幾分鐘後再試著使用 iPad。」<span class="lv o">官方原文</span></p>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">為什麼冰箱是最糟的選項</div>
+        急速降溫會讓機殼內外產生溫差，空氣中的水氣就在機身內部凝結成水珠。維修現場的說法是，這些水氣會沿著縫隙進到螢幕排線、充電埠與主機板，造成腐蝕甚至短路——而且<strong>液體造成的損害不在 Apple 保固範圍內</strong>，機器裡的液體接觸指示器一旦轉紅，責任歸屬就很難再談。<br><br>
+        必須說明的是：「冷凝」這個詞和「不要放冰箱」這句話，<strong>Apple 官方文件裡並沒有寫</strong>。官方寫的是「請避免讓 iPad 暴露於溫度或溼度有劇烈變化的環境中」和「避免讓機身的開口處受潮」。冰箱降溫的風險論述來自維修業者與媒體，我們認為方向可信，但不會把它當成官方口徑。<span class="lv i">合理推論</span>
+      </div>
+
+      <h3>台灣的環境本身就在幫倒忙</h3>
+      <p>Apple 標示的 iPad 操作環境溫度是 <strong>0°C 至 35°C</strong>，存放溫度是 −20°C 至 45°C。這組數字 iPad Pro、iPad Air、iPad mini 與 iPad(A16) 完全一樣，沒有機型差別。</p>
+      <p>問題是台灣的夏天很容易踩到上限。中央氣象署的資料顯示，台北測站在 2022 年的高溫日數（日最高溫達 35°C 以上）就有 64 天。而車內更誇張——一項在台灣停車場做的現場實測中，外界氣溫 35°C、車內起始 39.7°C，靜置半小時後車內量到 <strong>53.3°C</strong>。</p>
+      <p>這個數字已經超過官方的存放溫度上限 45°C。所以「不要把 iPad 留在車上」不是龜毛，Apple 官方也把「在大熱天時將裝置留在車內」列在應避免的情境第一條。</p>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">高溫的代價是永久的</div>
+        Apple 台灣官網的原文寫得很重：「避免將你的裝置暴露在高於 35° C (95° F) 的環境中格外重要，這樣的溫度可能會<strong>永久損害電池的蓄電量</strong>。」而且還補了一句「讓裝置在高溫環境中進行充電，可能會進一步損壞電池。」——所以四步驟裡的「拔掉電源」不是可有可無。<span class="lv o">官方原文</span>
+      </div>
+      <div class="callout" style="--c:var(--teal)"><div class="ct">反過來，冷的傷害是暫時的</div>
+        官方對低溫的說法完全不同：「在嚴寒的環境中使用你的裝置，你可能會注意到電池的續航力縮短了，但這只是暫時性的情況。一旦電池的溫度回到正常的作業範圍，效能也會恢復正常。」<strong>冷會讓它變弱，熱才會讓它變老。</strong>這也是為什麼降溫要慢慢來——你不是在跟時間賽跑。<span class="lv o">官方原文</span>
+      </div>
+    </section>
+
+    <section id="service">
+      <div class="sec-label" style="--c:var(--red)">when_to_stop</div>
+      <h2>07 · 該不該送檢：兩條判準就夠</h2>
+      <p>把前面所有東西收斂成兩個問題。你不需要記住整篇文章，記住這兩題就好。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--red)"><div class="n">A</div><div><h4>機身外觀有沒有變形？</h4><p>螢幕翹起、背蓋鼓起、放桌上會晃、縫隙變寬——任一項成立，<strong>立刻停止使用與充電</strong>，不要等，也不要自己拆。這是唯一一條不需要觀察期的判準。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">B</div><div><h4>什麼都沒做，連續三天以上還是燙？</h4><p>先照第 05 節查 App 耗電、關背景重新整理、重開機、確認系統是最新版。四件事都做了還是燙，就該找專業檢測了。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">兩題都是「否」的話</div>
+        那你手上的多半是一台正在認真工作的 iPad。把殼拿掉、別在大太陽下用、別邊充邊跑重度 App，給它兩三天把背景工程做完，通常就沒事了。
+      </div>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">送檢前先做這件事，能省下一趟</div>
+        記錄「什麼時候燙、燙了多久、當下在做什麼、電量從幾 % 掉到幾 %」，連續三天。這份紀錄比你到現場說「它很燙」有用一百倍——因為技術人員要判斷的，也是熱跟不跟得上任務這件事。<span class="lv g">果果經驗</span>
+      </div>
+    </section>
+
+    <section id="closing">
+      <div class="sec-label" style="--c:var(--green)">takeaway</div>
+      <h2>08 · 一句話心法</h2>
+      <p>回到最開頭那個問題：iPad 發燙正常嗎？</p>
+      <p>答案不在溫度計上，在你自己的記憶裡。你知道剛剛讓它做了什麼，這個資訊就足以判斷了。</p>
+      <div class="bigquote">
+        <div class="qm">“</div>
+        <p>熱跟得上任務，就是它在工作；<br>熱跟任務脫鉤，才是它在求救。</p>
+        <small>時機對＝觀察，時機不對＝行動。這就是這整篇的全部。</small>
+      </div>
+      <p>尤其如果你剛拿到一台二手 iPad——請把第一天的溫度從評分表裡刪掉。那天它在幫你把一整個人的數位生活搬進來，本來就該熱。第三天以後它還燙，那才是它想跟你說話。</p>
+    </section>
+
+    <section id="watch">
+      <div class="sec-label" style="--c:var(--teal)">watch</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p>三支都是繁體中文，各對應本文的一個段落。影片是外部內容、觀點不代表本文立場；文中的官方數字與原文，仍以文末來源為準。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=RriYo0Ps5Ek" target="_blank" rel="noopener" data-yt="RriYo0Ps5Ek" aria-label="iPhone發燙怎麼辦？是正常的嗎？3種情況教你判斷">
+          <img loading="lazy" src="https://i.ytimg.com/vi/RriYo0Ps5Ek/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/RriYo0Ps5Ek/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>iPhone發燙怎麼辦？是正常的嗎？3種情況教你判斷</b><small>Dr.A 3C專業維修中心 · 對應本文第 02 節「正常發熱清單」。維修端也是用「你當下在做什麼」來分類——更新系統、跑高耗能 App、邊充邊用，跟本文那張表幾乎逐條對得上。約 1 分鐘，很好消化。</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=2rkaCgEs4_o" target="_blank" rel="noopener" data-yt="2rkaCgEs4_o" aria-label="老平板電池脹、送修不到1小時就爆炸">
+          <img loading="lazy" src="https://i.ytimg.com/vi/2rkaCgEs4_o/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/2rkaCgEs4_o/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>老平板電池脹、送修不到1小時就爆炸 通訊行嚇壞</b><small>東森新聞 CH51 · 對應本文第 05 節的第四條紅線。主角就是一台電池已經膨脹的平板，監視器拍下它在店內自燃的過程——這就是為什麼那一條紅線寫「不必再觀察，直接停用」。畫面有點驚人，但比任何文字都有說服力。</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=KD1nR6U3Pdg" target="_blank" rel="noopener" data-yt="KD1nR6U3Pdg" aria-label="七招教你簡單拯救過熱手機！超多人中標的迷思行為別再做">
+          <img loading="lazy" src="https://i.ytimg.com/vi/KD1nR6U3Pdg/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/KD1nR6U3Pdg/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>七招教你簡單拯救過熱手機！超多人中標的迷思行為別再做</b><small>電獺少女-女孩的科技日常 · 對應本文第 06 節的「做／別做」清單，重點放在錯誤降溫迷思。要說明的是：這支講的是手機，我們也沒有逐字核對它有沒有提到冰箱——但「沒有風扇、靠機殼散熱」的原理與 iPad 相同，當作觀念補充來看。</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">本文的溫度範圍、正常情境清單、警告畫面文案、電池安全警語與設定路徑，皆逐字取自 Apple 官方繁體中文支援文件與台灣官網；台灣氣候與車內溫度數據另註來源。查證日期 2026 年 8 月：</p>
+      <details class="src-fold">
+        <summary>參考資料來源<span class="n">15 筆</span></summary>
+        <ul class="sources">
+          <li><a href="https://support.apple.com/zh-tw/118431">Apple 支援 · 如果 iPhone 或 iPad 過熱或過冷</a>（六項正常發熱情境、過熱時裝置行為、溫度警告畫面文案、應避免的情境、操作與存放溫度）</li>
+          <li><a href="https://www.apple.com/tw/batteries/maximizing-performance/">Apple 台灣 · 最大化電池效能與續航力</a>（35°C 以上可能永久損害蓄電量、高溫充電、低溫為暫時性）</li>
+          <li><a href="https://support.apple.com/zh-tw/125039">Apple 支援 · 關於 Apple 軟體更新</a>（更新後電池與散熱表現暫時性變化、背景作業清單、未給具體時長）</li>
+          <li><a href="https://support.apple.com/zh-tw/118418">Apple 支援 · 關於 iPad 電池的充電與維護</a>（超過建議電池溫度時軟體可能限制充電超過 80%、充電發熱與降低電流）</li>
+          <li><a href="https://support.apple.com/zh-tw/117759">Apple 支援 · 如何在 iPad 上查看電池健康度與歷史記錄</a>（設定路徑、顯示欄位、支援機型清單）</li>
+          <li><a href="https://support.apple.com/zh-tw/120745">Apple 支援 · 如果 iPhone 或 iPad 的電池電量消耗過快</a>（每日用量圖表、「解析」功能、省電建議）</li>
+          <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipad27098ef5/ipados">Apple · iPad 使用手冊：重要安全資訊</a>（懷疑電池受損請停止使用、電池只能由受訓技術人員更換）</li>
+          <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipadab498ed1/ios">Apple · iPad 使用手冊：重要處理資訊</a>（使用中發熱屬正常、移到陰涼處、避免溫濕度劇烈變化與開口受潮）</li>
+          <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipadcda46da7/ipados">Apple · iPad 使用手冊：瞭解 iPad 電池用量與電池健康度</a>（檢視所有電池用量、八天用量圖）</li>
+          <li><a href="https://support.apple.com/zh-tw/118408">Apple 支援 · 在 iPhone、iPad 或 iPod touch 上切換 App</a>（背景 App 重新整理的功能說明與設定路徑）</li>
+          <li><a href="https://www.apple.com/tw/ipad-pro/specs/">Apple 台灣 · iPad Pro 技術規格</a>（環境需求：操作 0–35°C、存放 −20–45°C、相對濕度 5–95% 非冷凝；另比對 iPad Air／mini／iPad 規格頁數字一致）</li>
+          <li><a href="https://support.apple.com/en-us/109350">Apple 支援 · 液體損害不在保固範圍與液體接觸指示器（LCI）</a>（英文版）</li>
+          <li><a href="https://health.udn.com/health/story/6006/8961557">元氣網 · 高溫日曬半小時車內即達 50 度以上</a>（台灣停車場現場實測：外界 35°C、車內起始 39.7°C、半小時後 53.3°C；為醫師現場實測，非學術對照實驗）</li>
+          <li><a href="https://climate.cwa.gov.tw/HighTemperature">中央氣象署 · 氣候服務入口網：高溫</a>（台北測站高溫日數統計）</li>
+          <li><a href="https://technews.tw/2026/07/17/overheating-phone-dont-fridge/">TechNews 科技新報 · 手機過熱別急著放冰箱</a>（維修業者對冷凝風險的說明；業界說法，非 Apple 官方口徑）</li>
+        </ul>
+      </details>
+      <p class="updated">Apple 可能調整文件內容、功能名稱與支援機型。本文查證：<b>2026 年 8 月</b>，實際情況請以你 iPad 上的 iPadOS 版本與畫面顯示為準。文中標示<span class="lv g">果果經驗</span>與<span class="lv i">合理推論</span>的段落並非 Apple 官方說法，已於各處分開標示。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
