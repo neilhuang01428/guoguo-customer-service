@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>iPad 充到 80% 就停？三種原因與該不該關 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式 ── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 表格橫向捲動 */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 620px; }
+  .tbl-wrap table.wide { min-width: 720px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+
+  /* ── 動態分鏡：「80% 的上限」開著時，電量會怎麼跑 ──
+     為什麼這裡值得動畫：官方描述的是一個「充到 80 → 停 → 掉到 75 → 再補回 80」的來回循環，
+     靜態圖只能標兩個數字，畫不出「停住」與「回補」這兩個動作的先後。
+     鐵則：長條的基礎 width 就是動畫的最終狀態（80%），
+     關掉動畫或系統開了「減少動態效果」時，看到的仍是一張標好刻度的靜態圖，資訊不少。 */
+  .cyc { padding: 2px 0 0; }
+  .cyc .track { position: relative; height: 30px; border-radius: 15px; background: var(--panel2); border: 1px solid var(--line); overflow: hidden; }
+  .cyc .track .fill { display: block; height: 100%; width: 80%; border-radius: 15px; background: linear-gradient(90deg, #4fb87a, var(--green)); }
+  .cyc .track .tick { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--ink); opacity: .3; }
+  .cyc .track .tick.t75 { left: 75%; }
+  .cyc .track .tick.t80 { left: 80%; opacity: .55; background: var(--navy); }
+  .cyc .scale { position: relative; height: 16px; margin-top: 5px; font-family: var(--mono); font-size: .62rem; color: var(--muted); }
+  .cyc .scale b { position: absolute; transform: translateX(-50%); font-weight: 400; }
+  .cyc .scale b.s75 { left: 75%; }
+  .cyc .scale b.s80 { left: 80%; color: var(--navy); }
+  .cyc .scale b.s100 { left: 100%; transform: translateX(-100%); }
+  .cyc .steps4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; margin-top: 13px; }
+  .cyc .steps4 div { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 8px 9px; font-size: .74rem; color: var(--body); line-height: 1.45; }
+  .cyc .steps4 div b { display: block; font-family: var(--mono); font-size: .6rem; color: var(--c, var(--navy)); margin-bottom: 3px; font-weight: 700; }
+  @keyframes chg80 {
+    0%        { width: 22%; }
+    36%, 58%  { width: 80%; }
+    74%       { width: 75%; }
+    90%, 100% { width: 80%; }
+  }
+  .anim .cyc .track .fill { animation: chg80 4.4s ease-in-out infinite backwards; }
+  @media (prefers-reduced-motion: reduce) { .anim .cyc .track .fill { animation: none; } }
+
+  /* 三種原因的速查條 */
+  .why3 { display: grid; gap: 9px; margin: 18px 0; }
+  .why3 .w { display: flex; gap: 12px; align-items: flex-start; background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 10px; padding: 12px 15px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .why3 .w .num { font-family: var(--mono); font-size: .82rem; font-weight: 800; color: var(--c); min-width: 20px; }
+  .why3 .w h4 { font-size: .98rem; color: var(--ink); font-weight: 700; margin-bottom: 3px; }
+  .why3 .w p { font-size: .87rem; color: var(--body); margin: 0; }
+  .why3 .w .k { display: inline-block; font-family: var(--mono); font-size: .62rem; color: var(--c); border: 1px solid var(--c); background: var(--cbg); border-radius: 4px; padding: 1px 7px; margin-top: 7px; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .cyc .steps4 { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>充到 80% 就停</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#calm" class="active">00 · 先安心：不是壞掉</a>
+  <div class="grp">你是哪一種</div>
+  <a href="#three">01 · 三種原因分辨法</a>
+  <a href="#models">02 · 機型對照與 iPhone 差異</a>
+  <a href="#why">03 · 系統為什麼要這樣做</a>
+  <div class="grp">怎麼決定</div>
+  <a href="#decide">04 · 該不該開</a>
+  <a href="#full">05 · 明天要出門想充滿</a>
+  <div class="grp">售後現場</div>
+  <a href="#guoguo">06 · 二手買家最常誤會的事</a>
+  <a href="#real">07 · 這些才是真的不對勁</a>
+  <a href="#watch">延伸觀看</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>三種原因的分辨方法</span><span>官方支援機型逐字對照</span><span>二手買家的拆彈說明</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">iPad 故障排除 / 電池與充電</div>
+    <h1>為何 iPad 充到 80% 就停</h1>
+    <p class="subtitle">先講結論：這幾乎都不是壞掉。但原因不只一個——有的能關、有的關不了也不用關。分清楚是哪一種，你才知道要不要動它。</p>
+
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--green)">
+        <div class="lt">直接回答</div>
+        <p class="big">充到 80% 就停，九成九是保護機制在運作，不是電池壞了，也不是你買到問題機。</p>
+        <p class="sm">而且它不只一種原因：可能是「80% 的上限」被打開了（能關）、可能是機器太熱觸發溫度保護（關不了，涼了就好），也可能是長期插電讓系統啟動充電管理（關不了，拔一陣子就恢復）。<strong>先別送修，也先別急著關。</strong></p>
+        <p class="alias-line">你可能是用別的說法找到這頁的：<b>iPad 充不滿</b>、<b>充電 80 停止</b>、<b>電量卡住不動</b>。講的都是同一件事。</p>
+      </div>
+      <blockquote class="lead-src">Apple 官方講得很直接：「選擇『80% 的上限』時，iPad 將會充電到最高約 80% 電量，然後就停止充電。如果電池電量降低至 75%，充電將會繼續，直到電池電量再次達到約 80%。」<cite>Apple 支援 · 關於 iPad 電池的充電與維護</cite></blockquote>
+      <p class="lede">會嚇到人，是因為畫面上不會跳出「這是保護功能」的說明——你只看到數字停住，然後開始懷疑機器。買二手機的人尤其容易往壞處想。</p>
+      <p class="lede">這頁先教你 30 秒分辨自己是哪一種，再告訴你哪些機型才有這個開關、該不該開，以及為什麼它其實在幫你顧住電池與未來的賣價。</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat" style="--c:var(--green)"><div class="num">3</div><div class="lab">種原因會讓電量<br>停在 80% 附近</div></div>
+      <div class="stat" style="--c:var(--navy)"><div class="num">1</div><div class="lab">種是你關得掉的<br>另外兩種不用關</div></div>
+      <div class="stat" style="--c:var(--teal)"><div class="num">1000</div><div class="lab">次循環後仍保有 80% 蓄電量<br>Apple 的電池設計目標</div><span class="badge">官方文件</span></div>
+      <div class="stat" style="--c:var(--amber)"><div class="num">35</div><div class="lab">°C 以上充電<br>「可能會永久縮短電池壽命」</div><span class="badge">官方原文</span></div>
+    </div>
+
+    <div class="lead-map">
+      <div class="lm-t">這頁分成三件事：</div>
+      <div class="lm-g">
+        <a href="#three"><i>01</i>分辨你是哪一種停在 80%</a>
+        <a href="#models"><i>02</i>你的機型有沒有這選項</a>
+        <a href="#decide"><i>04</i>該不該開，怎麼決定</a>
+      </div>
+    </div>
+
+    <p class="updated">本文查證：<b>2026 年 8 月</b>，所有機型清單、設定路徑與行為描述皆取自 Apple 官方支援文件。<a class="inline" href="#sources">來源列在文末</a>。系統選單用語可能隨 iPadOS 版本調整，以你機器上顯示的為準。</p>
+
+    <section id="calm">
+      <div class="sec-label" style="--c:var(--green)">first_things_first</div>
+      <h2>00 · 先安心：這是功能，不是故障</h2>
+      <p>如果你正在想「是不是要送修」「是不是買到問題機」，先把這個念頭放下。電量停在 80% 附近而其他一切正常，這是系統設計的行為。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">這些情況都算正常</div>電量穩定停在 80%（或 79～81% 之間微幅跳動）、拔掉充電線正常掉電、用起來速度沒有變慢、機身沒有異常發燙。</div>
+        <div class="callout" style="--c:var(--red)"><div class="ct">這些才需要處理</div>停在 43%、67% 這種奇怪的數字、拔掉線幾十分鐘就沒電、充電時燙到拿不住、電量會忽然跳掉一大截。往 <a class="inline" href="#real">07 節</a>看。</div>
+      </div>
+
+      <p>會被嚇到很合理——Apple 沒有在畫面上明講。你不會看到「已達充電上限」這種提示，只會看到閃電符號還在、數字卻不動了。資訊沒給到位，使用者只好<strong>自己腦補最壞的版本</strong>。</p>
+    </section>
+
+    <div class="part-div">你是哪一種</div>
+
+    <section id="three">
+      <div class="sec-label" style="--c:var(--navy)">three_causes</div>
+      <h2>01 · 三種原因，30 秒分辨</h2>
+      <p>這是這篇最重要的一節。同樣是停在 80%，背後可能是三件不同的事，處理方式完全不同。</p>
+
+      <div class="why3">
+        <div class="w" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="num">①</div>
+          <div>
+            <h4>「80% 的上限」被打開了</h4>
+            <p>設定裡的一個開關。開著時 iPad 就固定充到約 80% 停手，掉到 75% 再補回來。只有部分較新機型才有這個選項。</p>
+            <span class="k">你關得掉 · 去設定看一眼就知道</span>
+          </div>
+        </div>
+        <div class="w" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="num">②</div>
+          <div>
+            <h4>太熱，觸發溫度保護</h4>
+            <p>Apple 官方寫明：「若超過建議的電池溫度，軟體可能會限制裝置不得充電超過 80%。」曬到太陽、邊充邊玩重度遊戲、悶在被子裡充電都可能觸發。</p>
+            <span class="k">關不掉 · 降溫後自動恢復</span>
+          </div>
+        </div>
+        <div class="w" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="num">③</div>
+          <div>
+            <h4>長期插電，充電管理啟動</h4>
+            <p>iPad 長時間不拔電（當第二螢幕、放在店面、掛在充電推車上），系統會「暫時降低電池容量」，顯示的百分比是按調整後的容量算的。</p>
+            <span class="k">關不掉 · 拔開正常用幾天就恢復</span>
+          </div>
+        </div>
+      </div>
+
+      <h3>用這張表對號入座</h3>
+      <div class="tbl-wrap">
+        <table class="wide">
+          <tr><th>你的情況</th><th>最可能是哪一種</th><th>怎麼確認</th><th>要不要處理</th></tr>
+          <tr><td>一直都停在 80%，機器不燙，平常會拔來拔去用</td><td class="good">① 上限開著</td><td>設定 → 電池 → 電池健康度，看「80% 的上限」是不是開的</td><td>看你自己要不要關，見 <a class="inline" href="#decide">04 節</a></td></tr>
+          <tr><td>平常都充得滿，只有今天停在 80，而且機身溫溫的</td><td class="bad">② 溫度保護</td><td>拔線放涼半小時再充，看會不會繼續往上</td><td class="good">不用處理，讓它涼</td></tr>
+          <tr><td>iPad 幾乎不拔電，長期當螢幕或收銀台用</td><td>③ 充電管理</td><td>拔下來正常用幾天，看數字會不會回來</td><td class="good">不用處理，這是保護</td></tr>
+          <tr><td>設定裡根本找不到「電池健康度」這一項</td><td>你的機型較舊<small>但它一樣有保護，只是沒開關</small></td><td>對照 <a class="inline" href="#models">02 節</a>的機型清單</td><td class="good">不用處理</td></tr>
+          <tr><td>停在 80% 以外的奇怪數字，或掉電飛快</td><td class="bad">這才可能真有問題</td><td>看 <a class="inline" href="#real">07 節</a>的紅旗清單</td><td class="bad">要處理</td></tr>
+        </table>
+      </div>
+
+      <h3>「80% 的上限」開著時，電量長這樣</h3>
+      <p>它不是「充到 80 就再也不動」。官方的行為描述是一個來回：到 80% 停手，掉到 75% 再補回 80%，所以你看到的數字會在這個小區間裡浮動。</p>
+
+      <figure class="fig anim">
+        <div class="cyc">
+          <div class="track">
+            <i class="fill"></i>
+            <span class="tick t75"></span>
+            <span class="tick t80"></span>
+          </div>
+          <div class="scale"><b class="s75">75%</b><b class="s80">80%</b><b class="s100">100%</b></div>
+          <div class="steps4">
+            <div style="--c:var(--green)"><b>step_01</b>插上電，正常往上充</div>
+            <div style="--c:var(--navy)"><b>step_02</b>到約 80% 停手</div>
+            <div style="--c:var(--amber)"><b>step_03</b>慢慢用掉，掉到 75%</div>
+            <div style="--c:var(--green)"><b>step_04</b>自動補回約 80%</div>
+          </div>
+        </div>
+        <figcaption>綠色是電量，兩條刻度是 75% 與 80%。<b>它會在這 5% 的區間裡來回，不是死死卡住。</b>另外官方也說明，啟用上限時 iPad 偶爾還是會充到 100%，目的是讓電量顯示保持準確——所以偶爾看到充滿也別意外。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">內部訣竅：先摸機身，再開設定</div>
+        分辨 ① 和 ② 最快的方法不是翻選單，是<strong>用手背貼一下背蓋</strong>。溫度保護觸發時機身通常明顯偏熱；如果機身是涼的、數字卻停著，那多半是設定裡的上限開著。這一步只要三秒，能省下你在選單裡繞半天。
+      </div>
+    </section>
+
+    <section id="models">
+      <div class="sec-label" style="--c:var(--teal)">which_ipad</div>
+      <h2>02 · 你的 iPad 有沒有這個選項？</h2>
+      <p>「80% 的上限」不是每台 iPad 都有。Apple 官方列出的支援機型只有四類，其餘機型的設定裡根本不會出現這個開關。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>支援「80% 的上限」的機型</th><th>對照的常見說法</th></tr>
+          <tr><td class="good">iPad Pro（M4）和後續機型</td><td>2024 年 5 月之後的 Pro</td></tr>
+          <tr><td class="good">iPad Air（M2）和後續機型</td><td>2024 年 5 月之後的 Air</td></tr>
+          <tr><td class="good">iPad mini（A17 Pro）</td><td>2024 年 10 月的 mini 第 7 代</td></tr>
+          <tr><td class="good">iPad（A16）</td><td>2025 年 3 月的入門款 iPad</td></tr>
+        </table>
+      </div>
+      <p style="font-size:.86rem;color:var(--muted)">以上為 Apple 官方文件逐字列出的清單。設定路徑同樣是官方寫的：打開「設定」，然後依序點一下「電池」和「電池健康度」。</p>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">找不到「電池健康度」很正常</div>
+        如果你的 iPad 不在上面清單裡，設定裡不會有「電池健康度」這一頁，自然也沒有 80% 的開關。<strong>這不代表你的機器比較差，也不代表它沒有保護</strong>——只是保護的方式不一樣，見下面那段。
+      </div>
+
+      <h3>舊機型沒有開關，但一樣有保護</h3>
+      <p>這是最容易被誤會的一點。沒有「80% 的上限」不等於系統放著電池不管——Apple 給舊機型的是另一套自動機制，只是不讓你手動控制。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">🔋</div><div class="bt">新機型</div><div class="bv">80% 的上限<br>你自己開關</div></div>
+          <div class="arr">vs</div>
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">🤖</div><div class="bt">所有 iPad</div><div class="bv">充電管理<br>系統自動判斷</div></div>
+          <div class="arr">＋</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">🌡️</div><div class="bt">所有 iPad</div><div class="bv">溫度保護<br>太熱就限制</div></div>
+        </div>
+        <figcaption>右邊兩種<b>每一台 iPad 都有</b>，而且沒有開關。新機型多的只是左邊那個「讓你自己決定」的選項。</figcaption>
+      </figure>
+
+      <p>官方對充電管理的說明寫得很清楚：這個功能適用於搭載 iOS 11.3 或以上版本的 iPad，也就是幾乎所有還在服役的機器。它會監控長時間充電的使用情況，必要時暫時降低電池容量。</p>
+
+      <details>
+        <summary>為什麼長期插電反而要「降低容量」？這樣不是更糟嗎？</summary>
+        <p>官方的邏輯是：鋰電池長時間泡在滿電狀態會傷健康度，所以系統寧可暫時把「滿電」的定義往下調，讓電池不要一直待在真正的 100%。狀態列顯示的百分比會依照調整後的容量計算，所以你會覺得「怎麼充不滿」。</p>
+        <p>官方也註明，當 iPad 不再長時間連接電源、條件允許時，容量會回復到未經調整的程度——所以這是暫時的，不是永久損失。</p>
+      </details>
+
+      <h3>你如果也有 iPhone：位置和選項都不一樣</h3>
+      <p>這是最容易讓人困惑的地方。兩台都是 Apple 的裝置，但充電上限的設定路徑、可選檔位、有沒有「最佳化電池充電」，全部不同。</p>
+
+      <div class="tbl-wrap">
+        <table class="wide">
+          <tr><th>比較</th><th>iPad</th><th>iPhone</th></tr>
+          <tr><td>設定路徑</td><td>設定 →「電池」→「電池健康度」</td><td class="good">設定 →「電池」→「充電」</td></tr>
+          <tr><td>可選的上限</td><td>只有「80% 的上限」一個開關</td><td class="good">80／85／90／95／100 五檔<small>80% 至 100%，增量間隔 5%</small></td></tr>
+          <tr><td>支援機型</td><td>iPad Pro（M4）＋、iPad Air（M2）＋、iPad mini（A17 Pro）、iPad（A16）</td><td>iPhone 15 和後續機型</td></tr>
+          <tr><td>「最佳化電池充電」</td><td class="bad">沒有這個功能</td><td class="good">有，上限設 100% 時可用</td></tr>
+          <tr><td>系統會不會主動建議</td><td class="bad">不會</td><td class="good">會<small>例如「建議將充電上限設為 95% 來協助延長電池壽命」</small></td></tr>
+          <tr><td>續充的時機</td><td>掉到 75% 時補回約 80%</td><td>電量下降超過 5% 時補回上限附近</td></tr>
+          <tr><td>偶爾充到 100%</td><td class="good">會，為了維持電量估計準確</td><td class="good">會，同樣理由</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">所以別再找「最佳化電池充電」了</div>
+        很多人拿 iPhone 的經驗來翻 iPad 的選單，結果怎麼找都找不到這一項。<strong>那是 iPhone 專屬的功能，Apple 的 iPad 文件裡從頭到尾沒有列出這一項</strong>。iPad 這邊對應的是「80% 的上限」加上自動的充電管理，名字和運作方式都不一樣。
+      </div>
+
+      <details>
+        <summary>那 iPhone 的「最佳化電池充電」是怎麼運作的？</summary>
+        <p>它靠裝置端的機器學習認識你的作息，只有在預測到「即將長時間連接充電器」時才會啟動，把充電超過 80% 的時間往後延，目標是讓你拔線的那一刻剛好是滿的。</p>
+        <p>官方也說明了它的啟動條件：需要至少 14 天來了解你的充電習慣，而且必須在特定位置進行至少 9 次 5 小時以上的充電才會作用。所以新機或剛換環境時看不到它作動，是正常的。</p>
+      </details>
+
+      <h3>為什麼不是每台 iPad 都有這個選項？</h3>
+      <p>先說清楚：Apple 從來<strong>沒有公開解釋過</strong>原因，官方文件裡只列出支援機型，完全不談為什麼是這幾台。但把兩份文件並排看，會發現一個很難用巧合解釋的重合。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">🔋</div><div class="bt">支援「80% 的上限」</div><div class="bv">Pro M4＋／Air M2＋<br>mini A17 Pro／iPad A16</div></div>
+          <div class="arr">＝</div>
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">📊</div><div class="bt">看得到「電池健康度」</div><div class="bv">Pro M4＋／Air M2＋<br>mini A17 Pro／iPad A16</div></div>
+        </div>
+        <figcaption>兩份不同的官方支援文件，列出的機型<b>完全是同一批</b>。兩個功能綁在一起，指向同一個前提：這台 iPad 要能<b>精準知道電池現在到底有多少電</b>。</figcaption>
+      </figure>
+
+      <p>為什麼精準度這麼關鍵？答案其實藏在官方自己的一句話裡——「啟用『80% 的上限』時，iPad 偶爾會充電到 100%，以維持精確的電池電量估計值。」</p>
+      <p>反過來讀就懂了：<strong>電量計會漂移</strong>。裝置是靠累計進出的電量去推估百分比，時間久了誤差會累積，需要偶爾充到滿來「對錶」。而你一旦把電量長期鎖在 75～80% 之間，就等於拿走了它對錶的機會。</p>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">所以做這個功能，裝置得會三件事</div>
+        ① 精準判斷 80% 到底在哪裡；② 偵測到自己的估計開始失準；③ 主動安排一次充滿來校正，而且不能吵到你。<strong>這三件事都需要更好的電池計量與電源管理能力</strong>——那也正好是能顯示「電池健康度」的前提。這是目前最合理的解釋，但請當成推論看待，不是 Apple 的官方說法。
+      </div>
+
+      <details>
+        <summary>為什麼 iPad 只能選 80%，iPhone 卻有五檔？</summary>
+        <p>不是 iPad 做不到，比較像是時間差。iPhone 15 在 2023 年剛推出時（iOS 17），其實也只有一個「80% 上限」開關，跟現在的 iPad 一模一樣；85／90／95 這三檔是 2024 年的 iOS 18 才補上的。而 iPad 是 2024 年 5 月才第一次拿到這個功能，等於停在 iPhone 兩年前的位置。</p>
+        <p>另一個角度是使用型態的差異：iPhone 隨身帶著跑、續航焦慮高，少掉兩成很有感，所以需要細緻的檔位讓人微調；iPad 很多時候是插著用或一天根本用不完，一個粗一點的開關就夠用。至於 iPad 之後會不會也長出多檔，Apple 沒有預告過，這只能算合理的猜測。</p>
+      </details>
+
+      <details>
+        <summary>順帶一提：這波功能出現的時間點，跟歐盟法規對得上</summary>
+        <p>歐盟的生態設計法規（EU 2023/1670）自 2025 年 6 月 20 日起適用於智慧型手機與平板電腦，要求電池至少能撐 800 次循環並保有 80% 原始容量。Apple 目前對 iPad 標示的設計目標是 1000 次循環保有 80%；iPhone 15 系列也在 2024 年 2 月把官方數字從 500 次上修到 1000 次。</p>
+        <p>時間軸確實對得上，但必須說清楚：Apple 從來沒有把「加入充電上限」和「歐盟法規」這兩件事<strong>連在一起講過</strong>。這只是時序上的觀察，不能當成因果關係。</p>
+      </details>
+    </section>
+
+    <section id="why">
+      <div class="sec-label" style="--c:var(--purple)">the_reason</div>
+      <h2>03 · 系統為什麼要這樣做</h2>
+      <p>鋰電池怕兩件事：<strong>長時間泡在滿電</strong>，以及高溫。上面講的三種機制，全部都是在閃避這兩件事的其中一件，只是觸發條件不同、你能不能控制它也不同。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--red-bg)"><div class="bi">🔌</div><div class="bt">怕的第一件</div><div class="bv">滿電久放<br>整晚整天插著</div></div>
+          <div class="arr">＋</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">🔥</div><div class="bt">怕的第二件</div><div class="bv">高溫<br>充電本身就會發熱</div></div>
+          <div class="arr">＝</div>
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">📉</div><div class="bt">結果</div><div class="bv">化學老化加速<br>健康度掉更快</div></div>
+        </div>
+        <figcaption>兩件事會互相加乘：<b>充電本來就會發熱，而滿電附近的充電發熱又特別明顯</b>——所以「充飽後繼續插著」剛好把兩個風險疊在一起。</figcaption>
+      </figure>
+
+      <p>用吃飯來比喻可能更好懂：電池不是餐餐吃到撐才健康，長期八分飽反而活得久。80% 大約就是那個八分飽的位置。</p>
+
+      <h3>官方講的幾個具體數字</h3>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>項目</th><th>官方說法</th><th>對你的意義</th></tr>
+          <tr><td>電池設計目標</td><td>1000 次完全充電循環後，仍能保有 80% 的原有蓄電量</td><td>正常用好幾年才會碰到這條線</td></tr>
+          <tr><td>理想環境溫度</td><td class="good">16°C 至 22°C</td><td>室內冷氣房剛好在範圍內</td></tr>
+          <tr><td>該避免的溫度</td><td class="bad">高於 35°C 使用或充電，「可能會永久縮短電池壽命」</td><td>夏天車上、曬得到太陽的窗邊最危險</td></tr>
+          <tr><td>充飽後的行為</td><td>電池充飽電後 iPad 會自動停止充電，只要電量低於 95% 便會繼續充電</td><td>整夜插著本來就安全，不必半夜爬起來拔線</td></tr>
+          <tr><td>快充飽時</td><td>iPad 會逐漸降低充電電流，以減少發熱</td><td>最後那 20% 特別慢是正常的</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">比「充不滿」更該擔心的事</div>
+        很多人花力氣研究要不要關掉 80% 上限，卻在<strong>把 iPad 放在夏天的車上、或蓋著被子邊充邊看影片</strong>。官方對高溫用的字眼是「永久縮短電池壽命」——這比停在 80% 嚴重得多，而且是不可逆的。
+      </div>
+    </section>
+
+    <div class="part-div">怎麼決定</div>
+
+    <section id="decide">
+      <div class="sec-label" style="--c:var(--amber)">should_you</div>
+      <h2>04 · 該不該開？按你的用法對號入座</h2>
+      <p>先講一句實話：這個開關沒有標準答案。它不是「開了比較好」或「關了比較好」，而是<strong>看你平常怎麼用</strong>。下面三種用法各給一個明確建議，你對號入座就好。</p>
+
+      <div class="grid g3">
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">建議：開著</div>
+          <h4>長期插電型</h4>
+          <p>當第二螢幕、放在店面、當小孩的看片機、幾乎不拔電。滿電久放的傷害對你最明顯。</p>
+          <span class="ex">你本來就不需要滿電續航</span>
+        </div>
+        <div class="card" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="c-tag">建議：看情況</div>
+          <h4>每天外帶重度用</h4>
+          <p>上課、外拍、通勤畫圖，一天要用掉大半桶電。開著上限等於少掉兩成續航。</p>
+          <span class="ex">先問自己：真的會用完嗎</span>
+        </div>
+        <div class="card" style="--c:var(--teal);--cbg:var(--teal-bg)">
+          <div class="c-tag">建議：不用特別開</div>
+          <h4>偶爾用型</h4>
+          <p>幾天才拿起來一次，用完就放著。你本來就不會長時間插著，開不開差別很小。</p>
+          <span class="ex">收起來前別充到滿更有用</span>
+        </div>
+      </div>
+
+      <div class="tbl-wrap">
+        <table class="wide">
+          <tr><th>你的用法</th><th>建議</th><th>為什麼</th><th>代價</th></tr>
+          <tr><td>幾乎不拔電（第二螢幕、店面展示）</td><td class="good">開</td><td>你的 iPad 長時間泡在滿電，這正是上限要解決的情境</td><td class="good">幾乎沒有——反正插著電</td></tr>
+          <tr><td>每天外帶，一天用掉七成以上</td><td class="bad">別開</td><td>少掉的兩成續航會讓你中途找插座，反而更常充電</td><td>開了會讓你焦慮</td></tr>
+          <tr><td>每天外帶，但一天用不到一半</td><td class="good">可以開</td><td>80% 對你已經綽綽有餘，等於白賺電池壽命</td><td class="good">你不會察覺</td></tr>
+          <tr><td>偶爾才用，平常收著</td><td>開不開都行</td><td>差別很小；長期收納時電量別留在滿或全空更重要</td><td>—</td></tr>
+          <tr><td>機型沒有這個選項</td><td>不用煩惱</td><td>系統的充電管理與溫度保護一直都在背景運作</td><td>—</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">一個判斷句就夠了</div>
+        問自己：<strong>「我平常會不會真的用到最後那 20%？」</strong>會，就別開；不會，開著等於免費多賺電池壽命。不用想得更複雜。
+      </div>
+    </section>
+
+    <section id="full">
+      <div class="sec-label" style="--c:var(--green)">need_full</div>
+      <h2>05 · 明天要出遠門，想先充滿怎麼辦</h2>
+      <p>不需要為了一次出門就把功能整個關掉再記得開回來。系統本來就設計了臨時解除的做法。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">1</div><div><h4>打開「設定」→「電池」→「電池健康度」</h4><p>這是官方指定的路徑。找不到這一頁，代表你的機型沒有這個功能，本來就會充滿。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">2</div><div><h4>把上限改回 100%</h4><p>最直接的做法。出門回來再改回 80% 就好，改設定不會對電池造成任何額外負擔。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">3</div><div><h4>或者用系統的單次解除選項</h4><p>部分版本在充電時會提供「這次充滿」類的臨時選項，隔天自動恢復上限。這個選項的名稱在各版本可能不同，也不是每台都會出現，<strong>以你機器上顯示的為準</strong>。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">4</div><div><h4>出發前一晚再充，別提早兩天充滿放著</h4><p>這一步比前面三步都重要。充滿之後放兩天不用，剛好落在「滿電久放」這個電池最不喜歡的狀態。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">臨時充滿不會傷電池</div>
+        偶爾充到 100% 完全沒問題，電池不是充一次滿就折壽。真正有影響的是<strong>長期、反覆、持續</strong>地維持在滿電加高溫。出門前充滿是完全合理的用法，不用有罪惡感。
+      </div>
+    </section>
+
+    <div class="part-div">售後現場</div>
+
+    <section id="guoguo">
+      <div class="sec-label" style="--c:var(--teal)">from_our_desk</div>
+      <h2>06 · 果果售後現場：二手買家最常誤會的一件事</h2>
+      <p>「我昨天收到機器，充了一整晚只有 80%，是不是電池有問題？你們是不是沒檢查？」——這是果果客服很固定會遇到的訊息，而且通常帶著情緒，因為對方以為自己買到了有問題的機器。</p>
+      <p>幾乎每一次的答案都一樣：設定裡的<strong>「80% 的上限」開著</strong>。有時候是前一手使用者留下來的，有時候是客人自己在初始設定的過程中不小心點到。機器本身完全正常。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>客人的第一反應</th><th>實際情況</th><th>我們請他先做的事</th></tr>
+          <tr><td class="bad">「電池是不是壞了」</td><td class="good">設定裡的上限開著</td><td>設定 → 電池 → 電池健康度，看一眼開關</td></tr>
+          <tr><td class="bad">「賣家是不是沒講」</td><td class="good">這是系統功能，不是機況瑕疵</td><td>對照本文 01 節的三種原因</td></tr>
+          <tr><td class="bad">「是不是要退貨」</td><td class="good">關掉開關就會充到 100%</td><td>關掉後充一次看看，通常就解決了</td></tr>
+          <tr><td>「那電池健康度到底多少」</td><td>這才是該看的數字</td><td>同一頁就看得到最大容量與循環次數</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">我們的立場：這件事該由賣方先講</div>
+        會發生這種誤會，責任不在客人。<strong>一台二手機交到客人手上時，設定裡有什麼開關是開著的，本來就該由賣方交代清楚</strong>——這跟電池健康度要照實標是同一件事。我們把它寫成這一頁，就是希望下一個收到機器的人，第一時間看到的是說明而不是恐慌。
+      </div>
+
+      <h3>換個角度：這功能其實在幫你顧住賣價</h3>
+      <p>果果同時做收機與賣機，所以我們看得到一條別人不一定看得完整的鏈：充電習慣 → 電池健康度 → <strong>未來的成交價</strong>。這條鏈上，電池健康度是二手估價會實際去看的項目之一，不是拿來參考用的裝飾數字，這也是我們收機時逐台記錄電池狀態的原因。</p>
+      <p>意思是，你今天讓 iPad 少泡一點滿電，換到的不只是「用久一點」，還包括幾年後要換機時，那台機器能換回多少錢。這也是為什麼我們不會勸每個人都關掉這個功能。</p>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">給正在挑二手 iPad 的人</div>
+        看到賣家標「充電上限已關閉」不代表比較好，看到「開啟中」也不代表電池有問題——<strong>這個開關跟機況無關，隨時可以自己改</strong>。真正該看的是電池健康度（最大容量）與循環次數，那兩個數字才反映這顆電池被怎麼對待過。
+      </div>
+    </section>
+
+    <section id="real">
+      <div class="sec-label" style="--c:var(--red)">red_flags</div>
+      <h2>07 · 這些才是真的不對勁</h2>
+      <p>前面講的都是正常現象。如果你遇到的是下面這幾種，那才值得認真處理。</p>
+
+      <ul class="flags">
+        <li><b>停在 43%、67% 這種奇怪的數字</b>——保護機制的目標值是 80% 附近，停在其他數字通常跟電池老化或充電線路有關。</li>
+        <li><b>拔掉線幾十分鐘就從八成掉到見底</b>——這是續航異常，跟充不充得滿是兩回事。</li>
+        <li><b>充電時燙到握不住</b>——超出正常發熱範圍，先拔線降溫，換一條線與充電器再試。</li>
+        <li><b>電量會忽然跳掉一大截</b>（例如 60% 直接變 20%）——電量估算或電池本身可能有狀況。</li>
+        <li><b>關掉 80% 上限之後，還是充不過 80%</b>——排除了設定因素，這時候才輪到懷疑硬體。</li>
+        <li><b>接上電源完全沒反應、連閃電圖示都沒有</b>——那是「充不進去」而不是「充不滿」，屬於另一條排查路線。</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">送修前先做三件事</div>
+        ① 換一條線與一顆充電器測試（線材老化是最常見的假故障）；② 把 iPad 放涼半小時再充；③ 重開機一次。這三件事能刷掉相當比例的「疑似故障」，而且都不用花錢。
+      </div>
+
+      <p>另外提醒一個時機問題：如果你的 iPad 剛更新完系統、或剛從備份還原完，電量顯示有時會短暫不準。給它一兩個完整的充放電循環，數字通常就會回到正常。</p>
+    </section>
+
+    <section id="watch">
+      <div class="sec-label" style="--c:var(--purple)">watch</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p style="font-size:.9rem;color:var(--muted)">本文以 Apple 官方文件為準；下面的影片補的是實機畫面與操作。影片皆為第三方製作，選單位置與畫面以你自己的機型與系統版本為準。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=RTH-25Br8jg" target="_blank" rel="noopener" data-yt="RTH-25Br8jg" aria-label="播放：iPad 電池這樣顧！一分鐘看懂如何照顧 iPad 電池">
+          <img loading="lazy" src="https://i.ytimg.com/vi/RTH-25Br8jg/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/RTH-25Br8jg/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>iPad 電池這樣顧！超簡單！一分鐘看懂如何照顧 iPad 電池！</b><small>頻道：APPLEFANS蘋果迷 · 推薦原因：本文 02 節寫的是「設定 →電池 →電池健康度」的路徑，這支直接用實機畫面走一遍，一分鐘看完就知道自己那台長什麼樣 · 繁中</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=q0lbdVpbKUU" target="_blank" rel="noopener" data-yt="q0lbdVpbKUU" aria-label="播放：手機充到 80% 最健康，那筆電呢？破解鋰電池的充電迷思">
+          <img loading="lazy" src="https://i.ytimg.com/vi/q0lbdVpbKUU/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/q0lbdVpbKUU/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>手機充到 80% 最健康，那筆電呢？破解鋰電池的充電迷思。</b><small>頻道：陳志豪 · 推薦原因：對應本文 03 節「系統為什麼要這樣做」——想弄懂鋰電池到底怕什麼、80% 這個數字是怎麼來的，這支講得比我們更完整，還延伸到筆電 · 繁中</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=s2-b773hVbA" target="_blank" rel="noopener" data-yt="s2-b773hVbA" aria-label="播放：iPhone 電池保護這樣做？設定 80% 上限真的有差嗎">
+          <img loading="lazy" src="https://i.ytimg.com/vi/s2-b773hVbA/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/s2-b773hVbA/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>iPhone 電池保護這樣做？設定 80% 上限真的有差嗎？</b><small>頻道：APPLEFANS蘋果迷 · 推薦原因：如果你 iPad 和 iPhone 都有，可以配著 02 節的對照表看——iPhone 的選項在「電池 →充電」而且有五檔，跟 iPad 完全不同 · 繁中</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">本文的機型清單、設定路徑、行為描述與所有數字，皆取自 Apple 官方支援文件，查證日期 2026 年 8 月：</p>
+      <ul class="sources">
+        <li><a href="https://support.apple.com/zh-tw/118418">Apple 支援 · 關於 iPad 電池的充電與維護</a>（支援「80% 的上限」的機型清單；到 80% 停止、掉到 75% 續充、偶爾充到 100% 的行為；設定路徑；1000 次循環後保有 80% 蓄電量的設計目標；理想溫度 16–22°C 與 35°C 以上的警告；「若超過建議的電池溫度，軟體可能會限制裝置不得充電超過 80%」）</li>
+        <li><a href="https://support.apple.com/zh-tw/111822">Apple 支援 · 關於 iPad 和 iPhone 的充電管理功能</a>（適用於 iOS 11.3 以上的 iPad；長時間連接電源時「暫時降低電池容量」，狀態列依調整後容量顯示；不再長時間插電時容量會回復）</li>
+        <li><a href="https://support.apple.com/zh-tw/117759">Apple 支援 · 如何在 iPad 上查看電池健康度和記錄</a>（可查看電池健康度的機型清單；設定 → 電池 → 電池健康度；可看到最大容量、製造日期、首次使用日期與循環使用次數）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipadb3190c30/ipados">iPad 使用手冊 · 在 iPad 上設定充電上限</a>（充電上限的設定與臨時解除選項；選單用語以裝置實際顯示為準）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipad3d40a54c/ipados">iPad 使用手冊 · 瞭解「溫度受限充電」</a>（iPad 過熱時充電會變慢或暫停，並在鎖定畫面顯示提示，溫度回到正常範圍後恢復）</li>
+        <li><a href="https://support.apple.com/zh-tw/108055">Apple 支援 · 關於 iPhone 的「充電上限」和「最佳化電池充電」</a>（iPhone 對照表的全部依據：設定路徑為「電池」→「充電」；iPhone 15 和後續機型可選 80% 至 100%、增量間隔 5%；上限 100% 時才可使用「最佳化電池充電」；系統會主動建議上限；「最佳化電池充電」需至少 14 天學習、並在特定位置完成至少 9 次 5 小時以上的充電才會作用）</li>
+        <li><a href="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1670">歐盟執委會法規 (EU) 2023/1670</a>（智慧型手機與平板電腦的生態設計要求，自 2025 年 6 月 20 日起適用，含電池至少 800 次循環後保有 80% 原始容量。本文僅用於說明時間軸背景，Apple 未曾將此法規與充電上限功能連結）</li>
+      </ul>
+      <p class="updated">Apple 可能調整功能名稱、支援機型與選單位置。本文查證：<b>2026 年 8 月</b>，實際情況請以你 iPad 上的 iPadOS 版本與畫面顯示為準。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
