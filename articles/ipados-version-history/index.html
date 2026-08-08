@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>歷代 iPadOS 一次看懂：13 到 27，每一代多了什麼 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式（共用 style.css 沒有的才寫在這）── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 寬表格橫向捲動（逐代表欄位多，窄螢幕要能左右滑） */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 660px; }
+  td.y { color: var(--green-deep); font-weight: 700; }
+  td.n { color: var(--red); font-weight: 700; }
+  td.mid { color: var(--amber); font-weight: 700; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+
+  /* 導言：迷你目錄（窄螢幕沒有左側 nav，這排就是導覽） */
+  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0 24px; }
+  .toc a { display: flex; align-items: baseline; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 14px; text-decoration: none; color: var(--ink); font-size: .93rem; transition: .12s; }
+  .toc a:hover { border-color: var(--navy); background: var(--navy-bg); }
+  .toc a i { font-family: var(--mono); font-style: normal; font-size: .72rem; color: var(--navy); font-weight: 700; flex: none; }
+
+  /* 世代時間軸：沿用共用檔 .steps 的骨架，把「第幾代」當編號、右側掛招牌功能與淘汰名單 */
+  .gen .n { font-size: .78rem; min-width: 40px; }
+  .gen .yr { font-family: var(--mono); font-size: .72rem; color: var(--muted); margin-bottom: 3px; }
+  .gen h4 { margin-bottom: 6px; }
+  .gen .feat { font-size: .89rem; color: var(--body); margin: 0 0 7px; }
+  .gen .drop { font-size: .83rem; color: var(--red); background: var(--red-bg); border-radius: 6px; padding: 4px 9px; display: inline-block; }
+  .gen .drop.none { color: var(--green-deep); background: var(--green-bg); }
+  .gen .drop b { color: inherit; }
+
+  /* 證據等級小標（讓「官方明文」跟「媒體推論」在視覺上分得開） */
+  .ev { font-family: var(--mono); font-size: .62rem; font-weight: 700; padding: 1px 7px; border-radius: 4px; white-space: nowrap; color: var(--c); background: var(--cbg); border: 1px solid var(--c); margin-left: 6px; vertical-align: middle; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+  }
+  @media (max-width: 560px) { .toc { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>歷代 iPadOS</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#quick" class="active">00 · 七代速覽表</a>
+  <div class="grp">從頭說起</div>
+  <a href="#why">01 · 為什麼有 iPadOS</a>
+  <a href="#gens">02 · 一代一代拆開看</a>
+  <div class="grp">最重要的觀念</div>
+  <a href="#doors">03 · 兩道門，不是一道</a>
+  <a href="#limits">04 · 功能的機型門檻</a>
+  <a href="#ai">05 · 台灣的 AI 現況</a>
+  <div class="grp">回到你那台</div>
+  <a href="#ceiling">06 · 我能升到哪一版</a>
+  <a href="#should">07 · 該不該升</a>
+  <a href="#next">08 · iPadOS 27 進度</a>
+  <a href="#buy">09 · 二手還能撐幾年</a>
+  <a href="#myths">10 · 常見誤解</a>
+  <a href="#video">延伸觀看</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>2018–2026 全型號在售</span><span>資訊透明・缺點揭露</span><span>終身售後諮詢</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">客戶指南 / iPad 系統與更新</div>
+    <h1>歷代 iPadOS 一次看懂：13 到 27，每一代多了什麼</h1>
+    <p class="subtitle">七代攤在同一張表上比較，並回答那個最讓人困惑的問題——為什麼我已經升到最新版，別人展示的功能我還是沒有。</p>
+
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--navy)">
+        <div class="lt">直接回答</div>
+        <p class="big">iPadOS 從 2019 年的 13 開始獨立，一年一代。真正改變 iPad 用法的只有三個節點：<b>13</b> 給了桌機版 Safari 和滑鼠，<b>16</b> 給了幕前調度和外接螢幕，<b>26</b> 把視窗化多工做成人人可用。</p>
+        <p class="sm">但更該記住的是另一件事：功能能不能用，看的<strong>不只是你升到第幾版</strong>，還要看你那台有沒有過該功能的機型門檻。這兩道門是分開的，很多「升了卻沒有」的困惑都出在這裡。</p>
+        <p class="alias-line">你可能是用別的說法找到這頁的：<b>iPad 系統版本差異</b>、<b>iPadOS 各版本比較</b>、<b>我的 iPad 可以升到哪一版</b>、<b>iPadOS 為什麼跳到 26</b>——講的都是同一件事。</p>
+      </div>
+      <blockquote class="lead-src">「iPad Pro (M4 與後續機型)、12.9 吋 iPad Pro (第 4 代與後續機型)、11 吋 iPad Pro (第 2 代與後續機型)、13 吋 iPad Air (M2 與後續機型)、11 吋 iPad Air (M2、M3 與 M4)、11 吋 iPad Air (第 4 代與後續機型)、iPad (A16)、iPad (第 9 代與後續機型)、iPad mini (A17 Pro)、iPad mini (第 6 代)。」<cite>Apple 官網 iPadOS 27 頁面「iPadOS 27 is compatible with these devices」清單，機型名稱採 Apple 台灣慣用譯名。查核 2026/08/09</cite></blockquote>
+      <p class="lede">上面那份清單就是本文最實用的一句話：2018、2019 年那批 A12 世代的 iPad，<strong>今年秋天要下車了</strong>。它們還能停在 iPadOS 26，但接不到 27。</p>
+      <p class="lede">這頁會把 13 到 27 每一代攤開來對——哪一年推出、多了什麼、砍掉誰，再用一張門檻表解釋「為什麼我升了還是沒有」，最後回到你手上那台：能升到哪、該不該升、二手買家怎麼估還能收幾年更新。</p>
+    </div>
+
+    <div class="toc">
+      <a href="#quick"><i>00</i>七代速覽，一列一代</a>
+      <a href="#doors"><i>03</i>為什麼升了卻沒有</a>
+      <a href="#ceiling"><i>06</i>我這台的天花板在哪</a>
+      <a href="#next"><i>08</i>iPadOS 27 誰會被砍</a>
+    </div>
+
+    <section id="quick">
+      <div class="sec-label" style="--c:var(--navy)">overview</div>
+      <h2>00 · 先看這張表：七代，一列一代</h2>
+      <p>不想讀完整篇的話，看這張就夠了。「這一代砍掉誰」那欄特別值得看——它決定了你手上那台還能活多久。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>版本</th><th>正式推出</th><th>最有感的改變</th><th>這一代砍掉誰</th></tr>
+          <tr><td>iPadOS 13</td><td>2019/9</td><td>從 iOS 分家、桌機版 Safari、檔案 App 讀隨身碟、滑鼠支援</td><td class="y">起點</td></tr>
+          <tr><td>iPadOS 14</td><td>2020/9</td><td>Apple Pencil 塗鴉（手寫變文字）、側邊欄、主畫面小工具</td><td class="y">沒有砍任何一台</td></tr>
+          <tr><td>iPadOS 15</td><td>2021/9</td><td>多工選單、App 資料庫、快速備忘錄、專注模式</td><td class="y">沒有砍任何一台</td></tr>
+          <tr><td>iPadOS 16</td><td>2022/10</td><td><b>幕前調度</b>、完整外接螢幕、天氣 App、共享圖庫</td><td class="n">iPad Air 2、iPad mini 4</td></tr>
+          <tr><td>iPadOS 17</td><td>2023/9</td><td>鎖定畫面自訂、互動式小工具、備忘錄改 PDF、健康 App</td><td class="n">iPad 5、iPad Pro 9.7"、iPad Pro 12.9"（1 代）</td></tr>
+          <tr><td>iPadOS 18</td><td>2024/9</td><td>計算機＋數學筆記、手寫 Smart Script、控制中心改版</td><td class="n">iPad 6、iPad Pro 10.5"、iPad Pro 12.9"（2 代）</td></tr>
+          <tr><td>iPadOS 26</td><td>2025/9</td><td><b>全新視窗化多工＋選單列</b>、預覽程式、Liquid Glass 外觀</td><td class="mid">只有 iPad 7</td></tr>
+          <tr><td>iPadOS 27<small>2026 秋推出，目前公開測試中</small></td><td>2026/9（預計）</td><td>Siri AI、AI 深入各 App、兒童安全、外接硬碟快 5 倍</td><td class="n">iPad 8、iPad Air 3、iPad mini 5、iPad Pro 11"（1 代）、iPad Pro 12.9"（3 代）</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">先解決一個困惑：18 的下一代為什麼是 26？</div>
+        Apple 從 2025 年起把所有系統改成<strong>年份命名</strong>，六個系統（iPhone、iPad、Mac、Watch、Apple TV、Vision Pro）統一用同一個數字，所以 iPadOS 18 之後直接叫 26，中間的 19 到 25 不存在。數字取的是「發表的隔年」，因為這版系統主要會用在 2026 年。
+        <br><br>不過要老實說：<strong>Apple 官方新聞稿從頭到尾沒解釋過為什麼是 26</strong>，上面「發表隔年」的說法是媒體歸納出來的。<span class="ev" style="--c:var(--amber);--cbg:var(--amber-bg)">B 級 · 媒體推論</span>
+      </div>
+    </section>
+
+    <section id="why">
+      <div class="sec-label" style="--c:var(--teal)">origin</div>
+      <h2>01 · 為什麼會有 iPadOS？不只是換個名字</h2>
+      <p>2019 年之前，iPad 跑的是 iOS，跟 iPhone 同一套。那年 6 月 Apple 宣布把 iPad 的系統獨立出來，叫 iPadOS。</p>
+      <p>官方講的理由是：iPad 螢幕大、用法多，值得有「專門為大畫布設計的能力」。翻成白話就是——iPhone 用得順的介面，<strong>放大到 11 吋不見得好用</strong>，分家之後 iPad 才能有自己的多工、自己的檔案管理、自己的滑鼠游標。</p>
+      <figure class="fig">
+        <div class="spectrum">
+          <div class="seg old">2019 年以前<small>iPad 跑的是 iOS</small><b>跟 iPhone 同一套</b></div>
+          <div class="divider">iPadOS 13<br>分家</div>
+          <div class="seg new">2019 年以後<small>桌機版 Safari／讀隨身碟／滑鼠游標</small><b>iPad 專屬的能力</b></div>
+        </div>
+        <figcaption>分家的意義：從這裡開始，「iPad 能不能當電腦用」才變成一個認真的問題。</figcaption>
+      </figure>
+
+      <p>這個分家不是形式上的。iPadOS 13 一口氣給了三件 iPhone 沒有的事：Safari 直接載入桌機版網頁、檔案 App 能讀 USB 隨身碟、外接滑鼠會出現圓形游標。從那天起，iPad「能不能當電腦用」才變成一個認真的問題。</p>
+    </section>
+
+    <section id="gens">
+      <div class="sec-label" style="--c:var(--navy)">by_generation</div>
+      <h2>02 · 一代一代拆開看</h2>
+      <p>上面那張表是速查用的，這裡把每一代多講兩句——特別是「值不值得為它升」這件事。</p>
+
+      <div class="steps gen">
+        <div class="step" style="--c:var(--navy)"><div class="n">13</div><div>
+          <div class="yr">2019 年 9 月</div>
+          <h4>分家的那一代</h4>
+          <p class="feat">桌機版 Safari、檔案 App 支援外接隨身碟與網路磁碟、同一個 App 可以開兩個視窗並排、滑鼠支援（一開始藏在「輔助使用」裡，13.4 才變成正式的游標）。</p>
+          <span class="drop none">沒有砍任何機型</span>
+        </div></div>
+
+        <div class="step" style="--c:var(--teal)"><div class="n">14</div><div>
+          <div class="yr">2020 年 9 月</div>
+          <h4>Apple Pencil 變好用的那一代</h4>
+          <p class="feat">塗鴉（Scribble）讓你在任何輸入框直接手寫、系統自動轉成文字，而且<strong>首發就支援繁體中文</strong>——這在當年是少數對中文使用者「當天就有感」的功能。另外側邊欄改版、主畫面終於能放小工具。</p>
+          <span class="drop none">沒有砍任何機型</span>
+        </div></div>
+
+        <div class="step" style="--c:var(--teal)"><div class="n">15</div><div>
+          <div class="yr">2021 年 9 月</div>
+          <h4>多工變得看得懂的那一代</h4>
+          <p class="feat">App 上方多了三個點的多工選單，分割畫面終於不用靠手勢硬拉；App 資料庫首次上 iPad；快速備忘錄可以在任何畫面隨手記；專注模式開始幫你擋通知。</p>
+          <span class="drop none">沒有砍任何機型</span>
+        </div></div>
+
+        <div class="step" style="--c:var(--purple)"><div class="n">16</div><div>
+          <div class="yr">2022 年 10 月</div>
+          <h4>最像電腦的第一次嘗試</h4>
+          <p class="feat">幕前調度（Stage Manager）登場：App 變成可以重疊、可以改大小的視窗，還能接外接螢幕當第二個桌面。</p>
+          <p class="feat">這一代也是<strong>唯一比 iPhone 晚上市的一次</strong>，iOS 16 在 9 月，iPadOS 16 拖到 10 月才來。（Apple 沒說明原因，外界普遍認為是幕前調度需要更多時間打磨。<span class="ev" style="--c:var(--amber);--cbg:var(--amber-bg)">B 級 · 媒體推論</span>）</p>
+          <span class="drop">砍掉 iPad Air 2、iPad mini 4</span>
+        </div></div>
+
+        <div class="step" style="--c:var(--navy)"><div class="n">17</div><div>
+          <div class="yr">2023 年 9 月</div>
+          <h4>把 iPhone 的個人化搬過來</h4>
+          <p class="feat">鎖定畫面可以自訂字體顏色、小工具可以直接點一下就完成事情（不用先開 App）、備忘錄變成堪用的 PDF 標註工具、健康 App 終於有 iPad 版。改動不小，但都偏「更順手」而非「多了新能力」。</p>
+          <span class="drop">砍掉 iPad 5、iPad Pro 9.7"、iPad Pro 12.9"（1 代）</span>
+        </div></div>
+
+        <div class="step" style="--c:var(--green)"><div class="n">18</div><div>
+          <div class="yr">2024 年 9 月</div>
+          <h4>計算機來了（真的，等了 14 年）</h4>
+          <p class="feat">iPad 從 2010 年上市到 2024 年都沒有內建計算機，這一代補上了，而且直接做成「數學筆記」——手寫一條算式，答案用你自己的字跡寫出來。備忘錄的 Smart Script 會幫你把潦草手寫變整齊。</p>
+          <span class="drop">砍掉 iPad 6、iPad Pro 10.5"、iPad Pro 12.9"（2 代）</span>
+        </div></div>
+
+        <div class="step" style="--c:var(--purple)"><div class="n">26</div><div>
+          <div class="yr">2025 年 9 月</div>
+          <h4>視窗化多工，這次是人人有份</h4>
+          <p class="feat">全新的視窗系統：拖角落改大小、甩一下自動排列，畫面頂端往下滑會出現 Mac 那樣的<strong>選單列</strong>。另外多了預覽程式 App（開 PDF 和圖片）、檔案 App 大改版、以及整套 Liquid Glass 的透明玻璃外觀。</p>
+          <span class="drop">只砍掉 iPad 7</span>
+        </div></div>
+
+        <div class="step" style="--c:var(--amber)"><div class="n">27</div><div>
+          <div class="yr">2026 年秋（尚未推出）</div>
+          <h4>主軸是 AI，代價是砍五台</h4>
+          <p class="feat">Apple 把重點全放在新版 Siri（官方叫 Siri AI，能自然對話、看得懂螢幕上的東西、跨 App 幫你做事），以及把 AI 塞進照片、備忘錄、Safari、訊息。另外有一整組兒童安全功能，還有外接硬碟傳檔速度快 5 倍。</p>
+          <span class="drop">砍掉 iPad 8、iPad Air 3、iPad mini 5、iPad Pro 11"（1 代）、iPad Pro 12.9"（3 代）</span>
+        </div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">一個容易被忽略的規律</div>
+        看「砍掉誰」那一欄：<strong>13→14、14→15 連續兩年一台都沒砍，然後 16、17、18 各砍一批。</strong>Apple 不是每年固定淘汰一批，而是攢幾年砍一次大的。這件事對二手買家很重要，第 09 節會回來談。
+      </div>
+    </section>
+
+    <section id="doors">
+      <div class="sec-label" style="--c:var(--red)">two_doors</div>
+      <h2>03 · 最重要的觀念：要過的是兩道門，不是一道</h2>
+      <p>「我明明升到最新版了，為什麼別人有的功能我沒有？」這是這個主題底下最常見的困惑，答案很單純——<strong>你只過了第一道門</strong>。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">🚪</div><div class="bt">第一道門</div><div class="bv">機型在不在<br>相容清單上</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">🚪</div><div class="bt">第二道門</div><div class="bv">晶片有沒有過<br>那個功能的門檻</div></div>
+          <div class="arr">＝</div>
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">✅</div><div class="bt">兩道都過</div><div class="bv">功能才真的<br>出現在你機上</div></div>
+        </div>
+        <figcaption>系統更新只管<b>第一道門</b>。第二道門在 Apple 的頁尾註腳裡，而那裡通常沒人看。</figcaption>
+      </figure>
+
+      <p>舉個實際的例子。iPad Air 第 3 代（2019 年，A12 晶片）可以裝 iPadOS 26，第一道門過了。但 Apple Intelligence 要求 M1 以上的晶片，所以這台永遠不會出現那些 AI 功能——不是壞掉，也不是設定沒開，是硬體條件沒到。</p>
+      <p>反過來也成立：有些功能不挑晶片、只挑版本。iPadOS 26 的視窗化多工就是這樣，連 iPad 第 8 代這種 2020 年的入門款都能用。所以「舊機就什麼都沒有」也是錯的。</p>
+    </section>
+
+    <section id="limits">
+      <div class="sec-label" style="--c:var(--amber)">thresholds</div>
+      <h2>04 · 第二道門長什麼樣：招牌功能的機型門檻</h2>
+      <p>下面這幾項是最常被問「為什麼我沒有」的功能。表格右欄是官方公布的門檻。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>功能</th><th>需要的系統</th><th>需要的機型／晶片</th></tr>
+          <tr><td>幕前調度<small>Stage Manager</small></td><td>16 起</td><td class="mid">剛推出時只有 M1；16.1 起放寬到 A12X／A12Z 的 iPad Pro，但那批不能接外接螢幕用</td></tr>
+          <tr><td>視窗化多工<small>iPadOS 26 的新版本</small></td><td>26 起</td><td class="y">所有能裝 iPadOS 26 的機型都有</td></tr>
+          <tr><td>完整外接顯示器</td><td>26 起</td><td class="mid">iPad Air 第 5 代、iPad Air（M2 以後）、iPad Pro 11"（3 代以後）、iPad Pro 12.9"（5 代以後）、iPad Pro（M4）</td></tr>
+          <tr><td>外接螢幕跑到 6K</td><td>—</td><td class="mid">iPad Pro（M4／M5）、iPad Air（M2／M3／M4），還要用支援高頻寬的 USB-C 線</td></tr>
+          <tr><td>Apple Intelligence</td><td>18.1 起</td><td class="n">M1 以上的 iPad Pro／iPad Air，或 iPad mini（A17 Pro）。A14／A15／A16 一律沒有</td></tr>
+          <tr><td>自訂 Siri 語音</td><td>26 起</td><td class="n">M4 以上，且至少 12GB 統一記憶體</td></tr>
+          <tr><td>Apple Pencil 懸浮預覽<small>筆還沒碰到螢幕就先顯示</small></td><td>16.4 起</td><td class="mid">要看 iPad 與筆的組合，不是所有機型都有</td></tr>
+        </table>
+      </div>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--red)"><div class="ct">最容易誤會的一條</div>
+          <strong>Apple Intelligence 跟能不能裝新系統是兩回事。</strong>2025 年那台用 A16 的一般款 iPad，裝得了 iPadOS 26，但沒有 Apple Intelligence。買新機時如果衝著 AI 去，要看晶片不是看年份。
+        </div>
+        <div class="callout" style="--c:var(--amber)"><div class="ct">官方沒說的部分</div>
+          Apple <strong>從來沒有解釋過</strong>為什麼 A14／A15／A16 被排除。網路上「因為記憶體不到 8GB」「因為神經網路引擎不夠力」的說法都是外界推測，官方文件裡查不到。<span class="ev" style="--c:var(--muted);--cbg:var(--panel2)">D 級 · 官方查無</span>
+        </div>
+      </div>
+
+      <details>
+        <summary>幕前調度的機型清單，官方頁面目前有點對不上</summary>
+        <p>iPadOS 26 把視窗化多工與幕前調度擴大到所有相容機型，這點多家媒體與實際使用者回報一致；但 Apple 支援頁上「支援幕前調度的機型」那份清單，查核當下仍只列到 iPad Air 第 5 代與 iPad Pro，沒跟著更新。</p>
+        <p>遇到這種落差，以你裝置上實際更新後看到的介面為準。我們把這件事寫出來，是因為照舊清單查會得到錯的結論。<span class="ev" style="--c:var(--amber);--cbg:var(--amber-bg)">B 級 · 多來源一致但官方頁未同步</span></p>
+      </details>
+    </section>
+
+    <section id="ai">
+      <div class="sec-label" style="--c:var(--teal)">taiwan</div>
+      <h2>05 · 台灣能用到什麼？繁體中文 AI 的現況</h2>
+      <p>Apple Intelligence 剛推出時只有美式英文，台灣使用者等了整整一年。<strong>2025 年 11 月，繁體中文正式開放</strong>，一起上線的有即時翻譯、視覺智慧、書寫工具（重寫／校對／摘要）、照片的「清除」，以及影像樂園和 Genmoji。</p>
+      <p>啟用方式不難，但有個容易卡住的地方：裝置語言和 Siri 語言必須都設成繁體中文，而且<strong>兩個要一致</strong>。只改其中一個，功能不會出現。</p>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">ChatGPT 整合要另外開</div>
+        Apple 官方的繁中功能供應頁沒有把 ChatGPT 整合列進清單。依台灣媒體的實測，需要升到 26.1 以上，把 Siri 語言設成「中文（國語—台灣）」，再到「Apple Intelligence 與 Siri」的延伸功能裡自己打開。<span class="ev" style="--c:var(--amber);--cbg:var(--amber-bg)">B 級 · 媒體觀察</span>
+      </div>
+      <p>另外提醒一個常見誤會：FaceTime 上的即時翻譯字幕，首發只支援英、法、德、葡（巴西）、西（西班牙）的一對一通話，<strong>中文不在首發名單裡</strong>。基本的即時字幕（不翻譯，只把聽到的話變字幕）則不需要 Apple Intelligence 就能用。</p>
+    </section>
+
+    <section id="ceiling">
+      <div class="sec-label" style="--c:var(--navy)">ceiling</div>
+      <h2>06 · 回到你那台：能升到哪一版</h2>
+      <p>先查機型：<strong>設定 → 一般 → 關於本機</strong>，看「機型名稱」那一列。然後對下面這張表。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你的機型</th><th>晶片</th><th>最高可升</th><th>現在還能做什麼</th></tr>
+          <tr><td>iPad Air 2、iPad mini 4</td><td>A8X／A8</td><td class="n">iPadOS 15</td><td>已停更多年，新 App 大量裝不了</td></tr>
+          <tr><td>iPad 5、iPad Pro 9.7"、iPad Pro 12.9"（1 代）</td><td>A9／A9X</td><td class="n">iPadOS 16</td><td>基本瀏覽影音還行，App 相容性開始吃緊</td></tr>
+          <tr><td>iPad 6、iPad Pro 10.5"、iPad Pro 12.9"（2 代）</td><td>A10／A10X</td><td class="n">iPadOS 17</td><td>同上，且再也接不到安全性更新之外的新功能</td></tr>
+          <tr><td>iPad 7</td><td>A10 Fusion</td><td class="mid">iPadOS 18</td><td>去年（26）剛出局，多數 App 還撐得住</td></tr>
+          <tr><td>iPad 8、iPad Air 3、iPad mini 5、iPad Pro 11"（1 代）、iPad Pro 12.9"（3 代）</td><td>A12／A12X</td><td class="mid">iPadOS 26</td><td><b>今年秋天下車</b>，但 26 的視窗化多工都用得到</td></tr>
+          <tr><td>iPad 9、iPad 10、iPad（A16）</td><td>A13／A14／A16</td><td class="y">iPadOS 27</td><td>系統跟得上，但沒有 Apple Intelligence</td></tr>
+          <tr><td>iPad Air 4 以上、iPad mini 6 以上、iPad Pro 11"（2 代）以上</td><td>A14／M 系列</td><td class="y">iPadOS 27</td><td>M1 以上的還有完整 AI 功能</td></tr>
+        </table>
+      </div>
+
+      <figure class="fig">
+        <div class="spectrum">
+          <div class="seg old">A12／A12X 世代<small>iPad 8、Air 3、mini 5、Pro 2018</small><b>停在 iPadOS 26</b></div>
+          <div class="divider">2026 秋<br>這條線</div>
+          <div class="seg new">A13 以上<small>iPad 9 以後、Air 4 以後</small><b>繼續升到 27</b></div>
+        </div>
+        <figcaption>今年的分水嶺落在 <b>A12 和 A13 之間</b>。2018–2019 年那批機器，iPadOS 26 就是終點站。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">別用「A12 以上就能升最新版」這句話去買機</div>
+        這句流傳很廣的說法，在 iPadOS 26 的時代剛好成立，但<strong>它從來不是 Apple 的規則</strong>——同樣是 2019 年出的 iPad 第 7 代，因為用 A10 就在 26 出局了；而到了 27，A12 自己也出局。Apple 公布的一直是<strong>逐台機型的清單</strong>，不是晶片規則。<span class="ev" style="--c:var(--amber);--cbg:var(--amber-bg)">B 級 · 這是媒體歸納，非官方明文</span>
+      </div>
+    </section>
+
+    <section id="should">
+      <div class="sec-label" style="--c:var(--green)">upgrade_or_not</div>
+      <h2>07 · 該不該升？分三種人講</h2>
+
+      <div class="grid g3">
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">情況 1</div>
+          <h4>只用來看影片、上網、記筆記</h4>
+          <p>升。這類用法幾乎不會踩到新版的效能需求，而留在舊版反而會遇到 App 說「需要更新版 iPadOS」。</p>
+        </div>
+        <div class="card" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="c-tag">情況 2</div>
+          <h4>靠 iPad 工作、有吃飯的 App</h4>
+          <p>先等一下。大版本剛出的頭一兩週，第三方 App 常有相容性問題。等你的主力 App 官方說支援了再升。</p>
+        </div>
+        <div class="card" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="c-tag">情況 3</div>
+          <h4>手上是快下車的舊機</h4>
+          <p>升，而且要趁還升得動時升。這是這台最後一次拿到新功能，之後就只剩安全性更新了。</p>
+        </div>
+      </div>
+
+      <h3>「舊機升上去會不會變慢」——誠實版</h3>
+      <p>先說一件很多人不知道的事：iPhone 那套「電池老化就降頻」的機制，<strong>iPad 沒有</strong>。Apple 的官方文件寫得很清楚，效能管理適用於 iPhone 6 以後的機型，而且明白寫著這個功能是 iPhone 專屬、不適用於其他 Apple 產品。</p>
+      <p>但這不等於「iPad 升級後保證不會變慢」。Apple 自己的 iPad 電池文件也承認，<strong>電池老化本身</strong>可能讓 App 啟動變慢、畫面幀率下降——那是電池的物理老化，跟系統版本無關，不升級也一樣會發生。這兩件事常被混為一談。</p>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">論壇上的災情怎麼看</div>
+        Mobile01、國外論壇、Apple 開發者論壇上，每一代都有「升完好耗電」「變卡」的回報，14、15、17 都有。但這些都是零星個案、沒有嚴謹測試，<strong>我們不會拿它當結論寫</strong>。<span class="ev" style="--c:var(--red);--cbg:var(--red-bg)">待驗證</span>
+        <br><br>唯一有普遍性的解釋是：剛升完的一兩天，系統會在背景重建搜尋索引，這段期間比較耗電是正常的，之後會回穩。<span class="ev" style="--c:var(--amber);--cbg:var(--amber-bg)">B 級 · 媒體說法</span>
+      </div>
+
+      <ul class="check">
+        <li><b>升級前務必做的兩件事</b>先備份（iCloud 或電腦都行），並確認剩餘空間至少 10GB 以上。空間不足是更新失敗最常見的原因。</li>
+        <li><b>不要跳版本手動裝舊系統</b>Apple 只簽署最新版本，你能升到的就是目前開放的那一版，不能指定停在中間某一代。</li>
+      </ul>
+    </section>
+
+    <section id="next">
+      <div class="sec-label" style="--c:var(--purple)">whats_next</div>
+      <h2>08 · iPadOS 27 現在到哪了？</h2>
+      <p>時間線很清楚：2026 年 6 月 8 日在 WWDC 發表，同日釋出開發者測試版；7 月 13 日開放公開測試版；<strong>正式版預計 2026 年秋天推出</strong>，Apple 目前只講「秋季」，沒有公布確切日期。</p>
+      <p>也就是說，你現在在設定裡看到的最新正式版<strong>仍是 iPadOS 26.x</strong>。除非你自己去報名了公測，否則不會收到 27 的更新。</p>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">要不要裝公測版？</div>
+        主力機不建議。測試版會有 App 閃退、耗電異常、功能半成品這些狀況，而且降回正式版要整台重灌。如果只是想早點看看，用第二台不重要的機器裝就好。
+      </div>
+      <p>對二手買家來說，27 這一代的重點不在新功能，而在那份淘汰名單——2018、2019 年出的 <strong>A12 世代整批被清掉</strong>。如果你正在看這幾台的二手價，要把「它已經停在 26」算進去再決定值不值得。</p>
+    </section>
+
+    <section id="buy">
+      <div class="sec-label" style="--c:var(--green)">how_long</div>
+      <h2>09 · 買二手時，怎麼估這台還能收幾年更新？</h2>
+      <p>這是我們每天在客服對話裡被問的問題。沒有人能保證 Apple 明年砍誰，但把歷史攤開來看，會得到一個相當穩定的估法。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>機型</th><th>上市年</th><th>最後一版</th><th>撐了幾年</th></tr>
+          <tr><td>iPad Air 2</td><td>2014</td><td>iPadOS 15（2021）</td><td class="y">約 7 年</td></tr>
+          <tr><td>iPad Pro 12.9"（1 代）</td><td>2015</td><td>iPadOS 16（2022）</td><td class="y">約 7 年</td></tr>
+          <tr><td>iPad 6</td><td>2018</td><td>iPadOS 17（2023）</td><td class="mid">約 5 年</td></tr>
+          <tr><td>iPad 7</td><td>2019</td><td>iPadOS 18（2024）</td><td class="mid">約 5 年</td></tr>
+          <tr><td>iPad Pro（2018，A12X）</td><td>2018</td><td>iPadOS 26（2025）</td><td class="y">約 7 年</td></tr>
+        </table>
+      </div>
+
+      <p>規律大概是這樣：當年的高階機（Pro、Air）通常能撐 <strong>6～7 年</strong>，入門款的一般 iPad 只有 <strong>5 年左右</strong>。原因不難理解——入門款用的是上一代的晶片，等於出廠就先扣掉一兩年壽命。</p>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">實際怎麼用這個規律</div>
+        看到一台二手 iPad，先問兩件事：<strong>它是哪一年的、當年是入門款還是 Pro／Air</strong>。用上市年加 5 年（入門）或加 7 年（高階），就是它大概能收到更新的年份。這只是估算，不是保證，但拿來比較兩台候選機夠用了。<span class="ev" style="--c:var(--muted);--cbg:var(--panel2)">C 級 · 依歷史推論</span>
+      </div>
+      <p>還有一個更實際的提醒：<strong>停止更新不等於不能用</strong>。停更之後 Apple 通常還會繼續發安全性修補一段時間，日常上網看影片也不會突然壞掉。真正會先出問題的是 App——當某個 App 要求的最低系統版本超過你的天花板，那台就開始一項一項失去功能。</p>
+    </section>
+
+    <section id="myths">
+      <div class="sec-label" style="--c:var(--red)">myths</div>
+      <h2>10 · 五個常見誤解</h2>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>#</th><th>常聽到的說法</th><th>判定</th><th>實際上</th></tr>
+          <tr><td>1</td><td>升到最新版就有最新功能</td><td class="n">錯</td><td>還要過第二道門（機型／晶片門檻），最典型的就是 Apple Intelligence</td></tr>
+          <tr><td>2</td><td>iPadOS 19 到 25 被 Apple 藏起來了</td><td class="n">錯</td><td>那幾版不存在。Apple 2025 年改成年份命名，18 直接跳 26</td></tr>
+          <tr><td>3</td><td>A12 以上就能升最新版</td><td class="n">過期了</td><td>這句在 26 的時代剛好對，到了 27，A12 自己就出局了</td></tr>
+          <tr><td>4</td><td>Apple 會故意把舊 iPad 降頻逼你換機</td><td class="n">查無依據</td><td>官方明文寫效能管理是 iPhone 專屬、不適用其他產品</td></tr>
+          <tr><td>5</td><td>不能更新的 iPad 就是廢鐵</td><td class="n">誇張了</td><td>安全性修補通常還會發一段時間；真正的瓶頸是 App 開始要求更新的系統</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="video">
+      <div class="sec-label" style="--c:var(--teal)">watch</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p>逐代清單看完之後，如果想實際看看新系統長什麼樣，這三支是繁體中文、內容對得上本文的：</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=rdi8Ku1p0vY" target="_blank" rel="noopener" data-yt="rdi8Ku1p0vY"><img loading="lazy" src="https://i.ytimg.com/vi/rdi8Ku1p0vY/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/rdi8Ku1p0vY/hqdefault.jpg'" /><span class="pbtn"></span><span class="yt">YouTube</span></a>
+        <div class="cap"><b>iPadOS 26 必學 16 個新功能一次看</b><small>塔科女子 · 逐項實機示範 iPadOS 26 的改動，本文第 02 節「26」那格的畫面版</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=62Jzds6dB3g" target="_blank" rel="noopener" data-yt="62Jzds6dB3g"><img loading="lazy" src="https://i.ytimg.com/vi/62Jzds6dB3g/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/62Jzds6dB3g/hqdefault.jpg'" /><span class="pbtn"></span><span class="yt">YouTube</span></a>
+        <div class="cap"><b>iPadOS 26：蘋果終於讓 iPad 變成了 Mac</b><small>大耳朵TV · 專講視窗化多工與選單列，想知道「26 到底改了什麼」看這支最快</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=uhxWkM7zBqA" target="_blank" rel="noopener" data-yt="uhxWkM7zBqA"><img loading="lazy" src="https://i.ytimg.com/vi/uhxWkM7zBqA/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/uhxWkM7zBqA/hqdefault.jpg'" /><span class="pbtn"></span><span class="yt">YouTube</span></a>
+        <div class="cap"><b>iOS 27 / iPadOS 27 升級後的一週體驗</b><small>APPLEFANS蘋果迷 · 公測版實際用一週的心得，對應本文第 08 節「要不要裝公測版」</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="updated">本文查證：<b>2026 年 8 月 9 日</b>。系統版本與相容機型會隨 Apple 公告變動，以官方最新為準；iPadOS 27 正式版推出後，第 06、08 節需重新核對。</p>
+      <p class="sources">逐代推出日期與功能取自 Apple 官方新聞稿，相容機型取自 Apple 官方支援文件與產品頁：</p>
+      <details class="src-fold">
+        <summary>參考資料來源<span class="n">14 筆</span></summary>
+        <ul class="sources">
+          <li><a href="https://www.apple.com/newsroom/2019/06/the-new-ipados-powers-unique-experiences-designed-for-ipad/">Apple Newsroom · iPadOS 發表</a>（2019：分家理由、桌機級 Safari、檔案 App）</li>
+          <li><a href="https://www.apple.com/newsroom/2020/06/ipados-14-introduces-new-features-designed-specifically-for-ipad/">Apple Newsroom · iPadOS 14</a>（塗鴉支援繁中、側邊欄、小工具）</li>
+          <li><a href="https://www.apple.com/newsroom/2021/09/ipados-15-is-available-today/">Apple Newsroom · iPadOS 15 上市</a>（多工選單、App 資料庫、專注模式與推出日）</li>
+          <li><a href="https://www.apple.com/newsroom/2022/10/ipados-16-is-available-today/">Apple Newsroom · iPadOS 16 上市</a>（幕前調度、外接顯示器、推出日 10/24）</li>
+          <li><a href="https://www.apple.com/newsroom/2023/09/ipados-17-is-now-available/">Apple Newsroom · iPadOS 17</a>（功能與相容機型清單）</li>
+          <li><a href="https://www.apple.com/newsroom/2024/09/ipados-18-is-now-available-taking-ipad-to-the-next-level/">Apple Newsroom · iPadOS 18</a>（計算機、Smart Script、相容機型清單）</li>
+          <li><a href="https://www.apple.com/newsroom/2025/06/ipados-26-introduces-powerful-new-features-that-push-ipad-even-further/">Apple Newsroom · iPadOS 26 發表</a>（視窗化多工、選單列、外接顯示器機型限制原文）</li>
+          <li><a href="https://www.apple.com/newsroom/2025/09/new-versions-of-apples-software-platforms-are-available-today/">Apple Newsroom · 2025 秋季系統上市</a>（iPadOS 26 推出日 9/15）</li>
+          <li><a href="https://support.apple.com/guide/ipad/ipad-models-compatible-with-ipados-26-ipad213a25b2/ipados">Apple 支援 · iPadOS 26 相容機型</a>（確認 12.9 吋 Pro 第 3 代仍支援、僅 iPad 7 出局）</li>
+          <li><a href="https://www.apple.com/tw/os/ipados/">Apple 台灣 · iPadOS 27</a>（27 的功能說明；相容機型清單同 <a href="https://www.apple.com/os/ipados/">英文版頁面</a>，是目前唯一的官方清單來源——Apple 支援指南尚未推出 27 專屬頁）</li>
+          <li><a href="https://support.apple.com/en-us/121115">Apple 支援 · Apple Intelligence 系統需求</a>（M1 以上或 iPad mini A17 Pro、需 18.1 以上）</li>
+          <li><a href="https://www.apple.com/tw/newsroom/2025/11/apple-intelligence-features-are-now-available-in-traditional-chinese/">Apple 台灣 Newsroom · 繁體中文 Apple Intelligence</a>（2025 年 11 月上線與功能清單）</li>
+          <li><a href="https://support.apple.com/en-us/101575">Apple 支援 · 電池與效能</a>（效能管理適用 iPhone 6 以後，明文為 iPhone 專屬）</li>
+          <li><a href="https://support.apple.com/en-us/118418">Apple 支援 · iPad 電池充電與保養</a>（電池老化本身對效能的影響）</li>
+        </ul>
+      </details>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
