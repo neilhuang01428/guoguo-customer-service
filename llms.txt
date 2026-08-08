@@ -285,6 +285,33 @@
   - 本篇回答：為什麼我從來沒看過「最佳化電池充電」作動？
   - 本篇回答：Mac 可以像 iPhone 一樣設充電上限嗎？
   - 本篇回答：AirPods 的充電保護要去哪裡設定？
+- [Apple Pencil 沒反應，先認出是哪一支](https://www.guoguo.tw/guide/articles/apple-pencil-not-working/)：連不上、充不了電、寫不出字、點兩下沒作用？四款 Apple Pencil 的接法與功能都不一樣，很多「壞掉」其實是那款本來就沒有。先認型號，再走對應的那條線。（技巧、Apple Pencil、故障排除／2026-08-08）
+  - 本篇回答：Apple Pencil 連不上怎麼辦？
+  - 本篇回答：我的 Apple Pencil 畫出來都一樣粗，是壞了嗎？
+  - 本篇回答：Apple Pencil 吸在 iPad 側邊就會充電嗎？
+  - 本篇回答：怎麼看 Apple Pencil 還剩多少電？
+  - 本篇回答：每次重開機 Apple Pencil 就要重新配對，正常嗎？
+  - 本篇回答：輕點兩下沒反應是壞掉嗎？
+  - 本篇回答：Apple Pencil 的筆尖多久要換一次？
+  - 本篇回答：什麼時候該送修，不要再自己試？
+- [iPad 該買 Wi-Fi 版還是行動網路版？](https://www.guoguo.tw/guide/articles/ipad-wifi-or-cellular-buying/)：多數人買 Wi-Fi 版就夠。行動網路版新機要多 5,000～7,000 元，還得辦一個獨立門號；它換到的是 GPS 與「解鎖就在網上」。五題自我檢測，三分鐘知道自己該買哪種。（選購、連網與網速、觀念／2026-08-08）
+  - 本篇回答：iPad 買 Wi-Fi 版還是行動網路版比較好？
+  - 本篇回答：iPad Wi-Fi 版可以插 SIM 卡或裝 eSIM 嗎？
+  - 本篇回答：iPad Wi-Fi 版有 GPS 嗎？
+  - 本篇回答：iPad 的 LTE 版跟行動網路版是同一個東西嗎？
+  - 本篇回答：現在買的 iPad 還有 SIM 卡槽嗎？
+  - 本篇回答：iPad 可以跟我的手機共用同一個門號嗎？
+  - 本篇回答：台灣哪些電信可以幫 iPad 開 eSIM？
+  - 本篇回答：行動網路版的 iPad 二手比較保值嗎？
+- [iPad 10／A16 怎麼配 Apple Pencil 一代？](https://www.guoguo.tw/guide/articles/ipad10-apple-pencil-1-pairing/)：iPad 10 與 iPad (A16) 沒有 Lightning 孔，一代筆不能直接插。要用 USB-C 對 Apple Pencil 轉接器＋C to C 線，而 Apple 出過兩種轉接器，只有長的那支能配對。（技巧、Apple Pencil、相容對照／2026-08-08）
+  - 本篇回答：iPad 10 可以用 Apple Pencil 一代嗎？
+  - 本篇回答：為什麼我的 Type C 轉接頭還是配不了對？
+  - 本篇回答：Apple Pencil 一代盒裝一定有 USB-C 轉接器嗎？
+  - 本篇回答：轉接器不見了，可以單買嗎？
+  - 本篇回答：配對按鈕沒跳出來怎麼辦？
+  - 本篇回答：配對過一次之後還要再接線嗎？
+  - 本篇回答：iPad 10 可以用 Apple Pencil 二代嗎？
+  - 本篇回答：Apple Pencil 一代可以邊充電邊寫字嗎？
 
 ## 其他
 

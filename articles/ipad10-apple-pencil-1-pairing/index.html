@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>iPad 10／iPad (A16) 配對 Apple Pencil 一代：轉接器怎麼選 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式 ── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 對照表符號欄 */
+  td.y { color: var(--green-deep); font-weight: 700; text-align: center; }
+  td.n { color: var(--red); font-weight: 700; text-align: center; }
+  td.mid { color: var(--amber); text-align: center; }
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 600px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+
+  /* 證據等級標籤 */
+  .lv-tag { display: inline-block; font-family: var(--mono); font-size: .58rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; vertical-align: middle; }
+  .lv-tag.ok { color: var(--green-deep); background: var(--green-bg); border: 1px solid #c3e4cf; }
+  .lv-tag.infer { color: var(--amber); background: var(--amber-bg); border: 1px solid #e6d3a6; }
+
+  /* 導言：迷你目錄（窄螢幕沒有左側 nav，這排就是導覽） */
+  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0 24px; }
+  .toc a { display: flex; align-items: baseline; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 14px; text-decoration: none; color: var(--ink); font-size: .93rem; transition: .12s; }
+  .toc a:hover { border-color: var(--navy); background: var(--navy-bg); }
+  .toc a i { font-family: var(--mono); font-style: normal; font-size: .72rem; color: var(--navy); font-weight: 700; flex: none; }
+
+  /* ── 兩種轉接器：示意圖（純 CSS，無外部圖檔）── */
+  .adps { display: grid; gap: 12px; }
+  .adp { background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 10px; padding: 14px 16px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .adp .ah { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .adp .ah b { color: var(--ink); font-size: .98rem; }
+  .adp .ah span { font-family: var(--mono); font-size: .62rem; color: var(--c); background: var(--cbg); border: 1px solid var(--c); border-radius: 999px; padding: 2px 9px; white-space: nowrap; }
+  .adp .draw { display: flex; align-items: center; margin: 14px 0 4px; }
+  /* 接 Apple Pencil 的那一端：兩款一模一樣，所以畫成同一個樣子 */
+  .adp .draw .pen-end { flex: none; width: 16px; height: 30px; border: 2px solid var(--c); border-right: 0; border-radius: 6px 0 0 6px; background: var(--cbg); }
+  .adp .draw .body { flex: none; height: 18px; background: var(--c); opacity: .22; }
+  .adp .draw .body.short { width: 44px; }
+  .adp .draw .body.long { width: 104px; }
+  /* 另一端的孔：Lightning 是窄扁孔、USB-C 是橢圓孔 */
+  .adp .draw .port { flex: none; display: grid; place-items: center; width: 30px; height: 30px; border: 2px solid var(--c); border-left: 0; border-radius: 0 6px 6px 0; background: var(--cbg); }
+  .adp .draw .port i { display: block; background: var(--c); }
+  .adp .draw .port i.lt { width: 12px; height: 5px; border-radius: 1px; }
+  .adp .draw .port i.uc { width: 15px; height: 7px; border-radius: 999px; }
+  .adp .draw .len { font-family: var(--mono); font-size: .62rem; color: var(--muted); margin-left: 14px; }
+  .adp .an { font-size: .88rem; color: var(--body); margin-top: 8px; line-height: 1.7; }
+
+  /* 自我檢查：三題判斷 */
+  .judge { display: grid; gap: 10px; margin: 20px 0; }
+  .jrow { background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 10px; padding: 13px 16px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .jrow .jq { display: flex; gap: 11px; align-items: baseline; }
+  .jrow .jq .jn { font-family: var(--mono); font-size: .72rem; color: var(--c); font-weight: 800; flex: none; }
+  .jrow .jq b { color: var(--ink); font-size: .96rem; }
+  .jrow .ja { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0 0 27px; }
+  .jrow .ja div { font-size: .86rem; border-radius: 8px; padding: 9px 12px; line-height: 1.6; }
+  .jrow .ja .yes { background: var(--green-bg); color: var(--green-deep); }
+  .jrow .ja .no { background: var(--red-bg); color: var(--red); }
+  .jrow .ja b { color: inherit; }
+
+  /* 價格卡 */
+  .price { font-family: var(--mono); font-size: 1.15rem; font-weight: 800; color: var(--c); }
+  .pn { font-family: var(--mono); font-size: .72rem; color: var(--muted); }
+
+  /* ── 動態分鏡 · 情境 K：層層轉接（本篇專用，沿用全站 4.4s 節奏）──
+     鐵則：下面每個元素的「基礎樣式」就是動畫的最終狀態，動畫只是把它倒帶重演。
+     關掉動畫、或系統開了「減少動態效果」時，讀者看到的仍是三條完整的鏈路圖，資訊一點不少。 */
+  .anim .rig { display: grid; gap: 18px; }
+  .anim .lane { position: relative; background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 10px; padding: 19px 14px 14px; }
+  .anim .lane .lt { position: absolute; top: -10px; left: 12px; font-family: var(--mono); font-size: .6rem; color: var(--c); background: var(--cbg); border: 1px solid var(--c); border-radius: 999px; padding: 2px 10px; }
+  .anim .chain { display: flex; align-items: center; justify-content: center; gap: 5px; }
+  .anim .nod { flex: 1; min-width: 0; text-align: center; border: 1px solid var(--navy); background: var(--navy-bg); border-radius: 9px; padding: 9px 3px; }
+  .anim .nod .ni { font-size: 1.3rem; line-height: 1.15; }
+  .anim .nod .nl { font-size: .66rem; color: var(--ink); line-height: 1.35; margin-top: 3px; }
+  .anim .lnk { flex: none; width: 14px; height: 3px; border-radius: 3px; background: var(--navy); transform-origin: left center; }
+  .anim .blk { flex: none; width: 24px; text-align: center; font-size: 1rem; font-weight: 800; color: var(--red); }
+  .anim .pop { margin: 13px auto 0; max-width: 290px; border: 1px solid var(--line); border-radius: 12px; background: #fff; box-shadow: 0 6px 18px rgba(20,39,68,.12); padding: 11px 13px 10px; text-align: center; }
+  .anim .pop b { display: block; font-size: .78rem; color: var(--ink); }
+  .anim .pop small { display: block; font-size: .7rem; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+  .anim .pop .btns { display: flex; gap: 8px; margin-top: 9px; }
+  .anim .pop .btns i { flex: 1; font-style: normal; font-family: var(--mono); font-size: .66rem; border: 1px solid var(--line); border-radius: 7px; padding: 4px 0; color: var(--muted); }
+  .anim .pop .btns i.go { border-color: var(--navy); background: var(--navy); color: #fff; }
+  .anim .pop.no { border-style: dashed; box-shadow: none; background: var(--red-bg); }
+  .anim .pop.no b { color: var(--red); }
+
+  @keyframes k-n1 { 0%, 4%  { border-color: var(--line); background: #fff; } 10%, 100% { border-color: var(--navy); background: var(--navy-bg); } }
+  @keyframes k-n2 { 0%, 16% { border-color: var(--line); background: #fff; } 22%, 100% { border-color: var(--navy); background: var(--navy-bg); } }
+  @keyframes k-n3 { 0%, 28% { border-color: var(--line); background: #fff; } 34%, 100% { border-color: var(--navy); background: var(--navy-bg); } }
+  @keyframes k-n4 { 0%, 40% { border-color: var(--line); background: #fff; } 46%, 100% { border-color: var(--navy); background: var(--navy-bg); } }
+  @keyframes k-l1 { 0%, 10% { transform: scaleX(0); } 16%, 100% { transform: scaleX(1); } }
+  @keyframes k-l2 { 0%, 22% { transform: scaleX(0); } 28%, 100% { transform: scaleX(1); } }
+  @keyframes k-l3 { 0%, 34% { transform: scaleX(0); } 40%, 100% { transform: scaleX(1); } }
+  @keyframes k-pop { 0%, 56% { opacity: 0; transform: translateY(7px); } 68%, 100% { opacity: 1; transform: none; } }
+  @keyframes k-bump { 0%, 14% { transform: translateX(0); } 30% { transform: translateX(15%); } 46%, 100% { transform: translateX(0); } }
+  @keyframes k-x { 0%, 32% { opacity: 0; transform: scale(.4); } 44%, 100% { opacity: 1; transform: scale(1); } }
+
+  /* 兩節點鏈：筆 →（直接插）→ iPad */
+  .anim .chain.seq2 .nod:nth-child(1) { animation: k-n1 4.4s ease-out infinite; }
+  .anim .chain.seq2 .lnk              { animation: k-l1 4.4s ease-out infinite; }
+  .anim .chain.seq2 .nod:nth-child(3) { animation: k-n2 4.4s ease-out infinite; }
+  /* 四節點鏈：筆 → 轉接器 → USB-C 連接線 → iPad */
+  .anim .chain.seq4 .nod:nth-child(1) { animation: k-n1 4.4s ease-out infinite; }
+  .anim .chain.seq4 .lnk:nth-child(2) { animation: k-l1 4.4s ease-out infinite; }
+  .anim .chain.seq4 .nod:nth-child(3) { animation: k-n2 4.4s ease-out infinite; }
+  .anim .chain.seq4 .lnk:nth-child(4) { animation: k-l2 4.4s ease-out infinite; }
+  .anim .chain.seq4 .nod:nth-child(5) { animation: k-n3 4.4s ease-out infinite; }
+  .anim .chain.seq4 .lnk:nth-child(6) { animation: k-l3 4.4s ease-out infinite; }
+  .anim .chain.seq4 .nod:nth-child(7) { animation: k-n4 4.4s ease-out infinite; }
+  /* 撞牆鏈：筆頂上去又退回來 */
+  .anim .chain.stuck .nod:nth-child(1) { animation: k-bump 4.4s ease-in-out infinite; }
+  .anim .chain.stuck .blk              { animation: k-x 4.4s ease-out infinite; }
+  .anim .pop { animation: k-pop 4.4s ease-out infinite; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .anim .nod, .anim .lnk, .anim .blk, .anim .pop { animation: none; }
+  }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+  }
+  @media (max-width: 560px) {
+    .toc { grid-template-columns: 1fr; }
+    .jrow .ja { grid-template-columns: 1fr; margin-left: 0; }
+    .anim .lane { padding: 19px 9px 13px; }
+    .anim .chain { gap: 3px; }
+    .anim .nod { padding: 7px 2px; }
+    .anim .nod .ni { font-size: 1.05rem; }
+    .anim .nod .nl { font-size: .58rem; }
+    .anim .lnk { width: 8px; }
+    .adp .draw .body.long { width: 78px; }
+    .adp .draw .body.short { width: 33px; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>一代筆配 iPad 10</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#answer" class="active">00 · 30 秒分流</a>
+  <div class="grp">先搞懂</div>
+  <a href="#why">01 · 為什麼會卡住</a>
+  <a href="#adapters">02 · 兩種轉接器</a>
+  <div class="grp">實際操作</div>
+  <a href="#selfcheck">03 · 我這支配得起來嗎</a>
+  <a href="#howto">04 · 配對五步驟</a>
+  <a href="#mistakes">05 · 六個常見錯誤</a>
+  <div class="grp">後續</div>
+  <a href="#lost">06 · 轉接器掉了怎麼辦</a>
+  <a href="#alternatives">07 · 不想再玩轉接</a>
+  <a href="#after">08 · 配對成功之後</a>
+  <div class="grp">附錄</div>
+  <a href="#honest">09 · 查證等級</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>iPad 全世代都經手</span><span>Pencil 一代到 Pro 都在整備</span><span>缺點照實揭露</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">Apple Pencil / 配對與相容</div>
+    <h1>iPad 10、iPad (A16)<br>怎麼配 Apple Pencil 一代</h1>
+    <p class="subtitle">筆沒壞，iPad 也沒壞。多數人卡住是因為少了一個白色小轉接器，而 Apple 出過兩款，長得很像，只有其中一款能配對。</p>
+
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--red)">
+        <div class="lt">直接回答</div>
+        <p class="big">要用「USB-C 對 Apple Pencil 轉接器」，再加一條 USB-C 充電連接線。</p>
+        <p class="sm">iPad 第 10 代與 iPad (A16) 底部是 USB-C 孔，Apple Pencil 第 1 代的接頭是 Lightning，兩者插不到一起。以前那招「把筆直接插進 iPad 屁股」在這兩台上不存在了。</p>
+        <p class="alias-line">你可能是用別的名字找到這頁的：<b>iPad 11</b>（＝iPad (A16) 的俗稱）、<b>Type C 轉接頭</b>（＝官方的 USB-C 對 Apple Pencil 轉接器）、<b>插屁股配對</b>（＝把筆插進 iPad 的 Lightning 孔）。</p>
+      </div>
+
+      <blockquote class="lead-src">「Apple Pencil（第 1 代）只能搭配以下 iPad 機型：⋯iPad（A16）＊、iPad（第 10 代）＊⋯　＊此 iPad 須搭配 USB-C 對 Apple Pencil 轉接器，才能與 Apple Pencil 配對並充電」<cite>Apple 支援〈Apple Pencil 相容性〉繁體中文版，查證於 2026 年 8 月 8 日</cite></blockquote>
+
+      <p class="lede">真正讓人卡關的坑在後面：Apple 為 Apple Pencil 第 1 代出過<strong>兩種轉接器</strong>，一種短、一種長，不並排比對幾乎看不出差別。短的只能充電，長的才能配對。</p>
+
+      <p class="lede">很多人買了筆卻配不起來，原因通常在這裡：2022 年 10 月以前出貨的盒裝，附的是短的那一支。這篇帶你把三件事做完：認出手上是哪一支、把配對走完、以及轉接器掉了要怎麼辦。</p>
+    </div>
+
+    <p class="updated">本文查證：<b>2026 年 8 月 8 日</b>，相容機型、售價、料號與介面文字以 Apple 官方最新公告為準。<a class="inline" href="#sources">來源列在文末</a>，<a class="inline" href="#honest">哪些是實務經驗也標出來了</a>。</p>
+
+    <div class="toc">
+      <a href="#answer"><i>00</i>先做 30 秒分流</a>
+      <a href="#why"><i>01</i>為什麼會卡住</a>
+      <a href="#adapters"><i>02</i>兩種轉接器怎麼認</a>
+      <a href="#selfcheck"><i>03</i>我這支配得起來嗎</a>
+      <a href="#howto"><i>04</i>配對五步驟</a>
+      <a href="#mistakes"><i>05</i>六個常見錯誤</a>
+      <a href="#lost"><i>06</i>轉接器掉了怎麼辦</a>
+      <a href="#alternatives"><i>07</i>不想再玩轉接</a>
+    </div>
+
+    <section id="answer">
+      <div class="sec-label" style="--c:var(--navy)">triage</div>
+      <h2>00 · 先做 30 秒分流</h2>
+      <p>這個題目有四種很不一樣的處境，需要的答案也不同。先找到你自己那一格，可以省掉一半的閱讀。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--navy)">
+          <div class="ct">A · 剛換 iPad 10／A16，想繼續用舊的一代筆</div>
+          你最需要看<a class="inline" href="#adapters">第 02 節</a>：先確認手邊那支舊轉接器，是不是能配對的那一款。
+        </div>
+        <div class="callout" style="--c:var(--teal)">
+          <div class="ct">B · 筆和轉接器都接上了，就是不跳配對</div>
+          先看<a class="inline" href="#mistakes">第 05 節</a>的六個常見錯誤，八成中在裡面（線材是第一名）。
+        </div>
+        <div class="callout" style="--c:var(--amber)">
+          <div class="ct">C · 轉接器不見了</div>
+          <a class="inline" href="#lost">第 06 節</a>有官方單賣的品項、料號與售價，也誠實講副廠的取捨。
+        </div>
+        <div class="callout" style="--c:var(--purple)">
+          <div class="ct">D · 還在猶豫要買哪一支筆</div>
+          直接跳<a class="inline" href="#alternatives">第 07 節</a>。這兩台 iPad 有第二個官方選項，而且完全不用轉接。
+        </div>
+      </div>
+
+      <h3>先確認相容性：這兩台 iPad 官方支援哪幾支筆</h3>
+      <p>買錯筆是最貴的錯誤，所以先把清單放前面。下表整理自 Apple 官方的〈Apple Pencil 相容性〉頁與兩台 iPad 的技術規格頁。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Apple Pencil 款式</th><th>iPad 第 10 代<small>2022 年</small></th><th>iPad (A16)<small>2025 年</small></th><th>官方怎麼寫</th></tr>
+          <tr>
+            <td>Apple Pencil（第 1 代）</td>
+            <td class="y">✓ 支援</td><td class="y">✓ 支援</td>
+            <td>「透過 USB-C 對 Apple Pencil 轉接器⋯進行配對和充電」<small>本文主題</small></td>
+          </tr>
+          <tr>
+            <td>Apple Pencil（USB-C）</td>
+            <td class="y">✓ 支援</td><td class="y">✓ 支援</td>
+            <td>「透過 USB-C 充電連接線進行配對和充電」<small>不需要轉接器，但沒有壓力感應</small></td>
+          </tr>
+          <tr>
+            <td>Apple Pencil（第 2 代）</td>
+            <td class="n">✗ 不支援</td><td class="n">✗ 不支援</td>
+            <td>兩台 iPad 都不在官方相容清單內<small>它靠 iPad 側邊磁吸配對</small></td>
+          </tr>
+          <tr>
+            <td>Apple Pencil Pro</td>
+            <td class="n">✗ 不支援</td><td class="n">✗ 不支援</td>
+            <td>同上，相容機型是封閉名單</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">為什麼常有人以為第 2 代可以</div>
+        第 2 代確實也是「USB-C 世代」的筆，但它從來不用線，靠的是 iPad 側邊那條磁吸帶配對與充電。iPad 10 與 iPad (A16) 側邊沒有那條磁吸帶，所以吸不上去，也不會跳出配對。
+      </div>
+    </section>
+
+    <section id="why">
+      <div class="sec-label" style="--c:var(--purple)">why_stuck</div>
+      <h2>01 · 為什麼會卡住：兩個接頭對不上</h2>
+      <p>Apple Pencil 第 1 代是 2015 年的產品，Apple 官方技術規格寫得很清楚：它「透過 Lightning 配對與充電」。尾端那個 Lightning 接頭，當年一插進 iPad 就搞定配對，還順便充電。</p>
+
+      <p>iPad 第 10 代（2022 年）是基礎款 iPad 第一台改用 USB-C 的機型，iPad (A16)（2025 年）延續同一套設計。孔換了，筆沒換，於是插不進去。原本一個動作能完成的事，變成一條要四個零件才接得起來的鏈路。</p>
+
+      <figure class="fig anim">
+        <div class="rig">
+          <div class="lane" style="--c:var(--muted);--cbg:var(--panel2)">
+            <div class="lt">以前 · Lightning 孔的 iPad</div>
+            <div class="chain seq2">
+              <div class="nod"><div class="ni">✏️</div><div class="nl">Pencil 一代</div></div>
+              <div class="lnk"></div>
+              <div class="nod"><div class="ni">📱</div><div class="nl">iPad 9 以前</div></div>
+            </div>
+            <div class="pop">
+              <b>藍牙配對要求</b>
+              <small>「Apple Pencil」想要與你的 iPad 配對</small>
+              <div class="btns"><i>取消</i><i class="go">配對</i></div>
+            </div>
+          </div>
+
+          <div class="lane" style="--c:var(--red);--cbg:var(--red-bg)">
+            <div class="lt">現在 · 直接插，插不上</div>
+            <div class="chain stuck">
+              <div class="nod"><div class="ni">✏️</div><div class="nl">Pencil 一代</div></div>
+              <div class="blk">✕</div>
+              <div class="nod"><div class="ni">📱</div><div class="nl">iPad 10／A16</div></div>
+            </div>
+            <div class="pop no">
+              <b>什麼都不會發生</b>
+              <small>Lightning 接頭插不進 USB-C 孔，連接觸都沒有</small>
+            </div>
+          </div>
+
+          <div class="lane" style="--c:var(--green);--cbg:var(--green-bg)">
+            <div class="lt">現在 · 正確做法（層層轉接）</div>
+            <div class="chain seq4">
+              <div class="nod"><div class="ni">✏️</div><div class="nl">Pencil 一代</div></div>
+              <div class="lnk"></div>
+              <div class="nod"><div class="ni">🔌</div><div class="nl">USB-C 轉接器</div></div>
+              <div class="lnk"></div>
+              <div class="nod"><div class="ni">🧵</div><div class="nl">C to C 線</div></div>
+              <div class="lnk"></div>
+              <div class="nod"><div class="ni">📱</div><div class="nl">iPad 10／A16</div></div>
+            </div>
+            <div class="pop">
+              <b>藍牙配對要求</b>
+              <small>「Apple Pencil」想要與你的 iPad 配對</small>
+              <div class="btns"><i>取消</i><i class="go">配對</i></div>
+            </div>
+          </div>
+        </div>
+        <figcaption>同樣是讓 iPad 跳出配對，第一排一個動作就到，第三排要串<b>四個零件</b>。中間那排是多數人一開始的直覺做法，而它連電都不會通。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--navy)">
+        <div class="ct">為什麼一定要「有線」才配得起來</div>
+        寫字用的是藍牙，但<strong>第一次建立配對得靠實體接觸</strong>。這是 Apple Pencil 第 1 代從一開始就有的設計：接上去，iPad 才知道「是這一支」，然後才問你要不要配對。有線連接是配對的入口，不只是充電。
+      </div>
+
+      <p>所以你要準備的東西不只是「一個充電轉接頭」，而是「能把配對訊號接起來的那一段」。這個差別，直接決定下一節那兩支白色小零件哪一支對你有用。</p>
+    </section>
+
+    <section id="adapters">
+      <div class="sec-label" style="--c:var(--amber)">two_adapters</div>
+      <h2>02 · 兩種轉接器，一眼認出來</h2>
+      <p>這是整篇最需要記住的一節。Apple Pencil 第 1 代的盒裝裡出現過兩種轉接器，都是白色、都是短短一截、都能讓筆充到電。差別在長度，以及另一端的孔。</p>
+
+      <figure class="fig">
+        <div class="adps">
+          <div class="adp" style="--c:var(--green);--cbg:var(--green-bg)">
+            <div class="ah"><b>USB-C 對 Apple Pencil 轉接器</b><span>可充電 ＋ 可配對</span></div>
+            <div class="draw">
+              <span class="pen-end"></span>
+              <span class="body long"></span>
+              <span class="port"><i class="uc"></i></span>
+              <span class="len">比較長</span>
+            </div>
+            <p class="an">左端接 Apple Pencil，右端是<strong>橢圓形的 USB-C 孔</strong>。搭一條 USB-C 充電連接線接上 iPad 10／A16，才能完成配對。Apple 官方明文指定的就是這一支。</p>
+          </div>
+
+          <div class="adp" style="--c:var(--red);--cbg:var(--red-bg)">
+            <div class="ah"><b>Lightning 轉接器（舊盒裝那一支）</b><span>只能充電</span></div>
+            <div class="draw">
+              <span class="pen-end"></span>
+              <span class="body short"></span>
+              <span class="port"><i class="lt"></i></span>
+              <span class="len">比較短</span>
+            </div>
+            <p class="an">左端一樣接 Apple Pencil，右端是<strong>窄扁的 Lightning 孔</strong>。官方在使用手冊裡叫它「Apple Pencil 充電轉接器」，用途是讓你用 Lightning 連接線與電源轉接器幫筆充電。</p>
+          </div>
+        </div>
+        <figcaption>兩支的左端（接筆那一端）完全一樣，所以要看<b>右端的孔形</b>和<b>整體長度</b>：橢圓孔＋比較長＝能配對；扁孔＋比較短＝只能充電。</figcaption>
+      </figure>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>項目</th><th>USB-C 對 Apple Pencil 轉接器</th><th>Lightning（充電）轉接器</th></tr>
+          <tr><td>長度</td><td class="good">比較長</td><td class="bad">比較短</td></tr>
+          <tr><td>另一端的孔</td><td>USB-C（橢圓）</td><td>Lightning（窄扁）</td></tr>
+          <tr><td>要搭哪條線</td><td>USB-C 對 USB-C</td><td>Lightning 連接線</td></tr>
+          <tr><td>幫 Pencil 一代充電</td><td class="y">✓</td><td class="y">✓</td></tr>
+          <tr><td>與 iPad 10／A16 配對</td><td class="y">✓</td><td class="n">✗<small>官方只把配對功能寫在 USB-C 版上</small></td></tr>
+          <tr><td>官方是否單獨販售</td><td class="y">✓ 台灣官網有</td><td class="mid">台灣官網查無單賣<small>屬「查無」，非官方明文否定</small></td></tr>
+        </table>
+      </div>
+
+      <h3>為什麼會有兩種：時間軸解釋了一切</h3>
+      <p>Apple Pencil 第 1 代 2015 年上市時，全世界的 iPad 都是 Lightning，盒裝附一支 Lightning 轉接器就夠用，它那時候只需要解決「插牆充電」這件事。</p>
+
+      <p>2022 年 10 月 iPad 第 10 代上市，基礎款 iPad 改用 USB-C，同一支筆突然需要一個全新的零件。Apple 把比較長的 USB-C 版本補進盒裝，兩支從此並存於市面上，外觀語言卻沒有換過。</p>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">存檔比對出來的分水嶺：2022 年 10 月</div>
+        Apple 沒有公告過盒裝改版時間。我們用網頁存檔比對官方商品頁的「包裝盒內容」：<strong>2021 年 12 月的版本仍只有筆、Lightning 轉接器、替換筆尖</strong>；到 2023 年初的版本才多出 USB-C 對 Apple Pencil 轉接器，並註明是與 iPad 第 10 代配對充電所需。<span class="lv-tag infer">依存檔推論</span>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">誠實說一句</div>
+        這確實是很擾民的設計。同一支筆、兩個外觀近乎一樣的白色零件，功能卻不同，包裝上也沒有大字標示差別。我們每天都在回答這個問題，所以把辨識方法放在整篇最前面。
+      </div>
+    </section>
+
+    <section id="selfcheck">
+      <div class="sec-label" style="--c:var(--teal)">self_check</div>
+      <h2>03 · 我手上這支，配得起來嗎</h2>
+      <p>照下面三題依序回答。多數人在第一題就有答案，不用把三題都跑完。</p>
+
+      <div class="judge">
+        <div class="jrow" style="--c:var(--navy)">
+          <div class="jq"><span class="jn">Q1</span><b>翻出那支白色小零件，看它另一端的孔是什麼形狀？</b></div>
+          <div class="ja">
+            <div class="yes"><b>橢圓形、比較寬</b><br>USB-C 孔，這支能配對。跳到<a class="inline" href="#howto">第 04 節</a>開始接。</div>
+            <div class="no"><b>窄扁形、像一條細縫</b><br>Lightning 孔，只能充電。你需要另外準備 USB-C 版。</div>
+          </div>
+        </div>
+
+        <div class="jrow" style="--c:var(--teal)">
+          <div class="jq"><span class="jn">Q2</span><b>手邊只有一支、沒東西可以比長短？那就回想筆是什麼時候買的。</b></div>
+          <div class="ja">
+            <div class="yes"><b>2022 年底之後買的</b><br>盒裝通常兩支都有，翻一下盒子的內襯與小紙袋。</div>
+            <div class="no"><b>iPad 第 10 代上市前買的</b><br>盒裝多半只有 Lightning 那一支，需要單獨補一支 USB-C 版。</div>
+          </div>
+        </div>
+
+        <div class="jrow" style="--c:var(--amber)">
+          <div class="jq"><span class="jn">Q3</span><b>接上去之後有沒有反應？用結果反推。</b></div>
+          <div class="ja">
+            <div class="yes"><b>出現「配對」按鈕</b><br>接對了，點一下就完成。</div>
+            <div class="no"><b>只看到在充電、沒有配對按鈕</b><br>先讓筆充一分鐘再試；仍沒有就回<a class="inline" href="#mistakes">第 05 節</a>對照。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">從 iPad 6～9 代升級上來的人最容易中招</div>
+        舊機是 Lightning，那幾年你根本用不到 USB-C 轉接器，也不會知道有這東西。換機之後筆沒壞、盒子裡的零件也還在，只是那支剛好配不了對。這不是你哪裡做錯了。
+      </div>
+
+      <!-- 待補：實際案例 — 果果客服實際遇到「拿錯轉接器」的比例、客人最常見的誤判說法、以及線上協助的實際處理流程 -->
+    </section>
+
+    <section id="howto">
+      <div class="sec-label" style="--c:var(--green)">how_to_pair</div>
+      <h2>04 · 配對五步驟</h2>
+      <p>東西備齊之後，實際只要一分鐘。清單是三樣：Apple Pencil 第 1 代、USB-C 對 Apple Pencil 轉接器、一條 USB-C 充電連接線（iPad 盒裝那條就可以）。</p>
+
+      <blockquote class="lead-src">「1. 取下蓋子，將 Apple Pencil 插入 USB-C 對 Apple Pencil 轉接器。2. 使用 iPad 隨附的 USB-C 充電線將轉接器的另一端接到 iPad。3. 配對 Apple Pencil：當『配對』按鈕出現時，點一下它。」<cite>iPad 使用手冊〈將 iPad 與 Apple Pencil（第一代）配對和為其充電〉，「替 Apple Pencil 充電與配對至 iPad（第十代）和 iPad（A16）」段落</cite></blockquote>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--green)"><div class="n">1</div><div><h4>先確認 iPad 的藍牙是開的</h4><p>設定 App →「藍牙」→ 打開。關著的話後面什麼都不會跳。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">2</div><div><h4>取下 Apple Pencil 的筆蓋，露出 Lightning 接頭</h4><p>筆蓋是磁性的，直接拉開。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">3</div><div><h4>把筆插進 USB-C 對 Apple Pencil 轉接器</h4><p>插到底、感覺得到卡住。這時候還沒有任何反應是正常的。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">4</div><div><h4>用 USB-C 充電連接線，把轉接器接到 iPad</h4><p>兩端都是橢圓形的 USB-C 頭。線材是這一步最常出錯的地方，見<a class="inline" href="#mistakes">第 05 節</a>。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">5</div><div><h4>「配對」按鈕出現，點一下，然後把筆拔下來</h4><p>畫面上會跳出藍牙配對要求：「Apple Pencil」想要與你的 iPad 配對。官方步驟寫明配對完成後就把筆從 iPad 拔除。</p></div></div>
+      </div>
+
+      <div class="bigquote">
+        <div class="qm">"</div>
+        <p>「Apple Pencil」想要與你的 iPad 配對</p>
+        <small>看到這行字，代表你接對了。沒看到，問題八成在轉接器或線材，不在筆。</small>
+      </div>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--amber)">
+          <div class="ct">按鈕沒出現？官方叫你先等一分鐘</div>
+          Apple 排障文件原文：「如果『配對』按鈕沒有出現，請等候 Apple Pencil 充電一分鐘。然後，試著再次連接 Apple Pencil，並等待『配對』按鈕出現。」沒電的筆常被誤判成不相容。
+        </div>
+        <div class="callout" style="--c:var(--teal)">
+          <div class="ct">充電不一定要透過 iPad</div>
+          官方提示：也可以用 iPad 隨附的 USB-C 充電線和電源轉接器，直接插牆幫 Apple Pencil 充電。只是那樣不會觸發配對。
+        </div>
+      </div>
+    </section>
+
+    <section id="mistakes">
+      <div class="sec-label" style="--c:var(--red)">common_mistakes</div>
+      <h2>05 · 六個常見錯誤</h2>
+      <p>配不起來的時候，症狀幾乎都一樣：接上去了、筆也在充電、就是不跳配對按鈕。下面按「我們最常遇到」的順序排。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你做了什麼</th><th>會發生什麼</th><th>怎麼修</th></tr>
+          <tr>
+            <td>用 USB-C 對 Lightning 的線</td>
+            <td class="bad">充得到電，配不了對<small>線的 Lightning 端只插得進 Lightning 轉接器，那條路不通配對</small></td>
+            <td>換成兩端都是 USB-C 的線</td>
+          </tr>
+          <tr>
+            <td>拿到的是 Lightning 轉接器</td>
+            <td class="bad">充得到電，配不了對</td>
+            <td>看孔形分辨，見<a class="inline" href="#adapters">第 02 節</a></td>
+          </tr>
+          <tr>
+            <td>把 Apple Pencil 直接插 iPad 底部</td>
+            <td class="bad">完全插不進去</td>
+            <td>這兩台沒有 Lightning 孔，這條路不存在</td>
+          </tr>
+          <tr>
+            <td>只接了轉接器，沒接線到 iPad</td>
+            <td class="bad">什麼都不會發生</td>
+            <td>轉接器只是中繼，最後一段一定要接到 iPad</td>
+          </tr>
+          <tr>
+            <td>線接在充電器或電腦上，不是 iPad</td>
+            <td class="mid">只會充電</td>
+            <td>配對訊號要走到 iPad，線必須插在 iPad 上</td>
+          </tr>
+          <tr>
+            <td>買到只支援充電的副廠轉接器</td>
+            <td class="bad">充得到電，配不了對</td>
+            <td>下單前確認商品說明有寫「支援 iPad 10／iPad (A16) 配對」</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--red)">
+        <div class="ct">最容易被誤會的一件事：「有在充電」不等於「接對了」</div>
+        充電只要電力接通，配對還要多一條資料通道。所以你會看到一個很違反直覺的畫面——筆的電量在上升，iPad 卻始終沒動靜。看到這個組合，先懷疑轉接器與線材，別急著懷疑筆壞了。
+      </div>
+
+      <ul class="flags">
+        <li><b>賣場標榜「Apple Pencil 一代充電轉接頭」但沒提配對</b>。這種寫法通常代表它真的只能充電，要找的關鍵字是「配對」或「支援 iPad 10」。</li>
+        <li><b>價格明顯低於百元的轉接器</b>。實務上這個價位帶多半只做充電。<span class="lv-tag infer">實務經驗</span></li>
+        <li><b>商品圖是短的那一款，文案卻寫可配對</b>。圖文不符時以圖為準比較安全，或直接請賣家提供實拍。</li>
+      </ul>
+    </section>
+
+    <section id="lost">
+      <div class="sec-label" style="--c:var(--amber)">lost_adapter</div>
+      <h2>06 · 轉接器掉了怎麼辦</h2>
+
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">先講一個很多人不知道的好消息</div>
+        現在買<strong>全新的 Apple Pencil（第 1 代），盒裝裡已經含 USB-C 對 Apple Pencil 轉接器</strong>。Apple 官方「包裝盒內容」逐字列出：Apple Pencil (第 1 代)、Lightning 轉接器、替換筆尖、USB-C 對 Apple Pencil 轉接器。買新筆的人不必再額外花那 290 元。
+      </div>
+
+      <p>真正需要單獨補購的是兩種人：買到二手或舊盒裝的，以及轉接器弄丟的。它很小、白色、跟筆蓋一樣容易滾到沙發底下。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>品項</th><th>台灣官網售價</th><th>料號</th><th>備註</th></tr>
+          <tr><td>USB-C 對 Apple Pencil 轉接器</td><td>NT$290</td><td>MWML3FE/A</td><td>官方相容性欄只列 iPad (A16) 與 iPad (第 10 代)</td></tr>
+          <tr><td>Apple Pencil（第 1 代）</td><td>NT$3,290</td><td>MYQW3TA/A</td><td>盒裝已含上述轉接器</td></tr>
+          <tr><td>Apple Pencil（USB-C）</td><td>NT$2,690</td><td>MUWA3TA/A</td><td>不需要轉接器</td></tr>
+        </table>
+      </div>
+      <p style="font-size:.85rem;color:var(--muted)">售價與料號查證於 2026 年 8 月 8 日的 Apple 台灣官網，會變動，下單前請以官網當下標示為準。舊料號 MQLU3FE/A 的產品頁已不存在，看到有人引用那組編號代表資料過期了。</p>
+
+      <div class="grid">
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">原廠</div>
+          <h4>不用賭規格</h4>
+          <p>官方產品頁寫明它就是為了「Apple Pencil (第 1 代) 搭配 iPad (A16) 及 iPad (第 10 代) 進行配對和充電」而存在。</p>
+        </div>
+        <div class="card" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="c-tag">副廠</div>
+          <h4>便宜，但要看清楚規格</h4>
+          <p>可行的選項，前提是商品說明明確寫「可與 iPad 10／iPad (A16) 配對」。只寫充電的，就真的只能充電。</p>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)">
+        <div class="ct">果果的立場</div>
+        我們不會叫你一定要買原廠。原廠的好處是不用賭，副廠的好處是便宜。真正該避開的只有一種：規格寫不清楚的那種。買回來發現只會充電，錢和時間都白花。
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">先確認你缺的是哪一個零件</div>
+        「筆蓋不見了」和「轉接器不見了」是兩件事。筆蓋不見不影響配對與書寫，只是筆頭少了保護；轉接器不見才會讓你配不了對。至於那支 Lightning 轉接器，台灣官網查不到單賣。
+      </div>
+    </section>
+
+    <section id="alternatives">
+      <div class="sec-label" style="--c:var(--teal)">alternatives</div>
+      <h2>07 · 不想再玩轉接：還有這些選項</h2>
+      <p>如果你的一代筆已經壞了、或根本還沒買筆，那不必硬走轉接這條路。iPad 10 與 iPad (A16) 還有一個官方選項，不需要任何轉接器。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>選項</th><th>怎麼配對</th><th>壓力感應</th><th>傾斜度</th><th>適合誰</th></tr>
+          <tr>
+            <td>Apple Pencil（第 1 代）<small>NT$3,290</small></td>
+            <td>轉接器 ＋ USB-C 連接線</td>
+            <td class="y">✓ 有</td><td class="y">✓ 有</td>
+            <td>已經有這支筆，或需要壓感畫圖</td>
+          </tr>
+          <tr>
+            <td>Apple Pencil（USB-C）<small>NT$2,690</small></td>
+            <td>滑開筆蓋露出 USB-C 埠，直接用 USB-C 連接線接 iPad</td>
+            <td class="n">✗ 官方標「不適用」</td><td class="y">✓ 有</td>
+            <td>做筆記、畫重點、簽名<small>能磁力吸附在 iPad 側邊收納</small></td>
+          </tr>
+          <tr>
+            <td>副廠觸控筆</td>
+            <td>多數免藍牙，開了就能寫<small>各家做法不同</small></td>
+            <td class="n">多半沒有</td><td class="mid">看型號</td>
+            <td>預算優先、用途單純</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">很少人知道的一件事</div>
+        Apple Pencil（USB-C）在這兩台 iPad 上的日常體驗，某些方面比一代舒服：不用轉接器、可以磁力吸附在 iPad 側邊收納、比一代便宜 600 元。代價是<strong>沒有壓力感應</strong>，線條粗細不會隨力道變化。
+      </div>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--amber)">
+          <div class="ct">兩個常被誤會的細節</div>
+          Apple Pencil（USB-C）雖然能磁吸在 iPad 側邊，但那只是<strong>收納</strong>，不會像第 2 代那樣自動配對充電，仍要用線。另外它的懸浮功能有機型限制，iPad 10 與 iPad (A16) 都不在官方清單內。
+        </div>
+        <div class="callout" style="--c:var(--green)">
+          <div class="ct">你需要壓感嗎？一句話判斷</div>
+          會用 Procreate、會畫素描或上色，那就需要，選一代。只是寫字、畫重點、批改文件、簽名的話用不到，USB-C 版或副廠都夠。
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--teal)">
+        <div class="ct">副廠筆的誠實版本</div>
+        優點是便宜、多數免配對、開了就能寫。缺點是沒有壓感，掌拒與延遲各家差異大，系統更新後偶爾要等廠商調整。用途單純的人多半感覺不到差別，要畫圖的人會很有感。
+      </div>
+
+      <p>想再多比較「畫圖到底需不需要原廠筆」，站上另一篇 <a class="inline" href="../ipad-jianying-pencil-guide/">剪片要不要買 Apple Pencil？</a> 有更完整的用途分流。</p>
+    </section>
+
+    <section id="after">
+      <div class="sec-label" style="--c:var(--navy)">after_pairing</div>
+      <h2>08 · 配對成功之後，你會遇到的三件事</h2>
+
+      <h3>電量在哪裡看</h3>
+      <p>官方給了兩個位置：查看「電池」小工具，或前往<strong>設定 App → Apple Pencil</strong>。後者是完整的設定頁，看得到目前電量，也看得到是不是正在充電。</p>
+
+      <div class="callout" style="--c:var(--teal)">
+        <div class="ct">這一項也是配對成功的另一個證據</div>
+        設定 App 左側如果<strong>沒有</strong>「Apple Pencil」這一項，通常代表根本還沒配對成功。這比回頭猜「剛剛按到配對了嗎」可靠。
+      </div>
+
+      <h3>每次用都要重接一次嗎？大多數時候不用，但有例外</h3>
+      <p>接完那一次之後，藍牙關係就建立起來了，拿起筆直接寫。官方在使用手冊裡把例外寫得很清楚：</p>
+
+      <blockquote class="lead-src">「配對 Apple Pencil 後，將其從 iPad 拔除。Apple Pencil 會保持配對狀態，直到重新啟動 iPad、關閉『藍牙』，或與另一台 iPad 配對。當你準備好使用 Apple Pencil 時，只需再次配對。」<cite>iPad 使用手冊〈將 iPad 與 Apple Pencil（第一代）配對和為其充電〉</cite></blockquote>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">所以轉接器不能亂丟</div>
+        重開機、關過藍牙、或把筆借去配別台 iPad，都可能要再走一次配對流程——而那流程需要轉接器和線。這是我們建議把這兩樣固定收在筆袋裡的原因，不只是為了充電。
+      </div>
+
+      <h3>可以邊充電邊寫字嗎？</h3>
+      <p>實務上不行。Apple 沒有用文字明講這條限制，官方步驟寫的是「配對後把筆從 iPad 拔除」，實際操作也是插著就寫不了。<span class="lv-tag infer">實務經驗</span></p>
+
+      <div class="callout" style="--c:var(--navy)">
+        <div class="ct">好消息是它充得很快（Apple 舊版官網數據）</div>
+        Apple 台灣官網早期的 Apple Pencil 頁面寫過：「完全充飽電力，可供你持續使用長達 12 個小時」「只需將它連接 iPad Pro 充電 15 秒，就能再使用 30 分鐘」。註腳標明測試於 2015 年 9 月進行。<strong>現行官方頁面已經沒有這兩個數字</strong>，引用時請把它當歷史數據看。
+      </div>
+
+      <p>如果配對成功之後反而出現「寫得出字但壓感怪怪的」，那是另一條排查路線，站上 <a class="inline" href="../apple-pencil-pressure-troubleshooting/">Apple Pencil 壓感變怪，先別送修</a> 有完整的四層排查。若症狀是連不上、充不了電或點兩下沒作用，四款筆的差異與官方排除順序整理在 <a class="inline" href="../apple-pencil-not-working/">Apple Pencil 沒反應，先認出是哪一支</a>。</p>
+    </section>
+
+    <section id="honest">
+      <div class="sec-label" style="--c:var(--purple)">evidence</div>
+      <h2>09 · 這篇哪些是官方寫的、哪些是實務經驗</h2>
+      <p>這個題目有個特色：Apple 官方文件把「該用什麼配對」寫得很完整，但「兩種轉接器怎麼分辨」「哪一年的盒裝附哪一支」這些最實用的部分，官方沒有整理成一頁。所以我們把等級標出來。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>說法</th><th>等級</th><th>依據</th></tr>
+          <tr>
+            <td>iPad 第 10 代與 iPad (A16) 只支援 Apple Pencil 第 1 代與 Apple Pencil（USB-C）</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>Apple〈Apple Pencil 相容性〉頁的機型清單，加上兩台 iPad 的官方技術規格頁</td>
+          </tr>
+          <tr>
+            <td>第 1 代在這兩台上必須用 USB-C 對 Apple Pencil 轉接器配對</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>官方原文：「此 iPad 須搭配 USB-C 對 Apple Pencil 轉接器，才能與 Apple Pencil 配對並充電」</td>
+          </tr>
+          <tr>
+            <td>配對步驟與「配對」按鈕沒出現時先充電一分鐘</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>iPad 使用手冊與 Apple 排障文件〈如果你無法將 Apple Pencil 與 iPad 配對〉逐字</td>
+          </tr>
+          <tr>
+            <td>重新啟動 iPad、關閉藍牙或配對另一台 iPad 後要重新配對</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>iPad 使用手冊逐字</td>
+          </tr>
+          <tr>
+            <td>現行全新 Apple Pencil 第 1 代盒裝已含 USB-C 轉接器</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>Apple 台灣官網產品頁與技術規格頁的「包裝盒內容」欄</td>
+          </tr>
+          <tr>
+            <td>Lightning 轉接器不能用來與 iPad 10／A16 配對</td>
+            <td><span class="lv-tag infer">實務經驗</span></td>
+            <td>官方沒有針對兩種轉接器做過對照說明，也沒寫過 Lightning 版可配對；這是果果日常整備與客服實際驗證的結論</td>
+          </tr>
+          <tr>
+            <td>盒裝分水嶺是 2022 年 10 月（iPad 第 10 代上市）</td>
+            <td><span class="lv-tag infer">依存檔推論</span></td>
+            <td>Apple 未公布盒裝變更時間；依官方商品頁「包裝盒內容」欄的網頁存檔比對得出</td>
+          </tr>
+          <tr>
+            <td>Apple Pencil 充電中不能書寫</td>
+            <td><span class="lv-tag infer">實務經驗</span></td>
+            <td>官方未以文字明列此限制，最接近的只有「配對後將其從 iPad 拔除」這句流程指示</td>
+          </tr>
+          <tr>
+            <td>12 小時續航、充 15 秒可用 30 分鐘</td>
+            <td><span class="lv-tag infer">歷史官方數據</span></td>
+            <td>僅見於 Apple 台灣官網舊版頁面的網頁存檔，註腳標示測試於 2015 年 9 月；現行官方頁面已無此數字</td>
+          </tr>
+          <tr>
+            <td>Lightning 轉接器官方沒有單獨販售</td>
+            <td><span class="lv-tag infer">查無</span></td>
+            <td>台灣官網配件搜尋結果中沒有此品項，屬「查不到」而非官方明文否定</td>
+          </tr>
+          <tr>
+            <td>低於某個價位的副廠轉接器多半只能充電</td>
+            <td><span class="lv-tag infer">實務經驗</span></td>
+            <td>市售商品的抽樣觀察，不是官方或研究數據，請以商品說明為準</td>
+          </tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">本文的相容機型、配對步驟、品項名稱、料號與售價皆取自 Apple 官方頁面；盒裝內容物的歷年變化取自官方商品頁的網頁存檔。查證日期 2026 年 8 月 8 日：</p>
+      <ul class="sources">
+        <li><a href="https://support.apple.com/zh-tw/108937">Apple 支援 · Apple Pencil 相容性</a>（第 1 代的相容機型清單含 iPad (A16) 與 iPad 第 10 代，並加註「此 iPad 須搭配 USB-C 對 Apple Pencil 轉接器，才能與 Apple Pencil 配對並充電」；Apple Pencil (USB-C) 的清單亦含這兩台）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipadc9c41abb/ipados">iPad 使用手冊 · 將 iPad 與 Apple Pencil（第一代）配對和為其充電</a>（「替 Apple Pencil 充電與配對至 iPad（第十代）和 iPad（A16）」三步驟逐字、配對保持狀態的例外條件、查看電量的兩個位置、可用電源轉接器充電的提示）</li>
+        <li><a href="https://support.apple.com/zh-tw/108788">Apple 支援 · 如果你無法將 Apple Pencil 與 iPad 配對</a>（必備的 USB-C 對 Apple Pencil 轉接器與相容連接線；「如果『配對』按鈕沒有出現，請等候 Apple Pencil 充電一分鐘」）</li>
+        <li><a href="https://support.apple.com/zh-tw/111920">Apple Pencil（第 1 代）· 技術規格</a>（「透過 Lightning 配對與充電」、「靈敏感應筆尖的壓力與傾斜角度」、包裝盒內容含 Lightning 轉接器與 USB-C 對 Apple Pencil 轉接器）</li>
+        <li><a href="https://support.apple.com/zh-tw/121318">Apple Pencil（USB-C）· 技術規格</a>（「透過 USB-C 充電連接線進行配對和充電」、「以磁力吸附於 iPad 的側邊，以利收納」、其他特色僅列磁力吸附）</li>
+        <li><a href="https://www.apple.com/tw/apple-pencil/">Apple 台灣官網 · Apple Pencil 機型比較</a>（壓力感應「不適用於 Apple Pencil (USB-C)」、傾斜度適用、懸浮功能的機型限定清單不含 iPad 第 10 代與 iPad (A16)）</li>
+        <li><a href="https://support.apple.com/zh-tw/111840">iPad（第 10 代）· 技術規格</a>（推出年份 2022、USB-C 連接器、「透過 USB-C 對 Apple Pencil 轉接器為 Apple Pencil (第 1 代) 進行配對和充電」）</li>
+        <li><a href="https://support.apple.com/zh-tw/122240">iPad（A16）· 技術規格</a>（推出年份 2025、USB-C 連接器、同一條 Apple Pencil 第 1 代的轉接器註記）</li>
+        <li><a href="https://support.apple.com/zh-tw/108043">Apple 支援 · 辨識 iPad 機型</a>（iPad 第 10 代年份 2022、iPad (A16) 年份 2025；第 9 代才是 2021 年）</li>
+        <li><a href="https://www.apple.com/tw/shop/product/mwml3fe/a/usb-c-%E5%B0%8D-apple-pencil-%E8%BD%89%E6%8E%A5%E5%99%A8">Apple 台灣官網 · USB-C 對 Apple Pencil 轉接器</a>（NT$290、料號 MWML3FE/A、相容機型僅列 iPad (A16) 與 iPad (第 10 代)、用途說明逐字）</li>
+        <li><a href="https://www.apple.com/tw/shop/product/myqw3ta/a/apple-pencil-%E7%AC%AC-1-%E4%BB%A3">Apple 台灣官網 · Apple Pencil（第 1 代）</a>（NT$3,290、料號 MYQW3TA/A、包裝盒內容四項含 USB-C 對 Apple Pencil 轉接器）</li>
+        <li><a href="https://www.apple.com/tw/shop/product/muwa3ta/a/apple-pencil-usb-c">Apple 台灣官網 · Apple Pencil（USB-C）</a>（NT$2,690、料號 MUWA3TA/A）</li>
+        <li><a href="https://web.archive.org/web/20211207175259/https://www.apple.com/shop/product/MK0C2AM/A/apple-pencil-1st-generation">網頁存檔 · Apple Pencil 商品頁（2021 年 12 月）</a>（包裝盒內容僅 Apple Pencil、Lightning adapter、Extra tip——盒裝分水嶺不在 2021 年的證據）</li>
+        <li><a href="https://web.archive.org/web/20230104223235/https://www.apple.com/shop/product/MQLY3AM/A/apple-pencil-1st-generation">網頁存檔 · Apple Pencil 商品頁（2023 年 1 月）</a>（包裝盒內容多出 USB-C to Apple Pencil Adapter，並註明為與第 10 代 iPad 配對充電所需）</li>
+        <li><a href="https://web.archive.org/web/20170603053309/https://www.apple.com/tw/apple-pencil/">網頁存檔 · Apple 台灣官網舊版 Apple Pencil 頁</a>（「持續使用長達 12 個小時」「充電 15 秒，就能再使用 30 分鐘」及其 2015 年 9 月測試註腳）</li>
+      </ul>
+      <p class="updated">介面文字、售價與料號可能隨 iPadOS 版本與官網調整，標示為「實務經驗」「依存檔推論」的說法請見<a class="inline" href="#honest">第 09 節</a>。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+</script>
+</body>
+</html>

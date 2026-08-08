@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>iPad Wi-Fi 版還是行動網路版？價差、月租、eSIM 一次看 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式（共用 style.css 沒有的才寫在這）── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 寬表格橫向捲動 */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 620px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 3px; }
+
+  /* 官方規格原文標記 */
+  .spec { font-family: var(--mono); font-size: .82em; background: var(--navy-bg); color: var(--navy); border: 1px solid #cfdaea; border-radius: 5px; padding: 1px 7px; white-space: nowrap; }
+
+  /* ── 兩版本對照卡 vs（取代舊文那張「Wifi v.s LTE」圖片）── */
+  .vs { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: stretch; margin: 20px 0; }
+  .vs .col { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 12px; padding: 16px 18px 14px; box-shadow: 0 2px 10px rgba(20,39,68,.04); }
+  .vs .vh { display: flex; align-items: center; gap: 11px; padding-bottom: 11px; border-bottom: 1px solid var(--grid); }
+  .vs .vh .vi { font-size: 1.6rem; line-height: 1; }
+  .vs .vh b { display: block; color: var(--ink); font-size: 1rem; font-weight: 800; }
+  .vs .vh small { display: block; color: var(--muted); font-size: .75rem; font-family: var(--mono); }
+  .vs ul { list-style: none; margin: 10px 0 0; }
+  .vs ul li { position: relative; padding: 7px 0 7px 24px; font-size: .88rem; line-height: 1.6; border-bottom: 1px solid var(--grid); color: var(--body); }
+  .vs ul li:last-child { border-bottom: 0; }
+  .vs ul li::before { position: absolute; left: 0; top: 7px; font-family: var(--mono); font-weight: 800; }
+  .vs ul li.y::before { content: '✓'; color: var(--green); }
+  .vs ul li.n::before { content: '✕'; color: var(--red); }
+  .vs ul li.q::before { content: '～'; color: var(--amber); }
+  .vs ul li b { color: var(--ink); }
+  .vs .vf { margin-top: 12px; padding: 10px 12px; background: var(--cbg); border-radius: 8px; font-size: .84rem; line-height: 1.6; color: var(--body); }
+  .vs .vf b { display: block; font-family: var(--mono); font-size: .64rem; color: var(--c); margin-bottom: 4px; }
+  .vs .mid { display: grid; place-items: center; font-family: var(--mono); font-size: .68rem; color: var(--muted); }
+
+  /* ── 決策樹 tree ── */
+  .tree { display: grid; gap: 10px; margin: 20px 0; }
+  .tree .q { background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--navy); border-radius: 10px; padding: 13px 16px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .tree .q .qn { font-family: var(--mono); font-size: .64rem; color: var(--navy); margin-bottom: 4px; }
+  .tree .q h4 { font-size: 1rem; color: var(--ink); font-weight: 700; margin: 0 0 3px; }
+  .tree .q p { font-size: .85rem; color: var(--muted); margin: 0; }
+  .tree .br { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-left: 18px; }
+  .tree .b { background: var(--cbg); border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 10px; padding: 11px 14px; font-size: .87rem; line-height: 1.6; color: var(--body); }
+  .tree .b .bl { font-family: var(--mono); font-size: .64rem; color: var(--c); font-weight: 700; margin-bottom: 4px; }
+  .tree .b b { color: var(--ink); }
+  .tree .down { text-align: center; font-family: var(--mono); font-size: .8rem; color: var(--muted); }
+
+  /* ── 自我檢測計分 quiz ── */
+  .quiz { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px; margin: 18px 0; box-shadow: 0 2px 10px rgba(20,39,68,.04); }
+  .quiz .qt { font-family: var(--mono); font-size: .66rem; color: var(--navy); margin-bottom: 10px; }
+  .quiz ul { list-style: none; margin: 0; }
+  .quiz ul li { position: relative; padding: 10px 0 10px 30px; border-bottom: 1px solid var(--grid); font-size: .92rem; line-height: 1.65; color: var(--body); }
+  .quiz ul li:last-child { border-bottom: 0; }
+  .quiz ul li::before { content: '☐'; position: absolute; left: 0; top: 9px; color: var(--navy); font-size: 1.05rem; }
+  .quiz ul li b { display: block; color: var(--ink); margin-bottom: 2px; }
+  .score { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin: 16px 0 0; }
+  .score .s { border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 10px; padding: 12px 14px; background: var(--cbg); }
+  .score .s .sn { font-family: var(--mono); font-size: 1.35rem; font-weight: 800; color: var(--c); line-height: 1; }
+  .score .s .sl { font-size: .84rem; color: var(--ink); font-weight: 700; margin: 6px 0 3px; }
+  .score .s p { font-size: .8rem; color: var(--body); margin: 0; line-height: 1.55; }
+
+  /* ── 動態分鏡 · 情境 K：從「想上網」到「真的在上網」中間隔了幾個動作 ──
+     為什麼這裡值得動畫（媒介階梯判準 ①有時間差 ②動作本身是知識點）：
+     兩種版本的差別不在網速，而在順序——一邊是解鎖就已經在網上，
+     一邊要先到另一台裝置上把一串動作跑完。靜態圖只能把動作並排列出來，
+     表達不出「你得等它一個一個跑完」，而那正是這筆錢買到的東西。
+     鐵則：基礎樣式＝動畫最終狀態（兩條軌道都已跑完、動作方塊全部可見），
+     動畫只是把它倒帶重演；關掉動畫或 prefers-reduced-motion 時資訊一點不少。 */
+  .lanes { display: grid; gap: 12px; }
+  .lane { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 11px 13px 13px; }
+  .lane .lt { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font-family: var(--mono); font-size: .66rem; color: var(--c); margin-bottom: 10px; }
+  .lane .lt b { font-family: var(--sans); font-size: .88rem; color: var(--ink); font-weight: 700; }
+  .lane .track { position: relative; display: flex; gap: 5px; }
+  .lane .prog { position: absolute; left: 0; top: -3px; bottom: -3px; width: 100%; background: rgba(47,158,87,.11); border: 1px solid var(--green); border-radius: 9px; }
+  .lane .prog::after { content: ''; position: absolute; right: -6px; top: 50%; width: 11px; height: 11px; margin-top: -5.5px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px rgba(47,158,87,.18); }
+  .lane .track .s { position: relative; flex: 1; min-width: 0; border: 1px solid var(--line); border-radius: 7px; background: rgba(255,255,255,.88); padding: 9px 4px; text-align: center; font-size: .72rem; line-height: 1.35; color: var(--ink); }
+  .lane .track .s i { display: block; font-style: normal; font-size: 1rem; margin-bottom: 3px; }
+  .lane .sum { font-family: var(--mono); font-size: .66rem; color: var(--c); margin-top: 10px; text-align: right; }
+  @keyframes ln-fast { 0%, 6% { width: 0; } 22%, 100% { width: 100%; } }
+  @keyframes ln-slow { 0%, 6% { width: 0; } 22% { width: 20%; } 40% { width: 40%; } 58% { width: 60%; } 76% { width: 80%; } 92%, 100% { width: 100%; } }
+  .anim .lane.fast .prog { animation: ln-fast 4.4s ease-out infinite; }
+  .anim .lane.slow .prog { animation: ln-slow 4.4s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .anim .lane.fast .prog, .anim .lane.slow .prog { animation: none; }
+  }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .vs { grid-template-columns: 1fr; }
+    .vs .mid { padding: 2px 0; }
+    .tree .br { grid-template-columns: 1fr; margin-left: 0; }
+    .score { grid-template-columns: 1fr; }
+    .lane .track .s { font-size: .64rem; padding: 7px 2px; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>Wi-Fi 版還是行動網路版</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#answer" class="active">00 · 先給答案</a>
+  <div class="grp">決定之前</div>
+  <a href="#naming">01 · 先正名：LTE 版</a>
+  <a href="#diff">02 · 兩版實際差在哪</a>
+  <a href="#value">03 · 這筆錢買到什麼</a>
+  <div class="grp">算清楚</div>
+  <a href="#cost">04 · 三年總帳</a>
+  <a href="#quiz">05 · 五題自我檢測</a>
+  <div class="grp">對號入座</div>
+  <a href="#buy">06 · 值得買的人</a>
+  <a href="#skip">07 · 別買的人</a>
+  <div class="grp">買之前</div>
+  <a href="#esim">08 · eSIM 現況</a>
+  <a href="#secondhand">09 · 二手怎麼挑</a>
+  <a href="#checklist">10 · 下單前確認</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>下單前先分流</span><span>官方規格逐字對照</span><span>不需要就說不需要</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">客戶指南 / iPad 選購 · 兩種版本怎麼挑</div>
+    <h1>iPad 要買 Wi-Fi 版還是行動網路版？</h1>
+    <p class="subtitle">多花的那筆錢，買到的不是網速，是「不必先經過另一台裝置」。這頁幫你算清楚值不值得。</p>
+
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--green)">
+        <div class="lt">先給答案</div>
+        <p class="big">多數人買 Wi-Fi 版就夠了。</p>
+        <p class="sm">行動網路版要多付兩筆錢：買機器時的價差，以及之後每個月的門號月租。而它換到的好處，只在「你人在沒有 Wi-Fi 的地方、當下又不想掏手機」的時候才會出現。先誠實算一下這種時刻一週發生幾次，答案通常就浮出來了。</p>
+        <p class="alias-line">你可能是用別的名字找到這頁的：<b>LTE 版</b>、<b>插卡版</b>、<b>4G 版</b>、<b>Cellular</b>、<b>SIM 卡版</b>，指的都是同一種機器。</p>
+      </div>
+      <p class="lede">但也有一群人買了就回不去：車上導航、外勤跑客戶、戶外看譜、買給不會連 Wi-Fi 的長輩。這頁不會叫你一定買或一定不買，而是把兩邊的成本與好處攤開，讓你三分鐘內知道自己站哪一邊。</p>
+    </div>
+
+    <div class="lead-map">
+      <div class="lm-t">急的話直接跳：</div>
+      <div class="lm-g">
+        <a href="#cost"><i>04</i>三年下來要多花多少錢</a>
+        <a href="#quiz"><i>05</i>五題測出自己該買哪種</a>
+        <a href="#esim"><i>08</i>新機沒有卡槽了怎麼辦</a>
+      </div>
+    </div>
+
+    <section id="answer">
+      <div class="sec-label" style="--c:var(--navy)">triage</div>
+      <h2>00 · 先分流：你屬於哪一種</h2>
+      <p>這頁講的是「該不該多花這筆錢」。如果你的問題其實是別的，站上有更對症的頁面，先過去比較省時間。</p>
+      <div class="grid g3">
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">你在這裡</div>
+          <h4>還沒下單，在兩個版本之間猶豫</h4>
+          <p>往下讀就對了。第 04 節算錢、第 05 節自我檢測。</p>
+        </div>
+        <div class="card" style="--c:var(--teal);--cbg:var(--teal-bg)">
+          <div class="c-tag">名詞先搞懂</div>
+          <h4>「支援 5G」到底在講哪個 5G？</h4>
+          <p>家裡路由器那個 5G 跟規格表上的 5G 是兩件事，那篇專門講這個。</p>
+          <span class="ex"><a class="inline" href="../ipad-5g-wifi-vs-cellular/">前往這一頁</a></span>
+        </div>
+        <div class="card" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="c-tag">已經在用熱點</div>
+          <h4>熱點很慢，是不是該換行動網路版？</h4>
+          <p>先看熱點慢的原因，很多情況是救得回來的，不用花錢換機。</p>
+          <span class="ex"><a class="inline" href="../hotspot-slower-than-phone/">前往這一頁</a></span>
+        </div>
+      </div>
+    </section>
+
+    <div class="part-div">決定之前</div>
+
+    <section id="naming">
+      <div class="sec-label" style="--c:var(--teal)">naming</div>
+      <h2>01 · 先正名：你講的「LTE 版」，官方現在不叫這個名字</h2>
+      <p>台灣的討論區、拍賣平台、甚至店家標題，多半還寫「iPad LTE 版」。這個叫法沿用了十年，大家都懂，但它跟現在的機器已經對不上了。</p>
+      <p>LTE 是 4G 時代的技術名稱。2021 年之後推出的 iPad，行動網路版走的是 5G。名字沒跟著換，就會出現一個很實際的問題：<strong>你在二手平台只搜「LTE」，會漏掉一整批 5G 機</strong>；反過來看到寫「LTE」的舊機，也可能誤以為那是它的全部本事。</p>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你可能講的</th><th>它是什麼</th><th>現在的正式說法</th></tr>
+          <tr><td>LTE 版</td><td>4G 時代的技術名，被拿來當「能插卡」的代稱</td><td rowspan="4">Wi-Fi + 行動網路機型<br><small>Apple 台灣官網用語</small></td></tr>
+          <tr><td>插卡版 / SIM 卡版</td><td>從「機身有卡槽」來的俗稱，新機已經沒有卡槽了</td></tr>
+          <tr><td>Cellular 版</td><td>英文官網用字，二手平台常直接照抄</td></tr>
+          <tr><td>4G 版 / 5G 版</td><td>講的是它連得上哪一代行動網路，跟年份有關</td></tr>
+        </table>
+      </div>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">最容易吃虧的一句話</div>「寫 Cellular 就是 5G 版」——不是。<strong>能插卡跟支援 5G 是兩件事</strong>，中間差了一個世代。2021 年以前的行動網路版最快只到 4G LTE。這條分界線與各機型的對照，站上有專頁：<a class="inline" href="../ipad-5g-wifi-vs-cellular/">iPad 支援 5G 是哪一種 5G？</a></div>
+      <blockquote class="lead-src">Apple 台灣官網的購買頁上，這個選項逐字寫的是「Wi-Fi + 行動網路」，說明文字是：「Wi-Fi + 行動網路機型讓你在無法使用 Wi-Fi 時也能進行連線。」<cite>Apple 台灣官網 · iPad 購買頁，查證 2026 年 8 月 8 日</cite></blockquote>
+      <p>有意思的是，「LTE」這個字官方並沒有消失，只是換了位置。它現在出現在規格表的細項裡（<span class="spec">Gigabit LTE，具 4x4 MIMO 技術</span>），代表的是「這台也連得上 4G 網路」，而不是整台機器的名字。</p>
+      <p>本文接下來一律用<strong>「行動網路版」</strong>稱呼，跟 Apple 台灣官網一致。你心裡把它讀成「LTE 版」也完全沒問題，講的是同一台機器。</p>
+    </section>
+
+    <section id="diff">
+      <div class="sec-label" style="--c:var(--navy)">difference</div>
+      <h2>02 · 兩個版本實際差在哪：多的是三個零件</h2>
+      <p>同一台 iPad 的兩個版本，螢幕、晶片、容量、鏡頭全部一樣。差別只在機器裡多裝了東西。而這些東西<strong>買了之後不能加裝</strong>，也不是「以後想插卡再插」就可以的。</p>
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">📶</div><div class="bt">兩版都有</div><div class="bv">Wi-Fi 天線</div></div>
+          <div class="arr">＋</div>
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">📡</div><div class="bt">只有行動網路版</div><div class="bv">行動網路模組</div></div>
+          <div class="arr">＋</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">🛰️</div><div class="bt">只有行動網路版</div><div class="bv">GPS 定位晶片</div></div>
+        </div>
+        <figcaption>多出來的兩個零件是<b>焊在機器裡</b>的。Wi-Fi 版買回家之後，沒有任何方法把它們補上去。</figcaption>
+      </figure>
+
+      <h3>一張圖看完差別</h3>
+      <div class="vs">
+        <div class="col" style="--c:var(--teal);--cbg:var(--teal-bg)">
+          <div class="vh"><span class="vi">📶</span><div><b>Wi-Fi 機型</b><small>Wi-Fi only</small></div></div>
+          <ul>
+            <li class="n">不能插卡、不能裝 eSIM</li>
+            <li class="n"><b>沒有 GPS 晶片</b>，定位靠 Wi-Fi 訊號推算</li>
+            <li class="y">連上 Wi-Fi 或手機熱點就能上網</li>
+            <li class="y">機器便宜一截，<b>沒有月租費</b></li>
+            <li class="q">出門要上網，得先開手機熱點</li>
+          </ul>
+          <div class="vf"><b>適合誰</b>家裡、辦公室、學校、咖啡廳，生活範圍內都有 Wi-Fi 的人。追劇、畫圖、上課、做筆記。</div>
+        </div>
+        <div class="mid">VS</div>
+        <div class="col" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="vh"><span class="vi">📡</span><div><b>Wi-Fi + 行動網路機型</b><small>Wi-Fi + Cellular</small></div></div>
+          <ul>
+            <li class="y">可以裝門號，<b>解鎖就在網上</b></li>
+            <li class="y"><b>有 GPS 晶片</b>，車用導航夠準</li>
+            <li class="y">Wi-Fi 一樣能用，兩種隨時切換</li>
+            <li class="n">機器貴一截，還要<b>每月月租</b></li>
+            <li class="q">不辦門號的話，等於白花價差</li>
+          </ul>
+          <div class="vf"><b>適合誰</b>車上、工地、展場、戶外表演、跑客戶。工作或生活常在沒有 Wi-Fi 的地方。</div>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">最貴的一個誤會</div>「先買 Wi-Fi 版，之後想插卡再說。」Wi-Fi 版<strong>沒有行動網路模組</strong>，少的不只是一個卡槽，eSIM 也裝不上去。想要就只能換一台機器，而不是補辦一張卡。這個決定<strong>只有下單前那一次機會</strong>。</div>
+    </section>
+
+    <section id="value">
+      <div class="sec-label" style="--c:var(--purple)">what_you_buy</div>
+      <h2>03 · 這筆錢實際買到的是什麼</h2>
+      <p>很多人以為行動網路版「網速比較快」。同一個地方、同一條網路，兩個版本的速度沒有差別。你買到的是另外三件事。</p>
+
+      <h3>買到的第一件事：少掉一串動作</h3>
+      <p>Wi-Fi 版在外面要上網，得先讓另一台裝置準備好。這串動作每次都不長，但它是<strong>有順序的</strong>，你只能等它一格一格跑完。</p>
+      <figure class="fig anim">
+        <div class="lanes">
+          <div class="lane fast" style="--c:var(--navy)">
+            <div class="lt"><b>行動網路版</b><span>1 個動作</span></div>
+            <div class="track">
+              <div class="prog"></div>
+              <div class="s"><i>🔓</i>解鎖 iPad，已經在網上</div>
+            </div>
+            <div class="sum">→ 直接開始用</div>
+          </div>
+          <div class="lane slow" style="--c:var(--amber)">
+            <div class="lt"><b>Wi-Fi 版 ＋ 手機熱點</b><span>5 個動作</span></div>
+            <div class="track">
+              <div class="prog"></div>
+              <div class="s"><i>👜</i>掏出手機</div>
+              <div class="s"><i>🔓</i>解鎖</div>
+              <div class="s"><i>📲</i>開熱點</div>
+              <div class="s"><i>⚙️</i>iPad 選網路</div>
+              <div class="s"><i>⏳</i>等它連上</div>
+            </div>
+            <div class="sum">→ 才能開始用</div>
+          </div>
+        </div>
+        <figcaption>兩條軌道畫的是<b>動作的數量與順序</b>，不是實測秒數。多數時候這幾秒無所謂；<b>在客戶面前、在紅燈前、在台上</b>，感覺就完全不一樣了。</figcaption>
+      </figure>
+      <p>判斷方法很簡單：回想上一週，你有幾次在「不方便掏手機」的當下需要 iPad 上網？一次都想不起來，那這件事對你沒有價值。</p>
+
+      <h3>買到的第二件事：真正的 GPS</h3>
+      <p>Wi-Fi 版也看得到自己的位置，但它是用<strong>周圍 Wi-Fi 訊號比對資料庫</strong>推算出來的。市區裡 Wi-Fi 很密，抓得還算準；一旦離開有 Wi-Fi 的地方，這套方法就失去依據。</p>
+      <p>Apple 規格頁把這件事分成兩欄寫，看一次就懂了：</p>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>官方規格頁「定位功能」</th><th>列出的項目</th><th>白話講</th></tr>
+          <tr><td>所有機型</td><td><span class="spec">數位指南針</span> <span class="spec">Wi-Fi</span> <span class="spec">iBeacon 微型定位服務</span></td><td>靠周圍的 Wi-Fi 訊號推算，離開市區就沒依據</td></tr>
+          <tr><td>Wi-Fi + 行動網路機型</td><td class="good"><span class="spec">GPS/GNSS 定位系統</span> <span class="spec">行動網路</span></td><td>直接收衛星訊號，跟有沒有網路無關</td></tr>
+        </table>
+      </div>
+      <p>Apple 沒有明講「Wi-Fi 版沒有 GPS」，但它把 GPS/GNSS 放在「Wi-Fi + 行動網路機型」那一欄，意思已經很清楚。官方的行銷頁講得更白：Wi-Fi + 行動網路機型「具備 GPS 和定位功能，無論你離家多遠，每趟旅程都能安心導航」。</p>
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--red)"><div class="ct">Wi-Fi 版會失準的地方</div>高速公路、山區、產業道路、大型停車場、郊區——這些地方沒有足夠的 Wi-Fi 訊號可以比對，位置會飄或乾脆抓不到。</div>
+        <div class="callout" style="--c:var(--green)"><div class="ct">行動網路版怎麼做到</div>機器裡有獨立的衛星定位晶片，直接收衛星訊號。跟你手機導航用的是同一套東西，跟有沒有網路無關。</div>
+      </div>
+      <p>所以<strong>把 iPad 當車機用是最明確的分水嶺</strong>。要導航、要跑外送、要開車看地圖，Wi-Fi 版會讓你很痛苦。只是偶爾查個地址、在市區看看店家位置，Wi-Fi 版其實應付得來。</p>
+
+      <h3>買到的第三件事：不用拿手機當中繼</h3>
+      <p>熱點是把網路轉一手：手機先收下來，再用 Wi-Fi 發給 iPad。轉手這件事本身就要付出代價：速度會掉、手機會發熱、電量掉得比平常快。</p>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">這件事我們另外寫了一頁</div>熱點為什麼一定會比手機慢、掉幾成算正常、哪些狀況救得回來，全部整理在 <a class="inline" href="../hotspot-slower-than-phone/">iPhone 開熱點給 iPad，網速為什麼只剩一半</a>。<strong>先看那頁再決定要不要換機</strong>。很多人以為要花兩萬才能解決的問題，調個設定就好了。</div>
+      <p>順帶一提：如果你的困擾是「iPad 上網很卡」，先確認自己的網速夠不夠用，再談要不要換版本。判斷方法在 <a class="inline" href="../internet-speed-how-much-is-enough/">網速多少才夠用</a>。</p>
+      <div class="callout" style="--c:var(--purple)"><div class="ct">很多人不知道的一件事：方向可以反過來</div>行動網路版的 iPad <strong>自己也能開個人熱點</strong>，把網路分給筆電、手機或其他裝置。Apple 官方的說明頁一開頭就寫「個人熱點會使用 iPhone 或 iPad（Wi-Fi + 行動網路）的行動數據連線」，台灣三大電信在官方支援表上也都標記支援。<br><br>如果你本來就常常在外面開筆電，這條會改變你的計算方式：那筆月租不只餵 iPad。</div>
+    </section>
+
+    <div class="part-div">算清楚</div>
+
+    <section id="cost">
+      <div class="sec-label" style="--c:var(--amber)">the_bill</div>
+      <h2>04 · 三年總帳：兩筆錢，不是一筆</h2>
+      <p>比較兩個版本時，大家通常只看機器的標價差。真正的差距要把月租一起算進去，因為<strong>行動網路版沒有門號就等於 Wi-Fi 版</strong>。不辦卡的話，那筆價差是純粹白花的。</p>
+
+      <h3>第一筆：機器的價差是固定的</h3>
+      <p>先看新機。Apple 台灣官網現售的四條產品線，價差是<strong>固定金額，不隨容量變動</strong>。買 128GB 或 1TB，多付的都是同一個數字。</p>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>現售機型（起始容量）</th><th>Wi-Fi 版</th><th>行動網路版</th><th>價差</th></tr>
+          <tr><td>iPad（A16）<small>128GB</small></td><td>NT$14,900</td><td>NT$19,900</td><td class="bad">+ NT$5,000</td></tr>
+          <tr><td>iPad mini（A17 Pro）<small>128GB</small></td><td>NT$19,900</td><td>NT$24,900</td><td class="bad">+ NT$5,000</td></tr>
+          <tr><td>iPad Air（M4）<small>11 吋 128GB</small></td><td>NT$24,900</td><td>NT$29,900</td><td class="bad">+ NT$5,000</td></tr>
+          <tr><td>iPad Pro（M5）<small>11 吋 256GB</small></td><td>NT$39,900</td><td>NT$46,900</td><td class="bad">+ NT$7,000</td></tr>
+        </table>
+      </div>
+      <p>換句話說：<strong>iPad、iPad Air、iPad mini 一律多 5,000 元；iPad Pro 一律多 7,000 元</strong>。價格取自 Apple 台灣官網購買頁，查證 2026 年 8 月 8 日，定價隨時可能調整。</p>
+      <p>這裡有個對買 iPad 的人很實際的比較點：以 iPad（A16）為例，5,000 元剛好夠你從 128GB 跳到 512GB 還有找。同一筆錢，兩種花法。</p>
+
+      <h3>第二筆：每個月的月租</h3>
+      <p>iPad 的行動網路是<strong>「只限數據」</strong>，官方規格頁就是這樣寫的。它不能打一般電話、不能收簡訊，你辦的是一個純上網的門號，跟手機門號是分開的兩件事。</p>
+      <p>月租要多少，我們不在這裡寫死一個數字。台灣的資費調整得很頻繁，方案名稱也常換，寫死了反而會誤導你——而這筆錢會跟著你好幾年，值得自己問一次。</p>
+      <div class="callout" style="--c:var(--red)"><div class="ct">先破一個很多人有的期待：iPad 沒辦法跟手機共用門號</div>三大電信都有「一號多機／One Number」這類服務，但官方頁面把適用範圍寫得很死，<strong>目前只開放穿戴裝置</strong>：中華電信寫「一個穿戴式裝置」，遠傳的硬體需求列的是 Apple Watch，台灣大哥大寫「只能與一只穿戴式裝置配對」。<br><br>所以 iPad 要上網，就得<strong>辦一個屬於它自己的門號、付一份自己的月租</strong>。到門市問「可不可以跟我手機共用」，得到的答案多半是「那要辦第二門號」。<span class="updated">查證於 <b>2026 年 8 月 8 日</b>，各家官網公告為準。</span></div>
+      <p>實務上你會遇到的是這三種：</p>
+      <div class="grid g3">
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">形態 A · 通常最划算</div>
+          <h4>用「第二門號」加辦</h4>
+          <p>你本來就是某家的客戶時，用這個名義加辦條件通常比較好。以遠傳官網的第二門號頁為例，4G 最低從月租 149 元起，限遠傳既有用戶。</p>
+        </div>
+        <div class="card" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="c-tag">形態 B · 從頭辦一個</div>
+          <h4>一般單門號</h4>
+          <p>流程與價格帶跟新辦手機門號差不多，多半綁 12 或 24 個月。注意台灣大原本的「平板／筆電行動上網」頁面已經下架，平板不再有專屬資費。</p>
+        </div>
+        <div class="card" style="--c:var(--teal);--cbg:var(--teal-bg)">
+          <div class="c-tag">形態 C · 短期</div>
+          <h4>預付卡或旅客卡</h4>
+          <p>只是偶爾要用的人可以走這條。中華與遠傳官網都寫明 eSIM 支援預付型，但申辦要跑一趟實體門市，不能純線上完成。</p>
+        </div>
+      </div>
+      <div class="callout" style="--c:var(--green)"><div class="ct">打電話問的時候，這樣講最快</div>「我要辦一個<strong>平板用的純數據門號</strong>，我的機型是 ○○○，<strong>只支援 eSIM／有實體卡槽</strong>，請問最低月租多少、有沒有開通費？」把機型和 SIM 形式一起講，可以省掉來回確認。</div>
+
+      <h3>把兩筆錢加起來：一條很簡單的算式</h3>
+      <p>問到月租之後，用這條算式就能比較：<strong>多花的總金額 ＝ 機器價差 ＋ 月租 × 使用月數</strong>。以 iPad Air 的 5,000 元價差、用三年（36 個月）為例：</p>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>假設的月租</th><th>三年月租合計</th><th>加上機器價差 5,000</th><th>這筆錢還能買什麼</th></tr>
+          <tr><td>100 元</td><td>3,600 元</td><td>8,600 元</td><td>約等於加一階容量還有找</td></tr>
+          <tr><td>300 元</td><td>10,800 元</td><td>15,800 元</td><td>接近一台入門 iPad 的價格</td></tr>
+          <tr><td>500 元</td><td>18,000 元</td><td>23,000 元</td><td>足以往上跳一個等級的機型</td></tr>
+        </table>
+      </div>
+      <p>表格裡的月租是<strong>假設值，不是任何一家電信的報價</strong>，目的是讓你看到量級。把你實際問到的數字代進去，答案就出來了。</p>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">別忘了還有一次性的費用</div>除了月租，開通 eSIM 本身也可能收設定費（三家目前都是 300 元／次，各有不同的減免條件，詳見 <a class="inline" href="#esim">第 08 節</a>）。單筆不大，但把它算進去比較誠實。</div>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">換個角度想這筆錢</div>把價差跟月租加起來，通常足以<strong>往上跳一個容量、甚至一個世代</strong>。對大多數人來說，128GB 變 256GB、或是舊一代換新一代，日常感受比「出門不用開熱點」明顯得多。<br><br>容量不夠是每天都在發生的事；出門沒網路，多數人一個月遇到不了幾次。</div>
+    </section>
+
+    <section id="quiz">
+      <div class="sec-label" style="--c:var(--green)">self_check</div>
+      <h2>05 · 五題自我檢測：你到底該買哪一種</h2>
+      <p>不用想太多，照直覺回答。想像的是你<strong>過去一個月</strong>真實的樣子，不是「以後可能會」的樣子。</p>
+
+      <div class="quiz">
+        <div class="qt">勾選符合你的敘述</div>
+        <ul>
+          <li><b>我每週至少有兩、三次會在沒有 Wi-Fi 的地方用 iPad</b>車上、工地、戶外、客戶端、展場、山上、田裡都算。純粹「在外面走路」不算，要真的會拿出來用。</li>
+          <li><b>我會用 iPad 導航，或需要它知道我在哪</b>車機、外送、跑點、田野調查、看地圖找路。市區偶爾查地址不算。</li>
+          <li><b>掏手機開熱點對我來說是個問題</b>在客戶面前、在台上、開車中、手上有東西，或者手機常常快沒電。</li>
+          <li><b>這台不是我在用，是給不熟悉 3C 的人用</b>買給長輩或小孩，你不想每次都遠端教他怎麼連 Wi-Fi。</li>
+          <li><b>我願意每個月多付一筆固定月租，而且會真的去辦</b>這題很關鍵。不辦門號的話，前面四題全中也沒有意義。</li>
+        </ul>
+        <div class="score">
+          <div class="s" style="--c:var(--green);--cbg:var(--green-bg)">
+            <div class="sn">0–1</div>
+            <div class="sl">買 Wi-Fi 版</div>
+            <p>省下來的錢加容量或加世代，你會更有感。</p>
+          </div>
+          <div class="s" style="--c:var(--amber);--cbg:var(--amber-bg)">
+            <div class="sn">2–3</div>
+            <div class="sl">先用熱點撐一陣子</div>
+            <p>需求存在但不強烈。用現有手機熱點試三個月，真的煩了再換也不遲。</p>
+          </div>
+          <div class="s" style="--c:var(--navy);--cbg:var(--navy-bg)">
+            <div class="sn">4–5</div>
+            <div class="sl">買行動網路版</div>
+            <p>這筆錢對你是划算的，尤其第 2 題和第 5 題都有勾的話。</p>
+          </div>
+        </div>
+      </div>
+
+      <h3>如果你想要更直接的判斷</h3>
+      <p>把上面五題壓縮成一條路徑，三個問題就能走完：</p>
+      <div class="tree">
+        <div class="q">
+          <div class="qn">gate_01</div>
+          <h4>你會用 iPad 導航，或需要它精確知道自己在哪嗎？</h4>
+          <p>這題最沒有替代方案——GPS 晶片沒有就是沒有。</p>
+        </div>
+        <div class="br">
+          <div class="b" style="--c:var(--navy);--cbg:var(--navy-bg)"><div class="bl">會 →</div><b>買行動網路版。</b>這題單獨成立就夠了，不用再往下走。</div>
+          <div class="b" style="--c:var(--muted);--cbg:var(--panel2)"><div class="bl">不會 →</div>往下一題。</div>
+        </div>
+        <div class="down">↓</div>
+        <div class="q">
+          <div class="qn">gate_02</div>
+          <h4>你每週會在沒有 Wi-Fi 的地方用到它兩次以上嗎？</h4>
+          <p>算的是實際拿出來用的次數，不是「有帶出門」的次數。</p>
+        </div>
+        <div class="br">
+          <div class="b" style="--c:var(--muted);--cbg:var(--panel2)"><div class="bl">會 →</div>往下一題。</div>
+          <div class="b" style="--c:var(--green);--cbg:var(--green-bg)"><div class="bl">不會 →</div><b>買 Wi-Fi 版。</b>偶爾一次開熱點就好，不值得為它付月租。</div>
+        </div>
+        <div class="down">↓</div>
+        <div class="q">
+          <div class="qn">gate_03</div>
+          <h4>你確定自己會去辦一個平板門號，而且長期繳月租嗎？</h4>
+          <p>不辦的話，多付的機器價差完全沒有用處。</p>
+        </div>
+        <div class="br">
+          <div class="b" style="--c:var(--navy);--cbg:var(--navy-bg)"><div class="bl">確定 →</div><b>買行動網路版。</b>你是真的需要它的那群人。</div>
+          <div class="b" style="--c:var(--green);--cbg:var(--green-bg)"><div class="bl">不確定 →</div><b>買 Wi-Fi 版。</b>「先買起來放」是這個決定最常見的浪費法。</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="part-div">對號入座</div>
+
+    <section id="buy">
+      <div class="sec-label" style="--c:var(--navy)">who_should</div>
+      <h2>06 · 這些情況，多花這筆錢是值得的</h2>
+      <p>下面六種情境，共同點都是<strong>「當下沒有 Wi-Fi，而且不方便再去弄一台裝置」</strong>。看看有沒有你。</p>
+      <div class="grid">
+        <div class="card" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="c-tag">情境 01 · 車上</div>
+          <h4>把 iPad 當導航機</h4>
+          <p>大螢幕看路口比手機清楚，但這件事完全吃 GPS。Wi-Fi 版在高速公路上會抓不到位置。外送、代駕、長途跑車尤其明顯。</p>
+        </div>
+        <div class="card" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="c-tag">情境 02 · 外勤</div>
+          <h4>跑客戶、現場簽約</h4>
+          <p>拿 iPad 給客戶看方案、當場開系統下單。中間插一句「等我開一下熱點」，節奏就斷了。這是行動網路版最經典的用途。</p>
+        </div>
+        <div class="card" style="--c:var(--teal);--cbg:var(--teal-bg)">
+          <div class="c-tag">情境 03 · 戶外</div>
+          <h4>看譜、拍攝、田野工作</h4>
+          <p>演出現場、婚禮、外拍、工地、農地。這些地方要嘛沒有 Wi-Fi，要嘛公用 Wi-Fi 擠到不能用。臨時要調檔案就靠它。</p>
+        </div>
+        <div class="card" style="--c:var(--teal);--cbg:var(--teal-bg)">
+          <div class="c-tag">情境 04 · 送禮</div>
+          <h4>買給長輩或小孩</h4>
+          <p>你不會希望每次出門都要遠端教一次「怎麼連熱點」。裝好門號就永遠在線上，對不熟 3C 的使用者是很大的差別。</p>
+        </div>
+        <div class="card" style="--c:var(--purple);--cbg:var(--purple-bg)">
+          <div class="c-tag">情境 05 · 工作機</div>
+          <h4>iPad 是你唯一的主力機</h4>
+          <p>沒有筆電、什麼事都在 iPad 上做，而且常在外面。這種情況下網路斷掉就是停工，多一條獨立的路值得。</p>
+        </div>
+        <div class="card" style="--c:var(--purple);--cbg:var(--purple-bg)">
+          <div class="c-tag">情境 06 · 備援</div>
+          <h4>手機電量常常很緊</h4>
+          <p>開熱點很吃電。如果你的手機本來就撐不到晚上，再拿它去餵 iPad 只會更糟。這時分成兩條獨立的網路反而合理。</p>
+        </div>
+      </div>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">只中一項也可以買</div>不需要六項都中。<strong>只要「車用導航」或「外勤簽約」其中一項是你的日常，就足以成立</strong>。這兩件事沒有便宜的替代方案。<!-- 待補：實際案例。若要放真實客人的使用情境，需由果果客服提供可公開、當事人同意的案例，這裡先留空。 --></div>
+    </section>
+
+    <section id="skip">
+      <div class="sec-label" style="--c:var(--red)">who_should_not</div>
+      <h2>07 · 這些情況，我們會勸你不要買</h2>
+      <p>果果賣二手與福利機，講這段對生意沒有好處。但把不需要的東西賣給你，之後的售後問題只會更多。</p>
+      <ul class="flags">
+        <li><b>「我的 iPad 九成時間在家裡或辦公室」</b>。那就是 Wi-Fi 版的定義。剩下那一成用手機熱點完全撐得住。</li>
+        <li><b>「我手機已經吃到飽了，多辦一個門號好像很浪費」</b>——你的直覺是對的。手機吃到飽通常含熱點額度，先確認自己的方案怎麼算，再決定要不要多付一份。</li>
+        <li><b>「買來追劇、畫圖、上網課、做筆記」</b>。這些事九成發生在有 Wi-Fi 的地方。同樣的預算拿去換容量，畫圖的人會更有感。</li>
+        <li><b>「先買起來放，以後說不定用得到」</b>——這是最常見的浪費。<strong>不辦門號的行動網路版，功能等同 Wi-Fi 版</strong>，只是你多付了錢。</li>
+        <li><b>「出國旅遊要上網」</b>。Apple 確實有主打這件事，Airalo、Holafly、Nomad、Ubigi 這類旅遊 eSIM 的官方頁面也都把 iPad 列進支援清單（前提是 Wi-Fi + 行動網路版、而且機器沒有被電信商鎖）。但多數人的做法是手機辦漫遊或旅遊網卡，再開熱點給 iPad，成本低得多。專程為了一年幾趟旅行買行動網路版，這筆帳不太划算。</li>
+        <li><b>「聽說行動網路版比較快」</b>——同一個地點、同一條網路，兩個版本速度一樣。快慢決定於你連的是什麼網路，不是機器版本。</li>
+      </ul>
+      <div class="bigquote">
+        <div class="qm">“</div>
+        <p>行動網路版買的是「不必先做那五個動作」。<br>如果你一週用不到那個瞬間，這筆錢就沒有落點。</p>
+        <small>把價差和月租拿去加容量或加世代，多數人的體感更明顯。</small>
+      </div>
+    </section>
+
+    <div class="part-div">買之前</div>
+
+    <section id="esim">
+      <div class="sec-label" style="--c:var(--teal)">esim</div>
+      <h2>08 · eSIM 現況：新機已經沒有卡槽了</h2>
+      <p>這幾年 iPad 行動網路版變化最大的地方，是<strong>卡片不見了</strong>。現售的四款機型，機身上都找不到那個要用退卡針戳的小孔，它們只能用 eSIM。</p>
+      <blockquote class="lead-src">Apple 規格頁「SIM 卡」欄位逐字：「eSIM。iPad Pro 採用先進的 eSIM 技術，更加便利且安全（與實體 SIM 卡不相容）。」<cite>Apple 台灣官網 · iPad Pro 技術規格，查證 2026 年 8 月 8 日</cite></blockquote>
+      <figure class="fig">
+        <div class="spectrum">
+          <div class="seg old">舊機型<small>機身側邊有 SIM 卡托盤</small><b>實體 nano-SIM 或 eSIM</b></div>
+          <div class="divider">卡槽<br>分水嶺</div>
+          <div class="seg new">新機型<small>iPad（A16）、iPad Pro（M4）、iPad Air（M2）、iPad mini（A17 Pro）及後續機型</small><b>只能用 eSIM</b></div>
+        </div>
+        <figcaption>Apple 支援文件對這條線的說法逐字是：這幾款「<b>和後續機型需透過 eSIM 啟用，沒有實體 SIM 卡</b>」。而且註明是「在全球各地購買的」，沒有地區差異。</figcaption>
+      </figure>
+
+      <h3>eSIM 是什麼？用最白話講一次</h3>
+      <p>把它想成「不用拿卡片的門號」。以前電信商給你一片塑膠卡，你插進機器；現在改成把同一組資料<strong>直接寫進機器裡</strong>，方式可能是掃一個 QR Code、或在電信商 App 裡按幾下。</p>
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">eSIM 的好處</div>不用等卡片寄來、不會弄丟、不用擔心卡針。Apple 官方說 iPad 可以「管理八組以上的 eSIM」，出國時直接加當地方案，回國再切回來。</div>
+        <div class="callout" style="--c:var(--amber)"><div class="ct">eSIM 的麻煩</div>換機時不能像卡片一樣直接拔起來換過去，得照電信商的流程走。有些情況要跑一趟門市、有些會收設定費。這點各家規定不同，換機前先問。</div>
+      </div>
+
+      <h3>台灣哪些電信商支援 iPad 的 eSIM</h3>
+      <p>Apple 有一份〈亞太地區 iPad 無線電信業者的支援情況〉對照表，台灣區塊列出三家：<strong>中華電信、遠傳、台灣大哥大</strong>。三家的功能欄都標了 eSIM，也都標了個人熱點。</p>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">這份表要這樣讀</div>它代表「Apple 認可這家支援 iPad eSIM」，<strong>不代表你想要的那個資費方案一定可以用 eSIM 開通</strong>。決定買之前，直接打電話問你要辦的那家，把機型講清楚。這一步很多人跳過，然後在門市卡住。<span class="updated">查證於 <b>2026 年 8 月 8 日</b>，電信商支援狀況會變動，以官方最新公告為準。</span></div>
+      <div class="callout" style="--c:var(--navy)"><div class="ct">另外兩家的現況，順便更新一下</div>台灣之星已於 <strong>2023 年 12 月 1 日</strong>併入台灣大哥大；亞太電信併入遠傳，原亞太門號也已停止服務。所以現在能給 iPad 用 eSIM 的，實際上就是這三家。台灣大官網另註明「原台灣之星預付卡用戶暫不適用 eSIM」，原台哥星用戶要多問一句。</div>
+
+      <h3>eSIM 的兩筆隱形成本</h3>
+      <p>eSIM 本身不用錢，但開通與換機這兩件事各有代價。先知道，之後比較不會被嚇到。</p>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>電信商</th><th>eSIM 設定費</th><th>官網寫的減免條件</th></tr>
+          <tr><td>中華電信</td><td>300 元／次</td><td>每門號首次申請或首次更換免收；刪除後重辦要再收</td></tr>
+          <tr><td>遠傳</td><td>300 元／次</td><td>首次申請、新申辦／攜碼／續約、門市購空機、門市維修移轉等情境可免；VIP 一年 2 次</td></tr>
+          <tr><td>台灣大哥大</td><td>300 元／次</td><td>每年乙次減免；購機續約、門市維修與 VIP 用戶另有減免</td></tr>
+        </table>
+      </div>
+      <p class="updated" style="margin-bottom:22px">三家費用與減免條件查證於 <b>2026 年 8 月 8 日</b>，以各家官網最新公告為準。</p>
+      <div class="callout" style="--c:var(--red)"><div class="ct">第二筆成本：換機時多半得跑一趟門市</div>Apple 有一個叫「eSIM 快速移轉」的功能，可以在兩台裝置之間直接搬。但翻 Apple 官方的電信業者支援表，<strong>台灣三家在「eSIM 快速移轉」那一欄一家都沒有列入</strong>（查證 2026 年 8 月 8 日）。<br><br>白話講：<strong>舊 iPad 換新 iPad，你很可能得帶著證件回門市重辦一次，並可能再付一次設定費</strong>。這件事在你評估「三年之後想換機」時值得先放進去。</div>
+
+      <h3>換機、轉移、出國：三條路徑</h3>
+      <p>iPad 上要弄到一組能用的 eSIM，官方列出的方式主要是這三種。名字都在「設定 → 行動數據」裡找得到：</p>
+      <div class="steps">
+        <div class="step" style="--c:var(--amber)"><div class="n">01</div><div><h4>移轉 iPad 方案</h4><p>舊 iPad 換新 iPad 時用。官方寫「某些電信業者支援 eSIM 快速移轉」，可以不用聯絡電信商就直接搬，但也明講「須遵循電信商的政策規定，其中可能包含對數據方案的移轉限制」。<strong>台灣目前不在這份快速移轉名單上</strong>，多半還是得回門市。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">02</div><div><h4>加入 iPhone 方案</h4><p>把 iPad 掛到你現有的手機方案底下。注意它的作法是在你的手機方案底下<strong>多開一組附屬門號</strong>，手機原本那組不會被搬走。前提是 iPhone 和 iPad 要用同一個 Apple 帳號登入。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">03</div><div><h4>尋找新方案</h4><p>直接在 iPad 上跟當地電信商買。Apple 說可以買「一天、一週或一個月」的短期方案。出國時特別方便。不過台灣本地有沒有業者出現在這個清單裡，官方沒有公布，要實機打開才知道。</p></div></div>
+      </div>
+      <div class="callout" style="--c:var(--red)"><div class="ct">舊機主人請注意：Apple SIM 已經停用</div>如果你手上是比較舊的 iPad、看到「Apple SIM」這個東西，官方寫得很直接：<strong>自 2022 年 10 月 1 日起，Apple SIM 技術無法再用於在 iPad 上啟用新的行動數據方案</strong>。那條路已經關了，請改用 eSIM 或實體卡。</div>
+    </section>
+
+    <section id="secondhand">
+      <div class="sec-label" style="--c:var(--green)">secondhand</div>
+      <h2>09 · 二手與福利機：這裡的價差跟新機不一樣</h2>
+      <p>新機的價差是 Apple 訂的，固定 5,000 或 7,000。二手市場沒有這條規則，價格由當下有多少人要、有多少台在賣決定，所以同一組比較放到二手，數字會長得不一樣。</p>
+      <p>有一件事可以先講清楚：<strong>當年會買行動網路版的人本來就比較少</strong>，流到二手市場的量自然也少。這帶來兩個實際影響。</p>
+      <div class="grid">
+        <div class="card" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="c-tag">影響 01 · 挑不太動</div>
+          <h4>指定「某機型＋行動網路版」，選擇會少一截</h4>
+          <p>容量、顏色、機況可能沒得挑。想清楚哪些條件可以讓步，會比較好找。</p>
+        </div>
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">影響 02 · 有機會撿到</div>
+          <h4>二手的價差比新機的 5,000／7,000 軟得多</h4>
+          <p>真的需要行動網路版的話，二手是把那筆價差壓下來的主要方法。下單前直接比對同機型兩個版本的報價最準。</p>
+        </div>
+      </div>
+      <!-- 待補：果果站上同機型 Wi-Fi 版 vs 行動網路版的實際成交價差（需由後台匯出真實數據）。
+           舊文寫「福利機價差 +$500~1500」與「果果收集了超過 3000 位顧客的使用心得」，
+           在專案內找不到可佐證的資料來源，本次改寫一律不沿用。
+           下方「回收價差」段落用的是第三方回收商公開價目表，非果果成交價，已於文中標示。 -->
+
+      <h3>順便戳破一個迷思：行動網路版比較保值嗎？</h3>
+      <p>這句話常被拿來合理化那筆價差。把它拆成兩題來看，答案不太一樣。</p>
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">「賣得比較貴」→ 成立</div>同機型同容量，行動網路版的收購價通常比 Wi-Fi 版高一點，或至少同價。這部分符合直覺。</div>
+        <div class="callout" style="--c:var(--red)"><div class="ct">「比較保值」→ 反而相反</div>它多賣的錢，遠遠追不上當初多付的錢。折舊的<strong>絕對金額</strong>比 Wi-Fi 版更大。</div>
+      </div>
+      <p>用公開資料對一下就很清楚。我們查了三家二手回收商官網的公開價目表，同機型同容量的兩個版本，行動網路版<strong>大約只能多拿回 500 到 3,000 元，多數落在 1,000 到 2,000 元</strong>；2020 年前的舊 iPad Pro 甚至完全沒有價差。</p>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>比較項目</th><th>買的時候</th><th>賣掉的時候</th></tr>
+          <tr><td>iPad、Air、mini</td><td class="bad">多付 5,000 元</td><td>多拿回約 1,000～3,000 元</td></tr>
+          <tr><td>iPad Pro</td><td class="bad">多付 7,000 元</td><td>多拿回約 500～2,000 元<small>越舊的機型價差越小，2020 年前多為零</small></td></tr>
+          <tr><td>結論</td><td colspan="2" class="good">多付的價差，回收端大約只收得回兩到五成</td></tr>
+        </table>
+      </div>
+      <p>所以「為了保值加買行動網路版」這個理由站不住腳。真正撐得起這筆錢的理由只有一個：<strong>你會用到它</strong>——尤其是 GPS。<span class="updated">回收價差整理自保衛站、US3C、Second 3C 三家回收商官網的公開價目表，查證 2026 年 8 月 8 日。這是<b>店家收購價</b>而非市場成交價，只能當量級參考。</span></p>
+
+      <h3>二手挑機最常踩的兩個坑</h3>
+      <ul class="flags">
+        <li><b>賣場寫「Cellular 版」就當成 5G 版</b>。2021 年以前的行動網路版最快只到 4G LTE。用型號去 Apple 官方規格頁翻「行動網路與無線技術」那一欄，寫 <span class="spec">5G (sub-6 GHz)</span> 的才是。這件事的完整分界看 <a class="inline" href="../ipad-5g-wifi-vs-cellular/">這一頁</a>。</li>
+        <li><b>拿到手才發現沒有卡槽</b>——iPad（A16）、iPad Pro（M4）、iPad Air（M2）、iPad mini（A17 Pro）以及之後的機型都只能用 eSIM。如果你原本打算把現有的實體卡插進去，這批機型辦不到，要重新申請 eSIM。</li>
+      </ul>
+      <div class="callout" style="--c:var(--green)"><div class="ct">果果的立場說在前面</div>我們賣二手與福利機，行動網路版單價比較高、賣出去我們賺得多一點。但如果你算完前面幾節發現自己用不到，<strong>買 Wi-Fi 版然後把差額拿去換容量或換世代，才是我們真心會建議的做法</strong>。買錯版本的機器，後面的售後溝通對雙方都是消耗。</div>
+    </section>
+
+    <section id="checklist">
+      <div class="sec-label" style="--c:var(--purple)">before_you_buy</div>
+      <h2>10 · 下單前的確認清單</h2>
+      <p>不論你最後選哪一種，這幾件事在付款前確認完，可以省掉大部分的退換貨。</p>
+      <ul class="check">
+        <li><b>這台到底是哪個版本？</b>最可靠的判斷法是開機看「設定」裡有沒有「行動數據」這一項。有就是行動網路版，沒有就是 Wi-Fi 版。別再只看有沒有卡槽。</li>
+        <li><b>如果賣家寫「5G」，年份對得上嗎？</b>2021 年以前的行動網路版只到 4G LTE。用型號去 Apple 官方規格頁對一次，零成本。</li>
+        <li><b>它支援的是實體 SIM 還是只有 eSIM？</b>這會決定你要拿卡片去門市，還是要辦 eSIM。買之前先問清楚，免得辦錯。</li>
+        <li><b>前一手的 eSIM 有沒有清乾淨？</b>二手機到手先看「設定 → 行動數據」，如果還留著前一手的門號資料，請對方協助刪除。</li>
+        <li><b>你要用的電信商，支援平板 eSIM 嗎？</b>手機支援不等於平板支援，你想辦的那個資費方案也不一定能用 eSIM 開通。決定買之前先打電話問，把機型講清楚，這步很多人跳過。</li>
+        <li><b>知道自己要辦的是「第二門號」嗎？</b>台灣目前沒有讓 iPad 跟手機共用門號的方案，所以它會是一份獨立的月租。到門市之前先有心理準備，比較不會被報價嚇到。</li>
+        <li><b>價差拿去換容量，會不會更划算？</b>認真問自己一次。容量不夠是每天都會遇到的事，出門沒網路可能一個月才遇到一次。</li>
+      </ul>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="updated">本文查證：<b>2026 年 8 月 8 日</b>。iPad 規格、售價、eSIM 支援機型與電信業者政策皆以官方最新公告為準；<b>資費與電信商規定變動頻繁，下單或辦門號前請直接向業者確認</b>。本頁在每年 iPad 新機發表後複驗。</p>
+      <p class="sources">本文的規格、機型清單與售價逐字取自 Apple 官方頁面，查證日期 2026 年 8 月 8 日：</p>
+      <ul class="sources">
+        <li><a href="https://www.apple.com/tw/ipad-pro/specs/">Apple 台灣官網 · iPad Pro 技術規格</a>（「Wi-Fi + 行動網路機型」小標、5G (sub-6 GHz)、Gigabit LTE、只限數據、SIM 卡欄位「與實體 SIM 卡不相容」、定位功能兩欄分列）</li>
+        <li><a href="https://www.apple.com/tw/ipad-air/specs/">iPad Air 技術規格</a>・<a href="https://www.apple.com/tw/ipad-11/specs/">iPad (A16) 技術規格</a>・<a href="https://www.apple.com/tw/ipad-mini/specs/">iPad mini 技術規格</a>（四條產品線寫法一致）</li>
+        <li><a href="https://www.apple.com/tw/shop/buy-ipad/ipad">Apple 台灣官網 · iPad 購買頁</a>（各機型各容量的 Wi-Fi 版與行動網路版定價，以及「Wi-Fi + 行動網路」選項的官方說明文字）</li>
+        <li><a href="https://www.apple.com/tw/ipad/cellular/">Apple 台灣官網 · iPad + 行動網路</a>（GPS 導航、「尋找」定位訊號、八組以上 eSIM、190 多個國家或地區、短期數據方案）</li>
+        <li><a href="https://support.apple.com/zh-tw/119592">Apple 支援 · 在 iPad 上設定 eSIM</a>（支援 eSIM 的完整機型清單、純 eSIM 機型註腳、eSIM 快速移轉與轉移限制、加入 iPhone 方案、尋找新方案）</li>
+        <li><a href="https://support.apple.com/zh-tw/HT203089">Apple 支援 · 在 iPad（Wi-Fi + 行動網路）機型上設定行動數據服務</a>（「在全球各地購買的…僅使用 eSIM 連接行動網路，而沒有實體 SIM 卡」；Apple SIM 自 2022 年 10 月 1 日起停止啟用新方案）</li>
+        <li><a href="https://support.apple.com/zh-tw/106344">Apple 支援 · 亞太地區 iPad 無線電信業者的支援情況與提供的功能</a>（台灣列出中華電信、遠傳、台灣大哥大，功能欄含 eSIM 與個人熱點）</li>
+        <li><a href="https://support.apple.com/zh-tw/111785">Apple 支援 · 連接 iPhone 或 iPad 的「個人熱點」</a>（iPad Wi-Fi + 行動網路機型可以自己分享行動數據）</li>
+        <li><a href="https://support.apple.com/zh-tw/111841">Apple 支援 · iPad Pro 12.9 吋（第 6 代）技術規格</a>（對照組：SIM 卡欄位仍寫 Nano-SIM／eSIM，是卡槽分水嶺的舊側）</li>
+        <li><a href="https://support.apple.com/zh-tw/119577">Apple 支援 · 在 iPad 上尋找提供 eSIM 服務的無線電信業者</a>（台灣列入「eSIM 電信業者啟用」的是中華電信、遠傳、台灣大哥大；台灣在「eSIM 快速移轉」欄位沒有業者列入）</li>
+      </ul>
+      <p class="sources" style="margin-top:14px">台灣電信業者的部分，逐項查自各家官網，查證日期 2026 年 8 月 8 日（<b>資費與規定變動頻繁，請以官網最新公告為準</b>）：</p>
+      <ul class="sources">
+        <li><a href="https://www.cht.com.tw/home/consumer/mobservice/basic/871">中華電信 · eSIM 服務</a>（支援機型清單、設定費 300 元／次與首次免收、預付卡支援 eSIM 但限門市核證取件）</li>
+        <li><a href="https://www.fetnet.net/content/cbu/tw/postpaid/eSIM.html">遠傳 · eSIM 服務</a>（月租型與預付型皆適用、須臨櫃、設定費與減免條件）・<a href="https://www.fetnet.net/estore/exclusive/2ndsim/index.html">遠傳 · 第二門號</a>（限既有用戶，4G 最低月租 149 元起）</li>
+        <li><a href="https://www.taiwanmobile.com/mobile/products/eSIMservice.html">台灣大哥大 · eSIM 服務</a>（設定費 300 元／次與每年一次減免、支援機型清單含 iPad、原台灣之星預付卡用戶暫不適用）</li>
+        <li>三家「一號多機」官方頁，用於佐證<b>目前只開放穿戴裝置、不支援平板共用門號</b>：<a href="https://www.cht.com.tw/home/consumer/mobservice/basic/848">中華電信 One Number</a>・<a href="https://www.fetnet.net/content/cbu/tw/product/applewatch/onenumber.html">遠傳一號多機</a>・<a href="https://www.taiwanmobile.com/mobile/products/one-number-intro.html">台灣大 Watch One Number</a></li>
+        <li><a href="https://corp.taiwanmobile.com/press-release/news/press_20231201_405633.html">台灣大哥大新聞稿</a>（台灣之星於 2023 年 12 月 1 日併入）</li>
+        <li>二手回收價差：<a href="https://www.guardstation.com.tw/pages/used-ipad-price">保衛站</a>・<a href="https://www.us3c.com.tw/promotion-recycle-ipad">US3C</a>・<a href="https://www.second3c.com.tw/pages/ipad-trade-in">Second 3C</a> 三家回收商官網<b>公開價目表</b>（店家收購價，非市場成交價，僅作量級參考）</li>
+        <li>旅遊 eSIM 支援 iPad：<a href="https://www.airalo.com/help/about-airalo/NFHQSUXFCZOM/what-devices-support-esim/D2N6OZSVVM9W">Airalo 官方 FAQ</a>（原文「Only iPad devices with Wi-Fi + Cellular features are supported.」）・<a href="https://esim.holafly.com/data-plans/ipad-esim/">Holafly iPad 專頁</a>・<a href="https://cellulardata.ubigi.com/help-center/faq/esim-data-plan/apple-devices-equipped-with-esim/">Ubigi 相容清單</a></li>
+      </ul>
+      <p class="sources" style="margin-top:10px"><b>關於資費：</b>本文<strong>刻意不逐家列出月租價目表</strong>。台灣的方案名稱與價格調整頻繁，寫死的數字很快就會過期並誤導讀者，因此改為提供計算方式、該問的問題，以及一個有官方頁面可查的最低價位參考。實際月租請以你要辦的電信業者官網或門市報價為準。</p>
+      <p class="sources" style="margin-top:14px">關於名詞與世代的部分另見站內文章：<a class="inline" href="../ipad-5g-wifi-vs-cellular/">iPad 支援 5G 是哪一種 5G？</a>、<a class="inline" href="../hotspot-slower-than-phone/">iPhone 開熱點給 iPad，網速為什麼只剩一半</a>、<a class="inline" href="../internet-speed-how-much-is-enough/">網速多少才夠用</a>。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+</script>
+</body>
+</html>

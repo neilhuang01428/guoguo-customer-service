@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Apple Pencil 沒反應？連不上、充不了電、寫不出字排除 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式（共用 assets/style.css 沒有的部分）── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 表格橫向捲動 + 有／沒有欄 */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 620px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+  td.y { color: var(--green-deep); font-weight: 700; text-align: center; }
+  td.n { color: var(--red); font-weight: 700; text-align: center; }
+  td.mid { color: var(--amber); text-align: center; font-weight: 700; }
+
+  /* 證據等級標籤（沿用站上壓感篇的三級寫法） */
+  .lv-tag { display: inline-block; font-family: var(--mono); font-size: .58rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; vertical-align: middle; white-space: nowrap; }
+  .lv-tag.ok { color: var(--green-deep); background: var(--green-bg); border: 1px solid #c3e4cf; }
+  .lv-tag.infer { color: var(--amber); background: var(--amber-bg); border: 1px solid #e6d3a6; }
+  .lv-tag.todo { color: var(--red); background: var(--red-bg); border: 1px solid #eec4b8; }
+
+  /* ── 四款筆的辨識卡 pens ──
+     讀者手上就有那支筆，最快的辨識方式是看外觀（有沒有筆蓋、有沒有平邊、尾巴長什麼樣），
+     所以四支各畫一次，把「怎麼認」和「怎麼接」放在同一張卡上。 */
+  .pens { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .pcard { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 12px; padding: 15px 16px 14px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .pcard .pn { font-size: 1rem; font-weight: 800; color: var(--ink); }
+  .pcard .pu { font-family: var(--mono); font-size: .64rem; color: var(--c); margin-top: 3px; }
+  /* 一支筆＝筆尖三角＋筆桿；平邊畫成筆桿上緣的一條線，筆蓋／接頭是尾端的深色塊 */
+  .pen { position: relative; height: 30px; margin: 18px 0 14px; }
+  .pen .tp { position: absolute; left: 0; top: 9px; width: 24px; height: 13px; background: var(--muted); clip-path: polygon(0 50%, 100% 0, 100% 100%); }
+  .pen .bd { position: absolute; left: 23px; right: 0; top: 9px; height: 13px; border-radius: 1px 7px 7px 1px; background: var(--c); }
+  .pen .flat { position: absolute; left: 32%; right: 16%; top: 6px; height: 3px; border-radius: 3px; background: var(--ink); opacity: .28; }
+  .pen .cap { position: absolute; right: 0; top: 7px; width: 22px; height: 17px; border-radius: 1px 6px 6px 1px; background: var(--navy-deep); }
+  .pen .port { position: absolute; right: 5px; top: 13px; width: 11px; height: 5px; border-radius: 3px; background: #fff; opacity: .9; }
+  .pen .lab { position: absolute; font-family: var(--mono); font-size: .58rem; color: var(--muted); white-space: nowrap; }
+  .pen .lab.up { left: 30%; top: -10px; }
+  .pen .lab.dn { right: 0; bottom: -12px; }
+  .pcard dl { font-size: .85rem; line-height: 1.6; }
+  .pcard dl div { display: flex; gap: 9px; padding: 6px 0; border-top: 1px solid var(--grid); }
+  .pcard dl dt { flex: none; width: 50px; font-family: var(--mono); font-size: .63rem; color: var(--muted); padding-top: 3px; }
+  .pcard dl dd { flex: 1; color: var(--body); }
+  .pcard dl dd b { color: var(--ink); }
+
+  /* ── 主決策圖 routemap：舊版那張大流程圖的重製版 ──
+     前置兩格（認型號 → 看症狀）之後分四條線並排，每欄是那條線的處理順序，
+     欄底統一匯進同一個停止點。症狀標題本身是錨點，點下去直接跳到該節。 */
+  .rm-pre { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; margin: 20px 0 14px; }
+  .rm-pre .pbox { background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 10px; padding: 12px 15px; }
+  .rm-pre .pbox b { display: block; color: var(--ink); font-size: .93rem; }
+  .rm-pre .pbox small { color: var(--muted); font-size: .82rem; line-height: 1.5; display: block; margin-top: 2px; }
+  .rm-pre .arr { font-family: var(--mono); color: var(--muted); }
+  .rm { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .rm-col { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 12px; padding: 13px 13px 15px; display: flex; flex-direction: column; }
+  .rm-col .sym { font-size: 1.45rem; text-align: center; line-height: 1.2; }
+  .rm-col .st { font-size: .93rem; font-weight: 800; color: var(--ink); text-align: center; margin-top: 5px; line-height: 1.4; }
+  .rm-col .st a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--c); }
+  .rm-col .sd { font-size: .78rem; color: var(--muted); text-align: center; margin-top: 4px; line-height: 1.5; }
+  .rm-col ol { list-style: none; margin: 11px 0 0; padding-top: 9px; border-top: 1px solid var(--grid); }
+  .rm-col ol li { font-size: .82rem; color: var(--body); padding: 5px 0 5px 21px; position: relative; line-height: 1.55; }
+  /* 編號用 i 不用 b：這幾格的內文本身也會用到 <b>，共用選擇器會把內文粗體也絕對定位、疊在一起 */
+  .rm-col ol li i { position: absolute; left: 0; top: 5px; font-style: normal; font-family: var(--mono); font-size: .66rem; color: var(--c); font-weight: 800; }
+  .rm-col ol li b { color: var(--ink); }
+  .rm-join { display: grid; place-items: center; font-family: var(--mono); font-size: .66rem; color: var(--muted); padding: 10px 0 5px; }
+  .rm-end { background: var(--red-bg); border: 1px solid #eec4b8; border-radius: 12px; padding: 13px 16px; text-align: center; font-size: .9rem; color: var(--ink); line-height: 1.65; }
+  .rm-end b { color: var(--red); }
+
+  /* ── 動態分鏡：三種「把筆接上去」的動作（本篇唯一的動畫）──
+     鐵則：基礎樣式＝動畫的最終狀態（筆已吸好／已插好／線已接上），動畫只是把它倒帶重演。
+     關掉動畫或系統開了「減少動態效果」時，看到的仍是三張接好的靜態圖，資訊不會少。 */
+  .anim .stg { position: relative; height: 152px; background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  /* iPad：直立，右側長邊是磁鐵吸附處，底部短邊是插孔 */
+  .anim .tab { position: absolute; left: 26px; top: 10px; width: 54px; height: 84px; border: 2px solid var(--navy); border-radius: 7px; background: var(--navy-bg); }
+  .anim .tab .hole { position: absolute; left: 50%; bottom: 4px; width: 18px; height: 4px; margin-left: -9px; border-radius: 3px; background: var(--navy); opacity: .55; }
+  .anim .tab .mag { position: absolute; right: -4px; top: 20px; width: 4px; height: 44px; border-radius: 3px; background: var(--green); }
+  /* 三格共用同一支直立的筆，筆尖一律朝下 */
+  .anim .pen3 { position: absolute; width: 13px; border-radius: 6px 6px 2px 2px; background: var(--navy); }
+  .anim .pen3::after { content: ''; position: absolute; left: 0; right: 0; bottom: -10px; height: 12px; background: var(--muted); clip-path: polygon(0 0, 100% 0, 50% 100%); }
+  .anim .snap  { left: 82px;   top: 14px; height: 64px; }   /* ① 貼在右側長邊的磁鐵處 */
+  .anim .slot  { left: 46.5px; top: 84px; height: 46px; }   /* ② 筆尾插進底部的孔，筆身往下伸出 */
+  .anim .wired { left: 104px;  top: 14px; height: 64px; }   /* ③ 筆放旁邊，靠線接回底部的孔 */
+  /* 線：從 iPad 底部的孔拉到筆的尾端。長度與角度是照兩個端點算出來的 */
+  .anim .cbl { position: absolute; left: 53px; top: 94px; width: 99px; height: 3px; border-radius: 3px; background: var(--amber); transform-origin: 0 50%; transform: rotate(-55deg); }
+  @keyframes pen-snap { 0%, 12% { transform: translateX(44px); }      46%, 100% { transform: translateX(0); } }
+  @keyframes pen-slot { 0%, 12% { transform: translate(40px, 26px); } 52%, 100% { transform: translate(0, 0); } }
+  @keyframes cbl-grow { 0%, 16% { transform: rotate(-55deg) scaleX(0); } 56%, 100% { transform: rotate(-55deg) scaleX(1); } }
+  .anim .snap  { animation: pen-snap 4.4s cubic-bezier(.3,.9,.3,1) infinite; }
+  .anim .slot  { animation: pen-slot 4.4s cubic-bezier(.3,.9,.3,1) infinite; }
+  .anim .cbl   { animation: cbl-grow 4.4s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .anim .snap, .anim .slot, .anim .cbl { animation: none; }
+  }
+
+  /* ── 電量要去哪裡看 ── */
+  .where { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0; }
+  .wcard { background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 11px; padding: 14px 16px; }
+  .wcard .wt { font-size: .94rem; font-weight: 800; color: var(--ink); margin-bottom: 7px; }
+  .wcard .wp { font-family: var(--mono); font-size: .73rem; color: var(--navy); background: var(--navy-bg); padding: 5px 9px; border-radius: 6px; display: inline-block; }
+  .wcard p { font-size: .85rem; color: var(--muted); margin: 8px 0 0; }
+
+  /* ── 螢幕分區測試圖：整片畫不出來 vs 只有一塊畫不出來 ── */
+  .zones { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .zwrap { text-align: center; }
+  .zone { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; width: 128px; margin: 0 auto 10px; aspect-ratio: 3 / 4; }
+  .zone i { display: block; border-radius: 5px; background: var(--green-bg); border: 1px solid #c3e4cf; }
+  .zone i.bad { background: var(--red-bg); border-color: #eec4b8; }
+  .zwrap b { display: block; font-size: .92rem; color: var(--ink); }
+  .zwrap small { display: block; font-size: .83rem; color: var(--muted); line-height: 1.55; margin-top: 3px; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .rm { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .pens, .where { grid-template-columns: 1fr; }
+    .rm { grid-template-columns: 1fr; }
+    .rm-pre { grid-template-columns: 1fr; }
+    .rm-pre .arr { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>Apple Pencil 沒反應</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#which" class="active">00 · 你手上是哪一支</a>
+  <a href="#routes">01 · 症狀分四條線</a>
+  <div class="grp">四條線</div>
+  <a href="#connect">02 · 連不上、老是掉線</a>
+  <a href="#charge">03 · 充不了電、電量怪</a>
+  <a href="#write">04 · 連得上卻寫不出字</a>
+  <a href="#features">05 · 功能好像少一半</a>
+  <div class="grp">停止點</div>
+  <a href="#repair">06 · 什麼時候該送修</a>
+  <a href="#evidence">07 · 查證等級</a>
+  <a href="#sources">來源與更新日期</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>四款 Apple Pencil 我們都經手</div>
+      </div>
+      <div class="pills"><span>四款筆全涵蓋</span><span>步驟附官方原文</span><span>查不到出處的就不寫</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">Apple Pencil / 疑難排解</div>
+    <h1>Apple Pencil 沒反應？<br>先看你手上是哪一支</h1>
+    <p class="subtitle">連不上、充不了電、寫不出字、輕點兩下沒作用——同樣的症狀，四款 Apple Pencil 的處理方式並不一樣。花二十秒認出型號，後面的步驟才不會白做。</p>
+
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--navy)">
+        <div class="lt">直接回答</div>
+        <p class="big">排除只有三步：認型號 → 分症狀 → 走那一條線。</p>
+        <p class="sm">Apple Pencil 目前有四款，配對方式三種、充電方式三種，功能也各自不同。很多「壞掉了」其實是<strong>那一款本來就沒有這個功能</strong>，或是用錯了接法。認錯型號，後面每一步都會做白工。</p>
+        <p class="alias-line">官方正式名稱是 <b>Apple Pencil（第 1 代／第 2 代／USB-C）</b> 與 <b>Apple Pencil Pro</b>。大家平常說的「一代、二代、蘋果筆、iPad 觸控筆」講的就是它們，找到這頁就沒找錯。</p>
+      </div>
+      <blockquote class="lead-src">「使用 Apple Pencil（第一代和第二代）和 Apple Pencil Pro，你也可以加重按壓力度來加粗線條。」<cite>Apple · iPad 使用手冊〈在 iPad 上使用 Apple Pencil 繪圖〉 — 這份名單裡沒有 USB-C 款</cite></blockquote>
+      <p class="lede">上面那句話是全篇最常被誤會的一件事：Apple Pencil（USB-C）從出廠就沒有壓力感應，畫出來的線永遠一樣粗。這不是故障，換筆尖、重灌系統都不會改變。</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat" style="--c:var(--navy)"><div class="num">4</div><div class="lab">目前在售的<br>Apple Pencil 款式</div></div>
+      <div class="stat" style="--c:var(--teal)"><div class="num">3</div><div class="lab">完全不同的<br>配對接法</div></div>
+      <div class="stat" style="--c:var(--green)"><div class="num">2</div><div class="lab">官方認可的<br>查電量位置</div></div>
+      <div class="stat" style="--c:var(--red)"><div class="num">1</div><div class="lab">官方寫明的<br>停止點</div></div>
+    </div>
+
+    <div class="lead-map">
+      <div class="lm-t">趕時間的話，看前兩節就能定位問題：</div>
+      <div class="lm-g">
+        <a href="#which"><i>00</i>你手上是哪一支筆</a>
+        <a href="#routes"><i>01</i>症狀分成四條線</a>
+        <a href="#repair"><i>06</i>什麼時候該停手</a>
+      </div>
+    </div>
+
+    <p class="updated">本文查證：<b>2026 年 8 月 8 日</b>。相容機型、配對與充電方式、功能有無皆逐字取自 Apple 官方頁面。Apple 隨時可能調整介面與機型清單，操作時以你機器上的實際畫面為準。<a class="inline" href="#sources">來源列在文末</a>，<a class="inline" href="#evidence">哪些是推論也標出來了</a>。</p>
+
+    <div class="callout" style="--c:var(--navy)">
+      <div class="ct">這篇的範圍，以及該去哪裡看更細的</div>
+      這裡處理的是「筆整體不動了」的各種狀況。如果筆<strong>寫得出來、但粗細不跟手</strong>，那是壓感的專門題目，站上另有一篇拆得更細：<a class="inline" href="../apple-pencil-pressure-troubleshooting/">〈Apple Pencil 壓感變怪，先別送修〉</a>。<strong>Procreate 裡才發生</strong>的粗細問題請看 <a class="inline" href="../procreate-pressure-not-working/">〈Procreate 沒有粗細變化？〉</a>。
+    </div>
+
+    <section id="which">
+      <div class="sec-label" style="--c:var(--navy)">which_pencil</div>
+      <h2>00 · 你手上是哪一支？看外觀就認得出來</h2>
+      <p>不用翻包裝盒，也不用查序號。四款筆的外觀特徵差很多，尤其是<strong>尾巴</strong>，那裡就是它充電與配對的地方。</p>
+
+      <div class="pens">
+        <div class="pcard" style="--c:var(--amber)">
+          <div class="pn">Apple Pencil（第 1 代）</div>
+          <div class="pu">round_body · lightning</div>
+          <div class="pen">
+            <span class="lab up">圓筒身、沒有平邊</span>
+            <i class="tp"></i><i class="bd"></i><i class="cap"></i>
+            <span class="lab dn">尾端有可拔的筆蓋</span>
+          </div>
+          <dl>
+            <div><dt>怎麼認</dt><dd>全身<b>圓的</b>，放桌上會滾。尾端有一個<b>拔得下來的蓋子</b>，拔開露出 Lightning 接頭。</dd></div>
+            <div><dt>怎麼接</dt><dd>拔蓋，<b>插進 iPad 的 Lightning 孔</b>。搭 iPad 第 10 代與 iPad（A16）時要另外接轉接器，做法見<a href="../ipad10-apple-pencil-1-pairing/">〈iPad 10／A16 怎麼配 Apple Pencil 一代〉</a>。</dd></div>
+            <div><dt>吸得住嗎</dt><dd>吸不住。它只有一個「磁性蓋」，機身<b>不能磁吸在 iPad 上</b>。</dd></div>
+          </dl>
+        </div>
+
+        <div class="pcard" style="--c:var(--teal)">
+          <div class="pn">Apple Pencil（第 2 代）</div>
+          <div class="pu">flat_side · magnetic</div>
+          <div class="pen">
+            <span class="lab up">有一整條平邊</span>
+            <i class="tp"></i><i class="bd"></i><i class="flat"></i>
+            <span class="lab dn">尾端是平的、沒有蓋子</span>
+          </div>
+          <dl>
+            <div><dt>怎麼認</dt><dd>筆身有<b>一整條平邊</b>，放桌上不會滾。尾端是平的，沒有蓋子也沒有孔。</dd></div>
+            <div><dt>怎麼接</dt><dd><b>平邊那面吸在 iPad 側邊</b>的磁鐵吸附處，吸上去就會配對和充電。</dd></div>
+            <div><dt>特徵功能</dt><dd>可以<b>點兩下切換工具</b>；擠壓筆身沒有反應。</dd></div>
+          </dl>
+        </div>
+
+        <div class="pcard" style="--c:var(--purple)">
+          <div class="pn">Apple Pencil（USB-C）</div>
+          <div class="pu">sliding_cap · usb_c</div>
+          <div class="pen">
+            <span class="lab up">也有平邊</span>
+            <i class="tp"></i><i class="bd"></i><i class="flat"></i><i class="cap"></i><i class="port"></i>
+            <span class="lab dn">尾端可以「滑開」露出 USB-C 孔</span>
+          </div>
+          <dl>
+            <div><dt>怎麼認</dt><dd>有平邊，但尾端<b>可以滑開</b>，裡面藏著一個 USB-C 孔。這是它跟第 2 代最好認的差別。</dd></div>
+            <div><dt>怎麼接</dt><dd>滑開尾端，<b>用 USB-C 線接到 iPad</b>，畫面跳出「點一下來連線」再點它。</dd></div>
+            <div><dt>要注意</dt><dd>吸在 iPad 側邊<b>只是收納</b>，官方明列「配對和充電都無線」不適用於這一款。</dd></div>
+          </dl>
+        </div>
+
+        <div class="pcard" style="--c:var(--green)">
+          <div class="pn">Apple Pencil Pro</div>
+          <div class="pu">flat_side · squeeze</div>
+          <div class="pen">
+            <span class="lab up">平邊，外觀與第 2 代很像</span>
+            <i class="tp"></i><i class="bd"></i><i class="flat"></i>
+            <span class="lab dn">尾端也是平的</span>
+          </div>
+          <dl>
+            <div><dt>怎麼認</dt><dd>光看外觀跟第 2 代<b>幾乎一樣</b>。最快的分法是<b>擠一下筆身</b>：有震動、跳出工具面板就是 Pro。</dd></div>
+            <div><dt>怎麼接</dt><dd>吸在 iPad <b>長邊</b>的磁鐵吸附處，配對與充電都在那裡完成。</dd></div>
+            <div><dt>特徵功能</dt><dd>擠壓、觸覺回饋、筆身滾動、可加進<b>「尋找」</b>——這四樣只有 Pro 有。</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">第 2 代和 Pro 長得太像？用 iPad 反推最準</div>
+        兩款的相容清單<strong>完全沒有重疊</strong>。第 2 代只配 iPad mini 6、iPad Air 4／5，以及 2018～2022 年那批 iPad Pro；Pro 只配 M2 以後的 iPad Air、M4 以後的 iPad Pro 和 iPad mini（A17 Pro）。<strong>你的 iPad 只吃其中一款</strong>，所以認出 iPad 就等於認出筆。
+      </div>
+
+      <h3>官方相容清單（逐字）</h3>
+      <p>下面這張表整理自 Apple 支援文件〈Apple Pencil 相容性〉，機型名稱照官方寫法。買二手筆或跟朋友借筆來測之前，先對這張表。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>款式</th><th>官方列出的相容 iPad 機型</th><th>系統需求</th></tr>
+          <tr>
+            <td>Apple Pencil<br>（第 1 代）</td>
+            <td>iPad mini（第 5 代）／iPad（第 6、7、8、9 代）／iPad（A16）＊／iPad（第 10 代）＊／iPad Air（第 3 代）／iPad Pro 12.9 吋（第 1、2 代）／iPad Pro 10.5 吋／iPad Pro 9.7 吋<small>＊ 官方註腳：此 iPad 須搭配 USB-C 對 Apple Pencil 轉接器，才能與 Apple Pencil 配對並充電</small></td>
+            <td>官方未標示</td>
+          </tr>
+          <tr>
+            <td>Apple Pencil<br>（第 2 代）</td>
+            <td>iPad mini（第 6 代）／iPad Air（第 4 或 5 代）／iPad Pro 12.9 吋（第 3、4、5、6 代）／iPad Pro 11 吋（第 1、2、3、4 代）</td>
+            <td>官方未標示</td>
+          </tr>
+          <tr>
+            <td>Apple Pencil<br>（USB-C）</td>
+            <td>iPad Pro（13 吋與 11 吋，M4、M5）／iPad Pro 11 吋（第 1～4 代）／iPad Pro 12.9 吋（第 3～6 代）／iPad Air（13 吋與 11 吋，M2、M3、M4）／iPad Air（第 4 或 5 代）／iPad（A16）／iPad（第 10 代）／iPad mini（A17 Pro）／iPad mini（第 6 代）<small>相容範圍最廣的一款</small></td>
+            <td class="good">iPadOS 17.1.1 以上</td>
+          </tr>
+          <tr>
+            <td>Apple Pencil Pro</td>
+            <td>iPad Pro（13 吋與 11 吋，M4、M5）／iPad Air（13 吋與 11 吋，M2、M3、M4）／iPad mini（A17 Pro）<small>官方用的是「只能搭配」這種封閉寫法</small></td>
+            <td class="good">iPadOS 17.5 以上</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--red)">
+          <div class="ct">不相容的筆，怎麼弄都不會連上</div>
+          官方對三款用的措辭是「<strong>只能搭配以下 iPad 機型</strong>」。這是封閉清單，不在名單上的組合<strong>不會有配對按鈕</strong>——這時候一直重試、忘記裝置、重灌系統，都是在修一個不存在的問題。
+        </div>
+        <div class="callout" style="--c:var(--amber)">
+          <div class="ct">系統版本也是門檻</div>
+          Pencil Pro 要 iPadOS 17.5 以上、USB-C 款要 17.1.1 以上。買了新筆配舊系統的 iPad，配不上很可能只是<strong>系統還沒更新</strong>。先去「設定 → 一般 → 軟體更新」看一眼，這一步免費。
+        </div>
+      </div>
+    </section>
+
+    <div class="part-div">先分類，再動手</div>
+
+    <section id="routes">
+      <div class="sec-label" style="--c:var(--teal)">triage</div>
+      <h2>01 · 症狀分四條線，走錯線就白忙</h2>
+      <p>排除筆的問題，最怕的是把四種毛病當成同一種。它們的根源在不同地方：連線是「身分認得出來嗎」，充電是「電有沒有真的流進去」，寫不出字多半在筆尖，功能少一半通常是設定或本來就沒有。</p>
+
+      <figure class="fig">
+        <div class="rm-pre">
+          <div class="pbox" style="--c:var(--navy)"><b>Step 0 · 先認型號</b><small>四款筆的接法與功能都不同，認錯就全錯。看<a class="inline" href="#which">第 00 節</a>的辨識卡。</small></div>
+          <div class="arr">→</div>
+          <div class="pbox" style="--c:var(--teal)"><b>Step 1 · 再看症狀</b><small>下面四條線各自獨立，找到你的那一條，直接照它的順序做。</small></div>
+        </div>
+
+        <div class="rm">
+          <div class="rm-col" style="--c:var(--navy)">
+            <div class="sym">🔗</div>
+            <div class="st"><a href="#connect">A · 連不上<br>或老是掉線</a></div>
+            <div class="sd">配對按鈕不出現、藍牙裡看不到，或連上一陣子又斷</div>
+            <ol>
+              <li><i>1</i>對相容清單與系統版本</li>
+              <li><i>2</i>拆掉保護殼與筆套，重新接好</li>
+              <li><i>3</i>保持接著，重新啟動 iPad</li>
+              <li><i>4</i>忘記此裝置，再配對一次</li>
+            </ol>
+          </div>
+          <div class="rm-col" style="--c:var(--amber)">
+            <div class="sym">🔋</div>
+            <div class="st"><a href="#charge">B · 充不了電<br>或電量很怪</a></div>
+            <div class="sd">怎麼放都不進電、數字卡住不動，或掉電特別快</div>
+            <ol>
+              <li><i>1</i>先確認你這款「該怎麼充」</li>
+              <li><i>2</i>拆殼、拆筆套，確認接觸到位</li>
+              <li><i>3</i>去兩個官方位置看電量</li>
+              <li><i>4</i>換線、換 iPad 交叉測試</li>
+            </ol>
+          </div>
+          <div class="rm-col" style="--c:var(--green)">
+            <div class="sym">✍️</div>
+            <div class="st"><a href="#write">C · 連得上<br>卻寫不出字</a></div>
+            <div class="sd">電量正常、藍牙顯示連線，畫面上就是沒有線，或斷斷續續</div>
+            <ol>
+              <li><i>1</i>把筆尖轉緊</li>
+              <li><i>2</i>換一顆新筆尖</li>
+              <li><i>3</i>換螢幕不同位置畫，看是不是只有某一塊</li>
+              <li><i>4</i>換 App 測（用「備忘錄」最乾淨）</li>
+            </ol>
+          </div>
+          <div class="rm-col" style="--c:var(--purple)">
+            <div class="sym">🎛️</div>
+            <div class="st"><a href="#features">D · 功能<br>好像少一半</a></div>
+            <div class="sd">點兩下沒用、擠壓沒反應、懸浮不會預覽</div>
+            <ol>
+              <li><i>1</i>先查你這支<b>本來有沒有</b>這功能</li>
+              <li><i>2</i>設定 → Apple Pencil 看開關</li>
+              <li><i>3</i>換一個支援的 App 再測</li>
+              <li><i>4</i>懸浮還要看 iPad 機型</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="rm-join">└─ 四條線都做完，還是不行 ─┘</div>
+        <div class="rm-end">Apple 給的停止點只有一句：照官方流程走完，<b>「配對」按鈕仍然不出現，就可能需要維修</b>。<br>到這一步就別再自己試了，往下看<a class="inline" href="#repair">第 06 節</a>。</div>
+        <figcaption>四條線<b>彼此獨立</b>，不必從頭走到尾。找到你的那一條，做完就收工。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">一次只改一件事</div>
+        很常見的狀況是：拆殼、重開機、忘記裝置、重灌系統一口氣全做，最後真的好了，卻不知道是哪一步有效。<strong>每做完一步就用同樣的方式再測一次</strong>，下次再遇到才知道要從哪裡開始。
+      </div>
+    </section>
+
+    <section id="connect">
+      <div class="sec-label" style="--c:var(--navy)">route_a</div>
+      <h2>02 · 線 A：連不上、配不上、老是掉線</h2>
+      <p>這條線最常見，也最容易一開始就走錯，因為<strong>四款筆的「接上去」是三種不同的動作</strong>。用錯方式，筆再好也不會有反應。</p>
+
+      <h3>三種接法，動作完全不一樣</h3>
+
+      <figure class="fig anim">
+        <div class="flow">
+          <div class="box">
+            <div class="stg">
+              <div class="tab"><i class="mag"></i></div>
+              <div class="pen3 snap"></div>
+            </div>
+            <div class="bt">第 2 代 · Pro</div>
+            <div class="bv">吸在 iPad 側邊</div>
+          </div>
+          <div class="box">
+            <div class="stg">
+              <div class="tab"><i class="hole"></i></div>
+              <div class="pen3 slot"></div>
+            </div>
+            <div class="bt">第 1 代</div>
+            <div class="bv">拔蓋，插進底部的孔</div>
+          </div>
+          <div class="box">
+            <div class="stg">
+              <div class="tab"><i class="hole"></i></div>
+              <div class="cbl"></div>
+              <div class="pen3 wired"></div>
+            </div>
+            <div class="bt">USB-C 款</div>
+            <div class="bv">滑開尾端，拉線接</div>
+          </div>
+        </div>
+        <figcaption>綠色那條是 iPad 側邊的<b>磁鐵吸附處</b>。第 2 代與 Pro 吸上去就會配對；第 1 代一定要<b>實體插進去</b>，貼側邊完全沒作用；USB-C 款則是<b>滑開尾端、用線接</b>，吸在側邊只是收納。</figcaption>
+      </figure>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>款式</th><th>官方寫的配對動作</th><th>配對按鈕長什麼樣</th></tr>
+          <tr>
+            <td>第 2 代</td>
+            <td>「將 Apple Pencil 連接 iPad <strong>右側</strong>的磁鐵吸附處。」</td>
+            <td>吸上去後畫面自動跳出</td>
+          </tr>
+          <tr>
+            <td>Apple Pencil Pro</td>
+            <td>「將 Apple Pencil Pro 連接相容 iPad <strong>長邊</strong>的磁鐵吸附處來進行配對和為其充電。」</td>
+            <td>吸上去後畫面自動跳出</td>
+          </tr>
+          <tr>
+            <td>第 1 代</td>
+            <td>「<strong>取下蓋子</strong>，將 Apple Pencil 插入 iPad 上的 Lightning 連接器。」</td>
+            <td>出現「配對」按鈕時點一下</td>
+          </tr>
+          <tr>
+            <td>第 1 代<br>＋ iPad 10 代／A16</td>
+            <td>「取下蓋子，將 Apple Pencil 插入 <strong>USB-C 對 Apple Pencil 轉接器</strong>。」再用 USB-C 充電線接到 iPad<small>轉接器有兩種、只有一種能配對，見<a href="../ipad10-apple-pencil-1-pairing/">這篇</a></small></td>
+            <td>接好後出現配對按鈕</td>
+          </tr>
+          <tr>
+            <td>USB-C 款</td>
+            <td>「<strong>滑開 Apple Pencil 末端</strong>，並連接到 iPad 隨附的 USB-C 充電線。」</td>
+            <td class="good">點一下「點一下來連線」</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--red)">
+          <div class="ct">最常見的兩個接錯</div>
+          ① 對<strong>第 2 代或 Pro</strong> 說「插上去充電」——它們沒有插孔，硬插會弄壞筆或孔。<br>
+          ② 對<strong>第 1 代</strong>說「貼在側邊就好」——第 1 代吸不住，也不會靠貼近配對。
+        </div>
+        <div class="callout" style="--c:var(--amber)">
+          <div class="ct">磁吸位置要對，不是「貼在旁邊就好」</div>
+          官方寫的是「連接<strong>磁鐵吸附處</strong>」。那是側邊中段一小段區域，貼歪、貼太上面或太下面，會吸得住卻不配對也不充電。
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">先說一件可能出乎意料的事</div>
+        Apple <strong>沒有</strong>一篇叫「如果你的 Apple Pencil 無法運作」的官方文件。它只有一篇疑難排解文，標題是〈<strong>如果你無法將 Apple Pencil 與 iPad 配對</strong>〉。<br><br>
+        換句話說，官方對這支筆的排錯思路只有一條主線：<strong>先讓它配得上</strong>。功能少一半、寫不出字這些狀況，官方是在使用手冊裡用「這個功能限哪些機型、哪些 App」的方式回答的，沒有另外給步驟。
+      </div>
+
+      <h3>官方的配對流程，照順序走</h3>
+      <p>那篇文件給的是一條有順序的路。前面三件事是前提，不做的話後面全部沒意義。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--teal)"><div class="n">前</div><div>
+          <h4>開始之前：更新系統、確認相容、先充一下電</h4>
+          <p>官方原文三件事：「將 iPad 更新至最新軟體」「確定你的 Apple Pencil 機型可與你的 iPad 搭配運作」「使用之前，你可能需要先為 Apple Pencil 充電」。三件都不花錢。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">1</div><div>
+          <h4>依你的款式，把筆實體接上 iPad</h4>
+          <p>照上面那張表的動作做。Pro 與第 2 代官方講的是「置於<strong>磁力接點的中心</strong>」，不是隨便貼。這一步接不好，後面每一步都不會有結果。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">2</div><div>
+          <h4>讓筆保持接著，重新啟動 iPad，再試一次配對</h4>
+          <p>重點在「連著的時候重開機」，不是拔下來重開。這裡指的是一般的關機再開機，不是強制重新啟動。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">3</div><div>
+          <h4>設定 → 藍牙，確認藍牙已開啟</h4>
+          <p>官方把這一步也放進充電流程裡：藍牙關著，磁吸上去也不會開始充。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">4</div><div>
+          <h4>同一頁「我的裝置」底下找到它 → 資訊 → 忘記此裝置設定</h4>
+          <p>找得到才做這一步；找不到就代表沒有配對關係可以清，直接跳下一步。按下去之前請先看下面那則提醒。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">5</div><div>
+          <h4>重新接上，幾秒後「配對」按鈕出現就點它</h4>
+          <p>USB-C 款的按鈕字樣不一樣，官方寫的是<strong>「點一下來連線」</strong>，看到它就是對的。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">6</div><div>
+          <h4>按鈕沒出現？讓它充電一分鐘，再接一次</h4>
+          <p>電量太低會讓配對按鈕不出現。這是「沒電會造成奇怪行為」少數有官方依據的一條。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">7</div><div>
+          <h4>Pro 與第 2 代仍配不上 → 取下 iPad 上任何保護殼或護蓋</h4>
+          <p>官方把這一步單獨列出來，代表配件擋住磁吸真的會發生，不是偏方。</p></div></div>
+        <div class="step" style="--c:var(--red)"><div class="n">8</div><div>
+          <h4>仍未出現「配對」按鈕 → 官方寫「則可能需要維修」</h4>
+          <p>這是 Apple 自己給的停止點。到這裡就別再往下硬試軟體招式了。</p></div></div>
+      </div>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--teal)">
+          <div class="ct">順便查一個很省時間的地方：App 的藍牙權限</div>
+          系統顯示「已連線」，但某個 App 裡的藍牙權限仍可能是關的，這是兩道不同的鎖。路徑要唸對：<strong>設定 → 隱私權與安全性 → 藍牙</strong>（不是設定 → 藍牙）。官方把這一步排在取消配對<strong>之前</strong>。
+        </div>
+        <div class="callout" style="--c:var(--red)">
+          <div class="ct">一個很隱形的坑：控制中心那顆藍牙圖示</div>
+          在控制中心點一下藍牙，官方的行為是「藍牙配件和裝置就會與你的 iPad 中斷連線，<strong>直到隔天為止</strong>」。設定裡的藍牙看起來還是開的，筆卻連不上。如果你剛好點過那顆按鈕，回到<strong>設定 → 藍牙</strong>重新連一次就好。
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--red)">
+        <div class="ct">按「忘記此裝置設定」之前，先知道這件事</div>
+        Apple 對這個動作的完整說明只有一句：「這會將配件從<strong>可用的藍牙裝置列表</strong>中移除。」而它的影響範圍是：該配件會在<strong>所有登入你 Apple 帳號的裝置上</strong>一起取消配對。<br><br>
+        所以如果你的 iPhone、Mac 上也配著同一批藍牙配件，等一下可能都要重配一次。知道了再按，比較不會嚇一跳。
+      </div>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">網路上說「忘記此裝置＝清除藍牙快取」，這句我們不寫</div>
+        這個說法流傳很廣、聽起來也很內行，但 Apple 官方文件<strong>從頭到尾只寫「從可用列表移除」</strong>，沒有一個字提到快取、金鑰或韌體資料。<br><br>
+        能確定的是：取消配對再重新配對<strong>確實是官方建議的排錯步驟</strong>，照做就好。至於底層做了什麼，Apple 沒有公開說明，我們也不替它加戲。
+      </div>
+
+      <h3>「配對成功之後，過一陣子又斷了」——要插線的那兩款是設計如此</h3>
+      <p>這是最常被當成故障回報的狀況，而它<strong>有官方答案</strong>：</p>
+
+      <blockquote class="lead-src">「配對 Apple Pencil 後，將其從 iPad 拔除。Apple Pencil 會保持配對狀態，<strong>直到重新啟動 iPad、關閉「藍牙」，或與另一台 iPad 配對</strong>。當你準備好使用 Apple Pencil 時，只需再次配對。」<cite>Apple · iPad 使用手冊 — 這段同時出現在第 1 代與 USB-C 款的配對頁</cite></blockquote>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--navy)">
+          <div class="ct">要接線的那兩款，配對不是永久的</div>
+          <strong>第 1 代與 USB-C 款</strong>的官方頁寫了同一句話。iPad 重開機、藍牙關過、或這支筆被拿去配過別台 iPad，只要發生其中一件，就要再接一次重配。這是設計，不是壞掉。
+        </div>
+        <div class="callout" style="--c:var(--green)">
+          <div class="ct">第 2 代與 Pro 沒有這一段</div>
+          官方在這兩款磁吸款的說明裡<strong>沒有寫這段「配對會失效」的敘述</strong>。吸上去就保持連線，這也是它們用起來比較無感的原因。
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">所以「每次都要重配」不代表筆有問題</div>
+        用第 1 代或 USB-C 款、每次重開機之後都要重接一次，那完全符合官方描述。真正值得往下查的是<strong>沒重開機、也沒關過藍牙，卻自己斷線</strong>的情況。
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">保護殼與筆套只能擇一</div>
+        很多人給筆加了矽膠套、iPad 又裝了偏厚的保護殼，兩個疊起來就吸不到位。官方把「取下保護殼或護蓋」直接寫進配對流程，代表這件事真的會發生。<strong>排查時兩樣都先拆掉，裸機裸筆測一次。</strong>
+      </div>
+    </section>
+
+    <section id="charge">
+      <div class="sec-label" style="--c:var(--amber)">route_b</div>
+      <h2>03 · 線 B：充不了電、電量看起來很怪</h2>
+      <p>配對和充電是兩件事。配對問題是「iPad 認不認得這支筆」，充電問題是「電有沒有真的流進去」。忘記裝置重配一百次，也修不好一條沒接通的電力路徑。</p>
+
+      <h3>你這一款該怎麼充</h3>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>款式</th><th>接 iPad 充</th><th>用充電器單獨充</th><th>吸在側邊會充電嗎</th></tr>
+          <tr>
+            <td>第 1 代</td>
+            <td class="y">✓ 插 Lightning 孔</td>
+            <td class="y">✓ 用轉接器＋線</td>
+            <td class="n">✗ 吸不住</td>
+          </tr>
+          <tr>
+            <td>第 2 代</td>
+            <td class="y">✓ 吸右側磁鐵處</td>
+            <td class="n">✗ 沒有孔</td>
+            <td class="y">✓ 這就是它的充電方式</td>
+          </tr>
+          <tr>
+            <td>USB-C 款</td>
+            <td class="y">✓ 滑開尾端接 USB-C 線</td>
+            <td class="y">✓ 用 USB-C 線＋電源轉接器</td>
+            <td class="n">✗ 官方明列「不適用」</td>
+          </tr>
+          <tr>
+            <td>Apple Pencil Pro</td>
+            <td class="y">✓ 吸長邊磁鐵處</td>
+            <td class="n">✗ 沒有孔</td>
+            <td class="y">✓ 這就是它的充電方式</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--red)">
+        <div class="ct">最多人踩的一個坑：USB-C 款吸上去不會充電</div>
+        它<strong>吸得住</strong>，所以很多人以為跟第 2 代一樣吸著就在充，結果隔天拿起來還是沒電。Apple 台灣官網的比較表把「配對和充電都無線」這一列標成<strong>「不適用於 Apple Pencil (USB-C)」</strong>；產品頁也寫得很白：「它能以磁力吸附於 iPad 的側邊，<strong>以利收納</strong>。」<br><br>
+        簡單記：這一款<strong>只有插線才會充電</strong>。
+      </div>
+
+      <h3>電量要去哪裡看？官方只給兩個位置</h3>
+      <p>四款筆的使用手冊都寫同一段，位置一模一樣：</p>
+
+      <div class="where">
+        <div class="wcard" style="--c:var(--navy)">
+          <div class="wt">① 「電池」小工具</div>
+          <div class="wp">主畫面 → 加入「電池」小工具</div>
+          <p>加上去之後，iPad 自己的電量旁邊會一起顯示已連線配件的電量。適合天天要看的人。</p>
+        </div>
+        <div class="wcard" style="--c:var(--green)">
+          <div class="wt">② 設定裡的 Apple Pencil 頁</div>
+          <div class="wp">設定 → Apple Pencil</div>
+          <p>臨時要查最快。這一頁同時也是點兩下、擠壓、懸浮那些開關的所在地。</p>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)">
+        <div class="ct">磁吸上去會浮出電量卡片？那個我們沒有官方出處</div>
+        第 2 代與 Pro 吸上 iPad 時，畫面會短暫跳出一張電量提示——這件事很多人都看過，但我們在繁體中文官方頁面上<strong>查不到任何一句描述</strong>。所以本文不把它當成「該出現卻沒出現＝故障」的判斷依據。<br><br>
+        要確認電量，還是回到上面那兩個官方位置比較準。
+      </div>
+
+      <h3>掉電特別快，怎麼判斷正不正常</h3>
+      <p>先講一件可能跟你預期不同的事：<strong>Apple 官方沒有公布 Apple Pencil 的續航時數，也沒有公布充電時間</strong>。網路上流傳的「續航 12 小時」「充 15 秒能用 30 分鐘」這類數字，我們找不到官方出處，所以不寫進來。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--teal)">
+          <div class="ct">可以自己做的比較</div>
+          充飽之後<strong>連續使用</strong>，記錄從 100% 到剩多少用了多久。過幾天再測一次，如果每次結果差不多，那就是這支筆現在的狀態；如果一次比一次短很多，才值得懷疑電池。
+        </div>
+        <div class="callout" style="--c:var(--purple)">
+          <div class="ct">數字卡住不動，先分辨是哪一種</div>
+          <strong>卡住但寫字正常</strong>，比較像是連線資訊沒更新，重新吸附／插接、重開 iPad 通常就回來了。<strong>顯示 80% 卻幾分鐘就沒電</strong>，那不是顯示問題，要照上面的方式量實際續航。
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)">
+        <div class="ct">電池的官方說法，我們照抄不加油添醋</div>
+        Apple Pencil 的安全性文件寫得很直接：「<strong>請勿嘗試自行更換 Apple Pencil 的電池，你可能會因此損壞電池，且可能造成過熱和傷害。</strong>」以及裡面的鋰離子電池「<strong>只能由 Apple 或授權維修中心提供服務或進行回收</strong>」。<br><br>
+        官方<strong>沒有</strong>說「電池不能更換」，也沒有公布這項服務的費率。所以能講的只有一句：這不是自己動手的事。
+      </div>
+    </section>
+
+    <section id="write">
+      <div class="sec-label" style="--c:var(--green)">route_c</div>
+      <h2>04 · 線 C：連得上、有電，就是寫不出字</h2>
+      <p>藍牙顯示連線、電量看起來正常，筆放上去卻沒有線條，或是寫出來斷斷續續。這條線的第一嫌疑犯不在系統裡，在筆的最前端。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--green)"><div class="n">1</div><div>
+          <h4>把筆尖轉緊（順時針，轉到不會再轉為止）</h4>
+          <p>筆尖是旋上去的，長期使用會鬆。這一步不花錢、十秒鐘做完，先做再說。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">2</div><div>
+          <h4>看筆尖磨損程度，必要時換一顆</h4>
+          <p>官方安全性文件寫：「使用過程中，Apple Pencil 的筆尖會逐漸磨損，<strong>你需要更換筆尖以避免對 iPad 螢幕造成傷害</strong>。」原廠筆尖四件裝 NT$590，官方標明四款筆通用。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">3</div><div>
+          <h4>換螢幕不同位置畫同一條線</h4>
+          <p>只有某一塊寫不出來，那是 iPad 螢幕的事，跟筆無關。看下面那張圖。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">4</div><div>
+          <h4>換用內建「備忘錄」再測一次</h4>
+          <p>內建 App 沒有可調的筆刷設定，是最乾淨的對照組。只有第三方 App 不對勁，就去查那個 App。</p></div></div>
+      </div>
+
+      <figure class="fig">
+        <div class="zones">
+          <div class="zwrap">
+            <div class="zone">
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+            <b>整片都畫不出來</b>
+            <small>先懷疑筆：筆尖、電量、配對。走上面那四步。</small>
+          </div>
+          <div class="zwrap">
+            <div class="zone">
+              <i></i><i></i><i></i><i></i><i class="bad"></i><i></i><i></i><i class="bad"></i><i></i><i></i><i></i><i></i>
+            </div>
+            <b>只有某一塊畫不出來</b>
+            <small>換筆尖、重新配對都不會有用，這是 iPad 螢幕那一側的問題。</small>
+          </div>
+        </div>
+        <figcaption>把整個螢幕當成九宮格，<b>每一格都畫一條線</b>。哪一格畫得出來、哪一格不行，一分鐘就分得出責任在筆還是在螢幕。</figcaption>
+      </figure>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--amber)">
+          <div class="ct">寫得出來，但粗細不對？那是另一篇</div>
+          如果筆<strong>畫得出線</strong>、只是輕壓重壓都一樣粗，那不是這一節的範圍。站上有一篇專門拆壓感的五道關卡：<a class="inline" href="../apple-pencil-pressure-troubleshooting/">〈Apple Pencil 壓感變怪，先別送修〉</a>。
+        </div>
+        <div class="callout" style="--c:var(--purple)">
+          <div class="ct">USB-C 款「線一直一樣粗」是正常的</div>
+          它沒有壓力感應，所以無論怎麼用力，線寬都不會變。這是規格，不是故障。要壓感的話得換第 2 代或 Pro，而那要看你的 iPad 支不支援。
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)">
+        <div class="ct">最有效的一招：交叉測試</div>
+        <strong>同一支筆拿去另一台相容且正常的 iPad 測</strong>，再<strong>把另一支正常的筆拿到你這台 iPad 測</strong>。<br><br>
+        同一支筆到別台也不行 → 問題比較可能在筆。<br>
+        不同的筆在你這台都不行 → 問題比較可能在 iPad。<br><br>
+        這個判斷不是百分之百，但比一路重灌整台 iPad 有意義得多。借得到筆或 iPad 的話，這一步值得做。
+      </div>
+
+      <!-- 待補：實際案例。這裡很適合放一則果果檢測台上的真實情形（例如「送來說寫不出字、實際上是筆尖鬆了」的比例、或某一次的處理過程）。
+           現在沒有可引用的第一方素材，所以整段留白，請 Neil 提供後再補。不要用虛構故事填。 -->
+    </section>
+
+    <section id="features">
+      <div class="sec-label" style="--c:var(--purple)">route_d</div>
+      <h2>05 · 線 D：功能好像少一半</h2>
+      <p>「別人的筆點兩下就換工具，我的沒反應」——這種狀況有一半以上不是故障，是那一款本來就沒有這個功能。先看這張表，再決定要不要繼續查。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>功能</th><th>第 1 代</th><th>第 2 代</th><th>USB-C</th><th>Pro</th><th>依據</th></tr>
+          <tr>
+            <td>壓力感應</td>
+            <td class="y">✓</td><td class="y">✓</td><td class="n">✗</td><td class="y">✓</td>
+            <td>官網比較表把 USB-C 標為「不適用」<small>使用手冊那句話的名單裡也沒有它</small></td>
+          </tr>
+          <tr>
+            <td>傾斜度感應</td>
+            <td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td>
+            <td>四款都有，官網比較表與各產品頁一致</td>
+          </tr>
+          <tr>
+            <td>點兩下換工具</td>
+            <td class="n">✗</td><td class="y">✓</td><td class="n">✗</td><td class="y">✓</td>
+            <td>官方原文只點名第 2 代與 Pro<small>而且要「支援的 App」才有作用</small></td>
+          </tr>
+          <tr>
+            <td>擠壓<small>官網稱「雙指按壓」</small></td>
+            <td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="y">✓</td>
+            <td>官方：「擠壓適用於支援的 iPad 機型搭配 Apple Pencil Pro」</td>
+          </tr>
+          <tr>
+            <td>觸覺回饋<small>擠壓時的輕微震動</small></td>
+            <td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="y">✓</td>
+            <td>只有 Pro 有；官網比較表其餘標「不適用」</td>
+          </tr>
+          <tr>
+            <td>筆身滾動<small>官網稱「側轉」</small></td>
+            <td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="y">✓</td>
+            <td>只有 Pro；且限鋼筆、螢光筆這類工具</td>
+          </tr>
+          <tr>
+            <td>懸浮預覽</td>
+            <td class="n">✗</td><td class="mid">限兩款 iPad</td><td class="mid">限支援機型</td><td class="mid">限支援機型</td>
+            <td>看 iPad 不只看筆，見下方</td>
+          </tr>
+          <tr>
+            <td>可加進「尋找」</td>
+            <td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="y">✓</td>
+            <td>官方：Pencil Pro「是 Apple Pencil 首度支援『尋找』功能」</td>
+          </tr>
+          <tr>
+            <td>免額外付費鐫刻</td>
+            <td class="n">✗</td><td class="y">✓</td><td class="n">✗</td><td class="y">✓</td>
+            <td>Apple 線上商店只在第 2 代與 Pro 提供鐫刻</td>
+          </tr>
+        </table>
+      </div>
+
+      <h3>確定這支有這個功能之後，才輪到查設定</h3>
+      <p>開關幾乎都在同一頁：<strong>設定 → Apple Pencil</strong>。下面是官方寫的路徑與選項名稱，照著找不會迷路。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你想調什麼</th><th>官方路徑</th><th>可以調到什麼</th></tr>
+          <tr><td>點兩下要做什麼</td><td>設定 → Apple Pencil →「點兩下」</td><td>換成別的動作，或整個關掉</td></tr>
+          <tr><td>擠壓要做什麼</td><td>設定 → Apple Pencil →「擠壓」</td><td>換成別的動作（僅 Pencil Pro）</td></tr>
+          <tr><td>擠壓時的震動</td><td>設定 → Apple Pencil →「觸覺回饋」</td><td>開或關</td></tr>
+          <tr><td>懸浮預覽</td><td>設定 → Apple Pencil →「懸浮」</td><td>開或關</td></tr>
+          <tr><td>手寫轉文字</td><td>設定 → Apple Pencil →「隨手寫」</td><td>開或關</td></tr>
+          <tr><td class="good">擠壓要多用力才算</td><td class="good">設定 → 輔助使用 → Apple Pencil</td><td class="good">拖滑桿調按壓力度、開「延伸的範圍」拿更多力度選項、把點兩下的持續時間放慢</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">擠壓「要很用力才有反應」或「不小心就觸發」，調這裡</div>
+        很多人不知道最後那一列的存在。<strong>設定 → 輔助使用 → Apple Pencil</strong> 裡有一支滑桿，可以直接調整擠壓需要的力道；覺得點兩下常常誤觸的人，也可以在同一頁把「點兩下持續時間」改慢一點。這一頁不是只給有特殊需求的人用的。
+      </div>
+
+      <div class="grid g3">
+        <div class="card" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="c-tag">點兩下沒反應</div>
+          <h4>先確認 App 支不支援</h4>
+          <p>官方寫得很明白：「點兩下選項適用於支援的 App，例如『備忘錄』。」在不支援的 App 裡點兩下就是沒事發生。先開備忘錄測一次。</p>
+        </div>
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">擠壓沒反應</div>
+          <h4>先確認它是不是 Pro</h4>
+          <p>只有 Apple Pencil Pro 有擠壓。第 2 代外觀跟 Pro 很像，很容易買錯或記錯。擠下去完全沒有震動，多半代表它不是 Pro。</p>
+        </div>
+        <div class="card" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="c-tag">懸浮沒反應</div>
+          <h4>還要看 iPad 是哪一台</h4>
+          <p>懸浮是筆和 iPad 都要支援才會有。官方也給了距離：把筆拿在螢幕上方約 <strong>1.2 公分</strong>，太高就不會觸發。</p>
+        </div>
+      </div>
+
+      <h3>懸浮功能的官方機型清單</h3>
+      <blockquote class="lead-src">「Apple Pencil 懸浮功能適用於以下機型：iPad Pro 11 吋（第四代）和 iPad Pro 12.9 吋（第六代）可搭配 Apple Pencil（第二代）使用；iPad mini（A17 Pro）、iPad Air 11 吋（M2、M3 和 M4）、iPad Air 13 吋（M2、M3 和 M4）、iPad Pro 11 吋（M4 和 M5）和 iPad Pro 13 吋（M4 和 M5）可搭配 Apple Pencil Pro 使用」<cite>Apple · iPad 使用手冊〈在 iPad 上使用 Apple Pencil 繪圖〉</cite></blockquote>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--amber)">
+          <div class="ct">USB-C 款的懸浮，官方兩處說法對不起來</div>
+          Apple 台灣官網的比較表把「支援 Apple Pencil 懸浮功能」標為<strong>適用</strong>於 USB-C 款；但 iPad 使用手冊上面那份機型清單裡<strong>沒有列到它</strong>。<br><br>
+          我們照實說：官網說有，手冊沒列。如果你用 USB-C 款而懸浮沒作用，有可能是機型不在支援範圍，不一定是筆壞了。
+        </div>
+        <div class="callout" style="--c:var(--teal)">
+          <div class="ct">同一個功能，官方有兩個譯名</div>
+          擠壓在 apple.com 上叫「<strong>雙指按壓</strong>」、在使用手冊裡叫「<strong>擠壓</strong>」；筆身滾動在官網叫「<strong>側轉</strong>」。兩邊講的是同一件事，查資料時兩個詞都可以試。
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--purple)">
+        <div class="ct">Apple Pencil Pro 專屬：「尋找」相關的兩篇</div>
+        Pro 是唯一能加進「尋找」的 Apple Pencil，也因此多了一個二手市場專屬的狀況——前一位持有者沒解除綁定，新主人就加不進自己的帳號。判斷與解法看 <a class="inline" href="../apple-pencil-pro-unbinding/">〈Apple Pencil Pro 怎麼看有沒有被綁定？〉</a>；已綁定的筆值不值得買，看 <a class="inline" href="../pencil-pro-locked-worth-buying/">〈已綁定的 Apple Pencil Pro，到底能不能買？〉</a>。
+      </div>
+    </section>
+
+    <div class="part-div">停止點</div>
+
+    <section id="repair">
+      <div class="sec-label" style="--c:var(--red)">stop_here</div>
+      <h2>06 · 什麼時候該停手</h2>
+      <p>排查最難的不是做不完，是不知道什麼時候該收手。Apple 對 Apple Pencil 給了一個很明確的終點：</p>
+
+      <div class="bigquote">
+        <div class="qm">”</div>
+        <p>照官方流程走完，<br>「配對」按鈕仍然不出現，就可能需要維修。</p>
+        <small>這是 Apple 自己寫的停止點。走到這裡，繼續試軟體招式不會有新結果。</small>
+      </div>
+
+      <h3>這幾種情況，我們會建議直接跳過排查</h3>
+      <ul class="flags">
+        <li><b>摔過、壓過之後才開始的。</b>外觀看不出來不代表裡面沒事，軟體步驟救不回結構性的損傷。</li>
+        <li><b>筆尖螺牙滑掉、轉不緊。</b>換新筆尖也固定不住，這已經是機構層面的問題了。</li>
+        <li><b>進過水、泡過飲料。</b>就算當下還能用，也建議先停用觀察，不要一直插著充電。</li>
+        <li><b>交叉測試證明是筆。</b>同一支筆在另一台相容且正常的 iPad 上也不行，答案已經很清楚。</li>
+        <li><b>已經花超過半小時在同一層打轉。</b>重複試同一件事不會產生新資訊，換一層或停下來都比較划算。</li>
+      </ul>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--amber)">
+          <div class="ct">保固是一年，筆尖與電池耗損不在裡面</div>
+          官方寫：Apple 有限保固涵蓋製造問題，<strong>自購買日起一年內有效</strong>；另行購買的原廠配件也在配件保固範圍內。同一份文件同時寫明「不涵蓋意外損壞或因正常使用而耗損的電池」，保固條款也把<strong>消耗性零件</strong>排除在外。
+        </div>
+        <div class="callout" style="--c:var(--green)">
+          <div class="ct">有買 AppleCare+ 的話，筆是被涵蓋的</div>
+          這是我們唯一查得到的官方金額。Apple 台灣寫：為 iPad 買了 AppleCare+，意外損壞的範圍就涵蓋<strong>一支 Apple Pencil 和一款 Apple 品牌的 iPad 鍵盤</strong>，更換配件的<strong>自負額 NT$900</strong>。
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--red)">
+        <div class="ct">沒有 AppleCare+ 的話要花多少錢？官方沒有公布</div>
+        Apple 台灣的維修產品清單裡<strong>沒有 Apple Pencil</strong> 這一項，iPad 的維修估價工具也選不到它，官網查不到保固外的服務費率。網路上流傳的金額我們找不到出處，所以不寫。實際費用請以 Apple 或授權維修中心當下的報價為準。<br><br>
+        另外提醒一句：坊間「拆開清潔內部」「更換感測元件」這類服務，<strong>風險通常大於效益</strong>。
+      </div>
+
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">卡住了，隨時都可以來問</div>
+        以上步驟做到哪一步、看到什麼畫面，都歡迎直接問我們的客服。把「你是哪一款筆、配哪一台 iPad、做到第幾步」三件事講給我們聽，通常幾句話就能判斷還有沒有得救。<strong>我們不會為了成交鼓勵你花錢修一支修不好的筆</strong>；該建議直接換，我們就會這樣說。
+      </div>
+
+      <!-- 待補：實際案例。這一節如果能放一段果果檢測／售後的真實經驗（例如：收進來被說「壞了」的筆，實際上多少是接法或型號誤會；
+           或某一款特別容易出狀況的觀察與數量級），會是這篇唯一「只有果果才寫得出來」的第一手內容。
+           目前沒有可引用的統計或紀錄，所以先不寫。舊版文章曾寫「Pencil 2 連不上高機率發生在 iPad Air 4／5、mini 6」，
+           這個說法沒有可查證的來源，本文刻意未沿用——若有維修單資料可支持，再由 Neil 決定要不要補回來。 -->
+    </section>
+
+    <section id="evidence">
+      <div class="sec-label" style="--c:var(--purple)">evidence</div>
+      <h2>07 · 這篇哪些是官方說的、哪些是我們推的</h2>
+      <p>Apple 對 Apple Pencil 的技術細節講得不多，很多流傳很廣的說法其實找不到出處。與其用肯定語氣把推論寫成事實，我們把等級直接標出來。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>說法</th><th>等級</th><th>依據</th></tr>
+          <tr>
+            <td>Apple Pencil（USB-C）沒有壓力感應</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>Apple 台灣官網比較表標「不適用於 Apple Pencil (USB-C)」；使用手冊講加壓變粗那句的名單也只有第 1、2 代與 Pro</td>
+          </tr>
+          <tr>
+            <td>USB-C 款吸在 iPad 側邊不會充電</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>官網比較表「配對和充電都無線」標為不適用；產品頁逐字「以磁力吸附於 iPad 的側邊，以利收納」</td>
+          </tr>
+          <tr>
+            <td>四款筆的相容機型與系統版本門檻</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>Apple 支援文件〈Apple Pencil 相容性〉與 iPad 使用手冊相容性頁，兩份互相對照過</td>
+          </tr>
+          <tr>
+            <td>第 1 代與 USB-C 款的配對會因為重開機、關藍牙、配到別台而失效</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>iPad 使用手冊這兩款的配對頁寫了同一段話；第 2 代與 Pro 的頁面沒有這一段</td>
+          </tr>
+          <tr>
+            <td>三款筆各自的配對動作（磁吸／插孔／接線）</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>iPad 使用手冊四款各有獨立一頁，動作描述逐字引用</td>
+          </tr>
+          <tr>
+            <td>官方查電量只有兩個位置</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>四款配對充電頁都寫同一段：「電池」小工具、設定 → Apple Pencil</td>
+          </tr>
+          <tr>
+            <td>擠壓、觸覺回饋、筆身滾動、「尋找」是 Pro 專屬</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>使用手冊逐字「擠壓適用於支援的 iPad 機型搭配 Apple Pencil Pro」；官網比較表其餘款標不適用</td>
+          </tr>
+          <tr>
+            <td>「忘記此裝置設定」會影響同一 Apple 帳號的其他裝置</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>Apple 支援文件逐字，且官方對該動作的完整描述只有「從可用的藍牙裝置列表中移除」一句</td>
+          </tr>
+          <tr>
+            <td>第 1 代、第 2 代、USB-C 款不支援「尋找」</td>
+            <td><span class="lv-tag infer">合理推論</span></td>
+            <td>官方<strong>沒有一句明說它們不支援</strong>。依據是 Apple 新聞稿寫 Pencil Pro「是 Apple Pencil 首度支援『尋找』功能」，加上官網比較表只把這一列給 Pro</td>
+          </tr>
+          <tr>
+            <td>擠一下筆身有震動＝這支是 Pro</td>
+            <td><span class="lv-tag infer">合理推論</span></td>
+            <td>官方確認擠壓與觸覺回饋只有 Pro 有（這部分已確認）；用它反推型號是我們的判斷法，不是官方給的辨識方式</td>
+          </tr>
+          <tr>
+            <td>USB-C 款到底支不支援懸浮</td>
+            <td><span class="lv-tag todo">官方說法不一</span></td>
+            <td>apple.com 比較表標「適用」，但 iPad 使用手冊的懸浮機型清單沒有列到 USB-C 款。兩邊都是官方，我們照實並陳</td>
+          </tr>
+          <tr>
+            <td>磁吸上去時螢幕浮出的電量卡片</td>
+            <td><span class="lv-tag todo">查無出處</span></td>
+            <td>繁體中文官方頁面找不到任何描述。所以不拿它當「沒出現＝故障」的判斷依據</td>
+          </tr>
+          <tr>
+            <td>Apple Pencil 的續航時數與充電時間</td>
+            <td><span class="lv-tag todo">查無出處</span></td>
+            <td>官方繁中頁面沒有公布任何數字。「續航 12 小時」「充 15 秒用 30 分鐘」這類說法找不到官方來源</td>
+          </tr>
+          <tr>
+            <td>壓感階數（例如 4096 階）與延遲毫秒數</td>
+            <td><span class="lv-tag todo">查無出處</span></td>
+            <td>官方只寫「低延遲」「像素等級的精準度」，沒有給過任何數值</td>
+          </tr>
+          <tr>
+            <td>原廠替換筆尖四款通用；只有第 1 代盒裝附替換筆尖</td>
+            <td><span class="lv-tag ok">已確認</span></td>
+            <td>Apple 台灣官網「Apple Pencil 筆尖 4 件裝」逐字列出與四款相容；包裝盒內容僅第 1 代技術規格頁列有替換筆尖</td>
+          </tr>
+          <tr>
+            <td>Apple Pencil 的電池能不能換</td>
+            <td><span class="lv-tag infer">照官方措辭</span></td>
+            <td>官方只寫「請勿嘗試自行更換」與「只能由 Apple 或授權維修中心提供服務或進行回收」。<strong>官方沒有說「不能更換」</strong>，所以本文也不這樣寫</td>
+          </tr>
+          <tr>
+            <td>台灣保固外的 Apple Pencil 更換費用</td>
+            <td><span class="lv-tag todo">查無出處</span></td>
+            <td>Apple 台灣的維修產品清單未列 Apple Pencil，iPad 維修估價工具也沒有這個選項，官網無公開費率。唯一有官方數字的是 AppleCare+ 的 NT$900 自負額</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--green)">
+        <div class="ct">為什麼要把「查無出處」也列出來</div>
+        因為這幾格剛好是網路上被寫得最斬釘截鐵的幾件事。看到有人用肯定句寫它們的時候，可以回頭問一句：依據在哪？<strong>我們寧可承認查不到，也不想讓你照著一個沒有依據的說法去花錢。</strong>
+      </div>
+
+      <div class="callout" style="--c:var(--red)">
+        <div class="ct">兩句流傳很廣、但我們不寫的話</div>
+        ①「忘記此裝置＝清除藍牙快取／重置藍牙模組」——Apple 只寫「從可用列表移除」，沒提過快取。<br>
+        ②「強制重新啟動保證不會遺失資料」——官方對強制重啟只講怎麼按和什麼時候按，<strong>沒有針對資料做過任何保證</strong>。<br><br>
+        這兩句聽起來都很專業，但講出去等於替 Apple 做了它沒做的承諾。
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>來源與更新日期</h2>
+      <p class="updated">本文查證與撰寫：<b>2026 年 8 月 8 日</b>。相容機型、配對與充電動作、功能有無、設定路徑皆逐字取自下列 Apple 官方頁面，四款筆各自的使用手冊頁都個別比對過。查不到官方出處的說法一律未收錄，並集中列在<a class="inline" href="#evidence">第 07 節</a>。</p>
+      <p class="sources">主要查證來源：</p>
+      <ul class="sources">
+        <li><a href="https://support.apple.com/zh-tw/108937">Apple 支援 ·〈Apple Pencil 相容性〉</a>（四款筆的完整相容機型清單、Pencil Pro 需 iPadOS 17.5、USB-C 款需 iPadOS 17.1.1、第 1 代搭 iPad 第 10 代與 A16 須用轉接器的註腳。發佈日期 2026 年 3 月 31 日）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipad47ee2e98/ipados">iPad 使用手冊 ·〈Apple Pencil 與 iPad 機型的相容性〉</a>（相容清單的第二份官方對照）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipadc9c41abb/ipados">iPad 使用手冊 ·〈將 iPad 與 Apple Pencil（第一代）配對和為其充電〉</a>（「取下蓋子，將 Apple Pencil 插入 iPad 上的 Lightning 連接器」、配對會因重開機／關藍牙／配到別台而失效、iPad 第 10 代與 A16 要用 USB-C 對 Apple Pencil 轉接器）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipad51ac5369/ipados">iPad 使用手冊 ·〈將 Apple Pencil（第二代）與 iPad 配對和為其充電〉</a>（「連接 iPad 右側的磁鐵吸附處」、充電前提是藍牙已開啟）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipadc3d88218/ipados">iPad 使用手冊 ·〈將 Apple Pencil（USB-C）與 iPad 配對和為其充電〉</a>（「滑開 Apple Pencil 末端」、配對按鈕是「點一下來連線」）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipada6b9b799/ipados">iPad 使用手冊 ·〈將 Apple Pencil Pro 與 iPad 配對和為其充電〉</a>（「連接相容 iPad 長邊的磁鐵吸附處」、查電量的兩個官方位置）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipadc55b6c7a/ipados">iPad 使用手冊 ·〈在 iPad 上使用 Apple Pencil 繪圖〉</a>（加壓變粗的款式名單、點兩下限第 2 代與 Pro、擠壓／筆身滾動／觸覺回饋限 Pro、懸浮機型清單與 1.2 公分距離）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipad63913965/ipados">iPad 使用手冊 ·〈更改 Apple Pencil 的點兩下和擠壓設定〉</a>（「點兩下適用於支援的 iPad 機型搭配 Apple Pencil（第二代）和 Apple Pencil Pro。擠壓適用於支援的 iPad 機型搭配 Apple Pencil Pro。」）</li>
+        <li><a href="https://support.apple.com/zh-tw/108788">Apple 支援 ·〈如果你無法將 Apple Pencil 與 iPad 配對〉</a>（三項前置與六步流程；保持連接狀態重新啟動 iPad；取下保護殼或護蓋；配對按鈕仍不出現即「可能需要維修」）</li>
+        <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipad997da4cf/ipados">iPad 使用手冊 ·〈將 iPad 連接至藍牙配件〉</a>（「忘記此裝置設定」的官方路徑與確認字樣；控制中心斷開所有藍牙配件「直到隔天為止」）</li>
+        <li><a href="https://support.apple.com/zh-tw/105108">Apple 支援 ·〈將第三方藍牙配件連接到 iPhone 或 iPad〉</a>（「忘記此裝置設定」的完整官方描述，以及會在所有登入同一 Apple 帳號的裝置上一起取消配對）</li>
+        <li><a href="https://support.apple.com/zh-tw/111804">Apple 支援 ·〈如果藍牙配件無法連接 iPhone 或 iPad〉</a>（App 的藍牙權限要到「設定 → 隱私權與安全性 → 藍牙」確認，官方把這一步排在取消配對之前）</li>
+        <li><a href="https://www.apple.com/tw/apple-pencil/">Apple 台灣官網 · Apple Pencil</a>（機型比較表：壓力感應與「配對和充電都無線」對 USB-C 款標「不適用」；點兩下、側轉、雙指按壓、觸覺回饋、「尋找」、免額外付費鐫刻的有無）</li>
+        <li><a href="https://www.apple.com/tw/shop/product/muwa3ta/a/apple-pencil-usb-c">Apple 台灣官網 · Apple Pencil (USB-C)</a>（「透過 USB-C 充電連接線進行配對和充電。它能以磁力吸附於 iPad 的側邊，以利收納。」）</li>
+        <li><a href="https://www.apple.com/tw/newsroom/2024/05/apple-unveils-stunning-new-ipad-pro-with-m4-chip-and-apple-pencil-pro/">Apple Newsroom ·〈Apple 推出搭載 M4 晶片的全新 iPad Pro 與 Apple Pencil Pro〉</a>（「Apple Pencil Pro 是 Apple Pencil 首度支援『尋找』功能」——本文第 05 節那條推論的唯一官方依據）</li>
+        <li><a href="https://support.apple.com/zh-tw/ipad/repair">Apple 支援 · iPad 維修與服務</a>（「Apple 有限保固涵蓋裝置和所有 Apple 原廠隨附配件的製造問題，自購買日起一年內有效」、另行購買的原廠配件適用配件保固、保固不涵蓋意外損壞與正常使用而耗損的電池）</li>
+        <li><a href="https://www.apple.com/legal/warranty/products/ios-warranty-rest-of-apac-traditional-chinese.html">Apple 硬體保固條款（繁體中文）</a>（本保固不適用於「消耗性零件（例如會隨時間逐漸耗損之電池或保護塗層）」與正常磨損）</li>
+        <li><a href="https://www.apple.com/tw/applecare/">Apple 台灣 · AppleCare+</a>（為 iPad 購買 AppleCare+ 後，意外損壞範圍涵蓋一支 Apple Pencil 與一款 Apple 品牌 iPad 鍵盤；更換配件自負額 NT$900）</li>
+        <li><a href="https://support.apple.com/zh-tw/repair-products">Apple 支援 · 可查詢維修的產品</a>（清單中未列 Apple Pencil，官網無公開保固外費率）</li>
+        <li><a href="https://www.apple.com/tw/shop/product/MX763FE/A">Apple 台灣官網 · Apple Pencil 筆尖 4 件裝</a>（NT$590，官方逐字列出與 Pencil Pro、第 2 代、USB-C、第 1 代皆相容）</li>
+        <li><a href="https://cdsassets.apple.com/live/6GJYWVAV/information/locale/zh-tw/ma1744_apple-pencil-1gen-rc.pdf">Apple · Apple Pencil 安全性與處理說明（PDF）</a>（「使用過程中，Apple Pencil 的筆尖會逐漸磨損，你需要更換筆尖以避免對 iPad 螢幕造成傷害」、「請勿嘗試自行更換 Apple Pencil 的電池」、電池「只能由 Apple 或授權維修中心提供服務或進行回收」）</li>
+      </ul>
+      <p class="updated">機型清單會隨 Apple 推出新 iPad 而增加，介面文字也可能隨 iPadOS 版本調整，一律以官方最新公告與你機器上的實際畫面為準。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+</script>
+</body>
+</html>
