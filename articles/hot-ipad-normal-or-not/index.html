@@ -57,6 +57,33 @@
   }
   .fig.anim .flow .box { max-width: 320px; }
 
+  /* 第一方數據卡：果果售後統計，全篇唯一一組自家數字，給它獨立的視覺重量 */
+  .fp { display: flex; gap: 20px; align-items: center; background: #fff; border: 1px solid var(--line);
+        border-left: 4px solid var(--purple); border-radius: 12px; padding: 18px 22px; margin: 20px 0;
+        box-shadow: 0 4px 16px rgba(20,39,68,.05); }
+  .fp .fp-n { font-family: var(--mono); font-size: 3.1rem; font-weight: 800; color: var(--purple);
+              line-height: .95; flex: none; letter-spacing: -.03em; }
+  .fp .fp-n i { font-style: normal; font-size: 1.4rem; vertical-align: super; margin-left: 1px; }
+  .fp .fp-b b { display: block; font-family: var(--mono); font-size: .66rem; color: var(--purple); margin-bottom: 5px; }
+  .fp .fp-b p { font-size: .95rem; color: var(--ink); margin: 0 0 8px; line-height: 1.6; }
+
+  /* 混淆變項對照圖 .cfd：兩條分界線落在同一個位置——一條貫穿三列的紅線就是全節的重點。
+     用 box-shadow inset 畫線而非 border，才不會擠掉 grid 欄寬。 */
+  .tbl-wrap .cfd { min-width: 440px; }
+  .cfd { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: #fff; }
+  .cfd .r { display: grid; grid-template-columns: 58px repeat(4, 1fr); }
+  .cfd .r + .r { border-top: 1px solid var(--grid); }
+  .cfd .rh { display: grid; place-items: center; font-family: var(--mono); font-size: .6rem;
+             color: var(--muted); background: var(--panel2); padding: 4px; }
+  .cfd .c { padding: 10px 4px; text-align: center; font-size: .86rem; color: var(--ink); font-weight: 600; line-height: 1.35; }
+  .cfd .c small { display: block; font-family: var(--mono); font-size: .6rem; font-weight: 400; color: var(--muted); margin-top: 2px; }
+  .cfd .c.old { background: var(--amber-bg); }
+  .cfd .c.new { background: var(--green-bg); }
+  .cfd .c.split { box-shadow: inset 3px 0 0 var(--red); }
+  .cfd .rhead .c { font-weight: 700; }
+  .cfd-key { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 11px; font-size: .78rem; color: var(--muted); }
+  .cfd-key span::before { content: '▍'; color: var(--red); margin-right: 4px; }
+
   /* 72 小時時間軸 */
   .tl { display: grid; gap: 9px; margin: 20px 0; }
   .tl .t { display: flex; gap: 13px; align-items: flex-start; background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 10px; padding: 13px 16px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
@@ -68,6 +95,8 @@
     .masthead { padding-left: 20px; padding-right: 20px; }
     .tl .t { flex-direction: column; gap: 4px; }
     .tl .t .when { padding-top: 0; }
+    .fp { gap: 14px; padding: 16px 18px; }
+    .fp .fp-n { font-size: 2.4rem; }
   }
 </style>
 </head>
@@ -84,12 +113,13 @@
   <a href="#timing">01 · 看時機，不看幾度</a>
   <a href="#normal">02 · 正常發熱清單</a>
   <a href="#firstday">03 · 二手機第一天特別篇</a>
-  <a href="#autopilot">04 · 太燙時 iPad 會自己做的事</a>
+  <a href="#oldipad">04 · 為什麼舊 iPad 特別容易燙</a>
+  <a href="#autopilot">05 · 太燙時 iPad 會自己做的事</a>
   <div class="grp">什麼時候該動作</div>
-  <a href="#red">05 · 四條異常紅線</a>
-  <a href="#nowwhat">06 · 燙的當下怎麼處理</a>
-  <a href="#service">07 · 該不該送檢</a>
-  <a href="#closing">08 · 一句話心法</a>
+  <a href="#red">06 · 四條異常紅線</a>
+  <a href="#nowwhat">07 · 燙的當下怎麼處理</a>
+  <a href="#service">08 · 該不該送檢</a>
+  <a href="#closing">09 · 一句話心法</a>
   <a href="#watch">延伸觀看</a>
   <a href="#sources">資料來源</a>
 </nav>
@@ -104,7 +134,7 @@
         </div>
         <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
       </div>
-      <div class="pills"><span>官方正常發熱清單逐字對照</span><span>二手機頭 72 小時觀察法</span><span>四條該停用送檢的紅線</span></div>
+      <div class="pills"><span>官方正常發熱清單逐字對照</span><span>二手機頭 72 小時觀察法</span><span>果果售後統計：九成集中在哪兩代</span><span>四條該停用送檢的紅線</span></div>
     </div>
   </header>
 
@@ -137,7 +167,7 @@
       <div class="lm-g">
         <a href="#timing"><i>01</i>為什麼看時機比看幾度準</a>
         <a href="#normal"><i>02</i>哪些燙是正常的</a>
-        <a href="#red"><i>05</i>哪些燙要立刻處理</a>
+        <a href="#oldipad"><i>04</i>為什麼舊機特別容易燙</a>
       </div>
     </div>
 
@@ -284,9 +314,99 @@
       </div>
     </section>
 
+    <section id="oldipad">
+      <div class="sec-label" style="--c:var(--purple)">guoguo_data</div>
+      <h2>04 · 為什麼舊 iPad 特別容易被覺得燙</h2>
+      <p>前面講的都是「什麼時候會燙」。這一節講「哪些機器比較常燙」——而這個問題，我們手上剛好有別人沒有的資料。</p>
+
+      <div class="fp">
+        <div class="fp-n">90<i>%</i></div>
+        <div class="fp-b">
+          <b>果果售後統計</b>
+          <p>顧客反應「iPad 發燙」的案例裡，約九成集中在 <strong>iPad 第 6 代與第 7 代</strong>這兩款。</p>
+          <span class="lv g">果果第一方資料</span>
+        </div>
+      </div>
+
+      <h3>第一個念頭是充電器——但這條線索有陷阱</h3>
+      <p>這兩代剛好只隨附 12W 電源轉接器，iPad 第 8 代開始改成 20W。看起來像是找到兇手了，對吧？</p>
+      <p>問題是，同一個時間點還換了另一樣東西。</p>
+
+      <figure class="fig">
+        <div class="tbl-wrap">
+          <div class="cfd">
+            <div class="r rhead">
+              <span class="rh"></span>
+              <span class="c old">iPad 6<small>2018</small></span>
+              <span class="c old">iPad 7<small>2019</small></span>
+              <span class="c new split">iPad 8<small>2020</small></span>
+              <span class="c new">iPad 9<small>2021</small></span>
+            </div>
+            <div class="r">
+              <span class="rh">充電器</span>
+              <span class="c old">12W</span>
+              <span class="c old">12W</span>
+              <span class="c new split">20W</span>
+              <span class="c new">20W</span>
+            </div>
+            <div class="r">
+              <span class="rh">晶片</span>
+              <span class="c old">A10<small>16 奈米</small></span>
+              <span class="c old">A10<small>16 奈米</small></span>
+              <span class="c new split">A12<small>7 奈米</small></span>
+              <span class="c new">A13<small>7 奈米</small></span>
+            </div>
+          </div>
+        </div>
+        <div class="cfd-key"><span>「12W 換成 20W」和「16 奈米換成 7 奈米」，是同一刀切出來的</span></div>
+        <figcaption>兩條分界線<b>疊在同一個位置</b>。所以「12W 的那兩台特別燙」和「A10 的那兩台特別燙」，其實是同一組數字——光看這張表，分不出來是誰在作用。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">而且瓦數這條，方向可能是反的</div>
+        電池充電的發熱主要來自電流通過內阻的焦耳熱（I²R）。<strong>電流越大、瓦數越高，理論上產生的熱越多</strong>——所以 12W 應該比 20W 涼，不是比較燙。Apple 官方也從來沒說過高瓦數和低瓦數誰比較熱。我們找不到任何可靠來源支持「12W 比較容易發燙」。<span class="lv i">工程共識</span>
+      </div>
+
+      <h3>三個比瓦數更有解釋力的原因</h3>
+      <div class="grid g3">
+        <div class="card" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="c-tag">最可能的主因</div>
+          <h4>電池老得比較快</h4>
+          <p>iPad 6 是 2018 年的機器，到今天已經八年。鋰電池老化後內阻會上升，同樣的電流通過就產生更多熱，而熱又回頭加速老化——是個會自己滾大的循環。</p>
+          <span class="ex">學術文獻共識</span>
+        </div>
+        <div class="card" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="c-tag">同樣有力</div>
+          <h4>晶片差了一個世代</h4>
+          <p>A10 是 16 奈米製程，A12 是 7 奈米。同一支影片、同一個網頁，A10 要燒掉更多電才做得完，多出來的電就變成熱。Apple 自己說 A12 的效率核心「省電達 50%」。</p>
+          <span class="ex">Apple 官方原文</span>
+        </div>
+        <div class="card" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="c-tag">瓦數真正的角色</div>
+          <h4>充電器餵不飽，插電時間變長</h4>
+          <p>12W 在你邊充邊跑重度 App 時可能供不上耗電，電量幾乎不上升。於是你一直插著不敢拔——體感是「它一直溫溫的」，但那是溫熱的<strong>時間</strong>變長，不是熱量變大。</p>
+          <span class="ex">合理推論</span>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">誠實揭露：Apple 沒有把這兩件事連起來</div>
+        Apple 官方確實寫過老化電池的阻抗會上升，也說「具有高阻抗的電池可能無法提供系統所需的足夠電力」，而且「化學年齡較高時更明顯」。但官方把這件事連到的是<strong>意外關機與效能受限</strong>，從頭到尾沒有寫「老化電池會讓裝置更燙」。「內阻上升所以更熱」這一步是電池工程與學術文獻的共識，不是 Apple 的說法。<span class="lv i">工程共識</span>
+      </div>
+
+      <details>
+        <summary>那個 90% 該怎麼讀？（我們自己也要先扣分）</summary>
+        <p>這個數字是「反應發燙的顧客裡，九成拿的是 iPad 6／7」，不是「iPad 6／7 有九成會發燙」。兩者差很多。</p>
+        <p>iPad 6 和 7 是我們賣得最多的入門二手機，分母本來就大，客訴的絕對數量自然也大。要真的證明它們比較容易發燙，該看的是每台機器的客訴比例，不是客訴的機型分佈。我們也還在累積這個數字。</p>
+        <p>另外一件老實話：我們去翻了 PTT、Mobile01、Dcard 與 Apple 官方社群，並沒有找到 iPad 6／7 特別多的發燙災情，<strong>也沒有任何一則討論把發燙歸因於「充電器只有 12W」</strong>。所以上面這一節請當成「果果這邊看到的樣子」，不是全網通則。</p>
+      </details>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">所以買二手的話，這件事怎麼用</div>
+        不是「A10 那兩代不能買」——它們看影片、做筆記、上網課都還很夠用。而是買之前先知道它比較容易溫熱，<strong>別把正常的發熱當成瑕疵</strong>；同時把電池狀況看得比機身外觀更重要。年份越舊的機器，電池就越是那台機器的真實年齡。
+      </div>
+    </section>
+
     <section id="autopilot">
       <div class="sec-label" style="--c:var(--teal)">built_in_protection</div>
-      <h2>04 · 太燙的時候，iPad 會自己做五件事</h2>
+      <h2>05 · 太燙的時候，iPad 會自己做五件事</h2>
       <p>很多人以為機器熱到極限會直接壞掉。實際上 iPadOS 有一整套內建保護，會在你察覺之前就先自己踩煞車。</p>
       <p>知道這份清單有個實際好處：這些現象出現時，你不會誤以為機器故障。它們其實是保護機制正在運作的證據。</p>
 
@@ -315,7 +435,7 @@
 
     <section id="red">
       <div class="sec-label" style="--c:var(--red)">red_flags</div>
-      <h2>05 · 四條異常紅線</h2>
+      <h2>06 · 四條異常紅線</h2>
       <p>前面講的都是「可以觀察」的情況。下面四條不一樣，它們的共同特徵是<strong>熱和工作已經脫鉤</strong>，或者機器結構本身出現變化。</p>
 
       <ul class="flags">
@@ -352,7 +472,7 @@
 
     <section id="nowwhat">
       <div class="sec-label" style="--c:var(--navy)">right_now</div>
-      <h2>06 · 燙的當下怎麼處理</h2>
+      <h2>07 · 燙的當下怎麼處理</h2>
       <p>先講結論：降溫要用「<strong>移開熱源</strong>」，不要用「製造冷源」。前者安全，後者可能把一個溫度問題換成一個進水問題。</p>
 
       <div class="cgrid">
@@ -392,12 +512,12 @@
 
     <section id="service">
       <div class="sec-label" style="--c:var(--red)">when_to_stop</div>
-      <h2>07 · 該不該送檢：兩條判準就夠</h2>
+      <h2>08 · 該不該送檢：兩條判準就夠</h2>
       <p>把前面所有東西收斂成兩個問題。你不需要記住整篇文章，記住這兩題就好。</p>
 
       <div class="steps">
         <div class="step" style="--c:var(--red)"><div class="n">A</div><div><h4>機身外觀有沒有變形？</h4><p>螢幕翹起、背蓋鼓起、放桌上會晃、縫隙變寬——任一項成立，<strong>立刻停止使用與充電</strong>，不要等，也不要自己拆。這是唯一一條不需要觀察期的判準。</p></div></div>
-        <div class="step" style="--c:var(--amber)"><div class="n">B</div><div><h4>什麼都沒做，連續三天以上還是燙？</h4><p>先照第 05 節查 App 耗電、關背景重新整理、重開機、確認系統是最新版。四件事都做了還是燙，就該找專業檢測了。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">B</div><div><h4>什麼都沒做，連續三天以上還是燙？</h4><p>先照第 06 節查 App 耗電、關背景重新整理、重開機、確認系統是最新版。四件事都做了還是燙，就該找專業檢測了。</p></div></div>
       </div>
 
       <div class="callout" style="--c:var(--green)"><div class="ct">兩題都是「否」的話</div>
@@ -410,7 +530,7 @@
 
     <section id="closing">
       <div class="sec-label" style="--c:var(--green)">takeaway</div>
-      <h2>08 · 一句話心法</h2>
+      <h2>09 · 一句話心法</h2>
       <p>回到最開頭那個問題：iPad 發燙正常嗎？</p>
       <p>答案不在溫度計上，在你自己的記憶裡。你知道剛剛讓它做了什麼，這個資訊就足以判斷了。</p>
       <div class="bigquote">
@@ -439,7 +559,7 @@
           <img loading="lazy" src="https://i.ytimg.com/vi/2rkaCgEs4_o/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/2rkaCgEs4_o/hqdefault.jpg'" />
           <span class="pbtn"></span><span class="yt">YouTube</span>
         </a>
-        <div class="cap"><b>老平板電池脹、送修不到1小時就爆炸 通訊行嚇壞</b><small>東森新聞 CH51 · 對應本文第 05 節的第四條紅線。主角就是一台電池已經膨脹的平板，監視器拍下它在店內自燃的過程——這就是為什麼那一條紅線寫「不必再觀察，直接停用」。畫面有點驚人，但比任何文字都有說服力。</small></div>
+        <div class="cap"><b>老平板電池脹、送修不到1小時就爆炸 通訊行嚇壞</b><small>東森新聞 CH51 · 對應本文第 06 節的第四條紅線。主角就是一台電池已經膨脹的平板，監視器拍下它在店內自燃的過程——這就是為什麼那一條紅線寫「不必再觀察，直接停用」。畫面有點驚人，但比任何文字都有說服力。</small></div>
       </div>
 
       <div class="vlite">
@@ -447,16 +567,16 @@
           <img loading="lazy" src="https://i.ytimg.com/vi/KD1nR6U3Pdg/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/KD1nR6U3Pdg/hqdefault.jpg'" />
           <span class="pbtn"></span><span class="yt">YouTube</span>
         </a>
-        <div class="cap"><b>七招教你簡單拯救過熱手機！超多人中標的迷思行為別再做</b><small>電獺少女-女孩的科技日常 · 對應本文第 06 節的「做／別做」清單，重點放在錯誤降溫迷思。要說明的是：這支講的是手機，我們也沒有逐字核對它有沒有提到冰箱——但「沒有風扇、靠機殼散熱」的原理與 iPad 相同，當作觀念補充來看。</small></div>
+        <div class="cap"><b>七招教你簡單拯救過熱手機！超多人中標的迷思行為別再做</b><small>電獺少女-女孩的科技日常 · 對應本文第 07 節的「做／別做」清單，重點放在錯誤降溫迷思。要說明的是：這支講的是手機，我們也沒有逐字核對它有沒有提到冰箱——但「沒有風扇、靠機殼散熱」的原理與 iPad 相同，當作觀念補充來看。</small></div>
       </div>
     </section>
 
     <section id="sources">
       <div class="sec-label">sources</div>
       <h2>資料來源</h2>
-      <p class="sources">本文的溫度範圍、正常情境清單、警告畫面文案、電池安全警語與設定路徑，皆逐字取自 Apple 官方繁體中文支援文件與台灣官網；台灣氣候與車內溫度數據另註來源。查證日期 2026 年 8 月：</p>
+      <p class="sources">本文的溫度範圍、正常情境清單、警告畫面文案、電池安全警語與設定路徑，皆逐字取自 Apple 官方繁體中文支援文件與台灣官網；充電器瓦數與晶片製程取自 Apple 官方文件與技術資料庫，電池老化與產熱的原理取自學術文獻；台灣氣候與車內溫度數據另註來源。查證日期 2026 年 8 月：</p>
       <details class="src-fold">
-        <summary>參考資料來源<span class="n">15 筆</span></summary>
+        <summary>參考資料來源<span class="n">21 筆</span></summary>
         <ul class="sources">
           <li><a href="https://support.apple.com/zh-tw/118431">Apple 支援 · 如果 iPhone 或 iPad 過熱或過冷</a>（六項正常發熱情境、過熱時裝置行為、溫度警告畫面文案、應避免的情境、操作與存放溫度）</li>
           <li><a href="https://www.apple.com/tw/batteries/maximizing-performance/">Apple 台灣 · 最大化電池效能與續航力</a>（35°C 以上可能永久損害蓄電量、高溫充電、低溫為暫時性）</li>
@@ -473,6 +593,12 @@
           <li><a href="https://health.udn.com/health/story/6006/8961557">元氣網 · 高溫日曬半小時車內即達 50 度以上</a>（台灣停車場現場實測：外界 35°C、車內起始 39.7°C、半小時後 53.3°C；為醫師現場實測，非學術對照實驗）</li>
           <li><a href="https://climate.cwa.gov.tw/HighTemperature">中央氣象署 · 氣候服務入口網：高溫</a>（台北測站高溫日數統計）</li>
           <li><a href="https://technews.tw/2026/07/17/overheating-phone-dont-fridge/">TechNews 科技新報 · 手機過熱別急著放冰箱</a>（維修業者對冷凝風險的說明；業界說法，非 Apple 官方口徑）</li>
+          <li><a href="https://support.apple.com/en-us/120548">Apple 支援 · 關於 Apple USB 電源轉接器</a>（逐代隨附瓦數清單：iPad 6／7 為 12W、iPad 8／9／10 為 20W）</li>
+          <li><a href="https://support.apple.com/zh-tw/101575">Apple 支援 · 電池與效能</a>（化學老化、峰值效能能力、「具有高阻抗的電池可能無法提供系統所需的足夠電力」與化學年齡的關係）</li>
+          <li><a href="https://www.apple.com/newsroom/2018/09/iphone-xs-and-iphone-xs-max-bring-the-best-and-biggest-displays-to-iphone/">Apple Newsroom · A12 Bionic 發表新聞稿</a>（業界第一顆 7 奈米晶片、效率核心「up to 50 percent more efficient」）</li>
+          <li><a href="https://en.wikipedia.org/wiki/Apple_A10">技術資料庫 · Apple A10 Fusion</a>（16 奈米製程；<strong>Apple 官方未公布</strong> A10 製程節點，此為第三方技術資料）</li>
+          <li><a href="https://www.mdpi.com/2079-9292/12/6/1444">MDPI Electronics · 鋰電池老化過程的產熱特性模擬研究</a>（老化導致內阻上升、產熱增加，並回頭加速衰退）</li>
+          <li><a href="https://www.sciencedirect.com/science/article/pii/S2949821X25002285">ScienceDirect · 鋰電池快充的熱管理分析</a>（焦耳熱 I²R 為充電產熱主因，充電電流越大產熱越多）</li>
         </ul>
       </details>
       <p class="updated">Apple 可能調整文件內容、功能名稱與支援機型。本文查證：<b>2026 年 8 月</b>，實際情況請以你 iPad 上的 iPadOS 版本與畫面顯示為準。文中標示<span class="lv g">果果經驗</span>與<span class="lv i">合理推論</span>的段落並非 Apple 官方說法，已於各處分開標示。</p>
