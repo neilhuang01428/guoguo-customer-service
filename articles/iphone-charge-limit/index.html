@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>iPhone 充電上限與最佳化電池充電：為何充到 80% 就停 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式 ── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 表格橫向捲動 */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 620px; }
+  .tbl-wrap table.wide { min-width: 760px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+
+  /* ── 動態分鏡：「最佳化電池充電」整夜在做什麼 ──
+     為什麼這裡值得動畫：官方描述的是一個「時間差」——晚上插電後先充到 80% 就停住，
+     一路撐到你快起床前才補到 100%。靜態圖只能用文字標「然後…」「這時候…」，
+     那正是媒介階梯裡「該升級到動畫」的求救訊號（內容規範 §12 判準①：有時間差）。
+     鐵則：長條的基礎 width 就是動畫的最終狀態（100%），時間軸上的圓點基礎位置也在終點，
+     所以關掉動畫、或系統開了「減少動態效果」時，看到的仍是一張標好時間刻度的靜態圖；
+     四段文字說明另外獨立成格，資訊完全不依賴動畫的中間狀態。 */
+  .night { padding: 2px 0 0; }
+  .night .batt { position: relative; height: 30px; border-radius: 15px; background: var(--panel2); border: 1px solid var(--line); overflow: hidden; }
+  .night .batt .lv { display: block; height: 100%; width: 100%; border-radius: 15px; background: linear-gradient(90deg, #4fb87a, var(--green)); }
+  .night .batt .tick { position: absolute; top: 0; bottom: 0; width: 2px; left: 80%; background: var(--navy); opacity: .5; }
+  .night .axis { position: relative; height: 20px; margin-top: 7px; border-top: 1px solid var(--line); }
+  .night .axis b { position: absolute; top: 5px; font-family: var(--mono); font-size: .62rem; font-weight: 400; color: var(--muted); transform: translateX(-50%); }
+  .night .axis b.a0 { left: 0; transform: none; }
+  .night .axis b.a1 { left: 36%; }
+  .night .axis b.a2 { left: 70%; }
+  .night .axis b.a3 { left: 100%; transform: translateX(-100%); color: var(--navy); }
+  .night .axis .dot { position: absolute; top: -6px; left: 100%; width: 11px; height: 11px; margin-left: -5.5px; border-radius: 50%; background: var(--navy); box-shadow: 0 0 0 4px rgba(23,52,95,.14); }
+  .night .row4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; margin-top: 14px; }
+  .night .row4 div { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 8px 9px; font-size: .74rem; color: var(--body); line-height: 1.45; }
+  .night .row4 div b { display: block; font-family: var(--mono); font-size: .6rem; color: var(--c, var(--navy)); margin-bottom: 3px; font-weight: 700; }
+  @keyframes ob-lv {
+    0%,  4%   { width: 22%; }
+    22%, 64%  { width: 80%; }
+    84%, 100% { width: 100%; }
+  }
+  @keyframes ob-dot { 0% { left: 0; } 100% { left: 100%; } }
+  .anim .night .batt .lv { animation: ob-lv 4.4s ease-in-out infinite backwards; }
+  .anim .night .axis .dot { animation: ob-dot 4.4s linear infinite backwards; }
+  @media (prefers-reduced-motion: reduce) {
+    .anim .night .batt .lv, .anim .night .axis .dot { animation: none; }
+  }
+
+  /* 四種原因的速查條 */
+  .whys { display: grid; gap: 9px; margin: 18px 0; }
+  .whys .w { display: flex; gap: 12px; align-items: flex-start; background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 10px; padding: 12px 15px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .whys .w .num { font-family: var(--mono); font-size: .82rem; font-weight: 800; color: var(--c); min-width: 20px; }
+  .whys .w h4 { font-size: .98rem; color: var(--ink); font-weight: 700; margin-bottom: 3px; }
+  .whys .w p { font-size: .87rem; color: var(--body); margin: 0; }
+  .whys .w .k { display: inline-block; font-family: var(--mono); font-size: .62rem; color: var(--c); border: 1px solid var(--c); background: var(--cbg); border-radius: 4px; padding: 1px 7px; margin-top: 7px; }
+
+  /* 五檔上限尺規 */
+  .tiers { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; margin: 18px 0 14px; }
+  .tiers .t { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 10px; padding: 12px 8px 11px; text-align: center; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .tiers .t b { display: block; font-family: var(--mono); font-size: 1.1rem; font-weight: 800; color: var(--c); line-height: 1; }
+  .tiers .t i { display: block; font-style: normal; font-size: .72rem; color: var(--ink); font-weight: 700; margin-top: 8px; }
+  .tiers .t small { display: block; font-size: .7rem; color: var(--muted); line-height: 1.45; margin-top: 4px; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .night .row4 { grid-template-columns: 1fr 1fr; }
+    .tiers { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>iPhone 充電上限</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#calm" class="active">00 · 先安心：出廠就開著</a>
+  <div class="grp">你是哪一種</div>
+  <a href="#four">01 · 四種原因分辨法</a>
+  <a href="#split">02 · iPhone 15 是分水嶺</a>
+  <div class="grp">兩個功能各自怎麼用</div>
+  <a href="#tiers">03 · 五檔上限怎麼選</a>
+  <a href="#opt">04 · 最佳化電池充電</a>
+  <a href="#suggest">05 · 系統建議你設 95%</a>
+  <a href="#full">06 · 想先充滿怎麼辦</a>
+  <div class="grp">售後現場</div>
+  <a href="#guoguo">07 · 二手買家的三個誤會</a>
+  <a href="#real">08 · 這些才是真的不對勁</a>
+  <a href="#watch">延伸觀看</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>二手 iPhone 天天收，電池的事我們最常被問</div>
+      </div>
+      <div class="pills"><span>兩個功能的分辨方法</span><span>iPhone 15 前後路徑對照</span><span>五檔上限怎麼挑</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">iPhone 故障排除 / 電池與充電</div>
+    <h1>iPhone 充到 80% 就停</h1>
+    <p class="subtitle">先講結論：這不是壞掉，而且其中一個功能<strong>出廠預設就是開著的</strong>。iPhone 上有兩個不同的機制都會讓你停在 80%，分清楚是哪一個，才知道要不要動它。</p>
+
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--green)">
+        <div class="lt">直接回答</div>
+        <p class="big">iPhone 停在 80% 幾乎都是保護機制在運作，不是電池壞了，也不是你買到問題機。</p>
+        <p class="sm">而且是<strong>兩個不同的功能</strong>：「最佳化電池充電」每一台 iPhone 都有、出廠就開著，它只是把最後那 20% 延後到你要出門前才充；「充電上限」則是 iPhone 15 和後續機型才有的手動設定，可以在 80% 到 100% 之間選五個檔位。先搞清楚是哪一個，再決定要不要關。</p>
+        <p class="alias-line">你可能是用別的說法找到這頁的：<b>iPhone 充不滿</b>、<b>充電卡在 80</b>、<b>電量停住不動</b>。講的都是同一件事。</p>
+      </div>
+      <blockquote class="lead-src">Apple 官方對「停在 80%」有一段專門的說明：「iOS 13 和以上版本採用『最佳化電池充電』功能，藉由減少 iPhone 處於完全充電的時間，減緩電池老化的速度。iPhone 使用裝置端的機器學習技術來了解你的日常充電習慣，因此會等到你需要使用 iPhone 時，才會從 80% 的電量開始繼續充滿。」<cite>Apple 支援 · 如果 iPhone 或 iPod touch 無法充電</cite></blockquote>
+      <p class="lede">會嚇到人很合理——這兩個功能的說明藏在不同的設定頁裡，畫面上不會跳出「這是保護功能」。你只看到閃電符號還在、數字卻不動了。</p>
+      <p class="lede">這頁先教你 30 秒分辨自己遇到的是哪一種，再拆開講兩個功能各自怎麼設、五個檔位怎麼挑，以及為什麼有些人的「最佳化電池充電」根本不會作動。</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat" style="--c:var(--green)"><div class="num">4</div><div class="lab">種原因會讓 iPhone<br>停在 80% 附近</div></div>
+      <div class="stat" style="--c:var(--navy)"><div class="num">5</div><div class="lab">個充電上限檔位<br>80% 至 100%、間隔 5%</div><span class="badge">iPhone 15＋</span></div>
+      <div class="stat" style="--c:var(--teal)"><div class="num">14</div><div class="lab">天，「最佳化電池充電」<br>要學這麼久才會作用</div><span class="badge">官方註腳</span></div>
+      <div class="stat" style="--c:var(--amber)"><div class="num">1000</div><div class="lab">次循環後仍保有 80%<br>iPhone 15 機型的設計目標</div><span class="badge">官方文件</span></div>
+    </div>
+
+    <div class="lead-map">
+      <div class="lm-t">這頁分成三件事：</div>
+      <div class="lm-g">
+        <a href="#four"><i>01</i>分辨你是哪一種停在 80%</a>
+        <a href="#split"><i>02</i>你的機型走哪一條路徑</a>
+        <a href="#tiers"><i>03</i>五個檔位怎麼挑</a>
+      </div>
+    </div>
+
+    <p class="updated">本文查證：<b>2026 年 8 月</b>，所有設定路徑、機型分界與行為描述皆取自 Apple 官方支援文件。<a class="inline" href="#sources">來源列在文末</a>。系統選單用語可能隨 iOS 版本調整，以你機器上顯示的為準。</p>
+
+    <section id="calm">
+      <div class="sec-label" style="--c:var(--green)">first_things_first</div>
+      <h2>00 · 先安心：這是出廠就開著的功能</h2>
+      <p>如果你正在想「是不是要送修」「是不是買到問題機」，先把這個念頭放下。Apple 官方寫得很明白：「設定 iPhone 時，『最佳化電池充電』會<strong>預設為開啟</strong>。」</p>
+      <p>換句話說，這不是誰去動了什麼設定才變成這樣——每一台從盒子裡拿出來的 iPhone，這個功能本來就是開的。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">這些情況都算正常</div>電量穩定停在 80% 左右、鎖定畫面出現「iPhone 將於某時間充飽電」的通知、拔掉線正常掉電、機身沒有異常發燙。</div>
+        <div class="callout" style="--c:var(--red)"><div class="ct">這些才需要處理</div>停在 43%、67% 這種奇怪的數字、拔掉線幾十分鐘就沒電、充電時燙到拿不住、電量會忽然跳掉一大截。往 <a class="inline" href="#real">08 節</a>看。</div>
+      </div>
+
+      <p>會被嚇到，是因為 iPhone 沒有在數字旁邊直接標「已達上限」。它把訊息放在<strong>鎖定畫面的通知</strong>裡，而很多人習慣把手機翻過來趴著充，或是根本沒解鎖去看。資訊沒送到眼前，使用者只好自己腦補最壞的版本。</p>
+    </section>
+
+    <div class="part-div">你是哪一種</div>
+
+    <section id="four">
+      <div class="sec-label" style="--c:var(--navy)">four_causes</div>
+      <h2>01 · 四種原因，30 秒分辨</h2>
+      <p>這是這篇最重要的一節。同樣是停在 80%，iPhone 上有四件不同的事可能造成它，處理方式完全不同。</p>
+
+      <div class="whys">
+        <div class="w" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="num">①</div>
+          <div>
+            <h4>「最佳化電池充電」在延後充電</h4>
+            <p>所有 iPhone 都有、出廠預設開啟。它不是不讓你充滿，是把超過 80% 的那段延後到你<strong>快要用的時候</strong>。作用中時鎖定畫面會出現通知。</p>
+            <span class="k">最常見 · 你關得掉但通常不必關</span>
+          </div>
+        </div>
+        <div class="w" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="num">②</div>
+          <div>
+            <h4>「充電上限」被設在 80%</h4>
+            <p>只有 iPhone 15 和後續機型有的手動設定，藏在「設定 →電池 →充電」。設在 80% 時，iPhone 就固定充到 80% 附近停手。</p>
+            <span class="k">你關得掉 · 去設定看一眼就知道</span>
+          </div>
+        </div>
+        <div class="w" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="num">③</div>
+          <div>
+            <h4>太熱，觸發溫度保護</h4>
+            <p>Apple 官方寫明：「若超過建議的電池溫度，軟體可能會限制裝置不得充電超過 80%。」邊充邊玩重度遊戲、放在曬得到太陽的地方都可能觸發。</p>
+            <span class="k">關不掉 · 降溫後自動恢復</span>
+          </div>
+        </div>
+        <div class="w" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="num">④</div>
+          <div>
+            <h4>長期插電，充電管理啟動</h4>
+            <p>iPhone 長時間不拔電（車架上長途、當監視畫面、放在店裡放音樂），系統會「暫時降低電池容量」，你看到的百分比是按調整後的容量算的。</p>
+            <span class="k">關不掉 · 拔開正常用幾天就恢復</span>
+          </div>
+        </div>
+      </div>
+
+      <h3>用這張表對號入座</h3>
+      <div class="tbl-wrap">
+        <table class="wide">
+          <tr><th>你的情況</th><th>最可能是哪一種</th><th>怎麼確認</th><th>要不要處理</th></tr>
+          <tr><td>晚上睡前插電，半夜看是 80%，早上起床已經 100%</td><td class="good">① 最佳化電池充電</td><td>鎖定畫面看有沒有「將於某時間充飽電」的通知</td><td class="good">不用處理，它正在幫你</td></tr>
+          <tr><td>白天怎麼充都停在 80%，機器不燙，通知也沒出現</td><td class="good">② 上限設在 80%</td><td>設定 → 電池 → 充電，看選的是哪一檔</td><td>看你自己要不要改，見 <a class="inline" href="#tiers">03 節</a></td></tr>
+          <tr><td>平常都充得滿，只有今天停在 80，而且機身溫溫的</td><td class="bad">③ 溫度保護</td><td>拔線放涼半小時再充，看會不會繼續往上</td><td class="good">不用處理，讓它涼</td></tr>
+          <tr><td>iPhone 幾乎不拔電，長期插著當固定用途</td><td>④ 充電管理</td><td>拔下來正常用幾天，看數字會不會回來</td><td class="good">不用處理，這是保護</td></tr>
+          <tr><td>設定裡的「電池」點進去根本沒有「充電」這一項</td><td>你是 iPhone 14 或更早的機型<small>路徑不一樣，見 02 節</small></td><td>改點「電池健康度與充電」</td><td class="good">不用處理</td></tr>
+          <tr><td>停在 80% 以外的奇怪數字，或掉電飛快</td><td class="bad">這才可能真有問題</td><td>看 <a class="inline" href="#real">08 節</a>的紅旗清單</td><td class="bad">要處理</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">內部訣竅：先看鎖定畫面，再翻設定</div>
+        分辨 ① 和 ② 最快的方法不是進設定，是<strong>按一下側邊鍵看鎖定畫面</strong>。「最佳化電池充電」作用時會出現一則通知告訴你幾點會充飽；「充電上限」則安安靜靜什麼都不說。這一步只要兩秒，能省下你在選單裡繞半天——而且這招 iPad 上沒得用，iPad 不會給你這則通知。
+      </div>
+    </section>
+
+    <section id="split">
+      <div class="sec-label" style="--c:var(--teal)">the_divide</div>
+      <h2>02 · iPhone 15 是分水嶺：路徑和選項都不同</h2>
+      <p>很多人照著網路教學點「設定 →電池 →充電」，結果發現自己的手機根本沒有「充電」這一項，就開始懷疑機器有問題。其實只是機型不同、路徑不同。</p>
+
+      <figure class="fig">
+        <div class="spectrum">
+          <div class="seg old">iPhone 14 和之前機型<small>設定 →電池 →「電池健康度與充電」</small><b>只有一個開關</b></div>
+          <div class="divider">iPhone 15<br>分水嶺</div>
+          <div class="seg new">iPhone 15 和後續機型<small>設定 →電池 →「充電」</small><b>五檔上限＋最佳化</b></div>
+        </div>
+        <figcaption>兩邊<b>連選單名稱都不一樣</b>：舊機型那一頁叫「電池健康度與充電」，新機型拆成「充電」與「電池健康度」兩項。照教學找不到，多半是這個原因。</figcaption>
+      </figure>
+
+      <div class="tbl-wrap">
+        <table class="wide">
+          <tr><th>比較</th><th>iPhone 14 和之前機型</th><th>iPhone 15 和後續機型</th></tr>
+          <tr><td>設定路徑</td><td>設定 →「電池」→「電池健康度與充電」</td><td class="good">設定 →「電池」→「充電」</td></tr>
+          <tr><td>能調的東西</td><td>只能開關「最佳化電池充電」</td><td class="good">選充電上限<small>80% 至 100%，增量間隔 5%</small></td></tr>
+          <tr><td>「最佳化電池充電」</td><td class="good">有</td><td class="good">有，但<strong>上限設 100% 時才能用</strong></td></tr>
+          <tr><td>系統會不會主動建議上限</td><td class="bad">不會</td><td class="good">會<small>例如「建議將充電上限設為 95%」</small></td></tr>
+          <tr><td>電池設計目標</td><td>500 次完全充電循環後仍保有 80% 蓄電量</td><td class="good">1000 次<small>iPhone 15 機型，官方明列</small></td></tr>
+          <tr><td>查電池健康度</td><td>同一頁「電池健康度與充電」</td><td>設定 →「電池」→「電池健康度」</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">最容易被忽略的一行：500 對 1000</div>
+        這不是行銷話術，是 Apple 在官方文件裡逐字寫的兩個數字。<strong>iPhone 14 及較早機型的設計目標是 500 次循環後保有 80%，iPhone 15 機型是 1000 次</strong>。同樣的用法下，新一代的電池被設計成能撐兩倍的循環——這也是為什麼「要不要為了省電池而委屈自己」這件事，在新舊機上的答案未必一樣。
+      </div>
+
+      <details>
+        <summary>那為什麼 iPhone 15 之後才有多檔上限？之前不是也有 80% 上限嗎？</summary>
+        <p>「充電上限」這個功能本來就是跟著 iPhone 15 一起出現的，最早只有單一的 80% 開關；80/85/90/95 這幾個中間檔位是後來的 iOS 版本才補上的。所以如果你手上是 iPhone 15，卻只看到一個 80% 開關，先確認系統版本是不是太舊。</p>
+        <p>至於 iPhone 14 及更早的機型會不會補上這個功能，Apple 沒有預告過。從官方文件目前的寫法看，「更改 iPhone 14 和之前機型的充電選項」那一段就只有「最佳化電池充電」的開關，沒有上限可選。</p>
+      </details>
+
+      <details>
+        <summary>如果你同時也有 iPad，別拿 iPhone 的經驗去找選單</summary>
+        <p>iPad 那邊的路徑是「設定 →電池 →電池健康度」，而且只有一個「80% 的上限」開關，沒有五檔可選，也<strong>完全沒有</strong>「最佳化電池充電」這個功能。系統也不會主動建議你設某個上限。</p>
+        <p>換句話說，兩台裝置雖然都會停在 80%，但你能動的東西不一樣。在 iPad 上翻遍設定也找不到「最佳化電池充電」，那是正常的，不是你的機器少了什麼。</p>
+      </details>
+    </section>
+
+    <div class="part-div">兩個功能各自怎麼用</div>
+
+    <section id="tiers">
+      <div class="sec-label" style="--c:var(--navy)">five_tiers</div>
+      <h2>03 · 五檔上限怎麼選（iPhone 15 和後續機型）</h2>
+      <p>官方原文是：「你可以選擇 80% 至 100% 之間的充電上限，增量間隔為 5%。」也就是下面這五格。它<strong>不是越低越好</strong>，而是看你一天實際會用掉多少電。</p>
+
+      <div class="tiers">
+        <div class="t" style="--c:var(--green)"><b>80%</b><i>最省電池</i><small>幾乎不出門、隨處有插座的人</small></div>
+        <div class="t" style="--c:var(--teal)"><b>85%</b><i>偏保守</i><small>通勤短、辦公室有充電線</small></div>
+        <div class="t" style="--c:var(--navy)"><b>90%</b><i>折衷</i><small>大多數人不會察覺差別</small></div>
+        <div class="t" style="--c:var(--amber)"><b>95%</b><i>幾乎無感</i><small>系統最常主動建議的一檔</small></div>
+        <div class="t" style="--c:var(--red)"><b>100%</b><i>不設限</i><small>唯一能同時開最佳化的一檔</small></div>
+      </div>
+      <p style="font-size:.86rem;color:var(--muted)">上面的「適合誰」是果果依照官方描述整理的建議，不是 Apple 的分級。Apple 只說明了檔位範圍與間隔，沒有替每一檔標註使用情境。</p>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">最容易踩到的一個陷阱</div>
+        很多人以為「設 80% 最保護電池」就直接選最低那檔，結果<strong>連「最佳化電池充電」都一起失效了</strong>——官方寫得很清楚：「充電上限為 100% 時，即可使用『最佳化電池充電』。」上限一旦設成低於 100%，那個會學你作息的功能就沒有舞台了。
+      </div>
+
+      <h3>它停手之後會怎麼樣</h3>
+      <p>設了上限不代表電量就死死釘在那個數字。官方的描述是一個來回：「iPhone 會充電至所選擇上限的幾個百分點內，然後停止充電。在連接電源的情況下，如果電池電量下降超過 5%，則會繼續充電。」</p>
+      <p>還有一件事很多人不知道：就算你設了 80%，iPhone <strong>偶爾還是會自己充到 100%</strong>。官方的理由是「以維持精確的電池電量估計值」——電量計久了會漂移，需要偶爾充到滿來對錶。所以哪天早上看到 100%，別以為設定跑掉了。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你的用法</th><th>建議檔位</th><th>為什麼</th></tr>
+          <tr><td>幾乎不出門，或身邊隨時有插座、行動電源</td><td class="good">80–85%</td><td>你本來就用不到最後那兩成，等於白賺電池壽命</td></tr>
+          <tr><td>正常通勤上班，晚上回家還剩三、四成</td><td class="good">90–95%</td><td>幾乎不會察覺續航變短，又能少泡一點滿電</td></tr>
+          <tr><td>常跑外務、一天用到見底、或會出遠門</td><td class="bad">100%</td><td>設限反而讓你中途找插座，而且 100% 才能開最佳化</td></tr>
+          <tr><td>不想煩惱，想交給系統決定</td><td class="good">100% ＋ 開最佳化</td><td>這就是 iPhone 的原廠預設狀態</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">一個判斷句就夠了</div>
+        問自己：<strong>「我平常會不會真的用到最後那 20%？」</strong>會，就留在 100% 讓最佳化去顧；不會，往下調一兩檔等於免費多賺電池壽命。不用想得更複雜。
+      </div>
+    </section>
+
+    <section id="opt">
+      <div class="sec-label" style="--c:var(--purple)">optimized</div>
+      <h2>04 · 「最佳化電池充電」整夜到底在做什麼</h2>
+      <p>這是 iPhone 才有的功能，也是最多人誤會的一個。它的目標<strong>不是</strong>讓你充不滿，而是縮短 iPhone 待在滿電狀態的時間——官方的原話是「確保 iPhone 在拔除電源時仍為充飽電的狀態」。</p>
+      <p>所以它會做一件很聰明的事：晚上插電之後先衝到 80% 就停住，一整夜停在那裡，等到快要你起床的時候才把最後那 20% 補上。</p>
+
+      <figure class="fig anim">
+        <div class="night">
+          <div class="batt">
+            <i class="lv"></i>
+            <span class="tick"></span>
+          </div>
+          <div class="axis">
+            <span class="dot"></span>
+            <b class="a0">23:00 插電</b><b class="a1">深夜</b><b class="a2">清晨</b><b class="a3">07:00 起床</b>
+          </div>
+          <div class="row4">
+            <div style="--c:var(--green)"><b>step_01</b>睡前插上電，正常往上充</div>
+            <div style="--c:var(--navy)"><b>step_02</b>到 80% 先停住</div>
+            <div style="--c:var(--amber)"><b>step_03</b>整夜維持 80%，不泡在滿電</div>
+            <div style="--c:var(--green)"><b>step_04</b>起床前才補到 100%</div>
+          </div>
+        </div>
+        <figcaption>綠色是電量，下方是一整夜的時間軸，深藍刻度線是 80%。<b>重點不是「停在 80%」，而是「滿電的時間被壓縮到只剩出門前那一小段」。</b>官方也說明，需要更快充滿時可以按住鎖定畫面的那則通知，點「立即充電」。</figcaption>
+      </figure>
+
+      <h3>為什麼我的 iPhone 從來沒看過這個通知？</h3>
+      <p>這是客服現場最常被問的續問。答案通常不是機器壞了，而是這個功能有一串<strong>你不知道的啟動條件</strong>——而且官方把它們寫在註腳和另一篇文件裡，一般人不會翻到。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">1</div><div><h4>剛設定好的新機，先等 14 天</h4><p>官方註腳：「『最佳化電池充電』需要至少 14 天的時間來了解你的充電習慣，因此在此之前不會作用。」剛換機、剛還原備份的人最容易卡在這關。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">2</div><div><h4>同一個地點要充滿 9 次、每次 5 小時以上</h4><p>官方原文：「你的 iPhone 需要在特定位置進行至少 9 次 5 小時以上的充電，『最佳化電池充電』才會作用。」習慣充一兩小時就拔的人，可能永遠達不到門檻。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">3</div><div><h4>要開「定位服務」</h4><p>它靠位置判斷你在家還是在公司。設定 →「隱私權與安全性」→「定位服務」，先確認總開關是開的。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">4</div><div><h4>還要開「系統自訂」和「重要位置」</h4><p>在「定位服務」→「系統服務」裡面。這兩項預設是開的，但很多人為了隱私把它們關掉，等於順手也關掉了最佳化充電。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">作息不固定的人，本來就用不太到</div>
+        官方明講這個功能「只有在你長時間停留的位置才會作用」，而且「你的充電習慣改變、旅行或短時間充電時，此功能不會作用」。<strong>輪班、常出差、每天在不同地方充電的人，看不到那則通知是正常的</strong>，不是設定壞了。
+      </div>
+
+      <details>
+        <summary>那位置資訊會被傳給 Apple 嗎？</summary>
+        <p>官方在兩個地方都寫了否定：122502 那篇說「此功能所使用的位置資訊並不會被傳送到 Apple」；108805 的註腳也寫「充電習慣的相關資訊只會儲存在你的 iPhone 上。這項資訊不會包含在備份中，而且不會與 Apple 分享。」</p>
+        <p>機器學習是在裝置端做的，所以換新機、從備份還原之後，那 14 天的學習期會從頭再算一次——這也解釋了為什麼有人換機後覺得「這功能怎麼不見了」。</p>
+      </details>
+
+      <details>
+        <summary>可以直接把「最佳化電池充電」關掉嗎？</summary>
+        <p>可以，但官方對舊機型那一段留了一句很直接的警告：「關閉充電最佳化可能會增加電池的耗損，並減少使用壽命。」如果你只是偶爾需要早點充滿，用鎖定畫面通知裡的「立即充電」就好，不必把整個功能關掉。</p>
+        <p>真的要關的話，iPhone 15 和後續機型在「設定 →電池 →充電」，iPhone 14 和之前機型在「設定 →電池 →電池健康度與充電」。</p>
+      </details>
+    </section>
+
+    <section id="suggest">
+      <div class="sec-label" style="--c:var(--teal)">system_advice</div>
+      <h2>05 · 系統跳出「建議設為 95%」，要聽嗎</h2>
+      <p>這是 iPhone 才有的行為，iPad 完全不會這樣。官方原文：「如果 iOS 判斷充電上限有助於延長電池的壽命，你會看到建議。」</p>
+      <p>它給的例子甚至連句子都寫好了——「根據你的 iPhone 使用習慣，建議將充電上限設為 95% 來協助延長電池壽命」。看到這句話不用緊張，那不是警告，是系統觀察你的用法之後給的提議。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">📈</div><div class="bt">系統看到什麼</div><div class="bv">你的實際<br>充放電習慣</div></div>
+          <div class="arr">→</div>
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">💡</div><div class="bt">於是它提議</div><div class="bv">建議把上限<br>設為 95%</div></div>
+          <div class="arr">＝</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">🙋</div><div class="bt">但決定權在你</div><div class="bv">它只是建議<br>不會自己改</div></div>
+        </div>
+        <figcaption>這個建議是<b>依你自己的使用習慣算出來的</b>，所以每個人看到的數字可能不一樣，也可能一輩子都不會看到。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">果果的看法：這是少數可以直接聽的系統建議</div>
+        會跳這句話，代表系統觀察到你<strong>根本用不到最後那 5%</strong>。接受它幾乎沒有代價，卻能實際減少滿電久放的時間。但要注意一件事：一旦上限低於 100%，「最佳化電池充電」就不能用了，所以這是<strong>兩個功能二選一</strong>，不是疊加。
+      </div>
+    </section>
+
+    <section id="full">
+      <div class="sec-label" style="--c:var(--green)">need_full</div>
+      <h2>06 · 明天要出遠門，想先充滿怎麼辦</h2>
+      <p>不需要為了一次出門就把功能整個關掉再記得開回來。系統本來就設計了臨時解除的做法，而且比改設定更快。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">1</div><div><h4>最快：長按鎖定畫面那則通知，點「立即充電」</h4><p>官方原文的做法：「如果你需要更快將 iPhone 完全充電，請按住該通知，然後點一下『立即充電』。」這是單次解除，不會改到你的設定。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">2</div><div><h4>如果是充電上限擋住：把上限改回 100%</h4><p>iPhone 15 和後續機型在「設定 →電池 →充電」。出門回來再改回去就好，改設定不會對電池造成額外負擔。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">3</div><div><h4>沒看到通知也別慌，可能只是它沒作用</h4><p>如果你不在常充電的地點、或這次只插一下下，最佳化本來就不會啟動，手機會直接充滿。這種情況什麼都不用做。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">4</div><div><h4>出發前一晚再充，別提早兩天充滿放著</h4><p>這比前面幾步都重要。提早一天充滿再放著不用，等於整整多泡了一天的滿電——那正是電池最不喜歡的狀態。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">臨時充滿不會傷電池</div>
+        偶爾充到 100% 完全沒問題，電池不是充一次滿就折壽。真正有影響的是<strong>長期、反覆、持續</strong>地維持在滿電加高溫。官方自己也說「你可以安全地讓 iPhone 整夜連接充電器」，充飽後會自動停止充電，低於 95% 才會再補。
+      </div>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>項目</th><th>官方說法</th><th>對你的意義</th></tr>
+          <tr><td>理想環境溫度</td><td class="good">16°C 至 22°C</td><td>室內冷氣房剛好在範圍內</td></tr>
+          <tr><td>該避免的溫度</td><td class="bad">高於 35°C 使用或充電，「可能會永久縮短電池使用壽命」</td><td>夏天機車手機架、車上的出風口最危險</td></tr>
+          <tr><td>充飽後的行為</td><td>充飽電後自動停止充電，只要電量低於 95% 便會自動繼續充電</td><td>整夜插著本來就安全，不必半夜爬起來拔線</td></tr>
+          <tr><td>快充飽時</td><td>iPhone 會逐漸降低充電電流，以減少發熱</td><td>最後那 20% 特別慢是正常的</td></tr>
+          <tr><td>長期收起來不用</td><td>「iPhone 長時間存放時，讓裝置保有一半的電量」</td><td>備用機別充滿再放，也別放到全空</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">比「充不滿」更該擔心的事</div>
+        很多人花力氣研究要不要關掉上限，卻在<strong>把 iPhone 卡在夏天的機車手機架上導航一小時</strong>。官方對高溫用的字眼是「永久縮短電池使用壽命」——這比停在 80% 嚴重得多，而且是不可逆的。
+      </div>
+    </section>
+
+    <div class="part-div">售後現場</div>
+
+    <section id="guoguo">
+      <div class="sec-label" style="--c:var(--teal)">from_our_desk</div>
+      <h2>07 · 果果售後現場：二手 iPhone 買家的三個誤會</h2>
+      <p>「我昨天收到手機，充了一整晚只有 80%，是不是電池有問題？你們是不是沒檢查？」——這是果果客服很固定會遇到的訊息，而且通常帶著情緒，因為對方以為自己買到了有問題的機器。</p>
+      <p>幾乎每一次的答案都一樣：不是機器的問題。而且 iPhone 這邊的誤會比 iPad 更常見，因為它多了一個出廠就開著、<strong>你根本沒動過的功能</strong>。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>客人的第一反應</th><th>實際情況</th><th>我們請他先做的事</th></tr>
+          <tr><td class="bad">「電池是不是壞了」</td><td class="good">最佳化電池充電在延後，或上限設在 80%</td><td>先看鎖定畫面有沒有通知，再進設定看一眼</td></tr>
+          <tr><td class="bad">「賣家是不是把設定改過」</td><td class="good">最佳化是原廠預設就開著的</td><td>對照本文 00 節的官方原文</td></tr>
+          <tr><td class="bad">「我照教學找不到『充電』」</td><td class="good">那台是 iPhone 14 或更早，路徑不同</td><td>改點「電池健康度與充電」，見 02 節</td></tr>
+          <tr><td>「那電池健康度到底多少」</td><td>這才是該看的數字</td><td>同一頁就看得到最大容量</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">我們的立場：這件事該由賣方先講</div>
+        會發生這種誤會，責任不在客人。<strong>iPhone 這邊尤其該講，因為「最佳化電池充電」是出廠就開著的</strong>——客人根本沒動過它，卻要自己承擔「是不是買到壞機」的焦慮。交機時多說一句話的成本，遠低於一次無謂的退貨爭議。
+      </div>
+
+      <h3>換個角度：這功能其實在幫你顧住賣價</h3>
+      <p>手機是所有 Apple 裝置裡最「操」的一台：天天帶著跑、天天完整充放，循環次數累積的速度遠比平板快。而電池健康度會實際反映在二手估價上，所以充電習慣最後會走到<strong>成交價</strong>那一格。這是我們同時收機與賣機才看得到的一條鏈，也是收機時逐台記錄電池狀態的原因。</p>
+      <p>而且世代之間的落差比多數人以為的大：iPhone 14 及較早機型的官方設計目標是 500 次循環，iPhone 15 機型是 1000 次。同樣用三年、同樣的用法，舊一代掉得會更有感。</p>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">給正在挑二手 iPhone 的人</div>
+        看到賣家標「充電上限已關閉」不代表比較好，看到「開啟中」也不代表電池有問題——<strong>這個開關跟機況無關，隨時可以自己改</strong>。真正該看的是電池健康度的最大容量，那個數字才反映這顆電池被怎麼對待過。另外記得看機型：iPhone 15 是 1000 次循環的設計目標，14 以前是 500 次，同樣一個健康度數字，背後的意義不一樣。
+      </div>
+    </section>
+
+    <section id="real">
+      <div class="sec-label" style="--c:var(--red)">red_flags</div>
+      <h2>08 · 這些才是真的不對勁</h2>
+      <p>到這裡為止講的都是設計如此的行為。但如果你遇到的是下面這幾種，那就不在「正常」的範圍裡了，值得認真處理。</p>
+
+      <ul class="flags">
+        <li><b>停在 43%、67% 這種奇怪的數字</b>——保護機制的目標值是 80% 或你設的上限附近，停在其他數字通常跟電池老化或充電線路有關。</li>
+        <li><b>早上出門滿電，還沒到中午就剩不到兩成</b>——這是續航垮掉，跟「充不滿」是完全不同的問題。</li>
+        <li><b>充電時燙到貼著臉講電話會不舒服</b>——先拔線降溫，換一條線與充電器再測一次，很多時候問題出在線材。</li>
+        <li><b>電量跳水，例如從 60% 直接掉到 20%</b>，或是關機後一插電就顯示還有電——電量估算或電池本身可能有狀況。</li>
+        <li><b>上限已經設在 100%、也關了最佳化，還是充不過 80%</b>——排除了設定因素，這時候才輪到懷疑硬體或溫度。</li>
+        <li><b>接上電源毫無反應、連充電圖示都不出現</b>——那是「充不進去」，跟本文講的「充不滿」是兩件事，排查方向完全不同。</li>
+        <li><b>跳出「配件不支援」或「配件未通過認證」</b>——多半是充電埠有碎屑、線材或轉接器有問題，不是電池的事。</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">送修前先做三件事</div>
+        ① 換一條線與一顆充電器測試（線材老化是最常見的假故障）；② 清一下充電埠裡的碎屑，再把線牢牢插到底；③ 重開機一次。這三件事能刷掉相當比例的「疑似故障」，而且都不用花錢。
+      </div>
+
+      <p>另外提醒一個時機問題：如果你的 iPhone 剛更新完系統、或剛從備份還原完，電量顯示和續航有時會短暫不準。官方也建議更新後「稍等幾天再檢查一次」，因為部分工作仍在背景進行。</p>
+    </section>
+
+    <section id="watch">
+      <div class="sec-label" style="--c:var(--purple)">watch</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p style="font-size:.9rem;color:var(--muted)">本文以 Apple 官方文件為準；下面的影片補的是實機畫面與操作。影片皆為第三方製作，選單位置與畫面以你自己的機型與系統版本為準。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=xWAgdOs1aXI" target="_blank" rel="noopener" data-yt="xWAgdOs1aXI" aria-label="播放：iPhone「最佳化電池充電」和「80%充電上限」有何不同？">
+          <img loading="lazy" src="https://i.ytimg.com/vi/xWAgdOs1aXI/sddefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/xWAgdOs1aXI/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>iPhone「最佳化電池充電」和「80%充電上限」有何不同？</b><small>頻道：iPhone News 愛瘋了 · 推薦原因：整支就在講本文 01 節那兩個最容易被搞混的機制差在哪，兩分多鐘用實機畫面走完，比讀文字快 · 繁中</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=bjUpgdXOBUc" target="_blank" rel="noopener" data-yt="bjUpgdXOBUc" aria-label="播放：不傷電池 iPhone 正確充電法，實測兩年真有效">
+          <img loading="lazy" src="https://i.ytimg.com/vi/bjUpgdXOBUc/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/bjUpgdXOBUc/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>[重要]不傷電池 iPhone 正確充電法讓你電池健康度維持 100%！實測兩年真有效</b><small>頻道：3cTim哥生活日常 · 推薦原因：對應本文 06 節「設定之外還能做什麼」——這支是兩年長期實測的充電習慣示範。注意它拍攝時 iOS 只有 80% 一檔，不會提到 85／90／95 · 繁中</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">本文的設定路徑、機型分界、行為描述與所有數字，皆取自 Apple 官方支援文件，查證日期 2026 年 8 月：</p>
+      <ul class="sources">
+        <li><a href="https://support.apple.com/zh-tw/108055">Apple 支援 · 關於 iPhone 的「充電上限」和「最佳化電池充電」</a>（本文主要依據：iPhone 15 和後續機型的路徑「設定 →電池 →充電」與 80% 至 100%、間隔 5% 的五檔上限；iPhone 14 和之前機型的路徑「設定 →電池 →電池健康度與充電」；上限 100% 時才可用「最佳化電池充電」；充到上限幾個百分點內即停止、掉超過 5% 才續充；偶爾充到 100% 以維持精確電量估計；系統會主動建議上限；設定 iPhone 時最佳化預設為開啟；鎖定畫面通知與「立即充電」；14 天學習與 9 次 5 小時充電的註腳；關閉充電最佳化的警語）</li>
+        <li><a href="https://support.apple.com/zh-tw/108805">Apple 支援 · 如果 iPhone 或 iPod touch 無法充電</a>（導言引用的「iOS 13 和以上版本採用『最佳化電池充電』」原文；停在 80% 的三種可能：最佳化、過熱限制、充電上限；「配件不支援」訊息的排查；充電習慣資訊只存在裝置上、不進備份、不與 Apple 分享）</li>
+        <li><a href="https://support.apple.com/zh-tw/122502">Apple 支援 · 如果「最佳化電池充電」沒有啟動</a>（04 節排查步驟的全部依據：只在長時間停留的位置作用；至少 14 天學習期；特定位置至少 9 次 5 小時以上充電；需開啟「定位服務」、「系統自訂」、「重要位置」；充電習慣改變、旅行或短時間充電時不會作用；位置資訊不會傳送到 Apple）</li>
+        <li><a href="https://support.apple.com/zh-tw/105105">Apple 支援 · 為 iPhone 電池充電和維護</a>（理想溫度 16–22°C；高於 35°C「可能會永久縮短電池使用壽命」；充飽後自動停止充電、低於 95% 才繼續；快充飽時逐漸降低充電電流；「若超過建議的電池溫度，軟體可能會限制裝置不得充電超過 80%」；可安全整夜連接充電器）</li>
+        <li><a href="https://support.apple.com/zh-tw/101575">Apple 支援 · iPhone 電池與效能</a>（500 對 1000 次循環的官方數字：iPhone 14 及較早機型設計為 500 次完全充電循環後仍保有 80% 原有蓄電量，iPhone 15 機型為 1000 次；電池健康度的查看路徑與最大容量說明；長時間存放時保有一半電量的建議）</li>
+        <li><a href="https://support.apple.com/zh-tw/111822">Apple 支援 · 關於 iPad 和 iPhone 的充電管理功能</a>（第 ④ 種原因的依據：適用 iPhone XS、iPhone XS Max、iPhone XR 或後續機型、iOS 12 或以上；長時間連接電源時「暫時降低電池容量」，狀態列依調整後容量顯示；不再長時間插電時容量會回復）</li>
+        <li><a href="https://support.apple.com/zh-tw/120745">Apple 支援 · 如果 iPhone 或 iPad 電池耗電太快</a>（iPhone 15 和後續機型與 iPhone 14 和之前機型查看電池健康度的兩種不同路徑；更新後電池續航力低於預期時建議「稍等幾天再檢查一次」）</li>
+        <li><a href="https://support.apple.com/zh-tw/118418">Apple 支援 · 關於 iPad 電池的充電與維護</a>（02 節 iPad 對照的依據：iPad 的路徑為「設定 →電池 →電池健康度」、只有單一「80% 的上限」開關、無「最佳化電池充電」）</li>
+      </ul>
+      <p class="updated">Apple 可能調整功能名稱、支援機型與選單位置。本文查證：<b>2026 年 8 月</b>，實際情況請以你 iPhone 上的 iOS 版本與畫面顯示為準。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
