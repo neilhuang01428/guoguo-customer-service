@@ -16,7 +16,7 @@
 
 ## 教學文章
 
-- [iPad 巧控鍵盤上手指南](https://www.guoguo.tw/guide/articles/ipad-magic-keyboard-guide/)：剛從 Windows 換過來？一個心法：把 Ctrl 換成 ⌘，八成快捷鍵你早就會了。10 分鐘從小白變熟手。（上手、Windows 用戶、鍵盤配件／2026-07-15，更新 2026-07-31）
+- [iPad 巧控鍵盤上手指南](https://www.guoguo.tw/guide/articles/ipad-magic-keyboard-guide/)：剛從 Windows 換過來？一個心法：把 Ctrl 換成 ⌘，八成快捷鍵你早就會了。10 分鐘從小白變熟手。（上手、Windows 用戶、鍵盤配件／2026-07-15，更新 2026-08-09）
   - 本篇回答：iPad 巧控鍵盤的 Ctrl 鍵在哪裡？
   - 本篇回答：巧控鍵盤沒有 Esc 鍵怎麼辦？
   - 本篇回答：忘記快捷鍵怎麼辦？有地方可以查嗎？
