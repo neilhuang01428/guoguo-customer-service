@@ -285,7 +285,7 @@
   - 本篇回答：為什麼我從來沒看過「最佳化電池充電」作動？
   - 本篇回答：Mac 可以像 iPhone 一樣設充電上限嗎？
   - 本篇回答：AirPods 的充電保護要去哪裡設定？
-- [Apple Pencil 沒反應，先認出是哪一支](https://www.guoguo.tw/guide/articles/apple-pencil-not-working/)：連不上、充不了電、寫不出字、點兩下沒作用？四款 Apple Pencil 的接法與功能都不一樣，很多「壞掉」其實是那款本來就沒有。先認型號，再走對應的那條線。（技巧、Apple Pencil、故障排除／2026-08-08）
+- [Apple Pencil 用不了？四款筆對症排除](https://www.guoguo.tw/guide/articles/apple-pencil-not-working/)：連不上、充不了電、寫不出字、輕點兩下沒作用？四款 Apple Pencil 的接法與功能都不一樣，很多「壞掉」其實是那款本來就沒有。先認型號，再走對應的那條線。（技巧、Apple Pencil、故障排除／2026-08-08）
   - 本篇回答：Apple Pencil 連不上怎麼辦？
   - 本篇回答：我的 Apple Pencil 畫出來都一樣粗，是壞了嗎？
   - 本篇回答：Apple Pencil 吸在 iPad 側邊就會充電嗎？
