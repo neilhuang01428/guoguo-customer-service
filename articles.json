@@ -1683,6 +1683,7 @@
         "q": "Apple Pencil 一代可以邊充電邊寫字嗎？",
         "a": "實務上不行，充電時筆是寫不了的。Apple 沒有用文字明講這條限制，官方配對步驟寫的是配對完成後把筆從 iPad 拔除。想查電量可以看「電池」小工具，或到設定 App 的 Apple Pencil 頁面，那裡也看得到是不是正在充電。"
       }
-    ]
+    ],
+    "ogImage": "assets/og/ipad10-apple-pencil-1-pairing-cover.png"
   }
 ]
