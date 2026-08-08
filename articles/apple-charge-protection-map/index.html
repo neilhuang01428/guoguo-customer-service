@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Apple 充電保護全產品對照：iPhone、iPad、Watch、Mac、AirPods · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式 ── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 表格橫向捲動（跨產品總表欄位多） */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 660px; }
+  .tbl-wrap table.wide { min-width: 860px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+
+  /* 產品速查列 */
+  .devs { display: grid; gap: 9px; margin: 18px 0; }
+  .devs .d { display: flex; gap: 13px; align-items: flex-start; background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 10px; padding: 12px 15px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .devs .d .ico { font-size: 1.35rem; line-height: 1.2; min-width: 26px; text-align: center; }
+  .devs .d h4 { font-size: .98rem; color: var(--ink); font-weight: 700; margin-bottom: 3px; }
+  .devs .d p { font-size: .87rem; color: var(--body); margin: 0; }
+  .devs .d .k { display: inline-block; font-family: var(--mono); font-size: .62rem; color: var(--c); border: 1px solid var(--c); background: var(--cbg); border-radius: 4px; padding: 1px 7px; margin-top: 7px; }
+
+  /* ── 動態分鏡：三種手法在電量條上長得完全不同 ──
+     為什麼值得動畫：這三種做法的差別不在「停在幾 %」，而在「時間上怎麼走」與
+     「刻度本身有沒有被動過」。靜態圖只能畫三根長度不同的條，
+     完全表達不出第三種的重點——它不是停在 80，是「100% 的定義變短了」。
+     鐵則：每根條的基礎樣式就是動畫的最終狀態，關掉動畫仍是三張看得懂的靜態圖。 */
+  .ways { display: grid; gap: 13px; }
+  .ways .w { display: flex; align-items: center; gap: 11px; }
+  .ways .w .lb { width: 118px; flex: none; font-size: .8rem; color: var(--ink); line-height: 1.35; }
+  .ways .w .lb small { display: block; color: var(--muted); font-size: .7rem; }
+  .ways .w .bar { position: relative; flex: 1; height: 26px; border-radius: 13px; background: var(--panel2); border: 1px solid var(--line); overflow: hidden; }
+  .ways .w .bar i { display: block; height: 100%; border-radius: 13px; background: var(--c); }
+  /* 第三種：整條「可用範圍」本身縮短，右邊露出被關掉的區段 */
+  .ways .w .bar u { position: absolute; top: 0; bottom: 0; right: 0; width: 22%; background: repeating-linear-gradient(45deg, #e6e9ef 0 5px, #f2f4f8 5px 10px); border-left: 2px dashed var(--muted); }
+  .ways .w .vl { width: 96px; flex: none; font-family: var(--mono); font-size: .66rem; color: var(--c); text-align: right; line-height: 1.35; }
+  .ways .w.k1 .bar i { width: 80%; }
+  .ways .w.k2 .bar i { width: 100%; }
+  .ways .w.k3 .bar i { width: 78%; }
+  @keyframes wy1 { 0% { width: 20%; } 40%, 100% { width: 80%; } }
+  @keyframes wy2 { 0% { width: 20%; } 34%, 66% { width: 80%; } 88%, 100% { width: 100%; } }
+  @keyframes wy3 { 0% { width: 20%; } 46%, 100% { width: 78%; } }
+  @keyframes wy3u { 0%, 46% { width: 0; } 74%, 100% { width: 22%; } }
+  .anim .ways .w.k1 .bar i { animation: wy1 4.4s ease-in-out infinite backwards; }
+  .anim .ways .w.k2 .bar i { animation: wy2 4.4s ease-in-out infinite backwards; }
+  .anim .ways .w.k3 .bar i { animation: wy3 4.4s ease-in-out infinite backwards; }
+  .anim .ways .w.k3 .bar u { animation: wy3u 4.4s ease-in-out infinite backwards; }
+  @media (prefers-reduced-motion: reduce) {
+    .anim .ways .w .bar i, .anim .ways .w .bar u { animation: none; }
+  }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .ways .w .lb { width: 92px; font-size: .74rem; }
+    .ways .w .vl { width: 74px; font-size: .6rem; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>充電保護全產品對照</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#map" class="active">00 · 一張表看完</a>
+  <div class="grp">先搞懂分類</div>
+  <a href="#ways">01 · 其實只有四種手法</a>
+  <a href="#each">02 · 你的每一台各是哪種</a>
+  <div class="grp">有趣的地方</div>
+  <a href="#surprise">03 · 三個反直覺的發現</a>
+  <a href="#common">04 · 跨產品的兩個共通點</a>
+  <div class="grp">怎麼處理</div>
+  <a href="#todo">05 · 哪些該動，哪些別管</a>
+  <a href="#guoguo">06 · 果果售後現場</a>
+  <a href="#myth">07 · 常見誤會</a>
+  <a href="#watch">延伸觀看</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>五個產品線逐一對照</span><span>官方支援範圍與版本需求</span><span>哪一台的保護關不掉</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">電池與充電 / 跨產品對照</div>
+    <h1>Apple 充電保護，每台裝置都不一樣</h1>
+    <p class="subtitle">iPhone、iPad、Apple Watch、Mac、AirPods 全都有電池保護，但名字不同、檔位不同、預設狀態不同，連能不能關都不一樣。一次對照完。</p>
+
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--navy)">
+        <div class="lt">直接回答</div>
+        <p class="big">五個產品線全都有充電保護，但它們用的是四種不同手法，而且只有 iPad 是預設關閉的。</p>
+        <p class="sm">最嚴的是 Apple Watch——Series 9 和後續錶款、以及任一款 Ultra，<strong>連關掉的選項都沒給你</strong>。最寬鬆的反而是 iPad：那個 80% 開關要你自己去打開。</p>
+        <p class="alias-line">這些功能在各裝置上的官方名字不一樣：<b>最佳化電池充電</b>、<b>充電上限</b>、<b>80% 的上限</b>、<b>最佳化充電上限</b>、<b>電池健康度管理</b>。名字不同，但目的都是同一個。</p>
+      </div>
+      <blockquote class="lead-src">Apple 對 Apple Watch 的說明是全產品線裡語氣最硬的一句：「若是使用 Apple Watch Series 9 或後續錶款，或任一款 Apple Watch Ultra，『最佳化電池充電』會永遠保持開啟。」<cite>Apple 支援 · 關於 Apple Watch 的「最佳化電池充電」</cite></blockquote>
+      <p class="lede">如果你家不只一台 Apple 裝置，這件事很容易搞混——在 iPhone 上找得到的選項，換到 iPad 就不在同一個地方，甚至根本不存在。</p>
+      <p class="lede">這頁把五個產品線攤開對照：各自叫什麼名字、支援到哪些機型、預設是開還是關、能不能關掉，以及三個查完官方文件才發現的反直覺結論。</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat" style="--c:var(--navy)"><div class="num">5</div><div class="lab">個產品線<br>全都有充電保護</div></div>
+      <div class="stat" style="--c:var(--teal)"><div class="num">4</div><div class="lab">種不同手法<br>做的事其實不一樣</div></div>
+      <div class="stat" style="--c:var(--red)"><div class="num">1</div><div class="lab">台完全關不掉<br>Apple Watch Series 9＋</div><span class="badge">官方原文</span></div>
+      <div class="stat" style="--c:var(--amber)"><div class="num">1</div><div class="lab">台預設是關的<br>iPad 要自己去開</div></div>
+    </div>
+
+    <div class="lead-map">
+      <div class="lm-t">這頁分成三件事：</div>
+      <div class="lm-g">
+        <a href="#map"><i>00</i>五個產品線的總對照表</a>
+        <a href="#ways"><i>01</i>四種手法差在哪</a>
+        <a href="#surprise"><i>03</i>三個反直覺的發現</a>
+      </div>
+    </div>
+
+    <p class="updated">本文查證：<b>2026 年 8 月</b>，所有功能名稱、支援機型、版本需求與設定路徑皆逐項取自 Apple 官方支援文件。<a class="inline" href="#sources">來源列在文末</a>。Apple 可能調整名稱與支援範圍，以你裝置上顯示的選單為準。</p>
+
+    <section id="map">
+      <div class="sec-label" style="--c:var(--navy)">the_map</div>
+      <h2>00 · 一張表看完五個產品線</h2>
+      <p>趕時間的話看這張就好。每一格都對得上官方文件，右邊兩欄是最多人搞混的地方。</p>
+
+      <div class="tbl-wrap">
+        <table class="wide">
+          <tr><th>裝置</th><th>官方叫什麼</th><th>支援範圍</th><th>版本需求</th><th>預設</th><th>能不能關</th></tr>
+          <tr><td>iPhone</td><td>最佳化電池充電</td><td>上限設 100% 時可用</td><td>—</td><td class="good">開</td><td>能</td></tr>
+          <tr><td>iPhone</td><td>充電上限<small>80／85／90／95／100 五檔</small></td><td>iPhone 15 和後續機型</td><td>—</td><td>—</td><td>能</td></tr>
+          <tr><td>iPad</td><td>80% 的上限<small>只有開／關，沒有檔位</small></td><td>iPad Pro（M4）＋、iPad Air（M2）＋、iPad mini（A17 Pro）、iPad（A16）</td><td>—</td><td class="bad">關<small>要自己去開</small></td><td>能</td></tr>
+          <tr><td>Apple Watch</td><td>最佳化電池充電</td><td>全系列</td><td>—</td><td class="good">開</td><td class="bad">Series 9＋與任一款 Ultra<strong>不能關</strong></td></tr>
+          <tr><td>Apple Watch</td><td>最佳化充電上限<small>系統動態決定</small></td><td>SE＋、Series 6＋、Ultra＋</td><td>watchOS 10＋</td><td class="good">開</td><td>能<small>可只關到明天</small></td></tr>
+          <tr><td>Mac<small>Apple 晶片／T2</small></td><td>最佳化電池充電</td><td>Apple 晶片或 T2 晶片的 Mac</td><td>macOS Big Sur 11＋</td><td class="good">開</td><td>能<small>可只關到明天</small></td></tr>
+          <tr><td>Mac<small>Apple 晶片</small></td><td>充電上限<small>80% 到 100% 之間</small></td><td class="bad">配備 Apple 晶片的 Mac</td><td class="bad">macOS Tahoe 26.4＋<small>相當新的功能</small></td><td>—</td><td>能</td></tr>
+          <tr><td>Mac<small>Intel</small></td><td>電池健康度管理<small>另一套機制</small></td><td>配備 Intel 處理器的 Mac 筆電</td><td>macOS 10.15.5＋</td><td class="good">開</td><td>能</td></tr>
+          <tr><td>AirPods</td><td>最佳化電池充電</td><td>AirPods Pro 和 AirPods 3 或後續機型</td><td>iOS／iPadOS 15＋</td><td class="good">開</td><td>能</td></tr>
+          <tr><td>AirPods Pro 3</td><td>最佳化充電上限<small>系統動態決定</small></td><td>AirPods Pro 3</td><td>iOS／iPadOS 26＋</td><td class="good">開</td><td>能<small>可只關一天</small></td></tr>
+          <tr><td>iPhone／iPad</td><td>充電管理<small>沒有介面、看不到開關</small></td><td>iOS 11.3＋ 的 iPad、iPhone XS／XS Max／XR 或後續</td><td>—</td><td class="good">自動</td><td class="bad">不能</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">看這張表最該注意的一件事</div>
+        <strong>iPad 是唯一預設關閉的</strong>。其他裝置出廠就在保護電池，只有 iPad 的 80% 開關要你自己去打開。所以如果你的 iPad 停在 80%，原因反而比較可能是溫度或充電管理，不是那個開關。
+      </div>
+    </section>
+
+    <div class="part-div">先搞懂分類</div>
+
+    <section id="ways">
+      <div class="sec-label" style="--c:var(--teal)">four_ways</div>
+      <h2>01 · 名字有五個，手法其實只有四種</h2>
+      <p>先把名字放一邊。這些功能真正在做的事，可以歸成四種，而它們的差別不只是「停在幾 %」。</p>
+
+      <div class="devs">
+        <div class="d" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="ico">🚧</div>
+          <div>
+            <h4>手法一：設一個固定上限</h4>
+            <p>你自己指定一個數字，充到就停。iPad 的「80% 的上限」、iPhone 與 Mac 的「充電上限」都屬於這種。</p>
+            <span class="k">你決定 · 每天都一樣</span>
+          </div>
+        </div>
+        <div class="d" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="ico">⏳</div>
+          <div>
+            <h4>手法二：延後把最後那段充完</h4>
+            <p>「最佳化電池充電」。先停在 80% 附近，等系統預測你快要拔線了，才補到 100%。最後你拿到的還是滿電。</p>
+            <span class="k">系統決定時機 · 最後仍會充滿</span>
+          </div>
+        </div>
+        <div class="d" style="--c:var(--teal);--cbg:var(--teal-bg)">
+          <div class="ico">🎚️</div>
+          <div>
+            <h4>手法三：上限本身每天不一樣</h4>
+            <p>「最佳化充電上限」，目前只在 Apple Watch 與 AirPods Pro 3 上。系統看你怎麼用，自己決定今天要充多少。</p>
+            <span class="k">系統決定數字 · 每天可能不同</span>
+          </div>
+        </div>
+        <div class="d" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="ico">📏</div>
+          <div>
+            <h4>手法四：把「滿電」的定義改掉</h4>
+            <p>充電管理與 Intel Mac 的電池健康度管理。它不是停在 80%，而是直接調低最大蓄電量——你看到的 100% 已經不是原本那個 100%。</p>
+            <span class="k">沒有開關 · 你不會察覺</span>
+          </div>
+        </div>
+      </div>
+
+      <h3>畫成電量條，差別就很明顯</h3>
+      <p>前三種都看得到「停住」，第四種完全不會停——它動的是尺本身。</p>
+
+      <figure class="fig anim">
+        <div class="ways">
+          <div class="w k1" style="--c:var(--navy)">
+            <div class="lb">設固定上限<small>iPad／iPhone／Mac</small></div>
+            <div class="bar"><i></i></div>
+            <div class="vl">停在 80%<br>就不動了</div>
+          </div>
+          <div class="w k2" style="--c:var(--green)">
+            <div class="lb">延後充滿<small>最佳化電池充電</small></div>
+            <div class="bar"><i></i></div>
+            <div class="vl">先停 80%<br>之後補到 100%</div>
+          </div>
+          <div class="w k3" style="--c:var(--amber)">
+            <div class="lb">改掉滿電定義<small>充電管理</small></div>
+            <div class="bar"><i></i><u></u></div>
+            <div class="vl">條沒變短<br>是尺縮了</div>
+          </div>
+        </div>
+        <figcaption>第三排是最容易被誤會的一種：<b>電量條看起來是滿的，但右邊那截斜線區域被系統暫時關起來了</b>。所以螢幕顯示 100%，實際能裝的電卻比原本少——你不會看到任何「停住」的跡象，只會覺得續航變短。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">為什麼手法四最難察覺</div>
+        前三種你都看得到數字卡住，至少知道「有事發生」。<strong>第四種完全沒有徵兆</strong>——官方寫的是「暫時降低電池容量」，而狀態列的百分比會依照調整後的容量計算。所以你的裝置照樣顯示 100%，只是那個 100% 變小了。官方也註明，不再長時間插電之後容量會回復。
+      </div>
+    </section>
+
+    <section id="each">
+      <div class="sec-label" style="--c:var(--green)">device_by_device</div>
+      <h2>02 · 你的每一台，各是哪一種</h2>
+      <p>照產品線逐一講，附上官方的設定路徑。路徑全都不一樣，這也是最多人在自家裝置間迷路的原因。</p>
+
+      <div class="tbl-wrap">
+        <table class="wide">
+          <tr><th>裝置</th><th>去哪裡設定</th><th>你會看到什麼</th></tr>
+          <tr><td>iPhone 15 和後續</td><td>設定 →「電池」→<strong>「充電」</strong></td><td>80 到 100 的五個檔位，選 100% 時才能開最佳化電池充電</td></tr>
+          <tr><td>iPhone 14 和之前</td><td>設定 →「電池」→「電池健康度與充電」</td><td class="bad">只有最佳化電池充電的開關，沒有檔位可選</td></tr>
+          <tr><td>iPad</td><td>設定 →「電池」→<strong>「電池健康度」</strong></td><td>一個「80% 的上限」開關，沒有其他檔位</td></tr>
+          <tr><td>Apple Watch</td><td>手錶上「設定」→「電池」→「電池健康度」</td><td>最佳化電池充電與最佳化充電上限，關閉時可選「關閉到明天為止」</td></tr>
+          <tr><td>Mac</td><td>系統設定 →「電池」→ 點「充電」旁的資訊按鈕</td><td>最佳化電池充電；macOS Tahoe 26.4 以上還可設充電上限</td></tr>
+          <tr><td>AirPods</td><td class="good">iPhone／iPad 的設定 → 選你的 AirPods →「電池」</td><td>最佳化電池充電；AirPods Pro 3 還有最佳化充電上限</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">AirPods 是唯一沒有自己介面的</div>
+        耳機上沒有螢幕，所以它的設定藏在 iPhone 或 iPad 裡。官方寫得很明確：這個功能<strong>必須透過 iPhone 或 iPad 來使用</strong>。要調整前記得先戴上 AirPods 並確認已經連上手機，否則設定裡不會出現那一頁。
+      </div>
+
+      <details>
+        <summary>Mac 的兩套機制怎麼分？</summary>
+        <p>看處理器。配備 Apple 晶片或 T2 晶片的 Mac 走「最佳化電池充電」，macOS Big Sur 11 起就有；而「充電上限」是更後來的功能，官方註明需要 macOS Tahoe 26.4 或以上版本，而且限配備 Apple 晶片的 Mac。</p>
+        <p>配備 Intel 處理器的 Mac 筆電則是完全另一套，叫「電池健康度管理」，macOS 10.15.5 起預設開啟。它的做法屬於前面說的手法四——官方寫「可以根據其所收集的測量值，降低電池的最大充電量」，所以你不會看到充電停在某個數字。</p>
+      </details>
+
+      <details>
+        <summary>怎麼知道 Mac 現在正在限制充電？</summary>
+        <p>看電池狀態選單。官方說明，如果選單出現「已暫停充電」或「已充電到 [%] 的上限」，就表示 Mac 正在使用「最佳化電池充電」或「充電上限」。需要提早充滿時，從同一個選單選「立即完全充電」即可，不必把功能整個關掉。</p>
+      </details>
+    </section>
+
+    <div class="part-div">有趣的地方</div>
+
+    <section id="surprise">
+      <div class="sec-label" style="--c:var(--red)">counterintuitive</div>
+      <h2>03 · 查完官方文件才發現的三件事</h2>
+      <p>這一節是這頁真正的重點。把五份官方文件並排看，會冒出三個跟直覺相反的結論。</p>
+
+      <h3>發現一：管最嚴的是手錶，不是電腦</h3>
+      <p>你可能會猜最貴的 Mac 管最嚴，或是 iPhone 因為使用者最多所以最謹慎。都不是——全產品線裡唯一<strong>連關閉選項都不給你</strong>的，是戴在手上那台 Apple Watch。</p>
+
+      <figure class="fig">
+        <div class="spectrum">
+          <div class="seg old">其他所有裝置<small>iPhone／iPad／Mac／AirPods</small><b>都能關</b></div>
+          <div class="divider">分界</div>
+          <div class="seg new">Apple Watch Series 9＋<small>與任一款 Ultra</small><b>永遠開著</b></div>
+        </div>
+        <figcaption>官方原文：「若是使用 Apple Watch Series 9 或後續錶款，或任一款 Apple Watch Ultra，『最佳化電池充電』會<b>永遠保持開啟</b>。」全產品線裡唯一沒有退路的一台。</figcaption>
+      </figure>
+
+      <p>合理的推測是手錶的電池最小、發熱與充電循環的壓力相對最集中，所以 Apple 選擇不讓使用者有機會關掉。不過這只是推論——官方並沒有解釋為什麼是這幾款。</p>
+
+      <h3>發現二：手錶和耳機，比 iPad 聰明一階</h3>
+      <p>iPad 給你的是一個固定的 80%，每天都一樣。但 Apple Watch 與 AirPods Pro 3 用的是<strong>動態上限</strong>——系統自己觀察你怎麼用，決定今天要充到多少。</p>
+
+      <blockquote class="lead-src">Apple 對 Apple Watch 的說明：「『最佳化充電上限』會根據你使用手錶的方式動態變化。根據你的使用模式，手錶在某些天可能會充電到 100%，在某些天則較少。」<cite>Apple 支援 · 關於 Apple Watch 的「最佳化電池充電」</cite></blockquote>
+
+      <p>AirPods Pro 3 的說法也一樣：上限「會依據你的日常使用情況來調整」。所以嚴格說起來，穿在手上的和塞在耳朵裡的，反而拿到了比平板更進階的做法。</p>
+
+      <h3>發現三：Mac 的「充電上限」其實非常新</h3>
+      <p>很多人以為 Mac 早就有充電上限了，畢竟筆電長期插電的情況最普遍。實際上官方文件寫的是：需要 macOS <strong>Tahoe 26.4 或以上</strong>版本，而且只限配備 Apple 晶片的 Mac，兩個條件缺一不可。</p>
+      <p>相較之下，「最佳化電池充電」在 Mac 上從 macOS Big Sur 11 就有了。也就是說，Mac 用了好幾年「延後充滿」，最近才補上「讓你自己設一個數字」這個選項。</p>
+
+      <div class="callout" style="--c:var(--teal)"><div class="ct">三個發現的共同啟示</div>
+        這些功能不是一次設計好、同步發給所有產品的，而是<strong>各自長出來、各自演進</strong>。所以你不能拿某一台的經驗去推論另一台——包括名字、位置、檔位，甚至能不能關。
+      </div>
+    </section>
+
+    <section id="common">
+      <div class="sec-label" style="--c:var(--purple)">in_common</div>
+      <h2>04 · 但有兩件事，全部裝置都一樣</h2>
+      <p>差異講完了，來講共通點。這兩條跨產品都成立，而且都能解決常見的困惑。</p>
+
+      <h3>共通點一：「最佳化」類功能全都綁定你常待的地點</h3>
+      <p>只要名字裡有「最佳化」三個字的，都需要判斷你在不在習慣的地方。Apple 對 Apple Watch 的說明講得最白：</p>
+
+      <blockquote class="lead-src">「最佳化充電的設計是只有在你長時間停留的地點才會啟用（例如住家和工作地點），使用習慣較常變動時（例如旅行），就不會開啟此功能。」<cite>Apple 支援 · 關於 Apple Watch 的「最佳化電池充電」</cite></blockquote>
+
+      <p>這解釋了一個常見疑問：為什麼有些人從來沒看過最佳化充電作動。輪班、常出差、每天在不同地方充電的人，本來就不容易觸發這個條件。</p>
+
+      <h3>共通點二：全部都會偶爾充到 100%，那是在校正</h3>
+      <p>iPad、iPhone、Mac 的官方文件裡都有同一句話的變體——設了上限之後，裝置仍會偶爾充到 100%，目的是維持精確的電池電量估計值。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>裝置</th><th>官方怎麼說</th></tr>
+          <tr><td>iPad</td><td>啟用「80% 的上限」時，iPad 偶爾會充電到 100%，以維持精確的電池電量估計值</td></tr>
+          <tr><td>iPhone</td><td>如果「充電上限」設定為低於 100%，iPhone 偶爾會充電至 100%，以維持精確的電池電量估計值</td></tr>
+          <tr><td>Mac</td><td>無論是使用「最佳化電池充電」或「充電上限」，Mac 都會偶爾充電到 100%，以維持精確的電池電量估計值</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">所以看到充滿不用緊張</div>
+        電量計是靠累計進出的電量推估百分比，時間久了誤差會累積，需要偶爾充到滿來對錶。<strong>哪天早上發現裝置充到 100%，不代表你的設定跑掉了</strong>，也不用重設，那是系統排定的校正動作。
+      </div>
+    </section>
+
+    <div class="part-div">怎麼處理</div>
+
+    <section id="todo">
+      <div class="sec-label" style="--c:var(--amber)">action</div>
+      <h2>05 · 哪些該動，哪些放著就好</h2>
+      <p>看完對照表，實際上要做的事很少。多數裝置出廠就是對的設定，真正值得你花時間的只有兩台。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">1</div><div><h4>iPad：去確認那個開關</h4><p>它是五個產品線裡唯一預設關閉的。如果你的 iPad 長期插著電當螢幕或給小孩看影片，這個開關值得打開。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">2</div><div><h4>iPhone：決定要五檔還是要最佳化</h4><p>兩者只能擇一——上限設在 100% 才能用最佳化電池充電。續航夠用的人可以直接設 90% 或 95%，反之就維持 100% 讓系統自己安排。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">3</div><div><h4>Mac：先看版本再決定</h4><p>macOS Tahoe 26.4 以上且是 Apple 晶片，才會有充電上限可以設。沒有的話，維持預設的最佳化電池充電就好。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">4</div><div><h4>Apple Watch 與 AirPods：什麼都不用做</h4><p>兩者都是預設開啟，而且用的是系統動態判斷的上限。除非你有特定理由要充滿，否則放著別動是最好的選擇。</p></div></div>
+        <div class="step" style="--c:var(--purple)"><div class="n">5</div><div><h4>臨時要充滿，用「單次解除」而不是關掉功能</h4><p>Mac 從電池狀態選單選「立即完全充電」；Apple Watch 點充電畫面的圓圈選「立即完全充電」；AirPods Pro 3 可以只關一天。不必整個關掉再記得開回來。</p></div></div>
+      </div>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">值得記住的原則</div>預設值幾乎都是對的。Apple 把這些功能出廠開啟，就是因為對多數人有利——會需要改的通常是「用法特別極端」的那一小群。</div>
+        <div class="callout" style="--c:var(--red)"><div class="ct">不要為了追求 100% 而全部關掉</div>關掉的代價寫在官方文件裡：關閉充電最佳化可能會增加電池的耗損，並減少使用壽命。省下的那 20% 續航，你不一定用得到。</div>
+      </div>
+    </section>
+
+    <div class="part-div">售後現場</div>
+
+    <section id="guoguo">
+      <div class="sec-label" style="--c:var(--teal)">from_our_desk</div>
+      <h2>06 · 果果售後現場：一次帶三台來問的客人</h2>
+      <p>果果客服常遇到的不是單一裝置的問題，而是這種：「我 iPad 可以設 80%，為什麼 iPhone 找不到？我手錶好像根本關不掉？」——同一個人，三台裝置，三種不同的答案。</p>
+      <p>這種問題如果只回答其中一台，客人下次還是會再問一次。所以我們的做法是直接給對照，而不是逐台解釋。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>客人的問法</th><th>實際情況</th><th>一句話回答</th></tr>
+          <tr><td>「為什麼 iPhone 上找不到 80% 的選項」</td><td>路徑不同，而且要 iPhone 15 以上</td><td>在「電池 →充電」，不是「電池健康度」</td></tr>
+          <tr><td>「我 iPad 怎麼沒在保護電池」</td><td class="good">有，只是那個開關預設是關的</td><td>它跟其他裝置相反，要自己去開</td></tr>
+          <tr><td>「手錶的怎麼關不掉」</td><td class="bad">Series 9 以上與 Ultra 就是關不掉</td><td>那是設計如此，不是故障</td></tr>
+          <tr><td>「AirPods 的設定在哪」</td><td>在手機裡，不在耳機上</td><td>設定 →選你的 AirPods →電池</td></tr>
+          <tr><td>「Mac 為什麼沒有上限可以設」</td><td>需要很新的系統版本＋Apple 晶片</td><td>先看版本，不是每台都有</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">我們為什麼把這張表整理出來</div>
+        果果同時經手 iPad 與 iPhone，客人問的往往不只手上這一台。與其每次口頭解釋一遍，不如把五個產品線的官方說法一次核對清楚放在這裡——<strong>下次有人問，直接看表就好，也不會因為記錯而給到過時的資訊</strong>。這類功能改版很勤，靠記憶回答遲早會出錯。
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">給二手買家的一句提醒</div>
+        收到二手裝置時，這些開關可能還留著前一手的設定。<strong>看到充不滿先別急著判定電池有問題</strong>，照本頁的路徑去確認一次；真正該看的是電池健康度那個數字，那才反映電池被怎麼對待過。
+      </div>
+    </section>
+
+    <section id="myth">
+      <div class="sec-label" style="--c:var(--red)">myths</div>
+      <h2>07 · 這幾句話聽到要打折</h2>
+      <p>跨產品的資訊最容易以訛傳訛，因為每台的規則真的不一樣。</p>
+
+      <ul class="flags">
+        <li><b>「Apple 裝置的充電保護都一樣，設定位置也一樣」</b>——五個產品線五種路徑，連功能名稱都不同，這句話每一節都錯。</li>
+        <li><b>「充電上限是所有裝置都能設的」</b>——iPhone 要 15 以上、iPad 只有四類機型、Mac 要 macOS Tahoe 26.4 以上加 Apple 晶片，Apple Watch 與 AirPods 根本沒有讓你指定數字的選項。</li>
+        <li><b>「開了保護就再也不會充到 100%」</b>——官方三份文件都寫明會偶爾充滿來校正電量計。</li>
+        <li><b>「最佳化電池充電開了就一定會作動」</b>——它綁定你常待的地點，旅行或作息不固定時本來就不會啟用。</li>
+        <li><b>「手錶關不掉是系統出問題」</b>——Series 9 以上與 Ultra 官方就是永遠開啟，那是規格不是故障。</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">最後提醒</div>
+        這類功能 Apple 改得很勤——光是 Mac 的充電上限就是相當近期才加的。<strong>看到任何教學文（包括這一頁），先確認它的查證日期</strong>，再對照你自己裝置上實際顯示的選單。
+      </div>
+    </section>
+
+    <section id="watch">
+      <div class="sec-label" style="--c:var(--purple)">watch</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">為什麼這一節是英文影片</div>
+        我們先找了繁體中文的內容，<strong>但這個主題沒有涵蓋跨產品對照的中文影片</strong>；少數談單一裝置的中文片子，錄製時間又早於這些功能的最新改版——例如 Mac 的「充電上限」要 macOS Tahoe 26.4 以上才有，2022 年的教學不可能講到。與其給過時的做法，不如挑三支夠新的英文影片，各補一個產品線。
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=oP97nSZfKhU" target="_blank" rel="noopener" data-yt="oP97nSZfKhU" aria-label="播放：Why Does My Apple Watch Stop Charging at 80%">
+          <img loading="lazy" src="https://i.ytimg.com/vi/oP97nSZfKhU/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/oP97nSZfKhU/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>Why Does My Apple Watch Stop Charging at 80%? (explained)</b><small>頻道：Foxtecc · 推薦原因：對應本文 03 節的第一個發現——手錶是全產品線裡管最嚴的一台。想看實機上那個關不掉的開關長什麼樣，看這支 · 英文（2025 年）</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=Tl66jvgKMGw" target="_blank" rel="noopener" data-yt="Tl66jvgKMGw" aria-label="播放：Setting MacBook 80% Battery Charge Limit macOS Tahoe 26.4">
+          <img loading="lazy" src="https://i.ytimg.com/vi/Tl66jvgKMGw/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/Tl66jvgKMGw/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>Setting MacBook 80% Battery Charge Limit without 3rd party app — macOS Tahoe 26.4 New Feature!</b><small>頻道：Junian Dev · 推薦原因：對應 03 節的第三個發現——Mac 的充電上限是很新的功能。這支就是在 macOS Tahoe 26.4 上實際操作，時間點剛好對得上 · 英文（2026 年 3 月）</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=kmO1qmefEpQ" target="_blank" rel="noopener" data-yt="kmO1qmefEpQ" aria-label="播放：iOS 26 Optimized Battery, Adaptive, Charge Limit - How It Works">
+          <img loading="lazy" src="https://i.ytimg.com/vi/kmO1qmefEpQ/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/kmO1qmefEpQ/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>iOS 26 Optimized Battery, Adaptive, Charge Limit — How It Works</b><small>頻道：zollotech · 推薦原因：補 iPhone 那一塊，而且是 iOS 26 的版本。本文 01 節講「延後充滿」與「設固定上限」是兩種手法，這支用實機把兩者的差別走過一遍 · 英文（2025 年 12 月）</small></div>
+      </div>
+
+      <p>如果你想要的是<strong>中文的實機操作</strong>，我們在另外兩頁各挑了驗證過的繁體中文影片，內容也比較貼合你手上那一台裝置的實際選單：</p>
+
+      <div class="grid">
+        <div class="card" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="c-tag">iPad</div>
+          <h4>為何 iPad 充到 80% 就停</h4>
+          <p>三種原因的分辨方法、機型清單，以及 iPad 版的實機設定畫面影片。</p>
+          <span class="ex"><a class="inline" href="../charging-stops-at-80/">前往這一頁</a></span>
+        </div>
+        <div class="card" style="--c:var(--teal);--cbg:var(--teal-bg)">
+          <div class="c-tag">iPhone</div>
+          <h4>iPhone 充到 80% 就停，先別急著關</h4>
+          <p>五檔上限怎麼挑、最佳化電池充電為什麼有時候不作動，附 iPhone 版影片。</p>
+          <span class="ex"><a class="inline" href="../iphone-charge-limit/">前往這一頁</a></span>
+        </div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">本文的功能名稱、支援機型、版本需求、預設狀態與設定路徑，全部逐項取自 Apple 官方支援文件，查證日期 2026 年 8 月：</p>
+      <ul class="sources">
+        <li><a href="https://support.apple.com/zh-tw/108055">Apple 支援 · 關於 iPhone 的「充電上限」和「最佳化電池充電」</a>（iPhone 15 和後續機型可選 80% 至 100%、增量間隔 5%；上限 100% 時才可使用最佳化電池充電；設定路徑為「電池」→「充電」；iPhone 14 和之前機型走「電池健康度與充電」；設定 iPhone 時最佳化電池充電預設為開啟）</li>
+        <li><a href="https://support.apple.com/zh-tw/118418">Apple 支援 · 關於 iPad 電池的充電與維護</a>（支援「80% 的上限」的四類機型；充到約 80% 停止、掉到 75% 續充；偶爾充電到 100% 以維持精確的電量估計值；設定路徑為「電池」→「電池健康度」）</li>
+        <li><a href="https://support.apple.com/zh-tw/105106">Apple 支援 · 關於 Apple Watch 的「最佳化電池充電」</a>（預設開啟；電量保持在 75% 到 80% 之間；Series 9 或後續錶款與任一款 Apple Watch Ultra「會永遠保持開啟」；「最佳化充電上限」需 watchOS 10 以上、適用 SE 和後續、Series 6 和後續、Ultra 和後續；上限會動態變化；最佳化充電只在長時間停留的地點啟用）</li>
+        <li><a href="https://support.apple.com/zh-tw/102338">Apple 支援 · 關於 Mac 的「最佳化電池充電」和「充電上限」</a>（最佳化電池充電需 macOS Big Sur 11 以上；充電上限需 macOS Tahoe 26.4 以上且配備 Apple 晶片、可設 80% 到 100%；電池狀態選單會顯示「已暫停充電」或「已充電到 [%] 的上限」；可從選單選「立即完全充電」；兩者都會偶爾充電到 100% 以維持精確的電量估計值）</li>
+        <li><a href="https://support.apple.com/zh-tw/102588">Apple 支援 · 關於 Mac 筆電電池健康度管理</a>（僅適用配備 Intel 處理器的 Mac；macOS 10.15.5 起預設開啟；「可以根據其所收集的測量值，降低電池的最大充電量」）</li>
+        <li><a href="https://support.apple.com/zh-tw/119912">Apple 支援 · 為 AirPods 充電</a>（最佳化電池充電適用 AirPods Pro 和 AirPods 3 或後續機型、須透過 iPhone 或 iPad 使用、iOS／iPadOS 15 以上預設開啟；AirPods Pro 3 的最佳化充電上限需 iOS／iPadOS 26 以上、上限依日常使用情況調整、可完全關閉或只關閉一天）</li>
+        <li><a href="https://support.apple.com/zh-tw/111822">Apple 支援 · 關於 iPad 和 iPhone 的充電管理功能</a>（適用 iOS 11.3 以上的 iPad 與 iPhone XS／XS Max／XR 或後續；長時間連接電源時「暫時降低電池容量」，狀態列依調整後容量顯示；不再長時間插電時容量會回復）</li>
+      </ul>
+      <p class="updated">本文的「四種手法」是果果為了方便對照所做的整理，<b>不是 Apple 的官方分類</b>；各功能的名稱與行為描述則全部依官方原文。</p>
+      <p class="updated">Apple 會持續調整功能名稱、支援機型與版本需求。本文查證：<b>2026 年 8 月</b>，實際情況請以你裝置上的系統版本與畫面顯示為準。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.setAttribute('title',t.getAttribute('aria-label')||'YouTube');
+    f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
