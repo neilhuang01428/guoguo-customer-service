@@ -246,6 +246,9 @@
   .flow { display: flex; align-items: stretch; justify-content: center; gap: 10px; flex-wrap: wrap; }
   .flow .box { flex: 1; min-width: 128px; border: 1px solid var(--line); border-radius: 10px; padding: 14px 12px; text-align: center; background: var(--cbg,#fff); }
   .flow .box .bi { font-size: 1.7rem; }
+  /* Apple 標誌用單色 SVG 而不是 🍎 emoji：emoji 是紅蘋果、且每個平台長得不一樣，
+     跟讀者在 iPad 上實際看到的畫面對不起來。fill 跟著文字色走，深淺底都看得見。 */
+  .flow .box .bi svg { display: block; width: .9em; height: .9em; margin: 0 auto; fill: currentColor; }
   .flow .box .bt { font-family: var(--mono); font-size: .6rem; color: var(--muted); margin-top: 8px; }
   .flow .box .bv { font-size: .9rem; color: var(--ink); font-weight: 700; margin-top: 3px; }
   .flow .arr { display: grid; place-items: center; color: var(--muted); font-family: var(--mono); }
