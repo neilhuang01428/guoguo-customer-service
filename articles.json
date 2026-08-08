@@ -1751,7 +1751,8 @@
         "q": "iPad 長時間玩遊戲會發熱降頻嗎？",
         "a": "會，而且連最新的 Pro 都會。iPad 沒有風扇，只能靠機身散熱。媒體實測 iPad Pro M4 跑惡靈古堡 4 大約 9 分鐘就開始降頻，M5 版本撐到約 17 分鐘才進入次一級的熱狀態。降頻是 Apple 的保護機制，不是故障。實務上的意思是：符合官方需求只代表能玩，長時間重度遊玩的穩定度還受環境溫度、畫質設定與散熱空間影響，沒有人能保證絕對流暢。"
       }
-    ]
+    ],
+    "ogImage": "assets/og/which-ipad-for-gaming-cover.png"
   },
   {
     "slug": "universal-clipboard-not-working",
