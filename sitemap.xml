@@ -229,6 +229,36 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.guoguo.tw/guide/articles/forscore-bookmarks-split/</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.guoguo.tw/guide/articles/forscore-first-eight-things/</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.guoguo.tw/guide/articles/forscore-annotation-layers/</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.guoguo.tw/guide/articles/ipad-for-sheet-music/</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.guoguo.tw/guide/articles/forscore-backup-and-migrate/</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.guoguo.tw/guide/tag/airtag/</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -236,7 +266,7 @@
   </url>
   <url>
     <loc>https://www.guoguo.tw/guide/tag/apple-pencil/</loc>
-    <lastmod>2026-08-08</lastmod>
+    <lastmod>2026-08-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -247,7 +277,19 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.guoguo.tw/guide/tag/forscore/</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.guoguo.tw/guide/tag/iphone/</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.guoguo.tw/guide/tag/%E4%B8%8A%E6%89%8B/</loc>
     <lastmod>2026-08-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -260,7 +302,7 @@
   </url>
   <url>
     <loc>https://www.guoguo.tw/guide/tag/%E6%8A%80%E5%B7%A7/</loc>
-    <lastmod>2026-08-08</lastmod>
+    <lastmod>2026-08-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -271,7 +313,19 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.guoguo.tw/guide/tag/%E6%A8%82%E8%AD%9C/</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.guoguo.tw/guide/tag/%E7%9B%B8%E5%AE%B9%E5%B0%8D%E7%85%A7/</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.guoguo.tw/guide/tag/%E8%9E%A2%E5%B9%95%E8%A6%8F%E6%A0%BC/</loc>
     <lastmod>2026-08-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
