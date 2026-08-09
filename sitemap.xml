@@ -259,6 +259,24 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.guoguo.tw/guide/articles/hands-free-page-turning/</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.guoguo.tw/guide/articles/forscore-pedal-not-working/</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.guoguo.tw/guide/articles/forscore-performance-checklist/</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.guoguo.tw/guide/tag/airtag/</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -350,7 +368,7 @@
   </url>
   <url>
     <loc>https://www.guoguo.tw/guide/tag/%E9%85%8D%E4%BB%B6%E6%8E%A8%E8%96%A6/</loc>
-    <lastmod>2026-08-02</lastmod>
+    <lastmod>2026-08-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
