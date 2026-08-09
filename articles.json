@@ -2158,7 +2158,8 @@
         "q": "發現標註不見了，接下來該做什麼？",
         "a": "先停下來，因為接下來每個動作都可能讓情況更糟。不要刪掉 App 重裝、不要在「檔案」App 裡搬動或刪除任何東西、不要在其他裝置上做會被同步出去的變更。然後去 forScore 的 Backup 面板看有沒有可用的備份，並確認電腦或雲端上是否有舊的封存檔。如果是同步出問題，官方有記錄工具可以協助判讀。"
       }
-    ]
+    ],
+    "ogImage": "assets/og/forscore-backup-and-migrate-cover.png"
   },
   {
     "slug": "hands-free-page-turning",
