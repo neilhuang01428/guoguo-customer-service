@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>換新 iPad，forScore 的譜和標註怎麼搬？備份、封存、同步差在哪 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式（共用 style.css 沒有的才寫在這）── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 導言：迷你目錄 */
+  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0 24px; }
+  .toc a { display: flex; align-items: baseline; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 14px; text-decoration: none; color: var(--ink); font-size: .93rem; transition: .12s; }
+  .toc a:hover { border-color: var(--navy); background: var(--navy-bg); }
+  .toc a i { font-family: var(--mono); font-style: normal; font-size: .72rem; color: var(--navy); font-weight: 700; flex: none; }
+
+  /* 寬表格橫向捲動 */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 640px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 3px; }
+
+  /* ── 兩區資料示意：看得到的 vs 看不到的 ── */
+  .areas { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .area { border: 2px solid var(--c); background: var(--cbg); border-radius: 12px; padding: 16px 18px; }
+  .area .h { font-family: var(--mono); font-size: .68rem; color: var(--c); font-weight: 700; margin-bottom: 6px; }
+  .area b { display: block; font-size: 1.02rem; color: var(--ink); margin-bottom: 8px; }
+  .area ul { list-style: none; margin: 0; }
+  .area li { font-size: .88rem; color: var(--body); padding: 3px 0 3px 16px; position: relative; }
+  .area li::before { content: '·'; position: absolute; left: 4px; color: var(--c); font-weight: 700; }
+
+  /* 三個名詞卡 */
+  .terms { display: grid; gap: 11px; margin: 20px 0; }
+  .tm { background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--c); border-radius: 10px; padding: 15px 18px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .tm .nm { font-family: var(--mono); font-size: .8rem; color: var(--c); font-weight: 700; }
+  .tm .one { font-size: 1.06rem; color: var(--ink); font-weight: 700; margin: 4px 0 8px; }
+  .tm p { font-size: .89rem; margin: 0 0 9px; }
+  .tm .can { font-size: .85rem; border-top: 1px solid var(--grid); padding-top: 9px; color: var(--ink); }
+  .tm .can::before { content: '能不能單獨還原 · '; font-family: var(--mono); font-size: .66rem; color: var(--muted); }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .areas { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) { .toc { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>備份與換機</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#delete" class="active">00 · 最重要的一句話</a>
+  <a href="#where">01 · 資料分兩區</a>
+  <div class="grp">分清楚三個名詞</div>
+  <a href="#three">02 · 備份／封存／同步</a>
+  <a href="#sync">03 · iCloud 同步的危險</a>
+  <div class="grp">動手</div>
+  <a href="#migrate">04 · 換機的兩條路</a>
+  <a href="#dont">05 · 兩個常見自殺行為</a>
+  <a href="#habit">06 · 樂手的備份節奏</a>
+  <a href="#stop">07 · 先別再操作</a>
+  <a href="#video">延伸觀看</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>2018–2026 全型號在售</span><span>資訊透明・缺點揭露</span><span>終身售後諮詢</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">客戶指南 / iPad 讀譜 · 資料保全</div>
+    <h1>換新 iPad，樂譜和標註怎麼搬？</h1>
+    <p class="subtitle">4SB 備份、4SB 封存、iCloud 同步——三個長得很像的東西，只有一個能真的救回你的曲庫。搞混的代價是多年標註一次歸零。</p>
+
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--red)">
+        <div class="lt">直接回答</div>
+        <p class="big">先記住官方那句原話：<b>刪掉 forScore，你所有的資訊都會跟著一起消失</b>，而且官方不會保存你檔案的副本、救不回來。</p>
+        <p class="sm"><b>4SB 備份</b>只是標註、曲單、分類、設定的快照，<b>不含 PDF 本身</b>，單獨一個檔還原不了曲庫；<b>4SB 封存</b>會連 Documents 裡每個檔案一起打包，可以單獨用來搬家；<b>iCloud 同步不是備份</b>——官方 FAQ 直接寫「不能取代定期備份」。</p>
+        <p class="sm">換新 iPad 的官方首選是<b>依 Apple 的設定流程從整機備份還原</b>；做不到或不想這樣做，才改用 forScore 的備份面板遷移。</p>
+        <p class="alias-line">你可能是用別的說法找到這頁的：<b>forScore 換機</b>、<b>forScore 備份</b>、<b>標註不見了</b>、<b>4SB 是什麼</b>——講的都是同一件事。</p>
+      </div>
+      <blockquote class="lead-src">「同步等於備份我的曲庫嗎？<strong>不是。</strong>同步<strong>不能</strong>取代定期備份你的曲庫。已同步的資料無法還原或回復，也不能保障你的資訊安全。」<cite>forScore 官方知識庫〈About iCloud Syncing〉的同步 FAQ，查核 2026 年 8 月</cite></blockquote>
+      <p class="lede">這是整個 forScore 主題裡唯一「做錯會真的出事」的一篇。累積三年的指法、老師的指示、每一首的分類——全部都在那個看不見的區域裡。</p>
+      <p class="lede">下面先把三個名詞的界線講死，再教你怎麼搬。最後一節是萬一資料已經出狀況時，該<strong>先停下來別做什麼</strong>。</p>
+    </div>
+
+    <div class="toc">
+      <a href="#three"><i>02</i>三個名詞差在哪</a>
+      <a href="#migrate"><i>04</i>換機該走哪條路</a>
+      <a href="#dont"><i>05</i>千萬別做這兩件事</a>
+      <a href="#stop"><i>07</i>資料出事了怎麼辦</a>
+    </div>
+
+    <section id="delete">
+      <div class="sec-label" style="--c:var(--red)">rule_zero</div>
+      <h2>00 · 最重要的一句話：不要刪掉重裝</h2>
+      <p>App 出怪事的時候，很多人第一個念頭是刪掉重裝。在 forScore 上，這是最貴的一個動作。</p>
+
+      <blockquote class="lead-src">「如果你把 forScore 從裝置上刪除，<strong>你所有的資訊都會跟著一起消失</strong>。如果有 Apple 員工告訴你刪除 App 來解決問題，請務必先做好完整備份。我們不會保存你檔案的副本，如果它們被清除了，我們也沒辦法幫你救回來。」<cite>forScore 官方知識庫〈Understanding Backups, Syncing, and iCloud〉</cite></blockquote>
+
+      <p>注意官方連「Apple 員工叫你刪」都寫進去了——這代表他們遇過太多次。唯一可以考慮重裝的前提，是你已經確認電腦端有<strong>近期的完整備份</strong>。</p>
+    </section>
+
+    <section id="where">
+      <div class="sec-label" style="--c:var(--navy)">two_areas</div>
+      <h2>01 · 你的資料其實分成兩區</h2>
+      <p>理解這一節，後面三個名詞就會變得很簡單。forScore 的資料放在兩個完全不同的地方：一個你看得到、一個你看不到。</p>
+
+      <figure class="fig">
+        <div class="areas">
+          <div class="area" style="--c:var(--green);--cbg:var(--green-bg)">
+            <div class="h">DOCUMENTS · 公開</div>
+            <b>你在「檔案」App 裡看得到的</b>
+            <ul>
+              <li>PDF 樂譜</li>
+              <li>CSV 索引檔</li>
+              <li>錄音與音檔</li>
+              <li>4SB 備份檔本身</li>
+            </ul>
+          </div>
+          <div class="area" style="--c:var(--red);--cbg:var(--red-bg)">
+            <div class="h">LIBRARY · 私有</div>
+            <b>看不到、也拿不出來的</b>
+            <ul>
+              <li>所有標註（你畫的每一筆）</li>
+              <li>曲單</li>
+              <li>書籤</li>
+              <li>曲目資料與分類</li>
+              <li>App 設定</li>
+            </ul>
+          </div>
+        </div>
+        <figcaption>把左邊那一區複製到新裝置，<b>右邊那一區不會跟著過去</b>——標註、曲單、分類全部會消失。這就是為什麼「我有把 PDF 備份起來」還是會出事。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">官方怎麼說</div>官方文件明講：如果你只是把「檔案」App 裡看到的那些檔案備份、複製到新的 forScore 安裝上，你會發現<strong>標註、曲目資料、曲單、設定和某些其他資訊全都不見了</strong>。</div>
+    </section>
+
+    <section id="three">
+      <div class="sec-label" style="--c:var(--teal)">three_terms</div>
+      <h2>02 · 三個名詞，一次分清楚</h2>
+
+      <div class="terms">
+        <div class="tm" style="--c:var(--amber)">
+          <div class="nm">4SB Backup · 備份</div>
+          <div class="one">只有「看不見那一區」的快照</div>
+          <p>把 forScore 的私有資料匯出成一個 4SB 檔，存放在 Documents 目錄裡。它記錄的是「forScore 對你檔案的所有認知」，<strong>不包含 PDF 本身</strong>。</p>
+          <div class="can">不行。官方原文：備份無法單獨使用。要完整還原，需要一份最新的 4SB 備份 <strong>＋</strong> Documents 目錄裡的每一個檔案。</div>
+        </div>
+        <div class="tm" style="--c:var(--green)">
+          <div class="nm">4SB Archive · 封存</div>
+          <div class="one">連檔案一起打包的完整版</div>
+          <p>一個 4SB 檔，但裡面包含 Documents 目錄的每一個檔案，加上標準備份的私有資料。因為複製了全部文件，需要裝置上有<strong>更多可用空間</strong>。</p>
+          <div class="can">可以。官方定位：它包含了搬遷或復原整個曲庫所需要的一切。</div>
+        </div>
+        <div class="tm" style="--c:var(--red)">
+          <div class="nm">iCloud Syncing · 同步</div>
+          <div class="one">不是備份，是「讓多台保持一致」</div>
+          <p>用 iCloud 自動讓你各台裝置的內容一致。官方明講它不提供任何復原功能，也沒有舊版本——一旦刪除或編輯，<strong>那個變更就是永久的</strong>。</p>
+          <div class="can">不行，而且會反過來咬你：你在一台上刪掉的東西，會同步刪掉其他台。</div>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">它其實默默幫你留了一手</div>官方也提醒：iPad 的整機 iCloud 備份雖然能救你，但<strong>沒辦法只還原單一 App 的資料——用官方的話說是「全有或全無」</strong>。所以他們建議除了整機備份，還要定期手動備份 forScore。</div>
+    </section>
+
+    <section id="sync">
+      <div class="sec-label" style="--c:var(--amber)">sync</div>
+      <h2>03 · iCloud 同步：好用，但你要知道它的脾氣</h2>
+      <p>同步功能本身很方便——換裝置時內容會自動跟上。但它有幾個特性，是多數人開了之後才發現的。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>特性</th><th>官方說明</th><th>對你的影響</th></tr>
+          <tr><td>每台都存完整副本</td><td>「你曲庫的完整副本會存在每一台裝置上，檔案無法卸載或按需下載」</td><td>它<strong>不是雲端空間</strong>——新機容量要裝得下整個曲庫</td></tr>
+          <tr><td>刪除會傳播</td><td>「一旦某個東西被刪除或編輯，那個變更就是永久的」</td><td class="bad">在一台上誤刪，其他台跟著沒</td></tr>
+          <tr><td>沒有版本歷史</td><td>官方明講不提供任何復原功能或舊版本</td><td class="bad">改壞了無法回上一版</td></tr>
+          <tr><td>需要 iCloud Drive</td><td>iCloud 帳號設定中必須啟用 iCloud Drive，forScore 也要允許使用 iCloud 儲存空間</td><td>看到「無法連線到你的 iCloud 帳號」多半是這裡沒開</td></tr>
+          <tr><td>不能從 iCloud Drive 看到</td><td>「forScore 使用一個只有 App 能存取的私有 iCloud 目錄，使用者無法存取」</td><td>別想在 iCloud Drive 裡找你的譜</td></tr>
+        </table>
+      </div>
+
+      <p>同步通常在一分鐘內完成。如果想手動觸發，可以打開 Sync 面板往下拉到出現刷新控制——但官方也說，當另一台正在同步、iCloud 被限流或 Apple 伺服器暫時無法使用時，不一定推得動。</p>
+    </section>
+
+    <section id="migrate">
+      <div class="sec-label" style="--c:var(--navy)">migrate</div>
+      <h2>04 · 換新 iPad 的兩條路</h2>
+      <p>官方的建議很明確：有整機備份就走 A，沒有或不想走才用 B。</p>
+
+      <div class="grid">
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">路線 A · 官方首選</div>
+          <h4>從 Apple 的整機備份還原</h4>
+          <p>照 Apple 的新機設定流程走，選擇從最近一次的整機備份還原。forScore 的所有資料會跟著回來，你什麼都不用另外做。</p>
+          <span class="ex">最省事，前提是備份夠新</span>
+        </div>
+        <div class="card" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="c-tag">路線 B · 備援</div>
+          <h4>用 forScore 的備份面板搬</h4>
+          <p>在舊機建立備份（建議做封存），存到電腦或雲端，再到新機還原。官方把它拆成「先備份、再還原」兩篇步驟說明。</p>
+          <span class="ex">整機備份不可用時走這條</span>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">01</div><div><h4>舊機：工具 → Backup，點「＋」</h4><p>建立新的備份，或建立封存（如果空間允許，優先選封存）。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">02</div><div><h4>把它存到裝置以外的地方</h4><p>用電腦的檔案共享面板拉出來，或透過 Services 面板上傳到雲端。官方說用電腦是最快也最常見的方式。</p></div></div>
+        <div class="step" style="--c:var(--red)"><div class="n">03</div><div><h4>如果你做的是「備份」而不是「封存」</h4><p>務必連同 Documents 清單裡的<strong>所有檔案</strong>一起存出來——包含全部 PDF、CSV、音檔。只存 4SB 檔是還原不了的。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">04</div><div><h4>新機：把檔案放回去，再還原</h4><p>用官方的還原說明操作。Mac 使用者另有官方的 forScore Backup Utility 可以透過 USB 直接製作封存。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">選封存還是備份？看空間</div>封存最方便，因為一個檔就包含全部；代價是它會佔掉<strong>相當於你整個曲庫大小</strong>的額外空間來製作。空間不夠時，就走「備份檔＋所有文件」的組合。</div>
+    </section>
+
+    <section id="dont">
+      <div class="sec-label" style="--c:var(--red)">dont</div>
+      <h2>05 · 兩個高頻自殺行為</h2>
+
+      <ul class="flags">
+        <li><b>在「檔案」App 裡改 PDF 檔名。</b>官方原文：不建議透過這個介面重新命名 PDF 檔案，<strong>因為這樣做可能導致該檔案的 metadata、標註以及其他 forScore 資訊遺失</strong>。要改名字請用 forScore 資料面板裡的「標題」欄。</li>
+        <li><b>在「檔案」App 裡刪檔案。</b>官方明講：在這個目錄裡新增或移除檔案，就等於在你的 forScore 曲庫裡新增或移除它們。順手清理的動作會直接生效，沒有垃圾桶。</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">還有一個較少人知道的限制</div>官方同時說明：forScore 的文件目錄<strong>目前不支援使用子資料夾</strong>。想用資料夾分類的人要換個思路——用曲目資料的標籤與分類來組織，那才是 forScore 設計的方式。</div>
+    </section>
+
+    <section id="habit">
+      <div class="sec-label" style="--c:var(--green)">habit</div>
+      <h2>06 · 樂手版的備份節奏</h2>
+      <p>備份這件事的難處從來不是「怎麼做」，而是「什麼時候會記得做」。用演出行事曆來綁定，比用日期提醒有效得多。</p>
+
+      <ul class="check">
+        <li><b>每個學期／演出季開始前做一次。</b>這時候曲庫剛大量更新，最值得留一份。</li>
+        <li><b>重要演出的前一天做一次。</b>順便確認新機或備用機上的曲單是完整的。</li>
+        <li><b>大整理之前一定做。</b>要批次刪除、合併檔案、或用重排工具動 PDF 之前，先備份。</li>
+        <li><b>換機前做一次封存。</b>就算你要走整機還原那條路，多一份封存不會有壞處。</li>
+        <li><b>存到裝置以外的地方。</b>存在同一台 iPad 上的備份，遇到手機掉了、泡水、被偷就一起沒了。</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">從果果的換機經驗補一句</div>我們每天都在幫客人處理舊機換新機。資料出事的案例幾乎都不是硬體壞掉，而是<strong>「以為有備份」</strong>。最常見的兩種誤解是「我開了 iCloud 就有備份」和「我 PDF 都存在電腦裡了」。<br><br>對 forScore 來說，前者不會保護你，後者救不回標註。我們的建議一律是：舊機還在手上時就<strong>先做一份封存</strong>。</div>
+    </section>
+
+    <section id="stop">
+      <div class="sec-label" style="--c:var(--red)">stop</div>
+      <h2>07 · 資料已經出狀況時：先停下來</h2>
+      <p>如果你發現標註不見了、曲單空了、或某一批譜消失了，接下來的每一個動作都可能讓情況變得更糟。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--red)"><div class="ct">先別做這些</div>別刪掉 App 重裝、別在「檔案」App 裡搬動或刪除任何東西、別在其他裝置上做會被同步出去的變更。</div>
+        <div class="callout" style="--c:var(--green)"><div class="ct">先做這些</div>先去 forScore 的 Backup 面板看有沒有可用的備份；確認電腦或雲端上是否有舊的封存檔；把現況先原封不動保留著。</div>
+      </div>
+
+      <p>如果同步出了問題，官方的建議是直接聯絡他們——forScore 有一個記錄工具，會保存同步相關工作的狀態紀錄（<strong>但不含你的實際資料</strong>），必要時可以用「report a problem」把紀錄寄給官方協助判讀。</p>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">還沒踩到坑的人</div>才剛開始用 forScore 的話，可以先看<a class="inline" href="../forscore-first-eight-things/">新手先學這 8 件事</a>——那篇的最後一件事，就是這條保命規則的入門版。</div>
+
+      <p class="updated">本文查證：<b>2026 年 8 月</b>，對照 forScore 官方知識庫與使用手冊。備份面板的操作位置會隨版本調整，以官方最新說明為準。</p>
+    </section>
+
+    <section id="video">
+      <div class="sec-label" style="--c:var(--muted)">video</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p>這個主題目前找不到中文的 forScore 備份教學影片。下面兩支是英文的實機操作，但畫面步驟很清楚，能補上本文的文字說明。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=Lc3b2y216c8" target="_blank" rel="noopener" data-yt="Lc3b2y216c8" aria-label="播放：Backup your forScore Library the CORRECT Way">
+          <img loading="lazy" src="https://i.ytimg.com/vi/Lc3b2y216c8/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/Lc3b2y216c8/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>Backup your forScore Library — the CORRECT Way — before it's too late!</b><small>頻道：Josh Ring · 推薦原因：對應本文第 02、04 節，可以看到備份面板實際長什麼樣、備份與封存在畫面上怎麼分 · 英文，無中文字幕</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=qaKHKjBA22Q" target="_blank" rel="noopener" data-yt="qaKHKjBA22Q" aria-label="播放：How to transfer your forScore library to a new device">
+          <img loading="lazy" src="https://i.ytimg.com/vi/qaKHKjBA22Q/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/qaKHKjBA22Q/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>How to transfer your forScore library to a new device</b><small>頻道：David MacDonald · 推薦原因：對應本文第 04 節的路線 B，完整走一次「舊機備份 → 新機還原」的流程 · 英文，無中文字幕</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">資料存放位置、三個名詞的定義、同步行為與換機建議，皆取自 forScore 官方知識庫，查證日期 2026 年 8 月 9 日：</p>
+      <details class="src-fold">
+        <summary>參考資料來源<span class="n">5 筆</span></summary>
+        <ul class="sources">
+          <li><a href="https://forscore.co/kb/understanding-backups-syncing-and-icloud/">forScore 官方知識庫 · Understanding Backups, Syncing, and iCloud</a>（第 00、01、02 節：刪除 App 資料一併消失的原文、Documents 與 Library 兩區各存什麼、4SB 備份與封存的定義與差異、整機 iCloud 備份「全有或全無」無法只還原單一 App）</li>
+          <li><a href="https://forscore.co/kb/about-icloud-syncing/">forScore 官方知識庫 · About iCloud Syncing</a>（第 02、03、07 節：同步 FAQ 明答「不是備份」、刪除與編輯為永久變更、每台存完整副本且不能按需下載、需啟用 iCloud Drive、私有目錄無法從 iCloud Drive 存取、同步問題的記錄工具）</li>
+          <li><a href="https://forscore.co/kb/transferring-library/">forScore 官方知識庫 · Transferring your forScore library to another device</a>（第 04 節：官方首選為 Apple 整機備份還原，其次才用備份面板遷移的兩步驟）</li>
+          <li><a href="https://forscore.co/kb/backing-up/">forScore 官方知識庫 · Backing up your data</a>（第 04 節：備份面板操作、用電腦是最快最常見的方式、只做備份時必須連同全部文件一起存出、Mac 版 Backup Utility）</li>
+          <li><a href="https://forscore.co/kb/files-app/">forScore 官方知識庫 · Working with the Files app</a>（第 05 節：不建議在檔案 App 更改 PDF 檔名、在該目錄新增或移除檔案等同在曲庫新增或移除、目前不支援子資料夾）</li>
+        </ul>
+      </details>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
