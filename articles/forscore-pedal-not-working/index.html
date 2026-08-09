@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>forScore 踏板沒反應、還會亂跳？先關掉 iOS 這個設定 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式（共用 style.css 沒有的才寫在這）── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 導言：迷你目錄 */
+  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0 24px; }
+  .toc a { display: flex; align-items: baseline; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 14px; text-decoration: none; color: var(--ink); font-size: .93rem; transition: .12s; }
+  .toc a:hover { border-color: var(--navy); background: var(--navy-bg); }
+  .toc a i { font-family: var(--mono); font-style: normal; font-size: .72rem; color: var(--navy); font-weight: 700; flex: none; }
+
+  /* 寬表格橫向捲動 */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 600px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 3px; }
+
+  /* ── 排查順位卡：一層一層往下，每層標「這層解決了多少人」的定位 ── */
+  .tier { background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--c); border-radius: 10px; padding: 15px 18px; margin: 14px 0; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .tier .rank { font-family: var(--mono); font-size: .66rem; color: var(--c); font-weight: 700; }
+  .tier h3 { margin: 4px 0 8px; font-size: 1.06rem; }
+  .tier p { font-size: .92rem; margin-bottom: 10px; }
+  .tier .path { font-family: var(--mono); font-size: .84rem; background: var(--navy-bg); color: var(--navy); border-radius: 7px; padding: 10px 13px; line-height: 1.7; }
+  .tier .path b { color: var(--navy); }
+
+  /* 症狀清單 */
+  .sx { display: grid; gap: 9px; margin: 20px 0; }
+  .sxi { display: flex; gap: 13px; align-items: flex-start; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 13px 16px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .sxi .n2 { font-family: var(--mono); font-weight: 800; color: var(--c); flex: none; }
+  .sxi b { color: var(--ink); }
+  .sxi span { display: block; font-size: .87rem; color: var(--muted); margin-top: 2px; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+  }
+  @media (max-width: 560px) { .toc { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>踏板沒反應怎麼辦</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#symptoms" class="active">00 · 三種症狀對號</a>
+  <div class="grp">照順位排查</div>
+  <a href="#fka">01 · 關掉完整鍵盤操作</a>
+  <a href="#assigned">02 · 按鍵被別人佔用</a>
+  <a href="#mode">03 · 踏板本身的模式</a>
+  <a href="#keyboard">04 · 打不出字的特例</a>
+  <div class="grp">別誤判</div>
+  <a href="#not-bug">05 · 這兩件不是故障</a>
+  <a href="#hardware">06 · 何時才懷疑硬體</a>
+  <a href="#preflight">07 · 上台前 3 分鐘</a>
+  <a href="#video">延伸觀看</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>2018–2026 全型號在售</span><span>資訊透明・缺點揭露</span><span>終身售後諮詢</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">客戶指南 / iPad 讀譜 · 配件疑難</div>
+    <h1>踏板按了沒反應、還會亂跳？</h1>
+    <p class="subtitle">先不要重新配對，也先別懷疑踏板壞了。最常見的兇手不在 App、也不在踏板，而是 iOS 的一個無障礙設定。</p>
+
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--red)">
+        <div class="lt">直接回答</div>
+        <p class="big">到「<b>設定 → 輔助使用 → 鍵盤 → 完整鍵盤操作</b>」把它<b>關閉</b>。藍牙翻頁踏板在系統眼中就是一個鍵盤，而這個無障礙功能會把按鍵攔去移動焦點。</p>
+        <p class="sm">官方點名受影響的包含<b>所有型號的 PageFlip 裝置、iRig BlueTurn、AirTurn BT-105／106 這一類踏板</b>，以及其他用標準電腦鍵盤設定檔連接 iPad 的裝置。</p>
+        <p class="sm">這個設定是 iOS／iPadOS 13 引進的，所以「以前好好的、更新之後就怪怪的」是很典型的情況。</p>
+        <p class="alias-line">你可能是用別的說法找到這頁的：<b>翻譜踏板沒反應</b>、<b>AirTurn 連不上</b>、<b>PageFlip 沒反應</b>、<b>踏板亂跳</b>——講的都是同一件事。</p>
+      </div>
+      <blockquote class="lead-src">「iOS 與 iPadOS 13 引進的一個常見無障礙設定，可能干擾藍牙翻頁器的功能……這可能造成以下任何一種行為：<strong>踏板或按鈕間歇性沒有反應</strong>、<strong>選到 forScore 的介面元素（例如工具圖示或進度條）而不是翻頁</strong>、<strong>開啟選單或執行其他指令而不是翻頁</strong>。」<cite>forScore 官方知識庫〈My page turner is not behaving correctly〉，查核 2026 年 8 月</cite></blockquote>
+      <p class="lede">這篇按照「最可能到最不可能」的順序排查。多數人在第一順位就解決了，如果沒有，再往下走。</p>
+      <p class="lede">最後兩節是常被誤判成故障、但其實不是故障的兩件事——看完再決定要不要退貨。</p>
+    </div>
+
+    <div class="toc">
+      <a href="#fka"><i>01</i>第一順位的解法</a>
+      <a href="#keyboard"><i>04</i>接了踏板打不出字</a>
+      <a href="#not-bug"><i>05</i>這不是故障</a>
+      <a href="#preflight"><i>07</i>上台前檢查</a>
+    </div>
+
+    <section id="symptoms">
+      <div class="sec-label" style="--c:var(--navy)">symptoms</div>
+      <h2>00 · 先對號入座：你遇到的是哪一種</h2>
+      <p>官方把這個問題的表現列成三種。看起來很像三個不同的毛病，其實是同一個原因。</p>
+
+      <div class="sx">
+        <div class="sxi" style="--c:var(--red)"><div class="n2">A</div><div><b>時好時壞：有時候有反應，有時候沒有</b><span>最常被誤判成「電池快沒電」或「藍牙不穩」。</span></div></div>
+        <div class="sxi" style="--c:var(--red)"><div class="n2">B</div><div><b>踩下去卻選到工具圖示或進度條</b><span>畫面上出現一個藍框在跳，那是系統的鍵盤焦點，不是 forScore 的功能。</span></div></div>
+        <div class="sxi" style="--c:var(--red)"><div class="n2">C</div><div><b>踩下去跑去開選單，或做了別的事</b><span>按鍵被系統攔去執行它自己的操作了。</span></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">三種症狀，同一個解法</div>如果你符合上面任何一種，直接跳到下一節。<strong>不用先重新配對、不用換電池、更不用退貨</strong>——那些都是白做工。</div>
+    </section>
+
+    <section id="fka">
+      <div class="sec-label" style="--c:var(--red)">tier_1</div>
+      <h2>01 · 第一順位：關掉 iOS 的「完整鍵盤操作」</h2>
+
+      <div class="tier" style="--c:var(--red)">
+        <div class="rank">FIRST · 官方列的第一步</div>
+        <h3>它為什麼會干擾你的踏板</h3>
+        <p>「完整鍵盤操作」是給無法使用觸控的使用者設計的功能：讓人能用鍵盤的方向鍵在畫面元素之間移動焦點。而你的藍牙踏板，在系統眼中就是一個只有幾顆鍵的鍵盤——於是你踩下去的訊號，被系統拿去移動焦點了。</p>
+        <div class="path">開啟「設定」App<br>→ <b>輔助使用</b><br>→ <b>鍵盤</b><br>→ 把「<b>完整鍵盤操作</b>」關閉</div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">關掉它會影響什麼</div>這個功能本身是無障礙輔助用的。如果家中沒有人依賴鍵盤操作 iPad，關掉它不會影響日常使用；如果有，可以在演出前後手動切換。</div>
+
+      <p>官方明確點名受影響的裝置包含 PageFlip 全系列、iRig BlueTurn、AirTurn BT-105／106 這一類，以及其他用標準電腦鍵盤設定檔連線的裝置——也就是市面上<strong>多數走「鍵盤模式」</strong>的翻頁踏板。</p>
+    </section>
+
+    <section id="assigned">
+      <div class="sec-label" style="--c:var(--amber)">tier_2</div>
+      <h2>02 · 第二順位：那顆鍵已經被指派給別的動作</h2>
+
+      <div class="tier" style="--c:var(--amber)">
+        <div class="rank">SECOND · 自己設定過的人最容易中</div>
+        <h3>同一個訊號不能同時做兩件事</h3>
+        <p>如果你曾經自己去 forScore 裡設定過快捷鍵，那顆鍵可能已經綁在別的指令上。官方的說明是：要先從原本那個指令上移除，才能重新指派。</p>
+        <div class="path">forScore 的<b>工具</b>選單<br>→ <b>設定</b><br>→ <b>Page Turners &amp; Shortcuts</b><br>→ 找到那個指令，點旁邊的「<b>x</b>」清除設定</div>
+      </div>
+
+      <p>另外教你怎麼看這個畫面：右側顯示的字元或代碼如果是<strong>淺灰色</strong>，代表那是 forScore 的預設鍵位、不是你設定的。點一下指令會進入「聆聽」狀態，這時踩下踏板，相容的訊號就會顯示出來。</p>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">完全沒顯示任何東西？</div>那代表 forScore 根本沒收到訊號——問題在連線層，回到第 01 節，或往下看第 03 節的裝置模式。</div>
+    </section>
+
+    <section id="mode">
+      <div class="sec-label" style="--c:var(--teal)">tier_3</div>
+      <h2>03 · 第三順位：踏板本身的模式設定</h2>
+      <p>AirTurn 這類裝置有多達六種模式，模式選錯會出現各種奇怪症狀。官方對此有明確建議。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>模式</th><th>官方說法</th><th>建議</th></tr>
+          <tr><td>Mode 1<small>AppDirect</small></td><td class="good">電池續航最好，而且不會干擾螢幕上的虛擬鍵盤</td><td class="good">官方建議用這個</td></tr>
+          <tr><td>Mode 2 以上</td><td class="bad">因為近期韌體更新造成<strong>雙重訊號傳送</strong>，官方標示為不建議使用</td><td>特殊需求才用；此時要在 forScore 的 Devices 面板停用「AirTurn Support」來消除第二個訊號</td></tr>
+        </table>
+      </div>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">01</div><div><h4>先在 iOS 藍牙設定裡「忽略此裝置」</h4><p>官方的連線步驟第一步：如果藍牙清單裡已經有這台裝置，先點旁邊的「i」選擇忽略。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">02</div><div><h4>切換模式：按住 MODE 鍵，數紅燈閃幾下</h4><p>紅燈每秒閃一次，從 1 閃到 6。閃到你要的模式數字時放開，兩個燈會一起閃相同次數確認。</p></div></div>
+        <div class="step" style="--c:var(--red)"><div class="n">03</div><div><h4>在 1 和 2 之間切換時，一定要重開機</h4><p>按住電源鍵六秒：兩秒時看起來像關機了，繼續按住；六秒時兩個燈閃三下，第三下後放開。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">04</div><div><h4>重置後要再選一次 Mode 1</h4><p>官方特別提醒：重置後裝置會回到預設的 mode 2，所以要重新選。</p></div></div>
+      </div>
+
+      <p>電量也別忘了。這是最基本、卻最常被跳過的一步——尤其是那種很久沒用、演出前才拿出來的踏板。</p>
+    </section>
+
+    <section id="keyboard">
+      <div class="sec-label" style="--c:var(--purple)">special_case</div>
+      <h2>04 · 特例：接了踏板之後，打不出字了</h2>
+      <p>這不是踏板壞掉，是 iOS 的正常行為：系統判定你接了實體鍵盤時，就會把<strong>虛擬鍵盤收起來</strong>。而你的踏板正是被當成鍵盤。</p>
+
+      <p>症狀通常出現在你想編輯曲名、輸入標籤的時候——游標在閃，鍵盤卻叫不出來。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">解法 1 · 用 Mode 1</div>官方明講 AirTurn 的 Mode 1「不會干擾 iOS 的螢幕虛擬鍵盤」。這是選這個模式的另一個理由。</div>
+        <div class="callout" style="--c:var(--navy)"><div class="ct">解法 2 · 要打字時先關掉踏板</div>最土法但最可靠。整理曲庫時本來也用不到踏板。</div>
+      </div>
+    </section>
+
+    <section id="not-bug">
+      <div class="sec-label" style="--c:var(--amber)">not_a_bug</div>
+      <h2>05 · 這兩件事不是故障，別浪費時間排查</h2>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">一 · 踏板沒出現在 forScore 的 Devices 面板</div>這是正常的。官方說明：Devices 面板只給<strong>直接連進 forScore 的裝置</strong>用，目前是 AirTurn PED／PEDpro、iRig BlueBoard 與 Turn Touch 遙控器。<br><br>其他走「鍵盤模式」的踏板是在 iOS 設定 App 的藍牙區配對，本來就不會出現在那個面板。</div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">二 · 踩一下翻兩頁</div>依使用者社群的長期回報，forScore <strong>沒有內建防連翻（debounce）機制</strong>，所以重踩或彈跳有機會被判讀成兩次。<br><br>來源等級說明：這是論壇的普遍說法，不是官方文件的內容。可以做的補救是換一顆行程較長的踏板，或改變踩踏習慣（踩下去停一下再放）。</div>
+    </section>
+
+    <section id="hardware">
+      <div class="sec-label" style="--c:var(--red)">hardware</div>
+      <h2>06 · 什麼時候才該懷疑硬體</h2>
+      <p>把上面全部做過一輪之後，如果還是不行，才輪到懷疑裝置本身。判斷方法很簡單：<strong>換一台裝置試</strong>。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">01</div><div><h4>把踏板接到另一台 iPad 或 iPhone</h4><p>記得那台也要確認「完整鍵盤操作」是關閉的，否則等於沒測。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">02</div><div><h4>在別的 App 裡測</h4><p>開一個文字輸入框，踩踏板看有沒有游標移動或字元輸入——有反應就代表踏板本身是好的，問題在設定。</p></div></div>
+        <div class="step" style="--c:var(--red)"><div class="n">03</div><div><h4>兩台裝置都沒反應 → 這時才找廠商</h4><p>官方也建議這種情況去看該型號專屬的連線與疑難排解說明，或直接聯絡他們。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">從果果的售後經驗補一句</div>我們每天在處理 iPad 的售後問題，配件類的問題有一個共通模式：<strong>使用者的第一反應幾乎都是「東西壞了」，但實際上多數是設定被系統更新改動了</strong>。<br><br>所以我們的建議一律是：先在另一台裝置上測一次再判斷。這個習慣可以省下很多退換貨的來回。</div>
+    </section>
+
+    <section id="preflight">
+      <div class="sec-label" style="--c:var(--teal)">preflight</div>
+      <h2>07 · 上台前 3 分鐘的踏板檢查</h2>
+      <p>排練時好好的、上台就出事，多半是因為中間隔了一次系統更新或一次沒充電。演出前花三分鐘走一遍。</p>
+
+      <ul class="check">
+        <li><b>踏板有電嗎？</b>很久沒用的裝置，開機後先確認燈號正常。</li>
+        <li><b>「完整鍵盤操作」還是關閉的嗎？</b>系統大版本更新後值得再確認一次。</li>
+        <li><b>模式對嗎？</b>AirTurn 使用者確認在 Mode 1；如果中途重置過，它會跳回 mode 2。</li>
+        <li><b>真的踩一次試試看。</b>在今晚要用的那份譜上踩，不是在設定畫面裡看。</li>
+        <li><b>備援方案想好了嗎？</b>最壞的情況就是伸手點螢幕——事先知道自己還有這條路，臨場才不會慌。</li>
+      </ul>
+
+      <p>如果你還在選踏板、或想知道有沒有不用花錢的翻頁方式，可以看<a class="inline" href="../hands-free-page-turning/">四條免手翻頁路線怎麼選</a>——其中兩條完全免費。</p>
+
+      <p class="updated">本文查證：<b>2026 年 8 月</b>，對照 forScore 官方知識庫。iOS 設定的選單名稱會隨系統版本微調，以裝置上的實際文字為準。</p>
+    </section>
+
+    <section id="video">
+      <div class="sec-label" style="--c:var(--muted)">video</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p>踏板的連線設定用看的比用讀的快。下面這支是中文的實機教學，涵蓋配對流程與基本操作。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=Q1JliNkKr2g" target="_blank" rel="noopener" data-yt="Q1JliNkKr2g" aria-label="播放：AirTurn DUO BT-106 自動翻譜器使用教學">
+          <img loading="lazy" src="https://i.ytimg.com/vi/Q1JliNkKr2g/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/Q1JliNkKr2g/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>Air Turn DUO BT-106 自動翻譜器使用教學 I（with iOS 系統）</b><small>頻道：ICHEN LU · 推薦原因：BT-106 正是官方點名會受「完整鍵盤操作」影響的機型之一，這支可以先看清楚正常的配對流程長什麼樣，再回頭對照本文的排查順位 · 繁中</small></div>
+      </div>
+
+      <p style="font-size:.88rem;color:var(--muted)">關於「完整鍵盤操作」這個設定本身，目前找不到專門講解它與翻頁踏板衝突的中文影片，所以本文以官方文件的文字說明為準。</p>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">症狀清單、設定路徑與裝置模式建議，皆取自 forScore 官方知識庫，查證日期 2026 年 8 月 9 日：</p>
+      <details class="src-fold">
+        <summary>參考資料來源<span class="n">4 筆</span></summary>
+        <ul class="sources">
+          <li><a href="https://forscore.co/kb/full-keyboard-access/">forScore 官方知識庫 · My page turner is not behaving correctly</a>（第 00、01 節：三種症狀的原文、iOS 13 起的無障礙設定會干擾、關閉路徑，以及受影響裝置清單——PageFlip 全系列、iRig BlueTurn、AirTurn BT-105／106）</li>
+          <li><a href="https://forscore.co/kb/connecting-your-airturn-ped/">forScore 官方知識庫 · Connecting your AirTurn PED, BT200, or BT500 Series</a>（第 03、04 節：Mode 1 電池最省且不干擾虛擬鍵盤、Mode 2 以上因雙重訊號不建議、切換模式與重開機的完整步驟、重置後會回到 mode 2）</li>
+          <li><a href="https://forscore.co/kb/customizing-page-turners/">forScore 官方知識庫 · Customizing accessory or page turner shortcuts</a>（第 02 節：Page Turners &amp; Shortcuts 的位置、「聆聽」訊號的運作方式、淺灰色代表預設鍵位、點 x 清除設定）</li>
+          <li><a href="https://forscore.co/kb/devices-panel/">forScore 官方知識庫 · Understanding forScore's Devices panel</a>（第 05 節：Devices 面板只支援 AirTurn PED／PEDpro、iRig BlueBoard 與 Turn Touch，其他踏板不會出現在此屬正常）</li>
+        </ul>
+      </details>
+      <p class="sources" style="margin-top:14px">第 05 節「沒有防連翻機制」屬使用者社群的長期回報，非官方文件說法，文中已標明來源等級。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
