@@ -50,15 +50,36 @@ jobs:
       - name: 一鍵重生（首頁＋標籤頁＋sitemap＋dist＋Pagefind 索引，含洩漏檢查守門）
         run: bash scripts/build-all.sh
 
-      - name: 若有變更就提交回 main
+      # 為什麼要重試：這一步是把重生結果 commit 回 main，但 job 從開跑到這裡要 15～30 秒，
+      # 期間如果有人（連續上架多篇、後台首圖／導購）又推了新 commit，這次 push 就會被
+      # 遠端以 non-fast-forward 擋掉、整個 job 失敗。更麻煩的是後續 commit 多半不命中
+      # 上方 paths、不會再觸發這支，index.html 就會停在舊版而且不會自動恢復
+      # （2026-08-09 一次連續上架 8 篇，8 次觸發中有 3 次就是這樣掛掉的）。
+      #
+      # 重試刻意用「抓最新 → 重跑 build → 再 push」而不是 git pull --rebase：
+      # 產物必須對應「當下最新的來源」才有意義。若只把舊產物 rebase 上去，
+      # 期間新增的文章就會從首頁與搜尋索引裡消失；pagefind 是二進位索引檔，
+      # 衝突時也無法合理合併。重跑一輪只要十幾秒，換得結果一定正確。
+      - name: 若有變更就提交回 main（撞到別人 push 就重算重試）
         run: |
           git config user.name  "guoguo-guide-bot"
           git config user.email "guoguo-guide-bot@users.noreply.github.com"
-          # dist/ 與 index.neutral.html 皆 gitignored，不會被 add；只提交導外版要的產物。
-          git add -A index.html sitemap.xml llms.txt tag pagefind
-          if git diff --cached --quiet; then
-            echo "index.html / sitemap.xml / llms.txt / tag / pagefind 已是最新，無需提交。"
-          else
+          for attempt in 1 2 3; do
+            # dist/ 與 index.neutral.html 皆 gitignored，不會被 add；只提交導外版要的產物。
+            git add -A index.html sitemap.xml llms.txt tag pagefind
+            if git diff --cached --quiet; then
+              echo "index.html / sitemap.xml / llms.txt / tag / pagefind 已是最新，無需提交。"
+              exit 0
+            fi
             git commit -m "chore: 自動重生 index.html + sitemap.xml + llms.txt + tag/ + pagefind/ [skip ci]"
-            git push
-          fi
+            if git push; then
+              echo "已提交回 main（第 ${attempt} 次嘗試）"
+              exit 0
+            fi
+            echo "::warning::push 被遠端擋下（期間有新的 commit）。抓最新來源重算後重試（第 ${attempt} 次）"
+            git fetch origin main
+            git reset --hard origin/main   # 丟掉剛才那個 commit，改站在最新的來源上
+            bash scripts/build-all.sh      # 用最新來源重生一次，產物才對得上
+          done
+          echo "::error::重試 3 次仍無法提交回 main。請到 Actions 頁按 Run workflow 手動補跑一次。"
+          exit 1
