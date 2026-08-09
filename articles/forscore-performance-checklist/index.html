@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>上台前 10 分鐘該檢查什麼？forScore 曲單、同步與防呆設定 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式（共用 style.css 沒有的才寫在這）── */
+
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0 24px; }
+  .toc a { display: flex; align-items: baseline; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 14px; text-decoration: none; color: var(--ink); font-size: .93rem; transition: .12s; }
+  .toc a:hover { border-color: var(--navy); background: var(--navy-bg); }
+  .toc a i { font-family: var(--mono); font-style: normal; font-size: .72rem; color: var(--navy); font-weight: 700; flex: none; }
+
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 620px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 3px; }
+
+  /* ── 時間軸：從前一晚到臨時狀況 ── */
+  .timeline { display: flex; gap: 8px; align-items: stretch; margin: 20px 0; flex-wrap: wrap; }
+  .tl { flex: 1; min-width: 130px; border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 10px; background: var(--panel); padding: 13px 14px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .tl .when { font-family: var(--mono); font-size: .64rem; color: var(--c); font-weight: 700; }
+  .tl b { display: block; font-size: .95rem; color: var(--ink); margin: 4px 0 5px; }
+  .tl p { font-size: .84rem; color: var(--muted); margin: 0; }
+
+  /* ── 檢查表：可截圖帶走的那張 ── */
+  .sheet2 { border: 2px solid var(--navy); border-radius: 12px; padding: 20px 24px; background: #fff; margin: 20px 0; }
+  .sheet2 .hd { font-family: var(--mono); font-size: .7rem; color: var(--navy); font-weight: 700; letter-spacing: .06em; border-bottom: 1px solid var(--line); padding-bottom: 9px; margin-bottom: 12px; }
+  .sheet2 ul { list-style: none; margin: 0; }
+  .sheet2 li { padding: 8px 0 8px 30px; position: relative; font-size: .93rem; color: var(--body); border-bottom: 1px solid var(--grid); }
+  .sheet2 li:last-child { border-bottom: 0; }
+  .sheet2 li::before { content: '☐'; position: absolute; left: 4px; color: var(--navy); font-size: 1rem; }
+  .sheet2 li b { color: var(--ink); }
+  .sheet2 li small { display: block; color: var(--muted); font-size: .81rem; margin-top: 2px; }
+
+  /* 方向不一致示意 */
+  .orient { display: flex; gap: 14px; justify-content: center; align-items: flex-end; }
+  .dev { border: 2px solid var(--c); background: var(--cbg); border-radius: 8px; display: grid; place-items: center; text-align: center; font-size: .78rem; color: var(--c); font-weight: 700; padding: 6px; }
+  .dev.land { width: 118px; height: 88px; }
+  .dev.port { width: 88px; height: 118px; }
+  .dev small { display: block; font-weight: 400; color: var(--muted); font-size: .72rem; margin-top: 4px; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .timeline { flex-direction: column; }
+  }
+  @media (max-width: 560px) { .toc { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>上台前 10 分鐘</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#timeline" class="active">00 · 四個時間點</a>
+  <a href="#setlist">01 · 前一晚：排曲單</a>
+  <a href="#checklist">02 · 前 10 分鐘：檢查</a>
+  <div class="grp">合奏團體才需要</div>
+  <a href="#cue">03 · 多台同步翻頁</a>
+  <a href="#cue-traps">04 · 兩個必踩的坑</a>
+  <div class="grp">臨場</div>
+  <a href="#onstage">05 · 曲序被改怎麼辦</a>
+  <a href="#sheet">06 · 完整檢查表</a>
+  <a href="#video">延伸觀看</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>2018–2026 全型號在售</span><span>資訊透明・缺點揭露</span><span>終身售後諮詢</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">客戶指南 / iPad 讀譜 · 演出情境</div>
+    <h1>上台前 10 分鐘，該檢查什麼？</h1>
+    <p class="subtitle">排練都好好的，上台卻出事——螢幕暗掉、通知蓋住譜、團員有人跟不動。這些全都能在前一晚避免。</p>
+
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--amber)">
+        <div class="lt">直接回答</div>
+        <p class="big">上台前真正該做的只有幾件事，而且都能提前完成：<b>把今晚的曲子排成一份曲單</b>、<b>關掉 forScore 自己的 Auto-lock</b>、開勿擾模式、試踩踏板、確認備份是新的。</p>
+        <p class="sm">要注意的是 Auto-lock：forScore 有一個自己的設定，關掉之後<b>它會覆蓋裝置本身的自動鎖定設定</b>——所以你在系統設定裡調長是沒有用的。</p>
+        <p class="sm">合奏團體如果要用 Cue 一起翻頁，還要多做兩件事：<b>先統一全團的螢幕方向</b>，以及讓各聲部把自己的分譜先放進自己的 iPad——Cue 是遙控，不會傳檔案。</p>
+        <p class="alias-line">你可能是用別的說法找到這頁的：<b>forScore 曲單</b>、<b>forScore cue</b>、<b>iPad 樂譜多人同步翻頁</b>、<b>看譜螢幕會暗掉</b>——講的都是同一件事。</p>
+      </div>
+      <blockquote class="lead-src">「如果領奏者以橫向使用裝置，forScore 會送出整頁上／下的訊息，<strong>但只有其他同樣是橫向的裝置會有反應</strong>。同樣地，半頁翻頁的訊息只有那些使用直向、而且啟用了半頁翻頁的連線裝置才看得到效果。」<cite>forScore 15.0 官方使用手冊〈Cue〉，查核 2026 年 8 月</cite></blockquote>
+      <p class="lede">上面這一段就是「有人跟得動、有人不動」的完整答案——它不是故障，是方向沒統一。</p>
+      <p class="lede">這篇按時間順序走。用不到多台同步的人可以跳過第 03、04 節，其餘每一節都適用於獨奏者。</p>
+    </div>
+
+    <div class="toc">
+      <a href="#checklist"><i>02</i>前 10 分鐘檢查什麼</a>
+      <a href="#cue-traps"><i>04</i>有人跟不動的原因</a>
+      <a href="#onstage"><i>05</i>臨時被改曲序</a>
+      <a href="#sheet"><i>06</i>可截圖的檢查表</a>
+    </div>
+
+    <section id="timeline">
+      <div class="sec-label" style="--c:var(--navy)">timeline</div>
+      <h2>00 · 演出這件事，有四個時間點</h2>
+      <p>把它拆成四段之後，你會發現真正有時間壓力的只有第二段——其他三段都可以提前處理。</p>
+
+      <div class="timeline">
+        <div class="tl" style="--c:var(--navy)"><div class="when">前一晚</div><b>排曲單</b><p>把今晚要彈的順序排好，這是唯一需要動腦的一步。</p></div>
+        <div class="tl" style="--c:var(--red)"><div class="when">前 10 分鐘</div><b>跑檢查表</b><p>設定、電量、踏板、備份。全部是機械性動作。</p></div>
+        <div class="tl" style="--c:var(--teal)"><div class="when">演奏中</div><b>同步與翻頁</b><p>合奏團體才需要。獨奏者可以跳過。</p></div>
+        <div class="tl" style="--c:var(--amber)"><div class="when">臨時狀況</div><b>曲序被改</b><p>客人點歌、指揮跳段——靠搜尋秒切。</p></div>
+      </div>
+    </section>
+
+    <section id="setlist">
+      <div class="sec-label" style="--c:var(--navy)">setlist</div>
+      <h2>01 · 前一晚：把今晚的曲子排成一份曲單</h2>
+      <p>曲目清單是自動生成的，<strong>曲單完全是手動的</strong>——你排什麼順序就是什麼順序。這是官方對它的定位，也是它跟資料夾最大的差別。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你想做的事</th><th>做法</th></tr>
+          <tr><td>建立一份曲單</td><td>在曲單選單點「＋」輸入名稱<small>官方小技巧：點文字欄位右側的圖示，可以決定新曲單要插在清單最上面還是最下面</small></td></tr>
+          <tr><td>加曲子進去</td><td>點進曲單後按「＋」，會開全螢幕編輯器：左邊是曲單、右邊是曲庫，點右邊就加到左邊</td></tr>
+          <tr><td>一次加一整批</td><td>在曲庫那一側點打勾圖示，把下面列出的項目全部加入</td></tr>
+          <tr><td>換掉其中一首</td><td>點選曲單裡那一首讓它開始閃爍，再從曲庫選另一首取代它</td></tr>
+          <tr><td>調整順序</td><td>手動排序模式下直接拖，或點編輯後按住每列右邊的三橫線上下拖</td></tr>
+          <tr><td>排練曲目輪替</td><td>把排序切成「最久沒彈過（fresh）」<small>也可以隨機排序：把清單往下拉到出現刷新控制再放開，就會重洗</small></td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">還沒建區間書籤的人先補這一步</div>整本曲集裡的某一首要能<strong>單獨排進曲單</strong>，前提是它已經被建成有起訖頁的區間書籤。做法見<a class="inline" href="../forscore-bookmarks-split/">整本曲集怎麼拆成一首一首</a>——這是很多人排曲單時卡住的原因。</div>
+    </section>
+
+    <section id="checklist">
+      <div class="sec-label" style="--c:var(--red)">10_min</div>
+      <h2>02 · 前 10 分鐘：這幾件事一定要確認</h2>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">最重要的一項：關掉 forScore 的 Auto-lock</div>官方說明：forScore 的設定面板裡有一個<strong>專屬的 Auto-lock 選項</strong>。停用它之後，只要 forScore 顯示在畫面上，它就會<strong>覆蓋裝置本身的設定</strong>、不讓螢幕休眠。<br><br>換句話說：你在 iOS 設定裡把自動鎖定調成「永不」也沒用，要在 forScore 裡關。</div>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--red)"><div class="n">01</div><div><h4>關掉 forScore 的 Auto-lock</h4><p>沒關的下場：彈到第二樂章螢幕自己暗掉，而你兩隻手都在樂器上。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">02</div><div><h4>開勿擾模式</h4><p>沒開的下場：一則訊息通知蓋在譜的正上方。這是系統層的設定，不在 forScore 裡。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">03</div><div><h4>電量與電源</h4><p>長場次要準備行動電源或帶電池的譜架。iPad 亮著螢幕兩三小時很吃電。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">04</div><div><h4>踏板真的踩一次</h4><p>在今晚要用的那份譜上踩，不是在設定畫面裡看。沒反應的排查見<a class="inline" href="../forscore-pedal-not-working/">踏板沒反應怎麼辦</a>。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">05</div><div><h4>亮度先依場地調好</h4><p>教堂、餐廳的光線和排練室差很多。上台後才調會手忙腳亂。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">06</div><div><h4>確認備份是新的</h4><p>出門前花一分鐘。作法見<a class="inline" href="../forscore-backup-and-migrate/">備份、封存、同步差在哪</a>。</p></div></div>
+      </div>
+    </section>
+
+    <section id="cue">
+      <div class="sec-label" style="--c:var(--teal)">cue</div>
+      <h2>03 · 合奏團體：多台 iPad 一起翻頁（Cue）</h2>
+      <p style="font-size:.9rem;color:var(--muted)">用不到多台同步的人可以直接跳到<a class="inline" href="#onstage">第 05 節</a>，不影響這篇的其他內容。</p>
+
+      <p>Cue 是 forScore 的遙控系統：用 Wi-Fi 加藍牙去發現並和附近的裝置通訊。官方特別註明——雖然 Wi-Fi 必須開啟才能找到附近裝置，但<strong>使用 Cue 不需要網際網路</strong>。這對教會、戶外、婚禮場地很關鍵。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>角色</th><th>它會做什麼</th></tr>
+          <tr><td>Lead（領奏）</td><td>負責翻頁與切換曲目，其他人跟著他走</td></tr>
+          <tr><td>Follow Page Turns</td><td>只跟翻頁</td></tr>
+          <tr><td>Follow Program Changes</td><td>只跟換曲<small>官方定義：領奏者打開新的譜或書籤、或從一首的最後翻到下一首的開頭，就是一次 Program Change</small></td></tr>
+          <tr><td>Follow Both</td><td>翻頁與換曲都跟——合奏團員最常用這個</td></tr>
+          <tr><td>Dual Page mode</td><td>一台 forScore＋另一台裝 Cue App，兩台並排顯示連續兩頁</td></tr>
+        </table>
+      </div>
+
+      <p>角色在<strong>顯示選項疊層</strong>的 Cue 圖示裡選；點「open panel」或從工具選單選 Cue，可以打開連線面板看有哪些裝置、隨時改角色或離線。</p>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">如果團裡有人的 App 版本比較舊</div>forScore 14.4 起改用新的 Cue 2 協定，連線更快更穩。要接舊版本的裝置時，可以在 Cue 面板<strong>左上角的圓圈省略號</strong>切回原本的 Cue 1 協定。</div>
+    </section>
+
+    <section id="cue-traps">
+      <div class="sec-label" style="--c:var(--red)">traps</div>
+      <h2>04 · 兩個一定會踩到的坑</h2>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">坑一 · Cue 是遙控，不會把譜傳給大家</div>官方對 Cue 的定義是「遙控系統」，用來協調<strong>翻頁與換曲</strong>。它從頭到尾沒有在傳檔案——所以四重奏的每個聲部，都必須<strong>各自先把自己的分譜放進自己的 iPad</strong>。<br><br>排練前最常見的災難就是：以為連上 Cue 就會收到譜，結果現場才發現自己的 iPad 裡是空的。</div>
+
+      <p>第二個坑更隱蔽，因為它看起來完全像故障：明明大家都連上了，卻有人的畫面不動。</p>
+
+      <figure class="fig">
+        <div class="orient">
+          <div class="dev land" style="--c:var(--green);--cbg:var(--green-bg)">領奏<br>橫向<small>送出整頁訊號</small></div>
+          <div class="dev land" style="--c:var(--green);--cbg:var(--green-bg)">團員 A<br>橫向<small>✓ 跟得動</small></div>
+          <div class="dev port" style="--c:var(--red);--cbg:var(--red-bg)">團員 B<br>直向<small>✗ 沒反應</small></div>
+        </div>
+        <figcaption>領奏用橫向時送出的是「整頁上／下」訊號，<b>只有同樣橫向的裝置會回應</b>。團員 B 不是連線失敗，是方向不一樣。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">所以事前要統一兩件事</div>第一，全團的<strong>螢幕方向</strong>要一致（要嘛都橫向、要嘛都直向）。第二，如果領奏使用半頁翻頁，那麼只有<strong>直向且同樣啟用半頁翻頁</strong>的裝置才看得到效果——這一項也要一起講好。</div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">沒網路的場地要確認的事</div>Cue 需要 Wi-Fi 與藍牙<strong>兩個無線電都開著</strong>才能發現附近裝置，但不需要真的連上網際網路。另外首次使用時，系統會詢問區域網路權限，記得允許。</div>
+    </section>
+
+    <section id="onstage">
+      <div class="sec-label" style="--c:var(--amber)">onstage</div>
+      <h2>05 · 臨場：曲序被改、客人點歌</h2>
+      <p>婚禮客人點歌、牧師臨時加一首、指揮說跳過第三首——這是最考驗準備工作的時刻。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">用搜尋秒切</div>forScore 的搜尋不只找標題與分類，連 PDF 內文和你打的文字標註都搜得到（文字型 PDF）。這是曲目多的人最快的到達方式。</div>
+        <div class="callout" style="--c:var(--navy)"><div class="ct">從曲單移除是橘色的</div>移除是橘色的 Remove、刪除整份曲單才是紅色的 Delete。台上手滑的時候，這個顏色差別很重要——橘色那個不會動到你的原始檔案。</div>
+      </div>
+
+      <p>如果你發現自己常常在台上手忙腳亂地找譜，通常代表前一晚的<strong>曲單沒做完整</strong>：把可能會被點到的曲子都先放進同一份曲單，比臨場搜尋更保險。</p>
+    </section>
+
+    <section id="sheet">
+      <div class="sec-label" style="--c:var(--navy)">sheet</div>
+      <h2>06 · 一張可以截圖帶走的檢查表</h2>
+
+      <div class="sheet2">
+        <div class="hd">上台前 10 分鐘 · forScore 檢查表</div>
+        <ul>
+          <li><b>今晚的曲單已建好並排序</b><small>整本曲集裡的單曲，確認是用區間書籤加進來的</small></li>
+          <li><b>forScore 的 Auto-lock 已關閉</b><small>不是系統設定，是 App 內的那一個</small></li>
+          <li><b>勿擾模式已開</b></li>
+          <li><b>電量足夠，或電源／行動電源已就位</b></li>
+          <li><b>踏板已實際踩過一次</b><small>順便確認電量與模式</small></li>
+          <li><b>螢幕亮度已依場地調好</b></li>
+          <li><b>備份是新的</b></li>
+          <li><b>（合奏）全團螢幕方向一致</b><small>半頁翻頁的使用也要講好</small></li>
+          <li><b>（合奏）每個人的分譜都在自己的 iPad 裡</b><small>Cue 不會傳檔案</small></li>
+          <li><b>（合奏）Wi-Fi 與藍牙都開著、區域網路權限已允許</b></li>
+        </ul>
+      </div>
+
+      <p class="updated">本文查證：<b>2026 年 8 月</b>，對照 forScore 15.0 官方使用手冊與知識庫。介面位置會隨版本調整，以官方最新為準。</p>
+    </section>
+
+    <section id="video">
+      <div class="sec-label" style="--c:var(--muted)">video</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p>目前找不到專門講 Cue 多台同步的中文影片。下面這支是實際用電子譜演出兩年的心得分享，涵蓋了不少臨場會遇到的狀況。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=vJH_wdKoSj8" target="_blank" rel="noopener" data-yt="vJH_wdKoSj8" aria-label="播放：使用兩年電子樂譜的教學心得">
+          <img loading="lazy" src="https://i.ytimg.com/vi/vJH_wdKoSj8/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/vJH_wdKoSj8/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>到底好不好用？使用兩年電子樂譜的教學心得</b><small>頻道：薩克斯風不落轟小鄧老師 · 推薦原因：實際用電子譜演出兩年的優缺點整理，補上本文檢查表背後「為什麼要檢查這些」的真實經驗 · 繁中</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">曲單操作、Cue 角色與行為、Auto-lock 的覆蓋機制，皆取自 forScore 官方使用手冊與知識庫，查證日期 2026 年 8 月 9 日：</p>
+      <details class="src-fold">
+        <summary>參考資料來源<span class="n">4 筆</span></summary>
+        <ul class="sources">
+          <li><a href="https://forscore.co/documentation/cue/">forScore 15.0 官方使用手冊 · Cue</a>（第 03、04 節：Cue 是遙控系統、用 Wi-Fi 與藍牙、不需網際網路、五種角色與 Program Change 的定義、「只有同為橫向的裝置會回應」與半頁翻頁的條件、Cue 2 協定與切回 Cue 1 的位置）</li>
+          <li><a href="https://forscore.co/documentation/setlists/">forScore 15.0 官方使用手冊 · Setlists</a>（第 01 節：曲單完全手動、建立與插入位置的小技巧、全螢幕編輯器、一次加入全部、取代單首、拖曳排序、最久沒彈過與隨機重洗）</li>
+          <li><a href="https://forscore.co/kb/auto-lock/">forScore 官方知識庫 · Overriding your device's sleep setting</a>（第 02 節：forScore 專屬的 Auto-lock 選項，停用後會覆蓋裝置本身的休眠設定）</li>
+          <li><a href="https://forscore.co/documentation/basics/">forScore 15.0 官方使用手冊 · Basics</a>（第 05 節：顯示選項疊層的位置與內容，含半頁翻頁與 two-up 的切換）</li>
+        </ul>
+      </details>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
