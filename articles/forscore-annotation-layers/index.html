@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>同一份譜三種筆記：forScore 圖層標註怎麼分工 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式（共用 style.css 沒有的才寫在這）── */
+
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0 24px; }
+  .toc a { display: flex; align-items: baseline; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 14px; text-decoration: none; color: var(--ink); font-size: .93rem; transition: .12s; }
+  .toc a:hover { border-color: var(--navy); background: var(--navy-bg); }
+  .toc a i { font-family: var(--mono); font-style: normal; font-size: .72rem; color: var(--navy); font-weight: 700; flex: none; }
+
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 620px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 3px; }
+
+  /* ── 三層堆疊示意：一份譜疊了三種來源的筆記 ── */
+  .stack { display: grid; gap: 0; max-width: 420px; margin: 0 auto; }
+  .ly { border: 2px solid var(--c); background: var(--cbg); border-radius: 9px; padding: 11px 15px; position: relative; margin-bottom: -2px; }
+  .ly:nth-child(1) { margin-left: 0; }
+  .ly:nth-child(2) { margin-left: 16px; }
+  .ly:nth-child(3) { margin-left: 32px; }
+  .ly .no3 { font-family: var(--mono); font-size: .64rem; color: var(--c); font-weight: 700; }
+  .ly b { display: block; font-size: .95rem; color: var(--ink); margin: 2px 0 3px; }
+  .ly span { font-size: .82rem; color: var(--muted); }
+  .ly .off { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: .72rem; font-family: var(--mono); color: var(--c); border: 1px solid var(--c); border-radius: 999px; padding: 2px 9px; }
+
+  /* 分享格式三選一 */
+  .fmt { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 11px; margin: 20px 0; }
+  .fm { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 10px; padding: 14px 15px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .fm .t2 { font-family: var(--mono); font-size: .72rem; color: var(--c); font-weight: 700; }
+  .fm b { display: block; font-size: .93rem; color: var(--ink); margin: 4px 0 5px; }
+  .fm p { font-size: .84rem; color: var(--muted); margin: 0; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .fmt { grid-template-columns: 1fr; }
+    .ly:nth-child(2), .ly:nth-child(3) { margin-left: 0; }
+  }
+  @media (max-width: 560px) { .toc { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>標註圖層分工</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#problem" class="active">00 · 你的譜疊了三種筆記</a>
+  <a href="#three-layers">01 · 可照抄的三層配置</a>
+  <div class="grp">機制</div>
+  <a href="#two-kinds">02 · 頁圖層 vs 曲目圖層</a>
+  <a href="#panel">03 · 圖層面板怎麼操作</a>
+  <a href="#move">04 · 畫錯層怎麼搬</a>
+  <div class="grp">周邊</div>
+  <a href="#pencil">05 · Pencil 的兩個設定</a>
+  <a href="#share">06 · 傳出去會怎樣</a>
+  <a href="#honest">07 · 兩個要知道的限制</a>
+  <a href="#video">延伸觀看</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>2018–2026 全型號在售</span><span>資訊透明・缺點揭露</span><span>終身售後諮詢</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">客戶指南 / iPad 讀譜 · 標註</div>
+    <h1>同一份譜，三種筆記怎麼分開放？</h1>
+    <p class="subtitle">自己的指法、老師的指示、這次演出的臨時修改——換場合時不必擦掉重畫，把它們放在不同圖層就好。</p>
+
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--purple)">
+        <div class="lt">直接回答</div>
+        <p class="big">forScore 的標註是<b>分層</b>的：每一頁至少有一層、<b>最多可以有八個頁圖層</b>；另外每一份譜還能有<b>最多四個曲目圖層</b>，那種圖層在整份譜的每一頁都存在。</p>
+        <p class="sm">實際用法是把來源不同的筆記分開放：第 1 層自己的指法與呼吸、第 2 層老師或指揮的指示、第 3 層這次演出的臨時修改。下次換場合，把第 3 層<b>隱藏</b>就好。</p>
+        <p class="sm">要注意曲目圖層同步的是「圖層的顯示、隱藏與排序」，<b>不是墨跡本身</b>——每一頁的內容仍然各自獨立。</p>
+        <p class="alias-line">你可能是用別的說法找到這頁的：<b>forScore 標註</b>、<b>forScore 圖層</b>、<b>iPad 樂譜筆記</b>、<b>標註要怎麼分開</b>——講的都是同一件事。</p>
+      </div>
+      <blockquote class="lead-src">「曲目圖層是相連的標註圖層，在一份譜的每一頁上都可以使用。<strong>每一頁都有自己獨立的標註</strong>，但如果你在某一頁刪除、隱藏、顯示或重新排列曲目圖層，那些變更會在其他所有頁面上一起生效。每份譜最多可以建立四個這種圖層。」<cite>forScore 官方知識庫〈Working with annotation layers〉，查核 2026 年 8 月</cite></blockquote>
+      <p class="lede">先講這篇要解決的痛點：學期末想把老師這學期改過的指示清掉、只留自己的指法，結果只能一格一格擦，還擦錯了幾個。</p>
+      <p class="lede">如果你已經在譜上寫滿東西，這篇的第 04 節會教你怎麼把既有的標註搬到別的圖層——不用重畫。</p>
+    </div>
+
+    <div class="toc">
+      <a href="#three-layers"><i>01</i>可以照抄的三層配置</a>
+      <a href="#two-kinds"><i>02</i>兩種圖層差在哪</a>
+      <a href="#move"><i>04</i>畫錯層怎麼搬</a>
+      <a href="#share"><i>06</i>傳給學生會怎樣</a>
+    </div>
+
+    <section id="problem">
+      <div class="sec-label" style="--c:var(--navy)">problem</div>
+      <h2>00 · 你的譜上，其實疊了三種筆記</h2>
+      <p>用久了的譜面通常是這樣：自己標的指法和換氣點、老師或指揮上週講的話、還有這次演出臨時改的順序。它們畫在一起，但<strong>壽命完全不同</strong>。</p>
+
+      <figure class="fig">
+        <div class="stack">
+          <div class="ly" style="--c:var(--navy);--cbg:var(--navy-bg)"><div class="no3">LAYER 1 · 幾乎不會改</div><b>自己的指法與呼吸</b><span>跟著這首曲子一輩子</span></div>
+          <div class="ly" style="--c:var(--teal);--cbg:var(--teal-bg)"><div class="no3">LAYER 2 · 一學期／一季</div><b>老師或指揮的指示</b><span>換老師、換指揮就要換</span><span class="off">可隱藏</span></div>
+          <div class="ly" style="--c:var(--amber);--cbg:var(--amber-bg)"><div class="no3">LAYER 3 · 一次性</div><b>這次演出的臨時修改</b><span>下週就用不到了</span><span class="off">可隱藏</span></div>
+        </div>
+        <figcaption>把它們畫在同一層，換場合時就只能<b>用擦的</b>；分層之後，只要把不需要的那層關掉。</figcaption>
+      </figure>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">隱藏不等於刪除</div>把圖層隱藏起來，裡面的筆記還在——之後要用再打開就好。這是分層最實際的好處：<strong>你不需要在「留著會很亂」和「刪掉以後找不回」之間二選一</strong>。</div>
+    </section>
+
+    <section id="three-layers">
+      <div class="sec-label" style="--c:var(--purple)">setup</div>
+      <h2>01 · 可以直接照抄的三層配置</h2>
+      <p>不需要一開始就用滿八層。多數人三層就夠了，而且分法很固定。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>層</th><th>放什麼</th><th>什麼時候關掉它</th></tr>
+          <tr><td>第 1 層<small>建議命名：指法</small></td><td>指法、換氣、弓法、踏板記號——你自己研究出來的東西</td><td class="good">永遠不關</td></tr>
+          <tr><td>第 2 層<small>建議命名：老師／指揮</small></td><td>課堂或排練被指出的地方、詮釋要求、速度調整</td><td>換老師、換學期、換指揮時關掉</td></tr>
+          <tr><td>第 3 層<small>建議命名：這次演出</small></td><td>臨時刪減、跳段、與別人對好的記號</td><td>演出結束就關掉</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">教師版的分法不一樣</div>如果你是老師，最實用的分法是「<strong>學生自己畫的</strong>」與「<strong>我的示範</strong>」各一層——課堂上示範完，學生回家可以只留自己那層練，或反過來只看你的示範。</div>
+
+      <p>官方對圖層的定位就是這件事：把你的標記分開，讓你可以只處理其中一組，而不影響<strong>其他組</strong>。</p>
+    </section>
+
+    <section id="two-kinds">
+      <div class="sec-label" style="--c:var(--teal)">two_kinds</div>
+      <h2>02 · 兩種圖層：頁圖層與曲目圖層</h2>
+      <p>這是最多人搞混的地方，但只要抓住一句話就好：<strong>差別在「它存在於一頁，還是每一頁」</strong>。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>　</th><th>頁圖層 Page layers</th><th>曲目圖層 Score layers</th></tr>
+          <tr><td>存在範圍</td><td>只作用在那一頁</td><td>整份譜的每一頁都有</td></tr>
+          <tr><td>數量上限</td><td>每頁至少 1 層、<strong>最多 8 層</strong></td><td>每份譜<strong>最多 4 層</strong></td></tr>
+          <tr><td>在一頁上操作時</td><td>只影響那一頁</td><td class="bad">刪除、隱藏、顯示、重新排序會<strong>套用到所有頁面</strong></td></tr>
+          <tr><td>墨跡本身呢</td><td colspan="2" class="good">兩種都一樣：每一頁的標註內容各自獨立，不會被複製到其他頁</td></tr>
+          <tr><td>適合</td><td>某一頁特別複雜、需要臨時多分一層</td><td class="good">三層分工法——因為你希望「關掉老師那層」是整首一起關</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">最常見的誤解</div>「用了曲目圖層，我在第 1 頁畫的線會不會跑到第 20 頁？」<strong>不會。</strong>同步的是圖層這個「容器」的顯示與排序，不是裡面的墨跡。每一頁的內容依然是各自獨立的。</div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">超長檔案要有心理準備</div>官方說明：為了讓翻頁盡可能快，forScore 會在你儲存變更時把標註圖層<strong>壓平成一份工作副本</strong>。動到曲目圖層時，每一個受影響的頁面都要重新產生這份副本——所以<strong>非常長的檔案會有明顯延遲</strong>，官方建議適當時可以把它拆成較小的檔案。</div>
+    </section>
+
+    <section id="panel">
+      <div class="sec-label" style="--c:var(--navy)">panel</div>
+      <h2>03 · 圖層面板：五個你會用到的動作</h2>
+      <p>進標註模式後（在頁面上任意處長按最快），工具列上就有「Layers」按鈕。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">01</div><div><h4>建立新圖層：點「＋」</h4><p>新圖層會自動變成使用中的那一層（背景色稍深），點標題就能改名字。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">02</div><div><h4>切換要畫在哪一層：點清單裡的另一層</h4><p>之後畫的每一筆，都會放進當下使用中的那一層。這一步忘了做，就是最常見的「畫錯層」。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">03</div><div><h4>隱藏／顯示：點每一層右側的圖示</h4><p>右側共有三個圖示，分別是切換顯示、與後面那一層合併、以及複製這一層。</p></div></div>
+        <div class="step" style="--c:var(--teal)"><div class="n">04</div><div><h4>調整前後順序：拖曳</h4><p>清單由上到下代表由後到前——最上面那層的標註顯示在最後面，最下面那層顯示在最前面。</p></div></div>
+        <div class="step" style="--c:var(--red)"><div class="n">05</div><div><h4>刪除或清空：右滑，或點編輯後按紅色按鈕</h4><p>右滑那個動作也能<strong>只清空某一層的內容而不刪掉圖層本身</strong>——換學期時很好用。</p></div></div>
+      </div>
+    </section>
+
+    <section id="move">
+      <div class="sec-label" style="--c:var(--amber)">move</div>
+      <h2>04 · 已經畫錯層了？不用重畫</h2>
+      <p>這是本篇最實用的一節：你可能已經在同一層畫了三種筆記，現在想把它們分開。官方給了兩種搬移方式。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--navy)"><div class="ct">畫出來的標記：用選取工具</div>複製與貼上的功能，作用範圍是<strong>當下使用中的那一層</strong>。所以流程是：在原本那層選取要搬的筆跡 → 複製 → 清除 → 切換到目標圖層 → 貼上。</div>
+        <div class="callout" style="--c:var(--teal)"><div class="ct">文字標註：直接在編輯時搬</div>編輯一則文字標註時，點鍵盤正上方工具列裡的「Layers」（用外接鍵盤時在螢幕底部），就能把那一則移到別的圖層。</div>
+      </div>
+
+      <p>如果你的譜已經寫滿三年的筆記，不必一次搬完。從下次上課或演出<strong>開始分層</strong>就好，舊的留在原本那層當「基底」——這比一口氣整理完實際得多。</p>
+    </section>
+
+    <section id="pencil">
+      <div class="sec-label" style="--c:var(--purple)">pencil</div>
+      <h2>05 · 搭配 Apple Pencil 的兩個設定</h2>
+      <p>分層本身跟用什麼筆無關，但如果你用 Apple Pencil，有兩個設定會讓標註順很多。</p>
+
+      <div class="grid">
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)"><div class="c-tag">最有感</div><h4>防止手指繪圖</h4><p>開了之後只有筆能畫，手指仍可縮放與換工具——手掌壓在螢幕上不會再畫出鬼畫符。</p></div>
+        <div class="card" style="--c:var(--navy);--cbg:var(--navy-bg)"><div class="c-tag">看筆的世代</div><h4>雙點切換工具</h4><p>官方舉的例子之一：用 Apple Pencil 2 的雙點手勢切換標註工具。支援的手勢依 Pencil 型號而不同。</p></div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">小畫面的差異</div>官方提醒：當 forScore 使用較小的版面時（例如在 iPhone 上、或 iPad 分割顯示中），標註工具列<strong>不能移動，也不會顯示重做與清除按鈕</strong>——這時要長按復原與橡皮擦圖示來使用這些功能。</div>
+    </section>
+
+    <section id="share">
+      <div class="sec-label" style="--c:var(--teal)">share</div>
+      <h2>06 · 傳給別人時，你的標註會怎樣</h2>
+      <p>這是老師傳譜給學生時最實際的一題。三種格式，結果完全不同。</p>
+
+      <div class="fmt">
+        <div class="fm" style="--c:var(--muted)"><div class="t2">原始 PDF</div><b>乾淨的譜</b><p>對方看不到你的任何標註。適合單純傳譜。</p></div>
+        <div class="fm" style="--c:var(--navy)"><div class="t2">已標註 PDF</div><b>標註被燒進檔案</b><p>任何 App 都看得到，但改不掉。適合傳給不用 forScore 的學生。</p></div>
+        <div class="fm" style="--c:var(--green)"><div class="t2">4SC</div><b>可編輯的標註</b><p>連同曲目資料一起帶走。適合對方也用 forScore。</p></div>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">分層在分享時的意義</div>你隱藏起來的圖層不會出現在「已標註 PDF」裡。所以傳給學生之前，<strong>先把只有自己看得懂的那層關掉</strong>，對方拿到的就是乾淨、只有必要指示的版本。</div>
+    </section>
+
+    <section id="honest">
+      <div class="sec-label" style="--c:var(--red)">honest</div>
+      <h2>07 · 兩個要先知道的限制</h2>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">限制 1 · 連結與按鈕不屬於任何圖層</div>官方說明：所有畫出來的標記（包含圖章與形狀）以及文字標註都屬於某一個圖層，<strong>但連結（Links）與按鈕是獨立的</strong>，而且永遠顯示在頁面上其他標註的上方。所以你沒辦法用隱藏圖層的方式把它們藏起來。</div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">限制 2 · 區間書籤沒有自己的標註</div>如果你用書籤把整本曲集拆成一首一首，要知道那些虛擬曲目<strong>沒有自己專屬的標註</strong>——標註屬於底下那一頁。想讓同一段譜有兩套完全獨立的筆記，要用的是複製（Clone）功能，作法見<a class="inline" href="../forscore-bookmarks-split/">整本曲集怎麼拆成一首一首</a>。</div>
+
+      <p class="updated">本文查證：<b>2026 年 8 月</b>，對照 forScore 15.x 的官方知識庫與使用手冊。標註工具列在 15.x 有改版，介面位置以官方最新為準。</p>
+    </section>
+
+    <section id="video">
+      <div class="sec-label" style="--c:var(--muted)">video</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p>標註這件事用看的最快。下面這支是中文的實機示範，可以先看懂基本的畫記流程，再回來套用本文的分層方法。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=hXVQhRy1X-M" target="_blank" rel="noopener" data-yt="hXVQhRy1X-M" aria-label="播放：蘋果 iPad 電子譜 修改、註解、畫重點">
+          <img loading="lazy" src="https://i.ytimg.com/vi/hXVQhRy1X-M/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/hXVQhRy1X-M/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>「蘋果 ipad」電子譜 修改、註解、畫重點</b><small>頻道：蘇俊琪的國樂世界 · 推薦原因：中文的實機標註示範，補上本文沒有畫面說明的部分——先看懂怎麼畫，再用本文的三層配置去組織它 · 繁中</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">圖層的數量上限、兩種圖層的行為差異、面板操作與搬移方式，皆取自 forScore 官方知識庫與使用手冊，查證日期 2026 年 8 月 9 日：</p>
+      <details class="src-fold">
+        <summary>參考資料來源<span class="n">3 筆</span></summary>
+        <ul class="sources">
+          <li><a href="https://forscore.co/kb/working-with-annotation-layers/">forScore 官方知識庫 · Working with annotation layers</a>（第 01～04、07 節：每頁至少一層最多八層、曲目圖層每份譜最多四層且變更套用到所有頁面、每頁標註各自獨立、面板的三個圖示與排序意義、右滑刪除或清空、用選取工具與文字標註工具列搬移圖層、連結與按鈕不屬於任何圖層、長檔案壓平工作副本的延遲）</li>
+          <li><a href="https://forscore.co/documentation/annotation/">forScore 15.0 官方使用手冊 · Annotation</a>（第 03、05 節：圖層面板位置、小版面時工具列不可移動且需長按使用重做與清除）</li>
+          <li><a href="https://forscore.co/kb/why-do-bookmarks-stop-me-from-turning-the-page/">forScore 官方知識庫 · Why do bookmarks stop me from turning the page?</a>（第 07 節：區間書籤有自己的曲目資料，但沒有頁面專屬資訊，標註屬於底下的頁面）</li>
+        </ul>
+      </details>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
