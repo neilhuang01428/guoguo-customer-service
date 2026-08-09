@@ -107,6 +107,43 @@
     "ipad-pro-11-2024-refurbished-M4",
     "ipad-pro-13-2024-refurbished-M4"
    ]
+  },
+  "ipad-3": {
+   "name": "樂人 iPad 推薦商品",
+   "products": [
+    "ipad-pro-3th-2018-refurbished",
+    "ipad-pro-4th-2020-refurbished",
+    "ipad-pro-5th-2021-refurbished-M1",
+    "ipad-pro-6th-2022-refurbished-M2",
+    "ipad-air-13-M2-2024-refurbished",
+    "ipad-air-13-M3-2025-refurbished",
+    "ipad-pro-13-2024-refurbished-M4",
+    "ipad-music-stand",
+    "typec-to-3-5mm-audio-adapter",
+    "polywell-typec-to-usb3-otg-cable",
+    "polywell-typec-7in1-hub-100w",
+    "polywell-typec-to-3-5mm-audio",
+    "polywell-aux-3-5mm-male-to-male-2m",
+    "polywell-usb3-1-sd-microsd-cardreader"
+   ]
+  },
+  "g20260809194205": {
+   "name": "電繪愛好者推薦好物",
+   "products": [
+    "apple-pencil-refurbished",
+    "easypaper-pro-magnetic-paper-feel-screen-protector",
+    "ipad-screen-protector",
+    "easypaper-note-screen-protector",
+    "drawing-screen-protector-ipad-series",
+    "ipad-air-4-2020-refurbished",
+    "ipad-air-5-2021-refurbished",
+    "ipad-pro-4th-2020-refurbished",
+    "ipad-pro-5th-2021-refurbished-M1",
+    "ipad-pro-6th-2022-refurbished-M2",
+    "ipad-air-13-M2-2024-refurbished",
+    "ipad-air-13-M3-2025-refurbished",
+    "ipad-pro-13-2024-refurbished-M4"
+   ]
   }
  },
  "ipad-jianying-pencil-guide": {
@@ -897,6 +934,185 @@
    "ipad-pro-11-4th-2018-refurbished-M2",
    "ipad-pro-6th-2022-refurbished-M2",
    "ipad-pro-11-2024-refurbished-M4",
+   "ipad-pro-13-2024-refurbished-M4"
+  ]
+ },
+ "forscore-bookmarks-split": {
+  "heading": "樂人 iPad 推薦商品",
+  "group": "ipad-3",
+  "products": [
+   "ipad-pro-3th-2018-refurbished",
+   "ipad-pro-4th-2020-refurbished",
+   "ipad-pro-5th-2021-refurbished-M1",
+   "ipad-pro-6th-2022-refurbished-M2",
+   "ipad-air-13-M2-2024-refurbished",
+   "ipad-air-13-M3-2025-refurbished",
+   "ipad-pro-13-2024-refurbished-M4",
+   "ipad-music-stand",
+   "typec-to-3-5mm-audio-adapter",
+   "polywell-typec-to-usb3-otg-cable",
+   "polywell-typec-7in1-hub-100w",
+   "polywell-typec-to-3-5mm-audio",
+   "polywell-aux-3-5mm-male-to-male-2m",
+   "polywell-usb3-1-sd-microsd-cardreader"
+  ]
+ },
+ "forscore-first-eight-things": {
+  "heading": "",
+  "group": "ipad-3",
+  "products": [
+   "ipad-pro-3th-2018-refurbished",
+   "ipad-pro-4th-2020-refurbished",
+   "ipad-pro-5th-2021-refurbished-M1",
+   "ipad-pro-6th-2022-refurbished-M2",
+   "ipad-air-13-M2-2024-refurbished",
+   "ipad-air-13-M3-2025-refurbished",
+   "ipad-pro-13-2024-refurbished-M4",
+   "ipad-music-stand",
+   "typec-to-3-5mm-audio-adapter",
+   "polywell-typec-to-usb3-otg-cable",
+   "polywell-typec-7in1-hub-100w",
+   "polywell-typec-to-3-5mm-audio",
+   "polywell-aux-3-5mm-male-to-male-2m",
+   "polywell-usb3-1-sd-microsd-cardreader"
+  ]
+ },
+ "forscore-annotation-layers": {
+  "heading": "",
+  "group": "ipad-3",
+  "products": [
+   "ipad-pro-3th-2018-refurbished",
+   "ipad-pro-4th-2020-refurbished",
+   "ipad-pro-5th-2021-refurbished-M1",
+   "ipad-pro-6th-2022-refurbished-M2",
+   "ipad-air-13-M2-2024-refurbished",
+   "ipad-air-13-M3-2025-refurbished",
+   "ipad-pro-13-2024-refurbished-M4",
+   "ipad-music-stand",
+   "typec-to-3-5mm-audio-adapter",
+   "polywell-typec-to-usb3-otg-cable",
+   "polywell-typec-7in1-hub-100w",
+   "polywell-typec-to-3-5mm-audio",
+   "polywell-aux-3-5mm-male-to-male-2m",
+   "polywell-usb3-1-sd-microsd-cardreader"
+  ]
+ },
+ "ipad-for-sheet-music": {
+  "heading": "",
+  "group": "ipad-3",
+  "products": [
+   "ipad-pro-3th-2018-refurbished",
+   "ipad-pro-4th-2020-refurbished",
+   "ipad-pro-5th-2021-refurbished-M1",
+   "ipad-pro-6th-2022-refurbished-M2",
+   "ipad-air-13-M2-2024-refurbished",
+   "ipad-air-13-M3-2025-refurbished",
+   "ipad-pro-13-2024-refurbished-M4",
+   "ipad-music-stand",
+   "typec-to-3-5mm-audio-adapter",
+   "polywell-typec-to-usb3-otg-cable",
+   "polywell-typec-7in1-hub-100w",
+   "polywell-typec-to-3-5mm-audio",
+   "polywell-aux-3-5mm-male-to-male-2m",
+   "polywell-usb3-1-sd-microsd-cardreader"
+  ]
+ },
+ "forscore-backup-and-migrate": {
+  "heading": "",
+  "group": "ipad-3",
+  "products": [
+   "ipad-pro-3th-2018-refurbished",
+   "ipad-pro-4th-2020-refurbished",
+   "ipad-pro-5th-2021-refurbished-M1",
+   "ipad-pro-6th-2022-refurbished-M2",
+   "ipad-air-13-M2-2024-refurbished",
+   "ipad-air-13-M3-2025-refurbished",
+   "ipad-pro-13-2024-refurbished-M4",
+   "ipad-music-stand",
+   "typec-to-3-5mm-audio-adapter",
+   "polywell-typec-to-usb3-otg-cable",
+   "polywell-typec-7in1-hub-100w",
+   "polywell-typec-to-3-5mm-audio",
+   "polywell-aux-3-5mm-male-to-male-2m",
+   "polywell-usb3-1-sd-microsd-cardreader"
+  ]
+ },
+ "hands-free-page-turning": {
+  "heading": "",
+  "group": "ipad-3",
+  "products": [
+   "ipad-pro-3th-2018-refurbished",
+   "ipad-pro-4th-2020-refurbished",
+   "ipad-pro-5th-2021-refurbished-M1",
+   "ipad-pro-6th-2022-refurbished-M2",
+   "ipad-air-13-M2-2024-refurbished",
+   "ipad-air-13-M3-2025-refurbished",
+   "ipad-pro-13-2024-refurbished-M4",
+   "ipad-music-stand",
+   "typec-to-3-5mm-audio-adapter",
+   "polywell-typec-to-usb3-otg-cable",
+   "polywell-typec-7in1-hub-100w",
+   "polywell-typec-to-3-5mm-audio",
+   "polywell-aux-3-5mm-male-to-male-2m",
+   "polywell-usb3-1-sd-microsd-cardreader"
+  ]
+ },
+ "forscore-pedal-not-working": {
+  "heading": "",
+  "group": "ipad-3",
+  "products": [
+   "ipad-pro-3th-2018-refurbished",
+   "ipad-pro-4th-2020-refurbished",
+   "ipad-pro-5th-2021-refurbished-M1",
+   "ipad-pro-6th-2022-refurbished-M2",
+   "ipad-air-13-M2-2024-refurbished",
+   "ipad-air-13-M3-2025-refurbished",
+   "ipad-pro-13-2024-refurbished-M4",
+   "ipad-music-stand",
+   "typec-to-3-5mm-audio-adapter",
+   "polywell-typec-to-usb3-otg-cable",
+   "polywell-typec-7in1-hub-100w",
+   "polywell-typec-to-3-5mm-audio",
+   "polywell-aux-3-5mm-male-to-male-2m",
+   "polywell-usb3-1-sd-microsd-cardreader"
+  ]
+ },
+ "forscore-performance-checklist": {
+  "heading": "",
+  "group": "ipad-3",
+  "products": [
+   "ipad-pro-3th-2018-refurbished",
+   "ipad-pro-4th-2020-refurbished",
+   "ipad-pro-5th-2021-refurbished-M1",
+   "ipad-pro-6th-2022-refurbished-M2",
+   "ipad-air-13-M2-2024-refurbished",
+   "ipad-air-13-M3-2025-refurbished",
+   "ipad-pro-13-2024-refurbished-M4",
+   "ipad-music-stand",
+   "typec-to-3-5mm-audio-adapter",
+   "polywell-typec-to-usb3-otg-cable",
+   "polywell-typec-7in1-hub-100w",
+   "polywell-typec-to-3-5mm-audio",
+   "polywell-aux-3-5mm-male-to-male-2m",
+   "polywell-usb3-1-sd-microsd-cardreader"
+  ]
+ },
+ "which-ipad-for-procreate": {
+  "heading": "",
+  "group": "g20260809194205",
+  "products": [
+   "apple-pencil-refurbished",
+   "easypaper-pro-magnetic-paper-feel-screen-protector",
+   "ipad-screen-protector",
+   "easypaper-note-screen-protector",
+   "drawing-screen-protector-ipad-series",
+   "ipad-air-4-2020-refurbished",
+   "ipad-air-5-2021-refurbished",
+   "ipad-pro-4th-2020-refurbished",
+   "ipad-pro-5th-2021-refurbished-M1",
+   "ipad-pro-6th-2022-refurbished-M2",
+   "ipad-air-13-M2-2024-refurbished",
+   "ipad-air-13-M3-2025-refurbished",
    "ipad-pro-13-2024-refurbished-M4"
   ]
  }
