@@ -2107,7 +2107,8 @@
         "q": "各機型的螢幕亮度差多少？室內夠用嗎？",
         "a": "依 Apple 官方技術規格，iPad Pro 是 SDR 1000 尼特、13 吋 iPad Air 是 600 尼特，11 吋 iPad Air、iPad（A16）與 iPad mini 都是 500 尼特。教會、教室、音樂廳、餐廳這類場地，500 尼特綽綽有餘；只有經常在正午戶外演出的人，才值得為亮度多花錢。"
       }
-    ]
+    ],
+    "ogImage": "assets/og/ipad-for-sheet-music-cover.png"
   },
   {
     "slug": "forscore-backup-and-migrate",
