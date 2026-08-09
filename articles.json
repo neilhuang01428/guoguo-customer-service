@@ -1955,7 +1955,8 @@
         "q": "刪掉書籤會不會連原本的譜一起刪掉？",
         "a": "不會。官方明講，從曲目選單或書籤選單裡刪除書籤，不會移除、也不會改變來源的 PDF 檔案。書籤只是一層「怎麼看這份檔案」的指示，不是檔案本身，所以建錯了砍掉重來完全沒有風險。"
       }
-    ]
+    ],
+    "ogImage": "assets/og/forscore-bookmarks-split-cover.png"
   },
   {
     "slug": "forscore-first-eight-things",
