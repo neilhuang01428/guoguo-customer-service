@@ -423,6 +423,15 @@
   - 本篇回答：為什麼有的團員跟得動、有的畫面不動？
   - 本篇回答：團員的 forScore 版本比較舊，連得上嗎？
   - 本篇回答：上台前 10 分鐘最該檢查什麼？
+- [Procreate 電繪要買哪台 iPad？](https://www.guoguo.tw/guide/articles/which-ipad-for-procreate/)：決定圖層上限的是記憶體和畫布尺寸，不是晶片新舊——所以買最新的不等於圖層最多：以 A4、300dpi 來算，2021 年的 iPad Pro（16GB）有 211 層，2025 年的 Pro 基本容量（12GB）只有 150 層。天花板只有兩檔，分水嶺在 8GB。附 2018–2026 全型號圖層對照表、四支 Apple Pencil 的壓感差異、哪些機型不是全平面貼合，以及做動畫最多能撐幾秒。（選購、Procreate、電繪、相容對照／2026-08-09）
+  - 本篇回答：Procreate 最多可以開幾層？
+  - 本篇回答：想用 Procreate 畫圖，一定要買 iPad Pro 嗎？
+  - 本篇回答：iPad 基本款可以畫 Procreate 嗎？
+  - 本篇回答：Apple Pencil USB-C 款可以拿來畫畫嗎？
+  - 本篇回答：為什麼我畫到一半就不能新增圖層了？
+  - 本篇回答：買 iPad Pro 要選多大容量？跟畫圖有關係嗎？
+  - 本篇回答：iPad Air 2 還能裝 Procreate 嗎？
+  - 本篇回答：用 iPad 做動畫，最少要買哪一台？
 
 ## 其他
 
