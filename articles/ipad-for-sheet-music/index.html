@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>讀譜用的 iPad 怎麼挑？13 吋、11 吋、mini 與二手機的取捨 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式（共用 style.css 沒有的才寫在這）── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 導言：迷你目錄（窄螢幕沒有左側 nav，這排就是導覽） */
+  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0 24px; }
+  .toc a { display: flex; align-items: baseline; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 14px; text-decoration: none; color: var(--ink); font-size: .93rem; transition: .12s; }
+  .toc a:hover { border-color: var(--navy); background: var(--navy-bg); }
+  .toc a i { font-family: var(--mono); font-style: normal; font-size: .72rem; color: var(--navy); font-weight: 700; flex: none; }
+
+  /* 寬表格橫向捲動 */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 620px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 3px; }
+
+  /* ── 紙張比例圖：把「螢幕跟一張 A4 差多少」畫成實際比例 ──
+     這是全篇最關鍵的一個判斷，用數字講不如直接看面積差。
+     三個方框的寬高比＝真實比例（以官方矩形對角線與 4:3 換算）。 */
+  .paper { display: flex; align-items: flex-end; justify-content: center; gap: 18px; flex-wrap: wrap; }
+  .paper .sheet { position: relative; border: 2px solid var(--c); background: var(--cbg); border-radius: 4px; display: grid; place-items: center; text-align: center; }
+  .paper .sheet .lab { font-size: .82rem; color: var(--c); font-weight: 700; line-height: 1.45; }
+  .paper .sheet .lab small { display: block; color: var(--muted); font-weight: 400; font-size: .72rem; margin-top: 3px; }
+  .paper .a4 { width: 126px; height: 178px; --c: var(--muted); --cbg: #fff; border-style: dashed; }
+  .paper .p13 { width: 118px; height: 157px; --c: var(--green); --cbg: var(--green-bg); }
+  .paper .p11 { width: 100px; height: 133px; --c: var(--navy); --cbg: var(--navy-bg); }
+  .paper .pmini { width: 76px; height: 101px; --c: var(--amber); --cbg: var(--amber-bg); }
+
+  /* 翻案卡：省錢的三件事 */
+  .myth { display: grid; gap: 11px; margin: 20px 0; }
+  .mi { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 10px; padding: 14px 17px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .mi .q { font-size: .95rem; color: var(--muted); }
+  .mi .q::before { content: '常聽到 · '; font-family: var(--mono); font-size: .68rem; color: var(--c); }
+  .mi .a { font-size: 1.04rem; color: var(--ink); font-weight: 700; margin: 5px 0 7px; }
+  .mi p { font-size: .89rem; margin: 0; }
+
+  /* 需要業主補的段落標記 */
+  .todo-mark { background: var(--amber-bg); border: 1px dashed var(--amber); border-radius: 8px; padding: 12px 16px; font-size: .88rem; color: var(--amber); margin: 14px 0; }
+  .todo-mark b { color: var(--amber); font-family: var(--mono); font-size: .68rem; display: block; margin-bottom: 4px; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .paper { gap: 10px; }
+    .paper .a4 { width: 96px; height: 136px; }
+    .paper .p13 { width: 90px; height: 120px; }
+    .paper .p11 { width: 76px; height: 101px; }
+    .paper .pmini { width: 58px; height: 77px; }
+  }
+  @media (max-width: 560px) { .toc { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>讀譜 iPad 怎麼挑</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#size" class="active">00 · 唯一該加錢的規格</a>
+  <a href="#three-sizes">01 · 三種尺寸的實感</a>
+  <div class="grp">這三樣可以省</div>
+  <a href="#storage">02 · 容量不用升</a>
+  <a href="#performance">03 · 效能不用追</a>
+  <a href="#glare">04 · 抗眩光玻璃</a>
+  <div class="grp">這一樣不能省</div>
+  <a href="#os">05 · 系統版本門檻</a>
+  <div class="grp">下手之前</div>
+  <a href="#used">06 · 二手機怎麼挑</a>
+  <a href="#accessories">07 · 配件要不要買</a>
+  <a href="#budget">08 · 三種預算的組合</a>
+  <a href="#video">延伸觀看</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>2018–2026 全型號在售</span><span>資訊透明・缺點揭露</span><span>終身售後諮詢</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">客戶指南 / iPad 選購 · 讀譜用途</div>
+    <h1>讀譜用的 iPad 怎麼挑？</h1>
+    <p class="subtitle">不必買最新、也不必買最大容量。這篇把讀譜真正吃到的規格挑出來，其餘三個常見的加價項，我們會告訴你為什麼可以省。</p>
+
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--green)">
+        <div class="lt">直接回答</div>
+        <p class="big">讀譜這個用途，唯一真正該加錢的規格是<b>螢幕尺寸</b>。13 吋機型的顯示面積大約是一張 A4 的八成，是長時間坐在樂器前看譜的首選；11 吋約六成，配合重排功能也能用；iPad mini 約三成，當備援可以、當主力會很吃力。</p>
+        <p class="sm">相對地，讀譜幾乎不吃效能，樂譜檔案也不是影片那種量級——<b>容量、晶片世代、抗眩光玻璃這三項都可以省</b>。</p>
+        <p class="sm">真正該確認的是系統版本：forScore 目前需要 <b>iPadOS 17 以上</b>。好消息是這個門檻比多數人想的寬鬆很多，2017、2018 年的機型都還在名單上。</p>
+        <p class="alias-line">你可能是用別的說法找到這頁的：<b>iPad 看譜 買哪台</b>、<b>看譜 iPad 尺寸</b>、<b>樂譜 平板推薦</b>、<b>二手 iPad 看譜</b>——講的都是同一件事。</p>
+      </div>
+      <blockquote class="lead-src">「forScore 相容於執行 iPadOS 17 或以上版本的 iPad、iOS 17 或以上的 iPhone、macOS 14 或以上的 Mac，以及 visionOS 1.3 或以上的 Vision Pro。」<cite>forScore 官方知識庫〈Minimum requirements〉，查核 2026 年 8 月</cite></blockquote>
+      <p class="lede">我們同時在賣 2018 到 2026 年的各代 iPad，看譜的客人在選機時，問題幾乎都集中在同樣四件事：要多大、要多少容量、舊機還能不能用、要不要買 Pro。</p>
+      <p class="lede">下面就按這個順序走，並且把每一項的官方數據附上。凡是我們沒有實測數據的地方，也會直接說沒有。</p>
+    </div>
+
+    <div class="toc">
+      <a href="#three-sizes"><i>01</i>13／11／mini 比一張紙</a>
+      <a href="#storage"><i>02</i>要買多大容量</a>
+      <a href="#os"><i>05</i>舊機還能不能用</a>
+      <a href="#used"><i>06</i>二手機的檢查重點</a>
+    </div>
+
+    <section id="size">
+      <div class="sec-label" style="--c:var(--navy)">one_rule</div>
+      <h2>00 · 一條硬規則：把預算集中在螢幕尺寸</h2>
+      <p>讀譜跟其他 iPad 用途最不一樣的地方在於——你需要的是<strong>面積</strong>，不是速度。一頁譜上有多少音符是印刷廠決定的，螢幕小，字就小，沒有任何軟體設定能把這件事變不見。</p>
+
+      <p>而效能、容量、螢幕材質這些會拉高售價的規格，在讀譜這個用途上幾乎感覺不到差別。所以選機邏輯很單純：先決定尺寸，再往回找最便宜、<strong>還能升到 iPadOS 17</strong> 的那一代。</p>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">一個例外：你如果也要用它畫畫、剪片、玩遊戲</div>那就不能只看讀譜的需求，得回到一般的選機邏輯去衡量。這篇談的是「主要拿來看譜」的情況。</div>
+    </section>
+
+    <section id="three-sizes">
+      <div class="sec-label" style="--c:var(--teal)">sizes</div>
+      <h2>01 · 三種尺寸，跟一張 A4 比起來差多少</h2>
+      <p>直接看比例。下面四個方框是按真實比例畫的——虛線那張是 A4 紙，其餘三個是 iPad 直向使用時的顯示區域。</p>
+
+      <figure class="fig">
+        <div class="paper">
+          <div class="sheet a4"><div class="lab">A4 紙<small>21 × 29.7 cm</small></div></div>
+          <div class="sheet p13"><div class="lab">13 吋<small>約 A4 的 83%</small></div></div>
+          <div class="sheet p11"><div class="lab">11 吋<small>約 A4 的 59%</small></div></div>
+          <div class="sheet pmini"><div class="lab">mini<small>約 A4 的 34%</small></div></div>
+        </div>
+        <figcaption>以 Apple 官方標示的<b>矩形對角線</b>（13 吋機型 12.9 吋、11 吋機型 10.86 吋、mini 8.3 吋）搭配 4:3 比例換算。官方另註明螢幕為圓角設計，實際可視區比矩形再略小一些。</figcaption>
+      </figure>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>尺寸</th><th>實際感受</th><th>適合誰</th><th>要注意</th></tr>
+          <tr><td>13 吋</td><td class="good">最接近印刷樂譜，原尺寸就看得清楚</td><td>坐在樂器前長時間練習、演出、看總譜的人</td><td>重量與體積都比較有感，站著拿會累</td></tr>
+          <tr><td>11 吋</td><td>約一本口袋總譜的大小，多數人需要放大或用重排</td><td>攜帶優先、或譜面本來就不密的人</td><td>密密麻麻的總譜、小字的伴奏譜會吃力</td></tr>
+          <tr><td>iPad mini</td><td class="bad">只有 A4 的三分之一，讀譜很勉強</td><td>當第二台、遙控、或臨時備援</td><td>不建議當主力讀譜機</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">11 吋的補救方法：Reflow 重排</div>forScore 有一個把譜重新繪製、放大成一長條連續閱讀的功能。它讓 11 吋在小字譜上還有救，也是視力需求者的關鍵功能——買 11 吋之前，先確認你能接受這種閱讀方式。</div>
+    </section>
+
+    <section id="storage">
+      <div class="sec-label" style="--c:var(--purple)">myth_1</div>
+      <h2>02 · 可以省的第一件事：容量</h2>
+
+      <div class="myth">
+        <div class="mi" style="--c:var(--purple)">
+          <div class="q">「我要存幾百本譜，是不是要買大容量？」</div>
+          <div class="a">樂譜是 PDF，不是影片——容量通常不是你的瓶頸。</div>
+          <p>影片、遊戲、原始檔照片才是吃容量的東西。以掃描樂譜來說，官方建議的做法本身就是往「小檔案」走：用灰階而不是彩色，解析度控制在低檔，因為樂譜的顏色資訊對閱讀沒有意義。</p>
+        </div>
+      </div>
+
+      <div class="todo-mark"><b>誠實說明</b>我們沒有針對「幾百份樂譜實際佔多少 GB」做過大規模抽樣，所以這篇不給你一個具體的 GB 數字。要精準判斷，最快的方法是：<strong>把你現在電腦裡的樂譜資料夾按右鍵看一下總大小</strong>，那就是你真正需要的空間，再往上抓兩三倍當成長空間即可。</div>
+
+      <p>另外一個常被忽略的省空間做法：整本曲集<strong>不要切成一首一檔</strong>。用書籤做虛擬切分，檔案數量從頭到尾不會增加——作法見<a class="inline" href="../forscore-bookmarks-split/">整本曲集怎麼在 forScore 拆成一首一首</a>。</p>
+    </section>
+
+    <section id="performance">
+      <div class="sec-label" style="--c:var(--purple)">myth_2</div>
+      <h2>03 · 可以省的第二件事：晶片世代</h2>
+
+      <div class="myth">
+        <div class="mi" style="--c:var(--purple)">
+          <div class="q">「舊晶片會不會翻頁卡卡的？」</div>
+          <div class="a">讀譜是顯示靜態 PDF，這件事所有還能跑 iPadOS 17 的 iPad 都做得到。</div>
+          <p>真正會讓 App 變慢、甚至在合併檔案時關閉的，通常不是晶片老，而是<strong>你的 PDF 檔本身太肥</strong>——用 600 dpi 彩色掃出來的譜，任何機型都會吃力。</p>
+        </div>
+      </div>
+
+      <p>換句話說，這一項的解法在軟體端而不是硬體端：掃描時用灰階、解析度別開太高，比升級一台機器有效得多。</p>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">什麼情況才需要在意效能</div>如果你同一台 iPad 還要拿來繪圖、剪片或玩比較重的遊戲，那晶片與記憶體就會變成重點——但那是另一組需求，不該由「看譜」來決定。</div>
+    </section>
+
+    <section id="glare">
+      <div class="sec-label" style="--c:var(--purple)">myth_3</div>
+      <h2>04 · 可以省的第三件事：抗眩光玻璃與高亮度</h2>
+
+      <div class="myth">
+        <div class="mi" style="--c:var(--purple)">
+          <div class="q">「戶外演出會反光，是不是要買奈米紋理那款？」</div>
+          <div class="a">先確認你買不買得到——它只在特定機型的最大兩個容量才有得選。</div>
+          <p>依 Apple 官方技術規格，奈米紋理顯示器玻璃只有 iPad Pro 的 <strong>1TB 與 2TB 機型</strong>才能選配。也就是說，為了它你得先跳到 Pro、再跳到最高容量，價差是很可觀的。</p>
+        </div>
+      </div>
+
+      <p>而且所有現行 iPad 的螢幕本來就有<strong>抗反射鍍膜</strong>（官方規格明列）。真正會被強光打敗的情境，多半是正午戶外演出——那種場合，一張霧面保護貼的成本效益高太多。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>機型</th><th>官方標示亮度</th><th>讀譜情境</th></tr>
+          <tr><td>iPad Pro（11／13 吋）</td><td>SDR 1000 尼特</td><td class="good">戶外強光下最有餘裕</td></tr>
+          <tr><td>iPad Air 13 吋</td><td>600 尼特</td><td class="good">室內、舞台、教室都夠</td></tr>
+          <tr><td>iPad Air 11 吋 ／ iPad（A16）／ iPad mini</td><td>500 尼特</td><td>室內完全夠用；正午戶外會辛苦</td></tr>
+        </table>
+      </div>
+
+      <p>簡單說：只有經常在<strong>正午戶外演出</strong>的人，才值得為亮度多花錢。教會、教室、音樂廳、餐廳這些場地，500 尼特綽綽有餘。</p>
+    </section>
+
+    <section id="os">
+      <div class="sec-label" style="--c:var(--red)">os_gate</div>
+      <h2>05 · 唯一不能省的：系統版本門檻</h2>
+      <p>這是選二手機時真正該卡的一條線，也是最多人誤會的一條。forScore 目前需要 <strong>iPadOS 17 以上</strong>——所以問題不是「這台幾年前的」，而是「這台升不升得到 17」。</p>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">好消息：門檻比你想的低很多</div>依 Apple 官方的相容機型清單，能升上 iPadOS 17 的機型往回一路涵蓋到 <strong>2017 年的 iPad Pro 10.5 吋</strong>、<strong>2018 年的 iPad（第六代）</strong>、以及 2019 年的 iPad Air 第三代與 iPad mini 第五代。所謂「舊機不能跑最新樂譜 App」，在 forScore 上並不成立。</div>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>系列</th><th>還能升到 iPadOS 17 的最舊一代</th><th>讀譜的意義</th></tr>
+          <tr><td>iPad（一般款）</td><td>第六代（2018）</td><td>10.2／9.7 吋級距，預算最省的入門選項</td></tr>
+          <tr><td>iPad Air</td><td>第三代（2019）</td><td>10.5 吋，比一般款略大</td></tr>
+          <tr><td>iPad Pro 11 吋級距</td><td>10.5 吋（2017）／11 吋第一代（2018）</td><td>11 吋級距最便宜的入手點</td></tr>
+          <tr><td>iPad Pro 12.9 吋（大尺寸）</td><td>第二代（2017）</td><td class="good">想要 13 吋級距又想省錢，這是往回買的極限</td></tr>
+          <tr><td>iPad mini</td><td>第五代（2019）</td><td>不建議當主力讀譜機</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">但要理解這條線會往前移</div>forScore 的最低需求是<strong>會隨大版本調整的</strong>。官方有一份對照表列出各系統版本對應的「最後一個可用版本」，例如停在 iOS 16 的裝置對應到 forScore 14.4.3。舊機不會被收費，但有一天會停在舊版、拿不到新功能。</div>
+
+      <p>換句話說：買越舊的機器，能用「最新版 forScore」的年限就越短。這個取捨要自己權衡——但至少它是可預期的，不是突然一天就不能用。想理解 iPadOS 每一代的機型門檻，可以看<a class="inline" href="../ipados-version-history/">歷代 iPadOS 一次看懂</a>。</p>
+    </section>
+
+    <section id="used">
+      <div class="sec-label" style="--c:var(--navy)">used</div>
+      <h2>06 · 二手看譜機，我們會看這四件事</h2>
+      <p>讀譜跟一般用途的驗機重點不太一樣：你會整天盯著同一塊螢幕看細小的音符，而且很多場合不能中途充電。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">01</div><div><h4>尺寸優先，其他讓步</h4><p>同樣的預算，先選到你要的尺寸級距，再往回找世代——而不是為了新世代退回小尺寸。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">02</div><div><h4>確認還能升到 iPadOS 17</h4><p>對照上一節那張表。買之前直接在機器上看「設定 → 一般 → 軟體更新」最實在。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">03</div><div><h4>電池要能撐過一場演出</h4><p>排練兩小時、演出加彩排三小時，中途多半沒得充。二手機一定要問到電池健康度的實際數字。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">04</div><div><h4>螢幕看「亮度均勻」比看刮痕重要</h4><p>讀譜是長時間盯著白底黑線看，一塊偏黃或偏暗的區域，比邊角一道刮痕干擾大得多。開一張全白的譜就能看出來。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">這一條是我們每天在做的事</div>果果同時在售 2018 到 2026 年的各代 iPad，機況與電池健康度都會逐台揭露。讀譜客人最常在「多花三千買新一代」和「同樣的錢買大一號的舊機」之間猶豫——就讀譜而言，<strong>我們通常建議選大的那台</strong>。</div>
+    </section>
+
+    <section id="accessories">
+      <div class="sec-label" style="--c:var(--teal)">accessories</div>
+      <h2>07 · 配件：哪些現在買，哪些等等再說</h2>
+
+      <div class="grid">
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)"><div class="c-tag">值得一起買</div><h4>譜架或支架</h4><p>iPad 不能像紙譜一樣靠在譜架上，架子的穩固度直接影響你敢不敢用它上台。</p></div>
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)"><div class="c-tag">看你標不標譜</div><h4>觸控筆</h4><p>只讀不寫的話完全不需要。會在譜上寫指法、記指揮指示的人才需要。</p></div>
+        <div class="card" style="--c:var(--amber);--cbg:var(--amber-bg)"><div class="c-tag">等兩週再說</div><h4>翻頁踏板</h4><p>先用免費的方式翻頁兩週。你會發現自己缺的可能不是踏板，而是把譜排好。</p></div>
+        <div class="card" style="--c:var(--amber);--cbg:var(--amber-bg)"><div class="c-tag">看場地</div><h4>霧面保護貼</h4><p>常在戶外或強光舞台的人再買。室內演出通常用不到。</p></div>
+      </div>
+
+      <p>剛入手的人建議先看<a class="inline" href="../forscore-first-eight-things/">forScore 新手先學這 8 件事</a>，把免費功能用滿兩週，再回頭決定要買什麼配件。這個順序可以省下不少冤枉錢。</p>
+    </section>
+
+    <section id="budget">
+      <div class="sec-label" style="--c:var(--amber)">budget</div>
+      <h2>08 · 三種情境下的選機方向</h2>
+      <p>下面只給方向與取捨邏輯，不寫死型號與價格——市場行情會變，而且每個人在意的點不一樣。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你的情況</th><th>選機方向</th><th>為什麼</th></tr>
+          <tr><td>學生、自學者，主要在家練習</td><td>11 吋級距，往回買到還能升 iPadOS 17 的世代</td><td>譜面通常不會太密，預算省下來買譜架與筆更划算</td></tr>
+          <tr><td>教師、教會司琴、樂團團員</td><td class="good">13 吋級距優先，世代可以退讓</td><td>總譜與詩歌本字小、資訊密，面積帶來的差別每天都感覺得到</td></tr>
+          <tr><td>常在戶外或強光舞台演出</td><td>13 吋＋較高亮度機型，或搭霧面保護貼</td><td>這是唯一「亮度真的會影響能不能看譜」的情境</td></tr>
+        </table>
+      </div>
+
+      <div class="todo-mark"><b>待補</b>這一節之後會補上果果的實際建議：各尺寸級距目前<strong>最划算的世代落在哪一年</strong>、以及二手行情的判斷區間。行情會隨市場浮動，我們寧可留白，也不想寫一個三個月後就過期的數字誤導你。</div>
+
+      <p class="updated">本文查證：<b>2026 年 8 月</b>。螢幕規格與亮度取自 Apple 官方技術規格頁，系統相容機型取自 Apple 官方支援文件，forScore 系統需求取自官方知識庫。價格與機型會變動，以官方最新為準。</p>
+    </section>
+
+    <section id="video">
+      <div class="sec-label" style="--c:var(--muted)">video</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p>下面兩支是中文的實際使用心得，剛好補上本文沒展開的兩塊：音樂人的實際使用場景，以及 11 吋與 13 吋在其他用途上的差別。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=kjuGB2-pBlU" target="_blank" rel="noopener" data-yt="kjuGB2-pBlU" aria-label="播放：好物分享 iPad Pro 與音樂人">
+          <img loading="lazy" src="https://i.ytimg.com/vi/kjuGB2-pBlU/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/kjuGB2-pBlU/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>《好物分享》iPad Pro 與音樂人</b><small>頻道：薩克斯風不落轟小鄧老師 · 推薦原因：從實際演奏者的角度談 iPad 在音樂工作上的使用，補上本文只談規格看不到的實際場景 · 繁中</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=DCIIk_Owu0Y" target="_blank" rel="noopener" data-yt="DCIIk_Owu0Y" aria-label="播放：iPad 尺寸怎麼選 11 吋 vs 13 吋">
+          <img loading="lazy" src="https://i.ytimg.com/vi/DCIIk_Owu0Y/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/DCIIk_Owu0Y/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>尺寸選錯直接浪費錢！iPad 尺寸怎麼選 11 吋 vs 13 吋？</b><small>頻道：Miao Ch. 繆 · 推薦原因：本文只從讀譜角度談尺寸，這支補上看影片、創作等其他用途的取捨——如果你的 iPad 不只拿來看譜，值得一起考慮 · 繁中</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">螢幕尺寸、亮度與奈米紋理玻璃的條件取自 Apple 官方技術規格頁；系統相容機型取自 Apple 官方支援文件；forScore 的系統需求取自官方知識庫。查證日期 2026 年 8 月 9 日：</p>
+      <details class="src-fold">
+        <summary>參考資料來源<span class="n">7 筆</span></summary>
+        <ul class="sources">
+          <li><a href="https://forscore.co/kb/minimum-requirements/">forScore 官方知識庫 · Minimum requirements &amp; older versions</a>（第 05 節：iPadOS 17 以上的門檻、不做 Windows／Android，以及各系統版本對應的最後可用版本對照表）</li>
+          <li><a href="https://support.apple.com/zh-tw/guide/ipad/ipad213a25b2/17.0/ipados/17.0">Apple 官方 · 相容於 iPadOS 17 的 iPad 機型</a>（第 05 節整張表：往回涵蓋到 iPad Pro 10.5 吋、iPad 第六代、iPad Air 第三代、iPad mini 第五代）</li>
+          <li><a href="https://www.apple.com/tw/ipad-pro/specs/">Apple 官方 · iPad Pro 技術規格</a>（第 04 節：SDR 1000 尼特、抗反射鍍膜，以及「1TB 與 2TB 機型可選配奈米紋理顯示器玻璃」）</li>
+          <li><a href="https://www.apple.com/tw/ipad-air/specs/">Apple 官方 · iPad Air 技術規格</a>（第 01、04 節：13 吋機型矩形對角線 12.9 吋、11 吋機型 10.86 吋，亮度 600／500 尼特）</li>
+          <li><a href="https://www.apple.com/tw/ipad-mini/specs/">Apple 官方 · iPad mini 技術規格</a>（第 01、04 節：矩形對角線 8.3 吋、500 尼特）</li>
+          <li><a href="https://www.apple.com/tw/ipad-11/specs/">Apple 官方 · iPad（A16）技術規格</a>（第 01、04 節：矩形對角線 10.86 吋、500 尼特）</li>
+          <li><a href="https://forscore.co/kb/converting-images/">forScore 官方知識庫 · Converting images or scanning to PDF</a>（第 02、03 節：內建掃描工具的定位，以及官方建議用專門掃描 App 取得更好結果）</li>
+        </ul>
+      </details>
+      <p class="sources" style="margin-top:14px">圖中的面積百分比為編輯部依官方標示的矩形對角線與 4:3 比例換算，供比較用；Apple 官方另註明螢幕採圓角設計，實際可視區比矩形略小。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
