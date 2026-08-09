@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>演奏中沒手翻頁？forScore 四條免手翻頁路線怎麼選 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式（共用 style.css 沒有的才寫在這）── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 導言：迷你目錄 */
+  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0 24px; }
+  .toc a { display: flex; align-items: baseline; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 14px; text-decoration: none; color: var(--ink); font-size: .93rem; transition: .12s; }
+  .toc a:hover { border-color: var(--navy); background: var(--navy-bg); }
+  .toc a i { font-family: var(--mono); font-style: normal; font-size: .72rem; color: var(--navy); font-weight: 700; flex: none; }
+
+  /* 寬表格橫向捲動 */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 640px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 3px; }
+
+  /* ── 路線卡：四條路各自的價格、門檻、適合誰 ── */
+  .routes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .rt { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 10px; padding: 15px 17px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .rt .tag { font-family: var(--mono); font-size: .66rem; color: var(--c); }
+  .rt .tag::before { content: '▸ '; }
+  .rt h4 { font-size: 1.02rem; color: var(--ink); font-weight: 700; margin: 3px 0 4px; }
+  .rt .cost { display: inline-block; font-family: var(--mono); font-size: .72rem; font-weight: 700; color: var(--c); background: var(--cbg); padding: 2px 9px; border-radius: 999px; margin-bottom: 8px; }
+  .rt p { font-size: .88rem; color: var(--body); margin: 0 0 8px; }
+  .rt .fit { font-size: .85rem; color: var(--ink); border-top: 1px solid var(--grid); padding-top: 9px; }
+  .rt .fit::before { content: '適合 · '; font-family: var(--mono); font-size: .66rem; color: var(--muted); }
+
+  /* 分流表：手腳被佔用的程度 */
+  .busy { display: grid; gap: 9px; margin: 20px 0; }
+  .bi { display: flex; gap: 14px; align-items: center; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .bi .ic { font-size: 1.5rem; flex: none; }
+  .bi .txt { flex: 1; font-size: .9rem; }
+  .bi .txt b { display: block; color: var(--ink); }
+  .bi .go2 { font-size: .85rem; color: var(--c); font-weight: 700; flex: none; text-align: right; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .routes { grid-template-columns: 1fr; }
+    .bi { flex-wrap: wrap; }
+  }
+  @media (max-width: 560px) { .toc { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>免手翻頁四條路</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#match" class="active">00 · 先分流</a>
+  <a href="#zones">01 · 免費的先用滿</a>
+  <div class="grp">四條路線</div>
+  <a href="#pedal">02 · 藍牙踏板</a>
+  <a href="#midi">03 · 用琴當踏板</a>
+  <a href="#airpods">04 · AirPods 轉頭</a>
+  <a href="#face">05 · 臉部手勢</a>
+  <div class="grp">設定與延伸</div>
+  <a href="#setup">06 · 設定總部</a>
+  <a href="#more">07 · 不只能翻頁</a>
+  <a href="#honest">08 · 誠實說缺點</a>
+  <a href="#video">延伸觀看</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>2018–2026 全型號在售</span><span>資訊透明・缺點揭露</span><span>終身售後諮詢</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">客戶指南 / iPad 讀譜 · forScore</div>
+    <h1>演奏中沒手翻頁？四條路線怎麼選</h1>
+    <p class="subtitle">踏板、把電子琴當踏板、AirPods 轉頭、臉部手勢——其中兩條完全免費。先看你的手和腳分別在忙什麼，再決定要不要花錢。</p>
+
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--navy)">
+        <div class="lt">直接回答</div>
+        <p class="big">forScore 讓你不伸手就能翻頁的方法有四條：<b>藍牙踏板</b>（最主流）、把數位鋼琴或管風琴的閒置琴鍵當翻頁鍵的 <b>MIDI</b> 路線、戴 <b>AirPods 快速轉頭</b>，以及 forScore Pro 專屬的<b>臉部手勢</b>。</p>
+        <p class="sm">後兩條不必買任何配件——AirPods 那條只要你有 AirPods 3、Pro 或 Max 就能用，不用播放音訊、不用相機，全黑舞台也能用。</p>
+        <p class="sm">而踏板之所以「幾乎什麼牌子都能用」，是因為 forScore 預設就把方向鍵、Page Up／Page Down 綁成翻頁，而多數翻頁踏板送出的正是這些訊號。</p>
+        <p class="alias-line">你可能是用別的說法找到這頁的：<b>forScore 翻頁</b>、<b>藍牙翻譜踏板推薦</b>、<b>iPad 自動翻譜</b>、<b>看譜不用手翻</b>——講的都是同一件事。</p>
+      </div>
+      <blockquote class="lead-src">「有些指令預設就會回應特定按鍵，不需要更改也能正常運作。舉例來說，『上一頁』與『下一頁』指令會回應左右方向鍵、上下方向鍵，以及 Page Up／Page Down 鍵（<strong>多數翻頁器預設送出的就是這些</strong>）。」<cite>forScore 官方知識庫〈Customizing accessory or page turner shortcuts〉，查核 2026 年 8 月</cite></blockquote>
+      <p class="lede">先講一個我們每天在店裡遇到的狀況：很多人買 iPad 時就順手把踏板一起買了，結果回家才發現自己的樂器根本騰得出手，踏板放到過保。</p>
+      <p class="lede">所以這篇的順序是：先確認你真的需要，再選路線。免費的那兩條放在前面。</p>
+    </div>
+
+    <div class="toc">
+      <a href="#match"><i>00</i>我該走哪一條</a>
+      <a href="#pedal"><i>02</i>踏板要買哪一種</a>
+      <a href="#airpods"><i>04</i>不用花錢的方法</a>
+      <a href="#honest"><i>08</i>它的已知缺點</a>
+    </div>
+
+    <section id="match">
+      <div class="sec-label" style="--c:var(--navy)">match</div>
+      <h2>00 · 先分流：你的手和腳分別在忙什麼</h2>
+      <p>不同樂器的處境差很多。管風琴手連腳都在踩音栓，踏板對他就不是好選項；而吉他手兩手都在弦上，腳卻是空的。</p>
+
+      <div class="busy">
+        <div class="bi" style="--c:var(--navy)"><div class="ic">🎹</div><div class="txt"><b>雙手忙，但腳是空的</b>鋼琴、吉他、管樂、弦樂</div><div class="go2">→ 藍牙踏板</div></div>
+        <div class="bi" style="--c:var(--teal)"><div class="ic">⛪</div><div class="txt"><b>手腳都在樂器上</b>管風琴、有腳鍵盤的電子琴</div><div class="go2">→ MIDI 路線</div></div>
+        <div class="bi" style="--c:var(--green)"><div class="ic">🎧</div><div class="txt"><b>不想花錢，或場地不方便放踏板</b>練習、小場地、臨時支援</div><div class="go2">→ AirPods 轉頭</div></div>
+        <div class="bi" style="--c:var(--purple)"><div class="ic">😐</div><div class="txt"><b>戴不了耳機，也不能用腳</b>而且已經有訂 Pro</div><div class="go2">→ 臉部手勢</div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">還有一種情況是你根本不需要它們</div>如果你主要是坐著練習、樂句之間有空檔可以伸手，那點一下螢幕就夠了。下一節先把免費的基本功能講完——很多人是在這一步之後才發現自己不用買踏板。</div>
+    </section>
+
+    <section id="zones">
+      <div class="sec-label" style="--c:var(--green)">free_first</div>
+      <h2>01 · 先把免費的用滿：點擊分區與滑動</h2>
+      <p>官方把畫面分成三塊：點兩側翻頁、點中央顯示或隱藏控制列。左右滑動也能翻頁，就像翻書一樣。用觸控板或滑鼠時，點頁面兩側或直接捲動也可以。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">👈</div><div class="bt">點左側</div><div class="bv">上一頁</div></div>
+          <div class="arr">·</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">☝️</div><div class="bt">點中央</div><div class="bv">顯示控制列</div></div>
+          <div class="arr">·</div>
+          <div class="box" style="--cbg:var(--navy-bg)"><div class="bi">👉</div><div class="bt">點右側</div><div class="bv">下一頁</div></div>
+        </div>
+        <figcaption>這三塊是 forScore 的預設行為，<b>不用設定、不用花錢</b>。長按任何一塊則是進入標註模式。</figcaption>
+      </figure>
+
+      <p>建議先用這個方式撐兩週。真正會逼你買配件的，是「樂句連續到完全沒有空檔伸手」的那種曲子——你會很清楚地知道自己有沒有遇到。</p>
+    </section>
+
+    <section id="pedal">
+      <div class="sec-label" style="--c:var(--navy)">route_1</div>
+      <h2>02 · 路線一：藍牙踏板（最主流）</h2>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">為什麼「幾乎什麼踏板都能用」</div>藍牙翻頁踏板本質上就是一個<strong>只有幾顆鍵的鍵盤</strong>。而 forScore 預設已經把方向鍵、Page Up／Page Down 綁成上下頁——多數踏板送出的正好就是這些訊號，所以配對完通常直接就能翻頁，不必另外設定。</div>
+
+      <p>但踏板的連線方式<strong>分成兩類</strong>，這是最多人搞混的地方——搞懂它，你就不會在錯的地方找你的踏板。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>類別</th><th>官方列出的裝置</th><th>在哪裡連</th><th>會出現在 forScore 的 Devices 面板嗎</th></tr>
+          <tr><td>直連 forScore<small>官方稱 Bluetooth Smart</small></td><td>AirTurn PED／PEDpro、iRig BlueBoard、Turn Touch 遙控器</td><td>forScore 的<br>工具 → 設定 → Devices</td><td class="good">會</td></tr>
+          <tr><td>鍵盤模式<small>系統層級的標準鍵盤</small></td><td>PageFlip 系列、iRig BlueTurn、AirTurn BT-105／106 等</td><td>iOS「設定」App 的藍牙區</td><td class="bad">不會——這是正常的，不是故障</td></tr>
+          <tr><td>有線 MIDI／USB</td><td>數位鋼琴、電腦鍵盤等</td><td>用轉接器接上，或走網路 MIDI</td><td>—</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">買 AirTurn 的人要注意模式</div>官方建議用 <strong>Mode 1（AppDirect）</strong>：電池最省，而且不會害你的螢幕虛擬鍵盤消失。官方同時說明 Mode 2 以上<strong>不建議使用</strong>，因為近期韌體更新造成雙重訊號傳送。</div>
+
+      <p>踏板買回來如果按了沒反應、或按下去卻選到別的東西，先別急著退貨——那通常是 iOS 的一個無障礙設定在搶輸入。排查方法見<a class="inline" href="../forscore-pedal-not-working/">踏板按了沒反應、還會亂跳？</a>。</p>
+    </section>
+
+    <section id="midi">
+      <div class="sec-label" style="--c:var(--teal)">route_2</div>
+      <h2>03 · 路線二：直接用你的琴當翻頁器</h2>
+      <p>如果你已經坐在數位鋼琴或管風琴前，其實不需要再買一個踏板——那台琴本身就能送出訊號。</p>
+
+      <p>官方的說法是：MIDI 裝置需要實體連接到你的 iOS 裝置（可能需要 USB 或 MIDI 轉接器），或設定成使用網路 MIDI。接上之後，用你演奏時不會碰到的琴鍵或控制鈕來翻頁即可。</p>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">進階玩法：從琴上直接叫譜</div>在每份譜的資料面板裡有一個「MIDI」區，可以<strong>給每一首譜指定一個專屬指令</strong>——之後從琴上送出那個指令，forScore 就會自動打開對應的譜。也可以反過來設定：每次開啟某份譜時，自動送出一串 MIDI 指令（例如切換音色）。常用的組合還能存成 preset 套用到其他曲子。</div>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">兩個要避開的坑</div>第一，別把翻頁綁在演奏中真的會用到的音上，否則你會邊彈邊亂翻頁。第二，先想好哪一顆鍵是「這首曲子絕對不會碰到」的——通常是最低音區或最高音區的邊緣鍵。</div>
+    </section>
+
+    <section id="airpods">
+      <div class="sec-label" style="--c:var(--green)">route_3</div>
+      <h2>04 · 路線三：戴 AirPods 轉頭（免費、但很少人知道）</h2>
+      <p>這是四條路裡最被低估的一條。不用買任何新東西，不用播放音樂，也不用開相機。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>項目</th><th>官方要求</th></tr>
+          <tr><td>forScore 版本</td><td>12.0.5 或更新</td></tr>
+          <tr><td>系統</td><td>iOS／iPadOS 14 或更新</td></tr>
+          <tr><td>耳機</td><td>AirPods 3、AirPods Pro 或 AirPods Max<small>另需 AirPods 韌體 3A283 或更新</small></td></tr>
+          <tr><td>裝置</td><td>需支援動作處理（Apple 未提供相容機型清單）<small>判斷方法：Devices 面板裡看不看得到「AirPods」這一項</small></td></tr>
+          <tr><td>權限</td><td>需允許 forScore 存取「動作與健身」資料</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">最多人失敗的一點：是「轉頭」不是「歪頭」</div>官方描述的動作是：先讓頭靜止一下，然後<strong>快速、穩定地向左或向右水平轉動</strong>——速度和幅度類似你用手指滑動螢幕的那個手勢。左右歪頭是不會有反應的。</div>
+
+      <p>設定位置在工具 → 設定 → Devices → AirPods，可以調靈敏度、反轉方向。啟用後下方會出現兩個圓圈當作視覺指示器：轉頭時看到藍色閃爍，就代表手勢被判讀成功。</p>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">它的限制</div>手勢不能自訂，只能翻頁——不能拿來當其他快捷指令的觸發來源。另外官方也直說，因為條件複雜，他們對這個功能的一對一支援能力有限。</div>
+    </section>
+
+    <section id="face">
+      <div class="sec-label" style="--c:var(--purple)">route_4</div>
+      <h2>05 · 路線四：臉部手勢（Pro 訂閱專屬）</h2>
+      <p>如果你的裝置支援臉部追蹤，可以用轉頭、眨單眼、或把嘴唇往左右移動來翻頁，三種模式挑一個順手的用，靈敏度也可以調。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--amber)"><div class="ct">訂閱前先確認裝置支援</div>這個功能需要裝置支援臉部追蹤。訂下去之前，先到工具 → Support → Device Information 看「Facial Tracking」是不是顯示 Supported。</div>
+        <div class="callout" style="--c:var(--navy)"><div class="ct">環境條件</div>官方提醒要有足夠的光線；如果選用嘴唇移動模式，記得使用自動校準功能會比較好設定。</div>
+      </div>
+
+      <p>老實說，前面三條路已經涵蓋絕大多數人的需求。<strong>不建議為此訂閱</strong>——除非你戴不了耳機、也沒辦法用腳，臉部手勢才是你唯一的選項。</p>
+    </section>
+
+    <section id="setup">
+      <div class="sec-label" style="--c:var(--navy)">setup</div>
+      <h2>06 · 設定總部：Page Turners &amp; Shortcuts</h2>
+      <p>不管你走哪一條路，自訂指令都在同一個地方。官方的設定流程只有三步。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">01</div><div><h4>先把配件接上</h4><p>一般藍牙裝置在 iOS 設定 App 配對；AirTurn PED 這類走 forScore 的 Devices 面板；MIDI 裝置需要實體連接或網路 MIDI。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">02</div><div><h4>工具 → 設定 → Page Turners &amp; Shortcuts</h4><p>點清單裡的一個指令，它會開始「聆聽」訊號。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">03</div><div><h4>踩下或按下你的配件</h4><p>如果相容，對應的字元、按鍵或 MIDI 代碼就會顯示在指令右側。淺灰色的是預設鍵，不是你設定的。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">沒反應時的第一順位檢查</div>先確認那顆鍵是不是<strong>已經被指派給別的動作</strong>——要先從那邊移除才行。點指令旁邊的「x」可以清掉已存的設定、還原成預設。</div>
+
+      <p>另外一個小技巧：如果你有接電腦鍵盤，按住 command 鍵不放，畫面會列出目前可用的所有快捷鍵，包含你自己設定的那些。</p>
+    </section>
+
+    <section id="more">
+      <div class="sec-label" style="--c:var(--teal)">more</div>
+      <h2>07 · 同一顆踏板，不是只能翻頁</h2>
+      <p>這是很多人買了踏板卻沒發現的事：可綁定的指令有數十種，翻頁只是其中之一。</p>
+
+      <div class="grid">
+        <div class="card" style="--c:var(--navy);--cbg:var(--navy-bg)"><div class="c-tag">重度標註者</div><h4>綁成「進入標註模式」</h4><p>排練中要隨時記指揮的指示，踩一下就能開始寫，不用伸手長按。</p></div>
+        <div class="card" style="--c:var(--teal);--cbg:var(--teal-bg)"><div class="c-tag">商演／點歌</div><h4>綁成「開啟搜尋」</h4><p>客人點歌時腳踩一下叫出搜尋框，比在螢幕上找選單快。</p></div>
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)"><div class="c-tag">練習</div><h4>綁成節拍器開關</h4><p>手不離樂器就能開始或停止節拍器。</p></div>
+        <div class="card" style="--c:var(--purple);--cbg:var(--purple-bg)"><div class="c-tag">Apple Pencil</div><h4>雙點切換標註工具</h4><p>官方舉的例子之一：用 Apple Pencil 2 的雙點手勢切換標註工具。</p></div>
+      </div>
+
+      <p>換句話說，同一顆踏板在鋼琴家手上是翻頁器，在重度標註者手上是「進標註模式」的開關——這也是為什麼買之前很難有標準答案，得先用一陣子才知道自己缺什麼。</p>
+    </section>
+
+    <section id="honest">
+      <div class="sec-label" style="--c:var(--red)">honest</div>
+      <h2>08 · 誠實說：兩個買之前該知道的缺點</h2>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">缺點 1 · 沒有防連翻機制</div>依使用者社群的長期比較，forScore <strong>沒有內建踏板的防誤觸連翻（debounce）設定</strong>，重踩一下有機會跳兩頁。這一點在競品 MobileSheets 上是有的。<br><br>來源等級說明：這是使用者論壇的普遍回報，不是官方文件的說法，重度踏板使用者請自行實測。</div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">缺點 2 · 接了踏板可能打不出字</div>iOS 判定有外接鍵盤時會收起螢幕虛擬鍵盤，而踏板正是被當成鍵盤。所以編輯曲目資料時可能叫不出鍵盤。這也是官方建議 AirTurn 用 Mode 1 的理由之一——那個模式不會干擾虛擬鍵盤。</div>
+
+      <p>最後回到我們的立場：<strong>先用免費的兩條路撐兩週</strong>。真的不夠用再買，而且買之前先確認你要的是哪一類連線方式。踏板是那種「用得到會很感謝、用不到就完全閒置」的配件。</p>
+
+      <p class="updated">本文查證：<b>2026 年 8 月</b>，對照 forScore 15.x 的官方知識庫與使用手冊。裝置支援清單與系統設定名稱會隨版本調整，以官方最新為準。</p>
+    </section>
+
+    <section id="video">
+      <div class="sec-label" style="--c:var(--muted)">video</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p>下面兩支都是中文的實際使用分享，能看到踏板實際踩起來的樣子——這是文字最難傳達的部分。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=ZQ0Su3pzmvo" target="_blank" rel="noopener" data-yt="ZQ0Su3pzmvo" aria-label="播放：我買了藍牙翻譜踏板 好用嗎">
+          <img loading="lazy" src="https://i.ytimg.com/vi/ZQ0Su3pzmvo/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/ZQ0Su3pzmvo/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>我買了藍牙翻譜踏板／好用嗎？／從頭反覆再也不用靠手翻／開箱分享</b><small>頻道：小眼JING · 推薦原因：對應本文第 02 節，可以看到 AirTurn 系列實際的開箱與踩踏使用情境，判斷自己需不需要 · 繁中</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=-b78kUcXsdw" target="_blank" rel="noopener" data-yt="-b78kUcXsdw" aria-label="播放：分享我的 iPad 如何自動翻譜">
+          <img loading="lazy" src="https://i.ytimg.com/vi/-b78kUcXsdw/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/-b78kUcXsdw/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>[瘋鋼琴] 分享我的 iPad 如何自動翻譜</b><small>頻道：【瘋鋼琴】Crazy piano · 推薦原因：鋼琴演奏者的實際配置示範，補上本文沒談到的譜架擺位與實戰手感 · 繁中</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">四條路線的連接方式、系統需求與設定路徑，皆取自 forScore 官方知識庫與官方使用手冊，查證日期 2026 年 8 月 9 日：</p>
+      <details class="src-fold">
+        <summary>參考資料來源<span class="n">6 筆</span></summary>
+        <ul class="sources">
+          <li><a href="https://forscore.co/kb/customizing-page-turners/">forScore 官方知識庫 · Customizing accessory or page turner shortcuts</a>（第 02、06 節：四類配件的連接方式、Page Turners &amp; Shortcuts 的三步設定流程、預設鍵位「方向鍵與 Page Up／Down」的原文、淺灰色代表預設、按住 command 看快捷鍵）</li>
+          <li><a href="https://forscore.co/kb/devices-panel/">forScore 官方知識庫 · Understanding forScore's Devices panel</a>（第 02 節：能直連 forScore 的裝置清單——AirTurn PED／PEDpro、iRig BlueBoard、Turn Touch，以及面板在 15.x 的位置）</li>
+          <li><a href="https://forscore.co/kb/connecting-your-airturn-ped/">forScore 官方知識庫 · Connecting your AirTurn PED, BT200, or BT500 Series</a>（第 02 節：建議 Mode 1、電池最省且不干擾虛擬鍵盤、Mode 2 以上因雙重訊號不建議使用）</li>
+          <li><a href="https://forscore.co/kb/turning-pages-with-airpods-pro/">forScore 官方知識庫 · Turning pages with AirPods</a>（第 04 節整節：版本與韌體需求、動作與健身權限、「快速穩定的水平轉頭」動作描述、視覺指示器，以及手勢不可自訂的限制）</li>
+          <li><a href="https://forscore.co/kb/midi-signals/">forScore 官方知識庫 · Sending and receiving MIDI signals</a>（第 03 節：每份譜可指定專屬 MIDI 指令、開啟時自動送出指令、preset 重複套用，以及需要轉接器的說明）</li>
+          <li><a href="https://forscore.co/documentation/forscore-pro/">forScore 15.0 官方使用手冊 · forScore Pro</a>（第 05 節：臉部手勢的三種模式、需裝置支援臉部追蹤、光線與自動校準建議）</li>
+        </ul>
+      </details>
+      <p class="sources" style="margin-top:14px">第 01 節的點擊分區取自官方使用手冊 <a href="https://forscore.co/documentation/basics/">Basics</a>。第 08 節的「沒有 debounce」屬使用者社群的長期回報，非官方文件說法，文中已標明來源等級。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
