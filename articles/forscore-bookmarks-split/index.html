@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>整本曲集怎麼在 forScore 拆成一首一首？兩種書籤差在哪 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式（共用 style.css 沒有的才寫在這）── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 導言：迷你目錄（窄螢幕沒有左側 nav，這排就是導覽） */
+  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0 24px; }
+  .toc a { display: flex; align-items: baseline; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 14px; text-decoration: none; color: var(--ink); font-size: .93rem; transition: .12s; }
+  .toc a:hover { border-color: var(--navy); background: var(--navy-bg); }
+  .toc a i { font-family: var(--mono); font-style: normal; font-size: .72rem; color: var(--navy); font-weight: 700; flex: none; }
+
+  /* ── 症狀診斷卡 dx：兩個症狀 → 同一個病因的兩面 ──
+     讀者是帶著「畫面出了什麼事」進來的，不是帶著功能名稱。
+     所以先讓他對號入座，再談 item / page 這兩個詞。 */
+  .dx { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .dxi { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 10px; padding: 15px 17px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .dxi .s { font-family: var(--mono); font-size: .66rem; color: var(--muted); }
+  .dxi .big2 { display: block; font-size: 1.16rem; color: var(--c); font-weight: 800; line-height: 1.4; margin: 3px 0 8px; }
+  .dxi p { font-size: .89rem; color: var(--body); margin: 0 0 12px; line-height: 1.65; }
+  .dxi .d { font-size: .9rem; color: var(--ink); font-weight: 700; border-top: 1px solid var(--grid); padding-top: 10px; }
+  .dxi .d::before { content: '→ '; color: var(--c); }
+  .dxi .d small { display: block; font-weight: 400; color: var(--muted); font-size: .8rem; margin-top: 3px; }
+
+  /* 寬表格橫向捲動 */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 600px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 3px; }
+
+  /* CSV 示範表：讓讀者看得出「試算表長什麼樣」 */
+  .csv { font-family: var(--mono); font-size: .82rem; }
+  .csv th { background: var(--panel2); color: var(--navy); }
+  .csv td { color: var(--body); }
+  .csv td.req { color: var(--green-deep); font-weight: 700; }
+
+  /* ── 動態分鏡：情境 L「兩種書籤的翻頁邊界」 ──
+     為什麼要動畫：這篇最核心的知識點是「翻到第 5 頁之後會怎樣」——
+     一個動作、一個時間差、一個到邊界才會出現的因果。靜態圖只能用文字寫「然後就翻不動了」。
+     沿用共用檔的 .box 與 4.4s 節奏，只新增頁碼列 .pgs。
+     鐵則：基礎樣式＝動畫最終狀態（左格游標停在最後一頁、右格游標停在第 5 頁），
+     關掉動畫或系統開了「減少動態效果」時，兩格仍是看得懂的靜態圖。 */
+  .anim .pgs { position: relative; display: flex; gap: 4px; justify-content: center; margin: 6px 0 10px; }
+  .anim .pgs span { display: grid; place-items: center; width: 30px; height: 34px; border-radius: 6px; background: #fff; border: 1px solid var(--line); font-family: var(--mono); font-size: .78rem; color: var(--muted); }
+  .anim .pgs span.in { background: var(--navy-bg); border-color: #cfdaea; color: var(--navy); font-weight: 700; }
+  .anim .pgs .cur { position: absolute; top: -3px; left: 0; width: 30px; height: 40px; border-radius: 8px; border: 2px solid var(--c); background: rgba(47,158,87,.10); }
+  .anim .wall { position: absolute; top: -6px; bottom: -6px; width: 3px; border-radius: 3px; background: var(--red); }
+  .anim .note { font-size: .78rem; color: var(--muted); text-align: center; min-height: 1.2em; }
+  .anim .note b { color: var(--c); }
+  /* 5 格 × 30px + 4 間隔 × 4px = 166px；左起第 n 格的位移＝(n-1)×34px */
+  @keyframes bm-free { 0%, 10% { transform: translateX(0); } 60%, 100% { transform: translateX(136px); } }
+  @keyframes bm-lock { 0%, 10% { transform: translateX(0); } 45%, 100% { transform: translateX(68px); } }
+  @keyframes bm-bump { 0%, 55% { opacity: 0; } 70%, 100% { opacity: 1; } }
+  .anim .pgs.free .cur { transform: translateX(136px); animation: bm-free 4.4s ease-in-out infinite; }
+  .anim .pgs.lock .cur { transform: translateX(68px); animation: bm-lock 4.4s ease-in-out infinite; }
+  .anim .note.late { animation: bm-bump 4.4s ease-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .anim .pgs.free .cur, .anim .pgs.lock .cur, .anim .note.late { animation: none; }
+  }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .dx { grid-template-columns: 1fr; }   /* 共用 style.css 的 media query 只收 .grid/.cgrid/.stats，自訂的多欄容器要自己加 */
+  }
+  @media (max-width: 560px) { .toc { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>整本曲集拆成單曲</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#symptoms" class="active">00 · 先對號入座</a>
+  <div class="grp">分辨與補救</div>
+  <a href="#two-types">01 · 兩種書籤差在哪</a>
+  <a href="#fix">02 · 建錯了怎麼救</a>
+  <div class="grp">大部頭的做法</div>
+  <a href="#batch">03 · 不要一首一首打</a>
+  <a href="#offset">04 · 頁碼一定要校正</a>
+  <div class="grp">再往下一層</div>
+  <a href="#three-ways">05 · 書籤 / 複製 / 重排</a>
+  <a href="#after">06 · 拆好之後解鎖什麼</a>
+  <a href="#honest">07 · 它做不到的事</a>
+  <a href="#video">延伸觀看</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>2018–2026 全型號在售</span><span>資訊透明・缺點揭露</span><span>終身售後諮詢</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">客戶指南 / iPad 讀譜 · forScore</div>
+    <h1>整本曲集怎麼在 forScore 拆成一首一首？</h1>
+    <p class="subtitle">Real Book、詩歌本、整本教材——不要真的把 PDF 切開。你需要的是「區間書籤」，而多數人卡住只差一個欄位。</p>
+
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--red)">
+        <div class="lt">直接回答</div>
+        <p class="big">forScore 用書籤做<b>虛擬切分</b>：底層那本 400 頁的 PDF 完全不動，選單裡就能變成 300 首各自獨立的曲子。關鍵只在你建的是哪一種書籤。</p>
+        <p class="sm"><b>頁書籤（page）</b>只是目錄指標，點過去之後還能自由往前往後翻整本；<b>項目書籤（item）</b>會變成一份虛擬曲目，只有你指定的那幾頁，但可以有自己的分類、自己的音檔，也能單獨加進演出曲單。</p>
+        <p class="sm">「整本加進曲單、點下去卻跳出第 1 頁」和「點了書籤就翻不到下一頁」，是同一件事的兩面：你選錯了種類。舊版 forScore 沒有這個選項，全靠「有沒有填結束頁」來決定。</p>
+        <p class="alias-line">你可能是用別的說法找到這頁的：<b>forScore 書籤怎麼用</b>、<b>Real Book 拆曲</b>、<b>詩歌本分曲</b>、<b>bookmark 翻不了頁</b>——講的都是同一件事。</p>
+      </div>
+      <blockquote class="lead-src">「如果你建立的是『項目』（或填了結束頁），你就是在用指定的頁面範圍，於 forScore 曲庫中建立一份虛擬曲目……舉例來說，如果書籤從第 3 頁開始、第 5 頁結束，你就沒辦法從第 3 頁往回翻到第 2 頁，也沒辦法從第 5 頁往後翻到第 6 頁。」<cite>forScore 官方知識庫〈為什麼書籤會讓我翻不了頁？〉，查核 2026 年 8 月</cite></blockquote>
+      <p class="lede">先講最重要的觀念：這個功能<strong>不是拿來切檔案的，是拿來「假裝」檔案已經切好的</strong>。官方的說法是，一份長 PDF 加上書籤之後，就能得到「每首各自一個檔案才有的所有好功能」——但檔案從頭到尾只有一份。</p>
+      <p class="lede">下面按照你現在的處境往下走：先對症狀、再看兩種書籤差在哪、已經建錯的怎麼救，最後才是大部頭的批次做法（300 首當然不能一首一首手打）。</p>
+    </div>
+
+    <div class="toc">
+      <a href="#symptoms"><i>00</i>我遇到的是哪一種症狀</a>
+      <a href="#two-types"><i>01</i>兩種書籤的差別表</a>
+      <a href="#fix"><i>02</i>已經建錯了怎麼救</a>
+      <a href="#batch"><i>03</i>300 首怎麼批次建</a>
+    </div>
+
+    <section id="symptoms">
+      <div class="sec-label" style="--c:var(--navy)">match_yourself</div>
+      <h2>00 · 先對號入座：你遇到的是哪一種？</h2>
+      <p>大部分人是先撞到畫面上的怪事，才回頭來查功能名稱的。先找到你的症狀，答案就在那張卡片下面。</p>
+
+      <div class="dx">
+        <div class="dxi" style="--c:var(--red)">
+          <div class="s">症狀 A</div>
+          <b class="big2">加進曲單，點下去卻是整本第 1 頁</b>
+          <p>你想把《Autumn Leaves》排進今晚的曲單，結果排進去的是整本 Real Book，點開又要自己滑到第 87 頁。</p>
+          <div class="d">你建的是「頁書籤」，它沒有結束頁<small>頁書籤只是一個跳頁指標，在 forScore 眼中它不是一首獨立的曲子，所以不能單獨進曲單</small></div>
+        </div>
+        <div class="dxi" style="--c:var(--amber)">
+          <div class="s">症狀 B</div>
+          <b class="big2">點了書籤之後，翻不到下一頁</b>
+          <p>你想從第 5 頁繼續往下看，或想往回翻前一首的最後一行，但畫面就是不動，像卡住了。</p>
+          <div class="d">你建的是「項目書籤」，而它本來就只有那幾頁<small>這不是故障。項目書籤是一份虛擬曲目，邊界之外的頁面對它來說不存在</small></div>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">兩個症狀，其實是同一個選擇</div>它們不是兩個 bug，是同一個欄位的一體兩面。看完下一節你就會知道自己每次該選哪一種——而且<strong>兩種都需要</strong>，不是二選一。</div>
+    </section>
+
+    <section id="two-types">
+      <div class="sec-label" style="--c:var(--teal)">two_types</div>
+      <h2>01 · 兩種書籤差在哪：就差一個「結束頁」</h2>
+      <p>建立書籤的地方在<strong>書籤選單</strong>（打開的書本圖示），右上角的「＋」。填標題、起始頁，然後就是那個決定一切的欄位。</p>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">版本差異先講清楚</div>forScore 11 以後，建立書籤時<strong>可以直接選「項目（item）」或「頁（page）」</strong>；forScore 10 或更早的版本沒有這個選項，是靠「有沒有填結束頁」來決定——填了就是項目、留白就是頁。<strong>兩種版本的行為完全一樣</strong>，只是介面上問你的方式不同。</div>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>　</th><th>頁書籤 Page</th><th>項目書籤 Item</th></tr>
+          <tr><td>怎麼建</td><td>只填標題＋起始頁<small>舊版：結束頁留白</small></td><td>標題＋起始頁＋<strong>結束頁</strong><small>舊版：填了結束頁就是它</small></td></tr>
+          <tr><td>它是什麼</td><td>像目錄的一個指標<small>官方用詞：table of contents entry</small></td><td>一份虛擬曲目<small>官方用詞：virtual score</small></td></tr>
+          <tr><td>點下去之後</td><td class="good">跳到那一頁，其他照舊——可以往前往後翻完整本</td><td class="bad">只剩指定的那幾頁，前後都翻不出去</td></tr>
+          <tr><td>會出現在曲目清單嗎</td><td>不會</td><td class="good">會，像一份獨立的 PDF</td></tr>
+          <tr><td>能有自己的分類、評分、音檔嗎</td><td>不能</td><td class="good">可以</td></tr>
+          <tr><td>能單獨加進演出曲單嗎</td><td>不能</td><td class="good">可以</td></tr>
+          <tr><td>適合用在</td><td>排練跳段、指揮看總譜、整本教材的目錄</td><td>Real Book、詩歌本、組曲的各樂章</td></tr>
+        </table>
+      </div>
+
+      <figure class="fig anim">
+        <div class="flow">
+          <div class="box">
+            <div class="pgs free" style="--c:var(--green)">
+              <span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>
+              <div class="cur"></div>
+            </div>
+            <div class="bt">page bookmark</div>
+            <div class="bv">頁書籤：翻得出去</div>
+            <div class="note">從第 3 頁一路翻到底都可以</div>
+          </div>
+          <div class="arr">vs</div>
+          <div class="box">
+            <div class="pgs lock" style="--c:var(--amber)">
+              <span class="in">3</span><span class="in">4</span><span class="in">5</span><span>6</span><span>7</span>
+              <div class="wall" style="left:100px"></div>
+              <div class="cur"></div>
+            </div>
+            <div class="bt">item bookmark（3–5）</div>
+            <div class="bv">項目書籤：到邊界就停</div>
+            <div class="note late">翻到第 5 頁就是<b>底了</b>，第 6 頁翻不過去</div>
+          </div>
+        </div>
+        <figcaption>同一本 PDF、同一個起始頁，<b>差別只在有沒有填結束頁</b>。右邊那道紅線就是虛擬曲目的邊界。</figcaption>
+      </figure>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">要「單曲」就填結束頁</div>想讓它出現在曲目清單、能加進曲單、能標作曲家——填結束頁，一定要填。</div>
+        <div class="callout" style="--c:var(--amber)"><div class="ct">要「自由翻」就別填</div>排練要跳來跳去、想從某段往前後找上下文——留白，不要填結束頁。</div>
+      </div>
+
+      <p>一本大譜集<strong>兩種混用是完全正常的</strong>。舉例來說：整本詩歌本的每首詩歌用項目書籤（要排進週日的曲單），另外幫「附錄」「調性索引」建幾個頁書籤當快速跳頁——兩者互不衝突。</p>
+    </section>
+
+    <section id="fix">
+      <div class="sec-label" style="--c:var(--green)">fix_it</div>
+      <h2>02 · 已經建錯了怎麼救？不用重建</h2>
+      <p>好消息：起始頁和結束頁<strong>隨時都能改</strong>，而且改的位置跟一般的曲目資料是同一個地方。已經手動建了 40 個書籤才發現漏填結束頁的人，不用重來。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">01</div><div><h4>打開書籤選單，找到那個書籤</h4><p>就是打開的書本圖示，裡面列著這份譜的所有書籤。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">02</div><div><h4>點它右邊那顆圓形按鈕</h4><p>這會打開「資料（Metadata）」面板——跟你平常編輯曲名、作曲家的是同一個面板。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">03</div><div><h4>切到「Properties（屬性）」分頁</h4><p>官方說明：這裡會多出「起始頁」與「結束頁」兩個欄位，是書籤才有的。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">04</div><div><h4>補上結束頁 → 它就升級成項目書籤了</h4><p>反過來想讓它變回可以自由翻頁的頁書籤，把結束頁清掉即可。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">刪書籤不會刪到你的譜</div>如果真的想砍掉重來也不用怕：官方明講，從曲目選單或書籤選單裡刪除書籤，<strong>不會移除、也不會改變來源的 PDF 檔案</strong>。書籤只是一層「怎麼看這份檔案」的指示，不是檔案本身。</div>
+    </section>
+
+    <section id="batch">
+      <div class="sec-label" style="--c:var(--purple)">batch</div>
+      <h2>03 · 300 首不要一首一首打：兩種批次做法</h2>
+      <p>一本 Real Book 有三、四百首。手動一首一首建，多數人建到第三十首就放棄了——這也是很多人最後跑去用別的軟體硬切 PDF 的原因。forScore 有兩條批次的路，先看你的 PDF 有沒有內建目錄。</p>
+
+      <div class="grid">
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">方法 1 · 最省事</div>
+          <h4>PDF 自己帶目錄 → 一鍵匯入</h4>
+          <p>很多電子版曲集本身就有目錄（就是 PDF 閱讀器左側那排可以點的章節）。有的話，在書籤選單點「編輯」，選「Import（匯入）」，forScore 會去掃描可用的資訊、直接生成書籤。</p>
+          <span class="ex">30 秒，先試這個</span>
+        </div>
+        <div class="card" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="c-tag">方法 2 · 最強</div>
+          <h4>CSV 索引檔 → Indexes</h4>
+          <p>沒有內建目錄，或你想連作曲家、年份一起帶進去，就做一份 CSV（試算表存出來的那種檔案）。掃描的紙本曲集幾乎都得走這條。</p>
+          <span class="ex">Real Book、詩歌本首選</span>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">很多人搞混的兩個「TOC」</div>書籤選單的排序方式裡也有一個「TOC」選項，但那<strong>只是直接用 PDF 的目錄來導覽</strong>，方便你點過去而已，<strong>不會真的幫你建立書籤</strong>。要真的生成書籤，走的是「編輯 → Import」。兩個都用得到，但別以為切了排序就等於建好了。</div>
+
+      <h3>CSV 到底要準備什麼欄位</h3>
+      <p>用 Excel、Numbers 或 Google 試算表做一張表就好，第一列寫欄位名稱，之後一列一首。官方直接建議用試算表來編輯，不要自己手打純文字檔——因為逗號和換行在 CSV 裡有特殊意義，手打很容易格式壞掉。</p>
+
+      <div class="tbl-wrap">
+        <table class="csv">
+          <tr><th>Name</th><th>Artist</th><th>Year</th><th>Start</th><th>End</th></tr>
+          <tr><td>The First Song</td><td>A value, with a comma</td><td>2012</td><td class="req">1</td><td class="req">2</td></tr>
+          <tr><td>Another Song</td><td>A value with "quotes"</td><td>1976</td><td class="req">3</td><td class="req">5</td></tr>
+        </table>
+      </div>
+      <p style="font-size:.86rem;color:var(--muted);margin-top:-8px">上面這張表取自 forScore 官方文件的示範。欄位名稱可以自己取，匯入時再一欄一欄指定它對應到什麼。</p>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">最重要的一句話：End 欄不能省</div>官方原文寫得很白：<strong>建立書籤的最低需求是「標題」與「起始頁」；但如果你想要能加上個別的曲目資料、或是把書籤加進曲單，就還需要設定結束頁。</strong>整篇文章的痛點就在這一句——省掉 End 欄，你會得到 300 個進不了曲單的目錄指標。</div>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">01</div><div><h4>先把 CSV 檔弄進 forScore</h4><p>跟匯入樂譜一樣：從雲端服務下載、從別的 App 分享過來、用拖放，或用電腦的檔案共享面板丟進去。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">02</div><div><h4>打開那本曲集，進書籤選單點左上角「Indexes」</h4><p>選擇你剛剛匯入的 CSV 檔。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">03</div><div><h4>把每一欄指定給對應的資料</h4><p>畫面會列出 CSV 裡每一欄的值，點一下就能指定它是標題、作曲家、起始頁還是結束頁。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">04</div><div><h4>逐筆翻過去檢查，順便設頁碼位移</h4><p>下一節專講這一步——它是成敗關鍵。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">05</div><div><h4>跳過表頭列，按「save」</h4><p>如果你之後還有結構相同的 CSV，可以勾「default to these settings」把這次的欄位對應存起來重複使用。</p></div></div>
+      </div>
+    </section>
+
+    <section id="offset">
+      <div class="sec-label" style="--c:var(--amber)">offset</div>
+      <h2>04 · 匯入後一定要做的事：頁碼校正</h2>
+      <p>這是最多人以為「匯入失敗」的地方：明明照著索引做，點下去卻每一首都差兩頁。原因很單純：譜上印的頁碼，和它在 PDF 裡的第幾頁，<strong>通常不是同一個數字</strong>。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--panel2)"><div class="bi">📕</div><div class="bt">PDF 實際頁</div><div class="bv">第 5 頁</div></div>
+          <div class="arr">＝</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">📄</div><div class="bt">封面＋版權頁</div><div class="bv">前面墊了 2 頁</div></div>
+          <div class="arr">＋</div>
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">🎼</div><div class="bt">譜上印的頁碼</div><div class="bv">第 3 頁</div></div>
+        </div>
+        <figcaption>你的索引寫的是「第 3 頁」，但 forScore 要的是「PDF 的第 5 頁」——<b>差的那 2 頁就是 offset（位移）</b>。</figcaption>
+      </figure>
+
+      <p>所以 Indexes 匯入畫面上有一個「頁碼位移」可以設，還有縮圖預覽。設好位移之後，務必<strong>逐筆翻過縮圖確認</strong>每一首都對齊，再按儲存。官方也明講匯入結果只是起點，該手動微調的還是要調。</p>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">實務上怎麼抓那個數字</div>隨便挑一首，看它譜上印的頁碼是幾（例如 122），再在 PDF 裡實際翻到它、看畫面上顯示第幾頁（例如 126）。<strong>差 4 就填 4</strong>。挑第一首和最後一首各驗一次——如果兩邊差的數字不一樣，代表中間有插頁，那就得分段處理。</div>
+    </section>
+
+    <section id="three-ways">
+      <div class="sec-label" style="--c:var(--purple)">three_ways</div>
+      <h2>05 · 書籤、複製、重排：三種切分方式怎麼選</h2>
+      <p>forScore 裡有三個功能都能「把一份檔案變成好幾份」，但它們對原始檔案做的事完全不同。這張表決定你會不會哪天不小心把原檔蓋掉。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>方式</th><th>對原始 PDF 做了什麼</th><th>佔空間嗎</th><th>什麼時候用它</th></tr>
+          <tr><td>書籤 Bookmarks</td><td class="good">完全不動<small>刪掉書籤也不影響來源檔</small></td><td class="good">不佔</td><td>整本曲集、教材、組曲——<strong>大部頭一律先想它</strong></td></tr>
+          <tr><td>複製 Clone</td><td class="good">不動原檔，另外多一份<small>操作：曲目選單 → 編輯 → 選檔案 → Clone → 命名</small></td><td class="good">一開始不佔<small>官方：靠檔案系統層級共用資料；等你改了它，iOS 才會把資料分開、才開始佔空間</small></td><td>同一首要留兩種版本（乾淨版 vs 寫滿筆記版）</td></tr>
+          <tr><td>重排 Rearrange</td><td class="bad">真的動到頁面<small>刪頁、旋轉、複製、合併</small></td><td>看你怎麼存</td><td>反覆記號要展開成線性頁序、或真的要把檔案拆開</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">Rearrange 的紅線：「Save」是永久覆蓋</div>官方寫明「Save 會覆寫原始檔案，而且無法復原」，並且<strong>強烈建議動手前先存一份副本</strong>。要保留原檔就用「Save As…」建立新檔。另外，有密碼保護的 PDF 不能使用重排功能。</div>
+
+      <details>
+        <summary>進階：重排之後，我原本建好的書籤會不會全毀？</summary>
+        <p>官方說法是會被保留並更新，但有兩個前提：書籤的起始頁與結束頁<strong>都沒有被刪掉</strong>，而且書籤沒有被反轉（起始頁必須排在結束頁前面）。</p>
+        <p>另外這個保留機制是 forScore 10.4 才加入的，更早的版本重排存檔後，書籤與連結不會被保留。官方還提醒一點：某些 PDF 用了 iOS 無法重現的特殊字型，重排後可能出現缺字或空白頁——這也是「先存副本」的另一個理由。</p>
+      </details>
+
+      <details>
+        <summary>那我可以把某一首書籤真的變成獨立的 PDF 嗎？</summary>
+        <p>可以。只要那個書籤有設起始頁與結束頁，在選單裡把它由右往左滑、點「分享」，就能單獨匯出那幾頁——可以選擇要不要一起帶上你的標註，也可以匯出成 4SC 格式給其他 forScore 使用者。</p>
+        <p>如果不是要傳給別人，只是想在自己的曲庫裡多存成一份新的 PDF，那就打開那個書籤後進「Rearrange」面板，選「Save As…」並取個名字。</p>
+      </details>
+    </section>
+
+    <section id="after">
+      <div class="sec-label" style="--c:var(--teal)">after</div>
+      <h2>06 · 拆好之後，你才解鎖的四件事</h2>
+      <p>做完這一步，那本 400 頁的 PDF 在使用上就跟「300 個獨立檔案」幾乎沒有差別了——這正是官方對 Indexes 功能的定位：讓一份長檔案也能享有「每首各自一個檔案才有的所有好功能」。</p>
+
+      <ul class="styled">
+        <li><b>能單獨排進演出曲單</b>——今晚的十首來自三本不同曲集，照樣排成一份清單，順序你說了算。</li>
+        <li><b>能有自己的曲目資料</b>——作曲家、曲風、調性、速度、標籤，每一首各自填，之後靠瀏覽和搜尋叫出來。</li>
+        <li><b>能掛自己的音檔</b>——伴奏或參考錄音直接綁在那一首上，不是綁在整本書上。</li>
+        <li><b>搜尋找得到</b>——輸入曲名就跳到那一首，不必記得它在第幾頁。</li>
+      </ul>
+
+      <h3>從果果的角度補一句：這也是「不必為了存譜升級容量」的原因</h3>
+      <p>我們同時在賣 2018 到 2026 年、各種容量的 iPad，看譜的客人最常問的一句是「我要買多大容量才存得下幾百本譜」。</p>
+      <p>這篇講的做法正好回答了它：用書籤虛擬切分，檔案數量從頭到尾<strong>沒有增加</strong>——一本就是一份 PDF。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">走書籤這條路</div>一本曲集＝一份 PDF。要找某一首靠搜尋，換機時搬的是一個檔案。</div>
+        <div class="callout" style="--c:var(--red)"><div class="ct">走硬切檔案那條路</div>同一批內容變成好幾百個檔案，每一個都各自帶著字型等資源，總容量只會往上加，換機時也是幾百個檔案要搬。</div>
+      </div>
+
+      <p>樂譜本來就不是影片或遊戲那種量級的東西。真的要為讀譜加預算，該加在<strong>螢幕尺寸</strong>上，不是容量——這件事我們另外寫一篇談。</p>
+    </section>
+
+    <section id="honest">
+      <div class="sec-label" style="--c:var(--red)">honest</div>
+      <h2>07 · 誠實說：書籤做不到的兩件事</h2>
+      <p>虛擬切分很強，但它不是真的把檔案切開，所以有兩個限制值得先知道，免得你以為是自己設定錯了。</p>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">限制 1 · 標註不是各自獨立的</div>官方講得很直接：項目書籤有自己的曲目資料（作曲家、評分、音檔），<strong>但沒有自己的「頁面專屬資訊」，標註就屬於這一類</strong>。所以如果你在整本檔案的第 1 頁上畫了東西，一個涵蓋 1–2 頁的書籤打開來也會看到那些筆跡——因為那本來就是同一頁。想讓同一段譜有兩種完全獨立的筆記，要用的是 Clone，不是書籤。</div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">限制 2 · 索引匯入的結果只是起點</div>不管是 PDF 內建目錄還是 CSV，匯進來之後幾乎都需要人工微調——頁碼位移、表頭列、封面造成的偏移，都是常態而不是故障。心裡先有這個預期，就不會做到一半覺得「這功能是不是壞了」。</div>
+
+      <p class="updated">本文查證：<b>2026 年 8 月</b>，對照 forScore 15.1.2 版本的官方文件，以官方最新為準。介面文字與選單位置會隨版本調整。</p>
+    </section>
+
+    <section id="video">
+      <div class="sec-label" style="--c:var(--muted)">video</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p>這個主題目前找不到把「兩種書籤差別」講清楚的繁體中文影片。下面兩支是英文的實機操作，但畫面很直觀，配合本文對照著看最有效率。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=Q2zokMlsazM" target="_blank" rel="noopener" data-yt="Q2zokMlsazM" aria-label="播放：Creating a Real Book Index in forScore">
+          <img loading="lazy" src="https://i.ytimg.com/vi/Q2zokMlsazM/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/Q2zokMlsazM/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>Creating a Real Book Index in forScore</b><small>頻道：Robby Burns · 推薦原因：本文第 03、04 節的 CSV 索引流程，這支從頭到尾實際做一遍給你看，包含最容易失敗的頁碼位移那一步 · 英文，無中文字幕</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=YJ2EOv7fMWI" target="_blank" rel="noopener" data-yt="YJ2EOv7fMWI" aria-label="播放：How to Create MULTIPLE Bookmarks in forScore">
+          <img loading="lazy" src="https://i.ytimg.com/vi/YJ2EOv7fMWI/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/YJ2EOv7fMWI/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>How to Create MULTIPLE Bookmarks in forScore</b><small>頻道：Josh Ring · 推薦原因：對應本文第 01、02 節，能看到建立書籤時「item / page」那個選項實際長什麼樣、填在哪裡 · 英文，無中文字幕</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">本文的功能行為、欄位需求與操作路徑，皆取自 forScore 官方知識庫（forscore.co）的對應條目，查證日期 2026 年 8 月 9 日，對照版本 15.1.2：</p>
+      <details class="src-fold">
+        <summary>參考資料來源<span class="n">8 筆</span></summary>
+        <ul class="sources">
+          <li><a href="https://forscore.co/kb/why-do-bookmarks-stop-me-from-turning-the-page/">forScore 官方知識庫 · Why do bookmarks stop me from turning the page?</a>（第 00、01、07 節：兩種書籤的行為差異、虛擬曲目的頁面邊界、以及「項目書籤沒有自己的標註」這一條）</li>
+          <li><a href="https://forscore.co/kb/understanding-bookmarks/">forScore 官方知識庫 · Understanding forScore bookmarks</a>（第 01 節：forScore 11 起可直接選 item／page，10 以前靠填不填結束頁）</li>
+          <li><a href="https://forscore.co/kb/creating-bookmarks/">forScore 官方知識庫 · Creating bookmarks</a>（第 01 節：建立位置在書籤選單的 ＋，以及數值有誤時會出現提示）</li>
+          <li><a href="https://forscore.co/kb/editing-bookmarks/">forScore 官方知識庫 · Editing bookmarks</a>（第 02 節：點右側圓形按鈕開資料面板，Properties 分頁有起始／結束頁欄位，隨時可改）</li>
+          <li><a href="https://forscore.co/kb/using-indexes-to-create-bookmarks/">forScore 官方知識庫 · Using Indexes to create bookmarks</a>（第 03、04、06 節：CSV 匯入流程、「最低需要標題與起始頁，要加曲目資料或加進曲單就需要結束頁」的原文、欄位對應與位移設定、CSV 格式範例）</li>
+          <li><a href="https://forscore.co/kb/importing-bookmarks/">forScore 官方知識庫 · Importing bookmarks</a>（第 03 節：PDF 內建目錄用「編輯 → Import」生成書籤，排序切到 TOC 只是導覽）</li>
+          <li><a href="https://forscore.co/kb/clones/">forScore 官方知識庫 · Using the Clone feature</a>（第 05 節：複製不佔額外儲存空間、修改後才分家的機制與操作路徑）</li>
+          <li><a href="https://forscore.co/kb/rearrange/">forScore 官方知識庫 · Using the Rearrange tool</a>（第 05 節：Save 永久覆蓋且無法復原、密碼保護檔案不支援、書籤與連結的保留條件與 10.4 版本限制）</li>
+        </ul>
+      </details>
+      <p class="sources" style="margin-top:14px">另參考 <a href="https://forscore.co/kb/deleting-bookmarks/">Deleting bookmarks</a>（刪除書籤不影響來源檔案）與 <a href="https://forscore.co/kb/extracting-bookmarks/">Extracting bookmarks as separate PDFs</a>（把書籤匯出成獨立 PDF 或 4SC 的兩種做法）。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
