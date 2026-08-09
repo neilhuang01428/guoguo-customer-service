@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>想用 Procreate 電繪，iPad 該怎麼挑？決定圖層上限的是 RAM · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式（共用 style.css 沒有的才寫在這）── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 寬表格橫向捲動（全型號對照欄位多，窄螢幕要能左右滑） */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 660px; }
+  td.y { color: var(--green-deep); font-weight: 700; }
+  td.n { color: var(--red); font-weight: 700; }
+  td.mid { color: var(--amber); font-weight: 700; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+  table td.num { font-family: var(--mono); }
+
+  /* RAM 級距徽章：讓 3/4/6/8/12/16GB 在表裡一眼分群 */
+  .rb { font-family: var(--mono); font-size: .74rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; display: inline-block; white-space: nowrap; }
+  .rb.lo { color: var(--red); background: var(--red-bg); }
+  .rb.mid { color: var(--amber); background: var(--amber-bg); }
+  .rb.hi { color: var(--green-deep); background: var(--green-bg); }
+  .rb.top { color: var(--navy); background: var(--navy-bg); }
+
+  /* 導言：迷你目錄（窄螢幕沒有左側 nav，這排就是導覽） */
+  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0 24px; }
+  .toc a { display: flex; align-items: baseline; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 14px; text-decoration: none; color: var(--ink); font-size: .93rem; transition: .12s; }
+  .toc a:hover { border-color: var(--navy); background: var(--navy-bg); }
+  .toc a i { font-family: var(--mono); font-style: normal; font-size: .72rem; color: var(--navy); font-weight: 700; flex: none; }
+
+  /* ── 決策鏈：四個維度依「補不補得回來」排序 ──
+     這是全篇的骨架，用左側粗色條標出「不可逆／可逆」，
+     讓讀者第一屏就看得出為什麼順序是這樣，而不是四件事平行並列。 */
+  .chain { display: grid; gap: 10px; margin: 20px 0; }
+  .chain .lk { display: flex; gap: 14px; align-items: flex-start; background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--c); border-radius: 10px; padding: 14px 17px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .chain .lk .no { font-family: var(--mono); font-size: 1.05rem; font-weight: 800; color: var(--c); min-width: 26px; flex: none; }
+  .chain .lk h4 { font-size: 1rem; color: var(--ink); font-weight: 700; margin-bottom: 3px; }
+  .chain .lk p { font-size: .89rem; color: var(--body); margin: 0; line-height: 1.65; }
+  .chain .lk .rev { font-family: var(--mono); font-size: .66rem; color: var(--c); background: var(--cbg); border-radius: 4px; padding: 2px 8px; display: inline-block; margin-top: 8px; }
+
+  /* ── 兩檔天花板：400 vs 1000 ──
+     這是全篇最該被單獨記住的一張圖，所以不用表格、用對開卡片放大。 */
+  .tier { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .tier .ti { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 10px; padding: 16px 18px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .tier .ti .s { font-family: var(--mono); font-size: .66rem; color: var(--muted); }
+  .tier .ti .big2 { display: block; font-size: 1.9rem; color: var(--c); font-weight: 800; line-height: 1.2; margin: 4px 0 2px; font-family: var(--mono); }
+  .tier .ti .u { font-size: .84rem; color: var(--muted); margin-bottom: 10px; }
+  .tier .ti p { font-size: .89rem; color: var(--body); margin: 0; line-height: 1.65; }
+  .tier .ti .who { font-size: .86rem; color: var(--ink); border-top: 1px solid var(--grid); padding-top: 10px; margin-top: 10px; }
+
+  /* ── 動態分鏡：情境 K「畫布一放大，可用圖層就塌下來」──
+     為什麼這裡值得做動畫：知識點是「參數 A 連續變化 → 結果 B 跟著變」的因果，
+     只給「小畫布 / 大畫布」兩張靜態圖，讀者看到的是兩個結果，不是那條因果曲線。
+     沿用共用檔情境 C（筆刷間距）的語彙：一根滑桿 + 一組會反應的圖形，節奏同樣 4.4s。
+     鐵則：基礎樣式＝動畫最終狀態（滑桿在右、疊層矮），
+     關掉動畫或不支援時，讀者看到的仍是「畫布大 → 層數少」這個完整結論。 */
+  .anim .cvs { padding: 6px 0 2px; }
+  .anim .cvs .ends { display: flex; justify-content: space-between; margin: 0 8%; font-family: var(--mono); font-size: .66rem; color: var(--muted); }
+  .anim .cvs .rail { position: relative; height: 4px; border-radius: 4px; background: var(--line); margin: 8px 8% 18px; }
+  .anim .cvs .rail b { position: absolute; top: 50%; left: 100%; width: 15px; height: 15px; margin: -7.5px 0 0 -7.5px; border-radius: 50%; background: var(--green); box-shadow: 0 1px 5px rgba(20,39,68,.3); }
+  .anim .cvs .stage2 { display: flex; align-items: flex-end; justify-content: center; gap: 16px; height: 74px; }
+  .anim .cvs .cv { width: 62px; height: 62px; border: 2px solid var(--navy); border-radius: 5px; background: #fff; flex: none; }
+  .anim .cvs .stk { display: flex; flex-direction: column-reverse; gap: 3px; }
+  .anim .cvs .stk i { display: block; width: 46px; height: 6px; border-radius: 2px; background: var(--green); opacity: 0; }
+  .anim .cvs .stk i:nth-child(-n+3) { opacity: 1; }
+  .anim .cvs .cnt { font-family: var(--mono); font-size: .68rem; color: var(--navy); text-align: center; margin-top: 10px; }
+  @keyframes cv-knob { 0%, 10% { left: 0%; }   52%, 100% { left: 100%; } }
+  @keyframes cv-grow { 0%, 10% { width: 34px; height: 34px; } 52%, 100% { width: 62px; height: 62px; } }
+  @keyframes cv-drop { 0%, 10% { opacity: 1; }  52%, 100% { opacity: 0; } }
+  .anim .cvs .rail b { animation: cv-knob 4.4s ease-in-out infinite; }
+  .anim .cvs .cv    { animation: cv-grow 4.4s ease-in-out infinite; }
+  .anim .cvs .stk i:nth-child(n+4) { animation: cv-drop 4.4s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .anim .cvs .rail b, .anim .cvs .cv, .anim .cvs .stk i { animation: none; }
+  }
+
+  /* 圖層＝玻璃片：靜態示意，用堆疊的半透明方塊表現「疊在一起變成一張圖」 */
+  .glass { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
+  .glass .pane { width: 74px; height: 74px; border: 1px solid var(--navy); border-radius: 6px; background: rgba(23,52,95,.05); display: grid; place-items: center; font-size: 1.5rem; }
+  .glass .op { color: var(--muted); font-family: var(--mono); font-size: .9rem; }
+  .glass .pane.out { background: var(--navy-bg); border-width: 2px; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+    .tier { grid-template-columns: 1fr; }   /* 共用 style.css 的 media query 只收 .grid/.cgrid/.stats，自訂多欄容器要自己加 */
+  }
+  @media (max-width: 560px) { .toc { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>Procreate 買哪台</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#order" class="active">00 · 挑機的正確順序</a>
+  <div class="grp">兩件買錯救不回的事</div>
+  <a href="#pencil">01 · 筆：壓感有沒有</a>
+  <a href="#lami">02 · 螢幕貼不貼合</a>
+  <div class="grp">圖層這一題</div>
+  <a href="#layer">03 · 圖層＝RAM×畫布</a>
+  <a href="#table">04 · 全型號對照表</a>
+  <a href="#need">05 · 你到底需要幾層</a>
+  <a href="#anim">06 · 做動畫哪台不卡</a>
+  <div class="grp">下單前</div>
+  <a href="#screen">07 · 尺寸與刷新率</a>
+  <a href="#storage">08 · 容量的唯一例外</a>
+  <a href="#budget">09 · 每個預算的夠用機</a>
+  <a href="#used">10 · 買二手多看三件事</a>
+  <a href="#honest">11 · 我們不保證的事</a>
+  <a href="#video">延伸觀看</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>2018–2026 全型號在售</span><span>資訊透明・缺點揭露</span><span>終身售後諮詢</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">客戶指南 / iPad 選購 · Procreate 電繪</div>
+    <h1>想用 Procreate 電繪，iPad 該怎麼挑？</h1>
+    <p class="subtitle">決定圖層上限的是記憶體，不是晶片新舊。所以「買最新的」不等於「圖層最多」——這頁把 2018 到 2026 年每一台攤開來算給你看。</p>
+
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--red)">
+        <div class="lt">直接回答</div>
+        <p class="big">Procreate 的圖層上限由<b>記憶體（RAM）和畫布尺寸</b>決定，跟晶片新舊無關。而且它不是連續的，只有兩檔：記憶體 8GB 以上最多 1000 層，6GB 以下不管畫布開多小，都卡在 400 層。</p>
+        <p class="sm">所以會出現這種事：以 A4、300dpi 的畫布來算，2021 年的 iPad Pro（16GB）能開 <b>211 層</b>，2025 年的 iPad Pro 基本容量（12GB）只有 <b>150 層</b>。挑機的順序建議照「買錯救不救得回來」排——筆和記憶體救不回來，容量可以事後補。</p>
+        <p class="alias-line">你可能是用別的說法找到這頁的：<b>procreate 買哪台 ipad</b>、<b>ipad 電繪推薦</b>、<b>procreate 最多幾層</b>、<b>畫畫用 ipad 要買 Pro 嗎</b>——講的都是同一件事。</p>
+      </div>
+      <blockquote class="lead-src">「Procreate 中的最大圖層數限制由兩個主要因素來決定：你 iPad 型號的 RAM，以及你的畫布像素尺寸。」<cite>Procreate 官方說明中心〈我的 iPad 最大能有幾個圖層？〉，查核 2026/08/09</cite></blockquote>
+      <p class="lede">（「RAM」就是記憶體，跟儲存空間（128GB、256GB 那個）是兩回事。記憶體是「同時能攤開多少東西在桌上」，儲存空間是「抽屜有多大」。）</p>
+      <p class="lede">麻煩的地方在於，Apple 對 iPad 基本款、iPad mini 和多數舊機根本不公布記憶體大小——規格頁上那一欄是空的。這頁會把每一台的實際圖層數算給你，還會告訴你另外三件買之前該先確認的事：你想配的那支筆這台吃不吃、螢幕是不是全平面貼合、以及做動畫的話最多能撐幾秒。</p>
+    </div>
+
+    <div class="toc">
+      <a href="#order"><i>00</i>四個維度的正確順序</a>
+      <a href="#table"><i>04</i>全型號圖層對照表</a>
+      <a href="#anim"><i>06</i>做動畫哪台不會卡</a>
+      <a href="#budget"><i>09</i>每個預算的最低夠用機</a>
+    </div>
+
+    <section id="order">
+      <div class="sec-label" style="--c:var(--navy)">order</div>
+      <h2>00 · 四個維度不是平行的，有先後順序</h2>
+      <p>市面上的選購文通常把「圖層、體驗、容量、預算」四件事並排列出來，讓你自己權衡。但這四件事的份量根本不一樣——有兩件買錯了只能整台換掉，另外兩件事後都補得回來。</p>
+      <p>所以正確的順序不是照重要性排，是照<strong>「補不補得回來」</strong>排。先把不可逆的那幾項鎖住，剩下的再照預算慢慢挑。這樣就算後來覺得選得不夠好，代價也只是多買一條線、或多付一點雲端月費，不必整台換掉。</p>
+
+      <div class="chain">
+        <div class="lk" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="no">01</div>
+          <div>
+            <h4>你想配的那支筆，這台吃不吃？</h4>
+            <p>每台 iPad 只相容特定幾款原廠筆。最容易踩的坑是 Apple Pencil（USB-C 款）——它<strong>沒有壓力感應</strong>，畫畫時用力壓線條也不會變粗。買錯筆還能換筆，但買到「只吃 USB-C 款」的機型就得整台換。</p>
+            <div class="rev">買錯＝整台換</div>
+          </div>
+        </div>
+        <div class="lk" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="no">02</div>
+          <div>
+            <h4>螢幕是不是全平面貼合？</h4>
+            <p>非全貼合的螢幕，玻璃和面板之間有一層空氣，筆尖和線條之間會看得出間隙。這是 iPad 標準版和 Air 以上最明顯的分界，而且無法用配件補救。</p>
+            <div class="rev">買錯＝整台換</div>
+          </div>
+        </div>
+        <div class="lk" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="no">03</div>
+          <div>
+            <h4>記憶體多大？（＝你的圖層上限）</h4>
+            <p>記憶體不能事後加。它決定你在同一張圖上最多能疊幾層，也決定做動畫時最多能畫幾格。8GB 是最關鍵的那條線。</p>
+            <div class="rev">買錯＝整台換</div>
+          </div>
+        </div>
+        <div class="lk" style="--c:var(--amber);--cbg:var(--amber-bg)">
+          <div class="no">04</div>
+          <div>
+            <h4>螢幕尺寸與刷新率</h4>
+            <p>11 吋和 13 吋差 135 公克，這是攜帶性與作畫舒適度的取捨，沒有標準答案。120Hz 只有 iPad Pro 有，但它屬於「有了很爽、沒有也畫得下去」的那類。</p>
+            <div class="rev">是偏好，不是門檻</div>
+          </div>
+        </div>
+        <div class="lk" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="no">05</div>
+          <div>
+            <h4>儲存容量</h4>
+            <p>最不用煩惱的一項。作品可以備份到 iCloud、下載的素材可以刪掉重抓、真的不夠也能外接硬碟。<strong>唯一的例外是 iPad Pro</strong>——它的容量選項綁著記憶體，等於在選圖層上限，詳見<a class="inline" href="#storage">第 08 節</a>。</p>
+            <div class="rev">事後都補得回來</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">一句話帶走</div>容量可以補，筆和記憶體補不回來。所以錢要先花在前三項，容量留到最後再決定。</div>
+    </section>
+
+    <section id="pencil">
+      <div class="sec-label" style="--c:var(--red)">pencil</div>
+      <h2>01 · 第一關：想要壓感，就不能挑到只吃 USB-C 款的機型</h2>
+      <p>「壓力感應」是指你用力壓，線條就變粗；輕輕畫，線條就變細。對電繪來說這幾乎是必要條件——沒有壓感，你畫出來的每一筆都是同樣粗細，像用原子筆而不是像用鉛筆。</p>
+      <p>四款原廠 Apple Pencil 裡，只有一款沒有壓感，偏偏它就是最便宜、名字最容易搞混的那支。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Apple Pencil</th><th>壓力感應</th><th>傾斜感應</th><th>懸浮</th><th>輕點兩下</th><th>擠壓</th><th>側轉</th><th>充電方式</th></tr>
+          <tr><td>第 1 代</td><td class="y">✓</td><td class="y">✓</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td>Lightning 或轉接器</td></tr>
+          <tr><td>第 2 代</td><td class="y">✓</td><td class="y">✓</td><td class="mid">部分機型</td><td class="y">✓</td><td class="n">✗</td><td class="n">✗</td><td>磁吸無線</td></tr>
+          <tr><td>Pro</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td>磁吸無線</td></tr>
+          <tr><td>USB-C 款</td><td class="n">✗ 沒有</td><td class="y">✓</td><td class="mid">部分機型</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td>USB-C 線</td></tr>
+        </table>
+      </div>
+
+      <p>Apple 官方對 USB-C 款的描述是：「像素等級的精準度、低延遲、傾斜感應」——整句話裡沒有出現壓力兩個字。對照第 1 代和第 2 代的官方頁面就很明顯：那兩支的說明都寫著「能靈敏感應筆尖的壓力與傾斜角度」。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">要壓感，挑這幾款</div>Apple Pencil 第 1 代、第 2 代、Pro。這三支都有壓力＋傾斜雙感應，畫起來的手感差別主要在充電方式與額外功能，不在筆觸本身。</div>
+        <div class="callout" style="--c:var(--red)"><div class="ct">USB-C 款不適合畫畫</div>它是為了做筆記、標註 PDF 設計的。副廠平價電容筆同理——多數也只有傾斜、沒有壓感，Procreate 裡壓再用力線條也不會變粗。</div>
+      </div>
+
+      <h3>「一台 iPad 只吃一款筆」是個常見的誤解</h3>
+      <p>實際上不少機型同時吃兩款。iPad mini（A17 Pro）、iPad Air（M2 之後）、iPad Pro（M4 之後）都同時相容 Apple Pencil Pro 與 USB-C 款；iPad 第 10 代則同時吃第 1 代（要接轉接器）與 USB-C 款。</p>
+      <p>所以正確的問法不是「這台配哪支筆」，而是<strong>「這台吃不吃得到有壓感的那幾支」</strong>。這句話一問，iPad 基本款的處境就清楚了：它只吃第 1 代和 USB-C 款，想要壓感就只剩第 1 代這條路，而第 1 代在 USB-C 接口的機型上還得另外買一條轉接器才充得了電。</p>
+
+      <ul class="flags">
+        <li><b>看到「支援 Apple Pencil」就以為都一樣</b>——規格頁寫的是支援哪一款，四款差很多，一定要看清楚型號。</li>
+        <li><b>先買了筆才挑 iPad</b>——順序錯了。先確定機型吃哪幾支，再決定買哪支筆。</li>
+      </ul>
+    </section>
+
+    <section id="lami">
+      <div class="sec-label" style="--c:var(--red)">lamination</div>
+      <h2>02 · 第二關：螢幕貼不貼合，是入門款和 Air 以上最明顯的分界</h2>
+      <p>「全平面貼合」的意思是，觸控層和顯示面板直接壓在一起，中間沒有空氣層。沒有貼合的螢幕，你的筆尖停在玻璃表面，但線條畫在下面那層——中間隔著幾毫米的距離，看起來就會有一點浮浮的落差。</p>
+
+      <figure class="fig">
+        <div class="flow">
+          <div class="box" style="--cbg:var(--green-bg)"><div class="bi">🖊️</div><div class="bt">全平面貼合</div><div class="bv">筆尖貼著線條</div></div>
+          <div class="arr">vs</div>
+          <div class="box" style="--cbg:var(--amber-bg)"><div class="bi">🫧</div><div class="bt">中間有空氣層</div><div class="bv">看得出間隙</div></div>
+          <div class="arr">＋</div>
+          <div class="box" style="--cbg:var(--red-bg)"><div class="bi">🔊</div><div class="bt">敲擊時</div><div class="bv">聲音比較空</div></div>
+        </div>
+        <figcaption>差別不在畫得準不準——線條<b>仍然</b>出現在筆尖正下方；差在「你看到的落筆位置」和「手的感覺」對不對得起來。</figcaption>
+      </figure>
+
+      <p>這一項 Apple 從來不用否定句寫。規格頁的慣例是「有這項功能才列出來，沒有就整條不提」，所以要判斷只能兩邊對照著看。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>機型</th><th>全平面貼合</th><th>抗反射鍍膜</th><th>官方規格頁怎麼寫</th></tr>
+          <tr><td>iPad Pro（全系列）</td><td class="y">有</td><td class="y">有</td><td>兩項都明確列出</td></tr>
+          <tr><td>iPad Air<small>第 3 代起，較舊世代為第三方規格資料庫佐證</small></td><td class="y">有</td><td class="y">有</td><td>兩項都明確列出</td></tr>
+          <tr><td>iPad mini<small>第 5 代起，較舊世代為第三方規格資料庫佐證</small></td><td class="y">有</td><td class="y">有</td><td>兩項都明確列出</td></tr>
+          <tr><td>iPad 標準版<small>第 7／8／9／10 代、iPad (A16)</small></td><td class="n">沒有</td><td class="n">沒有</td><td>顯示器欄位<strong>完全不出現</strong>這兩條</td></tr>
+        </table>
+      </div>
+
+      <p>拿 iPad (A16) 的官方繁中規格頁來看，顯示器欄位逐條是：IPS 技術、2360×1640 解析度、原彩顯示、500 尼特亮度、防指印疏油外膜、支援 Apple Pencil。就這樣，沒有全平面貼合，也沒有抗反射鍍膜。</p>
+      <p>同一份格式套到 iPad Air 上，就會多出「全平面貼合」和「抗反射鍍膜」兩行。同樣的文件、同樣的欄位、同樣的寫法，一邊有、一邊沒有——這個對照比任何評測都硬。</p>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">但這不是「不能畫」</div>非全貼合的機型照樣畫得出好作品，線條也一樣精準——差的是手感，不是能力。有繪師形容那個視差「用久就習慣了」。如果預算真的只到入門款，這一項是可以妥協的；只是要在買之前就知道，而不是拆封後才發現。</div>
+
+      <details>
+        <summary>順便一提：抗反射鍍膜為什麼對畫圖的人有感</summary>
+        <p>畫畫時你會長時間低頭盯著螢幕，室內燈管、窗戶都會映在上面。有抗反射鍍膜的機型反光明顯少很多，iPad mini 的官方標示是反射率 1.8%。</p>
+        <p>另外 iPad Pro 的 1TB／2TB 版本可以加購「奈米紋理玻璃」，霧面、反光更低，但清潔限制嚴格得多。Apple 明講不能用噴霧清潔劑、溶劑或含過氧化氫的清潔劑，只能用隨附的拋光布，必要時沾 70% 異丙醇。</p>
+      </details>
+    </section>
+
+    <section id="layer">
+      <div class="sec-label" style="--c:var(--purple)">layers</div>
+      <h2>03 · 第三關：圖層上限＝記憶體 × 畫布尺寸</h2>
+      <p>先講清楚圖層是什麼。它就像一疊透明玻璃片：你在第一張畫線稿、第二張塗底色、第三張加陰影，疊起來看就是完整的一張圖。分開畫的好處是每一層都能單獨修改或刪掉，不會動到其他部分。</p>
+
+      <figure class="fig">
+        <div class="glass">
+          <div class="pane">✏️</div>
+          <span class="op">＋</span>
+          <div class="pane">🎨</div>
+          <span class="op">＋</span>
+          <div class="pane">🌗</div>
+          <span class="op">＝</span>
+          <div class="pane out">🐦</div>
+        </div>
+        <figcaption>線稿、底色、陰影各佔一層，疊起來才是成品。<b>層數上限＝你能把一張圖拆得多細。</b></figcaption>
+      </figure>
+
+      <h3>為什麼會有上限？因為每一層都要佔一份記憶體</h3>
+      <p>每一層都是一張跟畫布同樣大的完整圖。畫布開得越大，一層佔的記憶體就越多，能塞下的層數自然越少。這就是為什麼同一台 iPad，畫小圖能開幾百層、畫印刷用的大圖只剩幾十層。</p>
+
+      <figure class="fig anim">
+        <div class="cvs">
+          <div class="ends"><span>小畫布</span><span>大畫布</span></div>
+          <div class="rail"><b></b></div>
+          <div class="stage2">
+            <div class="cv"></div>
+            <div class="stk"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div class="cnt">畫布放大 → 可用圖層變少</div>
+        </div>
+        <figcaption>畫布尺寸和圖層數是<b>此消彼長</b>的：同一台機器，把畫布從螢幕尺寸放大到 A3 印刷尺寸，可用層數會掉到剩下不到三分之一。</figcaption>
+      </figure>
+
+      <h3>關鍵在這裡：天花板只有兩檔</h3>
+      <p>算出來的層數再高，也會被一個上限壓住。而這個上限只有兩個值，分界就在記憶體有沒有到 8GB。</p>
+
+      <div class="tier">
+        <div class="ti" style="--c:var(--red)">
+          <div class="s">記憶體 6GB 以下</div>
+          <span class="big2">400</span>
+          <div class="u">層封頂</div>
+          <p>畫布再小也不會超過 400 層。iPad 標準版全系列、2018–2020 的 iPad Pro、iPad mini 第 6 代以前、iPad Air 第 4 代以前都在這一檔。</p>
+          <div class="who">適合：塗鴉、練習、單張插畫、社群圖</div>
+        </div>
+        <div class="ti" style="--c:var(--navy)">
+          <div class="s">記憶體 8GB 以上</div>
+          <span class="big2">1000</span>
+          <div class="u">層封頂</div>
+          <p>iPad Air 第 5 代之後、iPad mini（A17 Pro）、所有 M 系列 iPad Pro 都在這一檔。多出來的空間主要吃在大畫布和動畫上。</p>
+          <div class="who">適合：精細完稿、印刷稿、動畫</div>
+        </div>
+      </div>
+
+      <div class="callout" style="--c:var(--purple)"><div class="ct">為什麼 Procreate 拿不到全部記憶體</div>iOS 不會讓一個 App 把記憶體用光。實際上 Procreate 分到的大約是機身記憶體的一半——8GB 的機器分到約 4000MB、16GB 的分到約 7168MB。所以「16GB 是 8GB 的兩倍」在圖層數上大致成立，但不是精確的兩倍。</div>
+    </section>
+
+    <section id="table">
+      <div class="sec-label" style="--c:var(--navy)">chart</div>
+      <h2>04 · 全型號圖層對照表</h2>
+      <p>下面這張表是本篇的重點。Procreate 官方頁面只提供一個互動計算機、要你自己一台一台點，我們把它的演算法整理出來，一次算完所有機型與常見畫布。</p>
+      <p>找到你打算用的畫布尺寸那一欄，再往左看需要哪個記憶體級距，就知道最低該買到哪一台。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>記憶體</th><th>代表機型</th><th>Procreate 預設正方形<br>2048×2048</th><th>A4 印刷<br>300dpi</th><th>A3 印刷<br>300dpi</th><th>動畫常用<br>1920×1080</th></tr>
+          <tr>
+            <td><span class="rb lo">2GB</span></td>
+            <td>iPad Air 2、mini 4、iPad 第 5／6 代、9.7 吋 Pro</td>
+            <td class="n" colspan="4">已經<strong>裝不了</strong>現在的 Procreate（見下方說明）</td>
+          </tr>
+          <tr>
+            <td><span class="rb lo">3GB</span></td>
+            <td>iPad 第 7／8／9 代、mini 第 5 代、Air 第 3 代</td>
+            <td class="num">60</td><td class="num">26</td><td class="num">11</td><td class="num">125</td>
+          </tr>
+          <tr>
+            <td><span class="rb mid">4GB</span></td>
+            <td>iPad 第 10 代、mini 第 6 代、Air 第 4 代、10.5 吋 Pro</td>
+            <td class="num">124</td><td class="num">57</td><td class="num">26</td><td class="num">254</td>
+          </tr>
+          <tr>
+            <td><span class="rb mid">6GB</span></td>
+            <td>iPad (A16)、2018–2020 的 iPad Pro</td>
+            <td class="num">156</td><td class="num">73</td><td class="num">34</td><td class="num">319</td>
+          </tr>
+          <tr>
+            <td><span class="rb hi">8GB</span></td>
+            <td>Air 第 5 代／M2／M3、mini (A17 Pro)、Pro M1／M2／M4 基本容量</td>
+            <td class="num">246</td><td class="num">116</td><td class="num">56</td><td class="num">501</td>
+          </tr>
+          <tr>
+            <td><span class="rb top">12GB</span></td>
+            <td>iPad Air M4、iPad Pro M5（256／512GB）</td>
+            <td class="num">316</td><td class="num">150</td><td class="num">73</td><td class="num">643</td>
+          </tr>
+          <tr>
+            <td><span class="rb top">16GB</span></td>
+            <td>iPad Pro 的 <strong>1TB／2TB</strong> 版本（M1 到 M5 都是）</td>
+            <td class="num">444</td><td class="num">211</td><td class="num">103</td><td class="num">902</td>
+          </tr>
+        </table>
+      </div>
+      <p class="sources" style="margin-top:-8px">數字為依 Procreate 官方計算器演算法重算所得；畫布前提如表頭所列，換畫布數字就會變。查核 2026/08/09。</p>
+
+      <h3>看出來了嗎？買新的不等於圖層多</h3>
+      <p>把上面的表換個排法，用 A4、300dpi 這個最常見的印刷畫布來排，順序會讓人意外：</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>機型</th><th>上市年份</th><th>記憶體</th><th>A4 300dpi 可用圖層</th></tr>
+          <tr><td>iPad Pro 12.9"（M1，1TB 以上）</td><td>2021</td><td><span class="rb top">16GB</span></td><td class="num y">211</td></tr>
+          <tr><td>iPad Pro 13"（M5，基本容量）</td><td>2025</td><td><span class="rb top">12GB</span></td><td class="num">150</td></tr>
+          <tr><td>iPad Air 第 5 代（M1）</td><td>2022</td><td><span class="rb hi">8GB</span></td><td class="num y">116</td></tr>
+          <tr><td>iPad Pro 12.9" 第 4 代</td><td>2020</td><td><span class="rb mid">6GB</span></td><td class="num">73</td></tr>
+          <tr><td>iPad (A16)</td><td>2025</td><td><span class="rb mid">6GB</span></td><td class="num">73</td></tr>
+          <tr><td>iPad 第 9 代</td><td>2021</td><td><span class="rb lo">3GB</span></td><td class="num n">26</td></tr>
+        </table>
+      </div>
+
+      <ul class="styled">
+        <li>2021 年的 Pro（16GB）<b>贏過</b> 2025 年的 Pro 基本容量——211 對 150。</li>
+        <li>2022 年的 Air 5 <b>贏過</b> 2020 年的 Pro——116 對 73。一台是中階、一台是當年的旗艦。</li>
+        <li>2025 年的 iPad (A16) 和 2020 年的 Pro <b>完全打平</b>——都是 73 層。中間差了五年。</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">果果的角度</div>我們同時在賣 2018 到 2026 年的機型，所以這件事在我們這裡是每天都在發生的日常：想要圖層多，往回買一台大記憶體的舊 Pro，常常比買當年的新入門款划算得多。這句話賣新品的通路說不出口，我們可以。</div>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">2GB 機型已經出局，這點要講清楚</div>目前版本的 Procreate（5.4.12）需要 iPadOS 16.3 以上，而 iPad Air 2 和 iPad mini 4 最高只能升到 iPadOS 15——這兩台已經<strong>安裝不了</strong>現在的 Procreate。二手市場上它們還很便宜，買回來畫圖會直接卡在下載那一步。</div>
+    </section>
+
+    <section id="need">
+      <div class="sec-label" style="--c:var(--amber)">how_many</div>
+      <h2>05 · 那你到底需要幾層？</h2>
+      <p>知道上限是一回事，判斷「夠不夠」是另一回事。下面的數字來自繪師社群的實際回報，不是官方標準，但可以當作抓預算的參考。</p>
+
+      <div class="grid">
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">情境 1 · 門檻最低</div>
+          <h4>塗鴉、練習、速寫</h4>
+          <p>草稿、線稿、上色、陰影各一層，大約 <strong>4 到 7 層</strong>就完成一張。這個量幾乎任何能跑 Procreate 的機型都撐得住。</p>
+          <span class="ex">3GB 機型也夠</span>
+        </div>
+        <div class="card" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="c-tag">情境 2 · 最常見</div>
+          <h4>完稿插畫</h4>
+          <p>線稿、底色、陰影、光影、背景、特效分開畫，一般落在 <strong>12 到 35 層</strong>；複雜一點的作品會到 35 到 70 層。</p>
+          <span class="ex">4GB 起跳比較安心</span>
+        </div>
+        <div class="card" style="--c:var(--purple);--cbg:var(--purple-bg)">
+          <div class="c-tag">情境 3 · 吃資源</div>
+          <h4>精細角色、商業插畫</h4>
+          <p>有繪師回報，光是畫一個角色就用掉 <strong>75 到 100 層以上</strong>。如果同時還要開 A4 或更大的印刷畫布，這就是全篇最容易撞到上限的組合。</p>
+          <span class="ex">建議 8GB 以上</span>
+        </div>
+        <div class="card" style="--c:var(--red);--cbg:var(--red-bg)">
+          <div class="c-tag">情境 4 · 上限殺手</div>
+          <h4>動畫</h4>
+          <p>動畫的<strong>每一格就是一個圖層</strong>，所以圖層上限直接等於畫格上限。詳見<a class="inline" href="#anim">下一節</a>。</p>
+          <span class="ex">記憶體越大越有感</span>
+        </div>
+      </div>
+
+      <h3>圖層用完了還有救嗎？有，但要付代價</h3>
+      <div class="steps">
+        <div class="step" style="--c:var(--green)"><div class="n">01</div><div><h4>邊畫邊合併</h4><p>把確定不再修改的圖層捏合成一層。最省事，但合併是不可逆的——之後想單獨改那一塊就得重畫。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">02</div><div><h4>複製整份檔案再壓平</h4><p>先複製一份完整備份，在新檔案裡把已完成的部分壓平騰出額度。原檔留著，保險得多。</p></div></div>
+        <div class="step" style="--c:var(--amber)"><div class="n">03</div><div><h4>一開始就把畫布縮小</h4><p>最有效但也最該提前決定的一招。畫布尺寸和 DPI 都會直接換成圖層額度，開檔前就該算好。</p></div></div>
+      </div>
+      <div class="callout" style="--c:var(--amber)"><div class="ct">注意：群組不等於合併</div>把圖層拉進群組只是整理面板，不會減少圖層數；真正騰出額度的是合併和壓平。（這一點官方沒有逐字說明，是繪師社群的普遍共識。）</div>
+    </section>
+
+    <section id="anim">
+      <div class="sec-label" style="--c:var(--purple)">animation</div>
+      <h2>06 · 做動畫的話，哪台不會卡？</h2>
+      <p>如果你打算用 iPad 做動畫，這一節比圖層那一節更該先看——因為動畫是最快撞到記憶體上限的用途。</p>
+
+      <h3>先懂一件事：一格畫面就是一個圖層</h3>
+      <p>Procreate 內建的「動畫輔助」是逐格動畫：時間軸上的每一格，對應的就是圖層面板裡的一層。所以你的圖層上限，直接就是畫格上限。</p>
+      <p>把畫格換算成秒數，各級距的差距會非常直觀。以 1920×1080 的畫布、每秒 12 格（動畫常用的速率）來算：</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>記憶體</th><th>1920×1080 最多幾格</th><th>換算成秒數<small>12fps</small></th><th>2048×2048 最多幾格</th><th>換算成秒數</th></tr>
+          <tr><td><span class="rb lo">3GB</span></td><td class="num">125</td><td class="num n">約 10 秒</td><td class="num">60</td><td class="num n">約 5 秒</td></tr>
+          <tr><td><span class="rb mid">4GB</span></td><td class="num">254</td><td class="num">約 21 秒</td><td class="num">124</td><td class="num">約 10 秒</td></tr>
+          <tr><td><span class="rb mid">6GB</span></td><td class="num">319</td><td class="num">約 26 秒</td><td class="num">156</td><td class="num">約 13 秒</td></tr>
+          <tr><td><span class="rb hi">8GB</span></td><td class="num">501</td><td class="num y">約 41 秒</td><td class="num">246</td><td class="num">約 20 秒</td></tr>
+          <tr><td><span class="rb top">12GB</span></td><td class="num">643</td><td class="num y">約 53 秒</td><td class="num">316</td><td class="num">約 26 秒</td></tr>
+          <tr><td><span class="rb top">16GB</span></td><td class="num">902</td><td class="num y">約 75 秒</td><td class="num">444</td><td class="num">約 37 秒</td></tr>
+        </table>
+      </div>
+
+      <p>Procreate 官方自己也用過這個換算：他們在說明 16GB 機型能開到 902 層時，寫的是「用預設的 15fps 可以跑超過一整分鐘」——902 除以 15 剛好是 60.1 秒，數字完全對得上。</p>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">低階機型的變通做法</div>時間軸上有一個「持續格數」設定，可以讓同一張圖重複顯示好幾格。所以 3GB 的機器不是只能做 10 秒——用停格、重複的手法還是能拉長，只是不能每一格都是新畫的。</div>
+
+      <h3>如果你要用的是 Procreate Dreams，官方有硬數字</h3>
+      <p>Procreate Dreams 是另一個獨立的 App，專門做 2D 動畫與動態圖像，要另外付費買（不需要先有 Procreate）。它的官方相容性頁直接列出每台機型的軌道數上限——這是少數 Procreate 官方願意逐台公布的效能天花板。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>機型</th><th>內容軌上限</th><th>影片軌</th><th>白話說</th></tr>
+          <tr><td>iPad Pro（M4／M5）、iPad Air（M2／M3／M4）</td><td class="num y">200</td><td class="y">4 條 4K</td><td>目前的天花板，多層合成不受限</td></tr>
+          <tr><td>iPad mini（A17 Pro）</td><td class="num y">200</td><td class="mid">2 條 4K</td><td>軌數滿格，但影片素材放不多</td></tr>
+          <tr><td>iPad (A16)、iPad mini 第 6 代</td><td class="num y">200</td><td class="mid">1 條 4K</td><td>畫動畫夠，剪影片會卡住</td></tr>
+          <tr><td>iPad 第 8／9／10 代、mini 第 5 代</td><td class="num mid">100</td><td class="mid">1 條 4K</td><td>只有一半的軌數，複雜專案要精簡</td></tr>
+          <tr><td>iPad 第 5／6／7 代</td><td class="num n">50</td><td class="n">1 條，只到 1080p</td><td>能跑，但這是入門練習的層級</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">誠實說：卡不卡我們給不了精確數字</div>官方公布的是軌數上限，不是幀率實測。「iPad 第 9 代做動畫會不會掉格」這種問題，目前只有零星的使用者回報（有人說舊機型會嚴重延遲、持續當機），沒有可靠的量化測試。我們不會假裝有數字。</div>
+    </section>
+
+    <section id="screen">
+      <div class="sec-label" style="--c:var(--teal)">screen</div>
+      <h2>07 · 尺寸與刷新率：這一關是偏好，不是門檻</h2>
+      <p>前面三關都是「買錯救不回」，這一關不是——11 吋和 13 吋都畫得出好作品，選錯只是用起來沒那麼順手。</p>
+
+      <div class="grid g3">
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)">
+          <div class="c-tag">8.3 吋 · iPad mini</div>
+          <h4>293 公克</h4>
+          <p>輕到可以單手拿。適合外出速寫、記靈感。但畫布小，習慣畫長線條的人會覺得綁手綁腳，工具面板也會吃掉不少作畫空間。</p>
+        </div>
+        <div class="card" style="--c:var(--navy);--cbg:var(--navy-bg)">
+          <div class="c-tag">11 吋 · 最多人選</div>
+          <h4>約 444 公克</h4>
+          <p>新手通常推薦這個尺寸。放腿上、放桌上都自在，帶出門也不勉強。長時間手持不會太快手痠。</p>
+        </div>
+        <div class="card" style="--c:var(--purple);--cbg:var(--purple-bg)">
+          <div class="c-tag">13 吋 · 在家畫</div>
+          <h4>約 579 公克</h4>
+          <p>比 11 吋重 135 公克，加保護套後接近 800 公克。視野明顯更舒服，但外出得用後背包裝，手持二十分鐘就會有感。</p>
+        </div>
+      </div>
+
+      <p>刷新率的部分：120Hz（ProMotion）目前只有 iPad Pro 有，從 2017 年的第二代 Pro 一路延續至今，其他所有 iPad 都是 60Hz。有媒體實測比較過同一支筆在兩種螢幕上畫線，60Hz 的墨跡會稍微落在筆尖後面一點。</p>
+      <p>不過這一項的體感因人而異，也有使用者認為畫圖時感覺不出差別。想深入了解可以看我們另一篇專門談 <a class="inline" href="../promotion-120hz-who-feels-it/">120Hz 和 60Hz 差多少、哪些人真的感覺得到</a>，這裡就不重複展開。</p>
+    </section>
+
+    <section id="storage">
+      <div class="sec-label" style="--c:var(--green)">storage</div>
+      <h2>08 · 容量：最不用煩惱的一項，但 iPad Pro 是例外</h2>
+      <p>容量之所以放在最後，是因為它幾乎都補得回來：作品可以備份到 iCloud 再從機器上刪掉、下載的筆刷和素材可以清、真的不夠也能外接硬碟。Procreate 本身也才 1.2GB 左右。</p>
+      <p>但 iPad Pro 有一個很多人不知道的例外，而且這個例外會直接改變你的圖層上限。</p>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">iPad Pro：選容量就是在選記憶體</div>Apple 官方購買頁寫得很明白：「256GB 和 512GB 機型搭載 12GB 記憶體；1TB 和 2TB 機型搭載 16GB 記憶體」。也就是說，<strong>只有 1TB 以上的 iPad Pro 才拿得到 16GB</strong>——以 A4、300dpi 來算，這是 150 層和 211 層的差別。這一項買下去就定了，事後補不回來。</div>
+
+      <p>同樣的邏輯也適用於舊款 Pro：M1、M2、M4 世代的 iPad Pro 也是 1TB／2TB 版本才有 16GB，其餘容量是 8GB。所以在二手市場上，一台大容量的舊 Pro 在圖層數這件事上，可能比小容量的新 Pro 還強。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">不是 Pro 的話，容量隨便選</div>iPad、iPad Air、iPad mini 的記憶體不隨容量變動。畫圖用途選最小容量再搭 iCloud 就夠，把省下的錢拿去升級機型比較實在。</div>
+        <div class="callout" style="--c:var(--amber)"><div class="ct">iCloud 只是備份，不是擴充</div>雲端能幫你把作品移走、釋放空間，但正在編輯的檔案還是吃本機空間。長時間創作、素材量大的人建議 256GB 起跳。</div>
+      </div>
+    </section>
+
+    <section id="budget">
+      <div class="sec-label" style="--c:var(--navy)">budget</div>
+      <h2>09 · 每個預算帶的最低夠用機</h2>
+      <p>把前面幾關合起來看，就能得出三條線。這裡不寫死金額（機器和二手行情都會變動），只講「該往回買到哪一代」。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--green)"><div class="n">A</div><div>
+          <h4>只是想試試看、當興趣塗鴉</h4>
+          <p>條件：能裝 Procreate、有壓感筆。<strong>iPad 第 9 代或第 10 代</strong>就跨得過門檻——但要接受兩件事：螢幕不是全平面貼合，而且圖層在 A4 印刷尺寸只有 26 到 57 層。畫社群圖、練線稿完全沒問題，做印刷稿會卡。</p>
+        </div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">B</div><div>
+          <h4>認真學、想畫完稿插畫</h4>
+          <p>這一檔的分水嶺很清楚：<strong>iPad Air 第 5 代（M1，2022）</strong>。它是目前最便宜、而且能同時拿到「8GB 記憶體＋全平面貼合＋抗反射鍍膜」這三件事的機型，A4 印刷尺寸可用 116 層。往回只要多退一代，Air 第 4 代就掉到 4GB、剩 57 層，差距大到畫一張圖就有感覺。</p>
+        </div></div>
+        <div class="step" style="--c:var(--purple)"><div class="n">C</div><div>
+          <h4>做動畫、接商業案、要印刷</h4>
+          <p>直接鎖 <strong>16GB</strong>，也就是 iPad Pro 的 1TB／2TB 版本。這裡的重點是：不必買最新的。2021 年的 M1 Pro 只要是 1TB 以上，圖層數就贏過 2025 年基本容量的 M5 Pro。省下的差額拿去買筆和保護配件還有剩。</p>
+        </div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">哪些情況我們會勸你不要加錢</div>如果你畫的是社群插圖、螢幕尺寸的作品，6GB 和 8GB 的差別你多半感覺不到——兩者在 2048×2048 的畫布上分別是 156 層和 246 層，而多數完稿插畫用不到 70 層。這種需求硬升到 Pro，錢花在你用不到的地方。</div>
+    </section>
+
+    <section id="used">
+      <div class="sec-label" style="--c:var(--teal)">used</div>
+      <h2>10 · 買二手電繪機，比一般用途多看三件事</h2>
+      <p>電繪對機器的要求跟看影片、做筆記不一樣——你的手會整天壓在螢幕上，而且每一筆都要精準。所以驗機時有三個地方要特別看，這是我們每天在做的事。</p>
+
+      <ul class="check">
+        <li><b>整面觸控要逐格掃過，不能只點幾下</b><br>畫圖時筆會走遍整個螢幕。局部觸控失靈在滑手機時不容易發現，畫線時卻會直接斷掉。要用畫線的方式滿版來回測，不是點一點就好。</li>
+        <li><b>螢幕亮點、壞點要在純白和純黑背景下看</b><br>電繪長時間盯著大面積色塊，一顆亮點在深色背景下會非常刺眼。這是二手機最常被忽略、退貨後才發現的項目。</li>
+        <li><b>電池健康度要問清楚實際數字</b><br>畫圖是高耗電作業，電池衰退的機器可能畫到一半就掉電。要看的是實際百分比，不是「電池正常」這種模糊說法。</li>
+      </ul>
+
+      <div class="callout" style="--c:var(--navy)"><div class="ct">為什麼我們敢把這三條寫出來</div>因為這正是我們自己驗機的流程。把標準公開，你拿這張清單去檢查任何一台二手機都適用——包括不是跟我們買的。資訊透明本來就該是這樣。</div>
+    </section>
+
+    <section id="honest">
+      <div class="sec-label" style="--c:var(--amber)">honest</div>
+      <h2>11 · 這些數字怎麼來的，以及我們不保證的事</h2>
+      <p>本文的圖層數字不是抄來的，也不是估的。Procreate 官方說明頁只提供一個互動計算機，沒有現成表格，所以我們把它的計算邏輯整理出來，重算了所有機型與畫布組合。</p>
+      <p>驗證方式是拿 Procreate 官方 2021 年公布過的實測數字回頭對：10 個數字裡有 9 個完全相同，1 個差 1 層。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>畫布</th><th>8GB 官方／本文</th><th>16GB 官方／本文</th></tr>
+          <tr><td>1920×1080</td><td class="mid">500 ／ 501</td><td class="y">902 ／ 902</td></tr>
+          <tr><td>2048×2048</td><td class="y">246 ／ 246</td><td class="y">444 ／ 444</td></tr>
+          <tr><td>4096×4096</td><td class="y">58 ／ 58</td><td class="y">108 ／ 108</td></tr>
+          <tr><td>8192×8192</td><td class="y">11 ／ 11</td><td class="y">24 ／ 24</td></tr>
+          <tr><td>16384×8192</td><td class="y">3 ／ 3</td><td class="y">10 ／ 10</td></tr>
+        </table>
+      </div>
+
+      <ul class="styled">
+        <li><b>記憶體數字有兩種來源</b>：iPad Pro 與 iPad Air 是 Apple 官方規格頁明文；iPad 標準版與 mini 的記憶體 Apple 不公布，本文的級距是<b>由 Procreate 官方計算器的參數反推</b>得到的，不是 Apple 官方數字。</li>
+        <li><b>參數會變</b>：Procreate 改版、Apple 出新機，這張表都要重算。表上的數字是 2026 年 8 月的快照。</li>
+        <li><b>非全貼合的體感差異沒有量化數據</b>：官方從不描述自家產品的缺點，媒體評測也只給到「幾毫米」這種定性說法。我們照實引用，不加油添醋。</li>
+        <li><b>貼合資訊只有現行機型是官方直接查證的</b>：iPad Air 與 iPad mini 較舊世代的規格頁抓不到完整內容，那幾代是靠第三方規格資料庫交叉佐證。標準版沒有這兩項的判斷則來自現行機型規格頁的同格式對照。</li>
+        <li><b>動畫卡不卡沒有實測</b>：官方只公布軌數上限。低階機型的掉格情況目前只有零星使用者回報，證據等級不足以寫成結論。</li>
+      </ul>
+
+      <p class="updated">本文查證：<b>2026 年 8 月</b>，以 Apple 與 Procreate 官方最新資訊為準。</p>
+    </section>
+
+    <section id="video">
+      <div class="sec-label" style="--c:var(--muted)">video</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p>下面三支補上本文沒展開的部分：實際畫起來的手感差異、四支筆的完整比較，以及過來人踩過的坑。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=M0M8FbMazZM" target="_blank" rel="noopener" data-yt="M0M8FbMazZM" aria-label="播放：iPad Air or iPad Pro 哪一款更適合畫畫">
+          <img loading="lazy" src="https://i.ytimg.com/vi/M0M8FbMazZM/sddefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/M0M8FbMazZM/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>iPad Air or iPad Pro：哪一款更適合畫畫？</b><small>頻道：Nuomi諾米 · 推薦原因：本文第 09 節的 B 檔和 C 檔就是在 Air 與 Pro 之間做取捨，這支由插畫家實際畫給你看色域與視差的差別，是規格表講不出來的部分 · 繁中</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=nqI8bDa-lUA" target="_blank" rel="noopener" data-yt="nqI8bDa-lUA" aria-label="播放：四支 Apple Pencil 該怎麼選">
+          <img loading="lazy" src="https://i.ytimg.com/vi/nqI8bDa-lUA/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/nqI8bDa-lUA/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>四支 Apple Pencil，功能不同、價錢不同、支援的 iPad 也不同！到底該怎麼選？</b><small>頻道：APPLEFANS蘋果迷 · 推薦原因：正好對應本文第 01 節。這支把四支筆的相容機型與功能差異一支一支拆開講，比對照表更好記 · 繁中</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=dxp2dJwp4nw" target="_blank" rel="noopener" data-yt="dxp2dJwp4nw" aria-label="播放：5 個入手 iPad 畫圖要避免的坑">
+          <img loading="lazy" src="https://i.ytimg.com/vi/dxp2dJwp4nw/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/dxp2dJwp4nw/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>小心購物欲衝腦！5 個入手 iPad 畫圖要避免的坑</b><small>頻道：Comic Black Rainbow黑虹 · 推薦原因：本文談的是規格怎麼挑，這支談的是心態——由繪師講「哪些錢其實不用花」，正好平衡掉選購文容易讓人越買越高階的傾向 · 繁中</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">圖層演算法與動畫規格取自 Procreate 官方說明中心與官方部落格；機型規格、Apple Pencil 相容性與螢幕貼合取自 Apple 官方頁面；螢幕手感與延遲的體感描述來自媒體評測，已在內文標明證據等級。查證日期 2026 年 8 月 9 日：</p>
+      <details class="src-fold">
+        <summary>參考資料來源<span class="n">14 筆</span></summary>
+        <ul class="sources">
+          <li><a href="https://help.procreate.com/articles/YB7CjQ-maximum-layer-limit">Procreate 官方說明中心 · 最大圖層限制</a>（第 03、04 節的「RAM＋畫布尺寸決定圖層上限」官方原文與計算器）</li>
+          <li><a href="https://procreate.com/insight/2021/layer-limits">Procreate 官方部落格 · 圖層上限提升</a>（第 04、06、11 節的官方實測數字表，以及「15fps 可跑超過一分鐘」的換算）</li>
+          <li><a href="https://help.procreate.com/articles/dbgjal-procreate-faq">Procreate 官方 FAQ</a>（第 04 節的版本 5.4.12 與 iPadOS 16.3 最低需求）</li>
+          <li><a href="https://help.procreate.com/articles/zlexav-ipad-compatibility">Procreate Dreams 官方 · iPad 相容性</a>（第 06 節的逐機型內容軌與影片軌上限表）</li>
+          <li><a href="https://help.procreate.com/articles/znmxbp-procreate-dreams-faq">Procreate Dreams 官方 FAQ</a>（第 06 節的「獨立 App、需另外買斷、不需先有 Procreate」）</li>
+          <li><a href="https://help.procreate.com/procreate/handbook/animation/animation-interface">Procreate 官方手冊 · 動畫介面</a>（第 05、06 節的「每一格畫面就是一個獨立圖層」）</li>
+          <li><a href="https://help.procreate.com/procreate/handbook/animation/animation-options">Procreate 官方手冊 · 動畫選項</a>（第 06 節的持續格數機制與 1–60 FPS 設定範圍）</li>
+          <li><a href="https://help.procreate.com/articles/LA4SAi-apple-pencil-pro-procreate">Procreate 官方 · Apple Pencil Pro 支援</a>（第 01 節的擠壓與側轉在 Procreate 內的實際作用）</li>
+          <li><a href="https://support.apple.com/en-us/121318">Apple 官方 · Apple Pencil (USB-C) 技術規格</a>（第 01 節的官方描述只列傾斜、未提壓力）</li>
+          <li><a href="https://www.apple.com/tw/apple-pencil/">Apple 台灣官方 · Apple Pencil 比較</a>（第 01 節的四款功能對照，含壓力感應、懸浮、側轉、雙指按壓）</li>
+          <li><a href="https://support.apple.com/en-us/108937">Apple 官方 · Apple Pencil 相容性</a>（第 01 節的「一台可同時相容兩款筆」逐機型清單）</li>
+          <li><a href="https://www.apple.com/tw/ipad-11/specs/">Apple 台灣官方 · iPad (A16) 技術規格</a>（第 02 節的顯示器欄位未列全平面貼合與抗反射鍍膜）</li>
+          <li><a href="https://www.apple.com/tw/ipad-air/specs/">Apple 台灣官方 · iPad Air 技術規格</a>（第 02 節的對照組：同欄位明確列出兩項）</li>
+          <li><a href="https://www.apple.com/tw/shop/buy-ipad/ipad-pro">Apple 台灣官方 · iPad Pro 購買頁</a>（第 08 節的「256／512GB 為 12GB 記憶體，1TB／2TB 為 16GB 記憶體」）</li>
+        </ul>
+      </details>
+      <p class="sources" style="margin-top:14px">螢幕貼合的體感描述另參考 <a href="https://www.parkablogs.com/content/ipad-10-2022-artist-review">Parka Blogs · iPad 10 繪師評測</a>（非全貼合的間隙與敲擊聲）；120Hz 延遲數字參考 <a href="https://www.apple.com/newsroom/2017/06/ipad-pro-10-5-and-12-9-inch-models-introduces-worlds-most-advanced-display-breakthrough-performance/">Apple Newsroom 2017 年 iPad Pro 發表新聞稿</a>（官方標示 20 毫秒）。</p>
+      <p class="sources">奈米紋理玻璃的清潔限制參考 <a href="https://support.apple.com/en-us/104948">Apple 官方 · 如何清潔奈米紋理顯示器</a>。第 05 節各創作類型的圖層數為繪師社群回報值，非官方標準。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
