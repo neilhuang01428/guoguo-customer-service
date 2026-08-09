@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>forScore 怎麼用？新手先學這 8 件事，其他慢慢來 · 果果國際</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  /* ── 本篇特有樣式（共用 style.css 沒有的才寫在這）── */
+
+  /* masthead：卡片版（比照站上既有文章） */
+  .masthead { padding: 24px 52px 0; }
+  .masthead .card-head { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(20,39,68,.06); padding: 20px 24px; }
+  .masthead .top { gap: 14px; flex-wrap: wrap; padding: 0; }
+  .masthead .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .masthead .pills span { font-size: .74rem; color: var(--navy); border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; }
+
+  /* 導言：迷你目錄（窄螢幕沒有左側 nav，這排就是導覽） */
+  .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0 24px; }
+  .toc a { display: flex; align-items: baseline; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 11px 14px; text-decoration: none; color: var(--ink); font-size: .93rem; transition: .12s; }
+  .toc a:hover { border-color: var(--navy); background: var(--navy-bg); }
+  .toc a i { font-family: var(--mono); font-style: normal; font-size: .72rem; color: var(--navy); font-weight: 700; flex: none; }
+
+  /* 寬表格橫向捲動 */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  .tbl-wrap table { margin: 0; min-width: 620px; }
+  table td small { display: block; color: var(--muted); font-size: .8rem; margin-top: 3px; }
+
+  /* ── 停損線 stopline：每一節結尾固定「學到這裡就可以停」──
+     這是全篇的骨架元件。它跟 callout 不同：callout 是提醒，
+     停損線是「本節到此為止」的收束，所以用虛線上框、灰底，視覺上像一道界線。 */
+  .stop { border: 1px dashed #cfd8e4; background: #fbfcfe; border-radius: 9px; padding: 12px 16px; margin: 16px 0 0; font-size: .89rem; color: var(--body); }
+  .stop b { display: block; font-family: var(--mono); font-size: .66rem; color: var(--muted); font-weight: 700; margin-bottom: 5px; }
+  .stop b::before { content: '⌐ '; }
+  .stop .go { color: var(--navy); font-weight: 600; }
+
+  /* ── 八件事速查：編號＋動作＋一句話，整段要能被獨立引用 ── */
+  .eight { display: grid; gap: 8px; margin: 20px 0; counter-reset: e; }
+  .eight .ei { display: flex; gap: 13px; align-items: flex-start; background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 9px; padding: 12px 15px; box-shadow: 0 2px 10px rgba(20,39,68,.03); }
+  .eight .ei .no { font-family: var(--mono); font-weight: 800; color: var(--c); flex: none; min-width: 20px; }
+  .eight .ei h4 { font-size: .97rem; color: var(--ink); font-weight: 700; margin-bottom: 2px; }
+  .eight .ei p { font-size: .87rem; color: var(--muted); margin: 0; }
+
+  /* ── 點擊分區示意：把官方那句「點兩側翻頁、點中央顯示控制」畫出來 ── */
+  .zones { display: flex; gap: 6px; height: 132px; }
+  .zones div { flex: 1; border-radius: 8px; display: grid; place-items: center; text-align: center; font-size: .82rem; line-height: 1.5; border: 1px solid var(--line); }
+  .zones .side { background: var(--navy-bg); color: var(--navy); font-weight: 600; }
+  .zones .mid { flex: 1.3; background: var(--amber-bg); color: var(--amber); font-weight: 600; }
+  .zones small { display: block; color: var(--muted); font-weight: 400; font-size: .74rem; margin-top: 4px; }
+
+  @media (max-width: 860px) {
+    .masthead { padding-left: 20px; padding-right: 20px; }
+  }
+  @media (max-width: 560px) { .toc { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+    <div><b>forScore 新手 8 件事</b><small>果果國際 · 客戶指南</small></div>
+  </div>
+  <a href="#what" class="active">00 · 它是什麼、不是什麼</a>
+  <div class="grp">今天就做完</div>
+  <a href="#import">01 · 把譜弄進去</a>
+  <a href="#one-file">02 · 一個檔＝一首曲</a>
+  <a href="#metadata">03 · 只填三個欄位</a>
+  <a href="#annotate">04 · 長按進標註</a>
+  <a href="#turn">05 · 點兩側翻頁</a>
+  <a href="#setlist">06 · 做一份曲單</a>
+  <a href="#bookmark">07 · 整本曲集怎麼辦</a>
+  <a href="#rule">08 · 一條保命規則</a>
+  <div class="grp">之後再說</div>
+  <a href="#later">09 · 現在不用學的</a>
+  <a href="#video">延伸觀看</a>
+  <a href="#sources">資料來源</a>
+</nav>
+
+<main>
+  <header class="masthead">
+    <div class="card-head">
+      <div class="top">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#17345f"/><circle cx="15.5" cy="24.5" r="7" fill="#fff"/><circle cx="24.5" cy="24.5" r="7" fill="#fff" opacity=".85"/><path d="M20 7.8c3.3-2.1 7.6-1.3 8.4 1.8-2.9 2.5-7.1 1.6-8.4-1.8z" fill="#3fbf6f"/><rect x="19.1" y="8.2" width="1.8" height="6.6" rx=".9" fill="#3fbf6f"/></svg>
+          <div><div class="wm">果果國際</div><div class="wm-sub">GUOGUO INTERNATIONAL</div></div>
+        </div>
+        <div class="tagline"><b>台灣最專業的 Apple 福利機供應商</b><br>iPad 選購，都交給我們</div>
+      </div>
+      <div class="pills"><span>2018–2026 全型號在售</span><span>資訊透明・缺點揭露</span><span>終身售後諮詢</span></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <div class="kicker">客戶指南 / iPad 讀譜 · forScore 入門</div>
+    <h1>forScore 怎麼用？新手先學這 8 件事</h1>
+    <p class="subtitle">功能表很長，但第一天要學的沒那麼多。這篇每一節都會告訴你「學到哪裡就可以停」——剩下的等你真的遇到再回來。</p>
+
+    <div class="lead">
+      <div class="lead-ans" style="--c:var(--green)">
+        <div class="lt">直接回答</div>
+        <p class="big">第一天真正要學會的只有八件事：<b>匯入、一檔一曲、填三個欄位、長按進標註、點兩側翻頁、做一份曲單、整本曲集建區間書籤、還有一條「別刪掉重裝」的保命規則。</b></p>
+        <p class="sm">這八件全部都在<b>買斷版</b>裡——不必訂閱 Pro（官方自己寫「正常使用並不需要它」），也不必先買踏板或任何配件。</p>
+        <p class="sm">踏板、圖層、多台同步翻頁、練習統計這些，都可以等你真的遇到需求再學。這篇的價值有一半在於<b>明講什麼現在不用學</b>。</p>
+        <p class="alias-line">你可能是用別的說法找到這頁的：<b>forScore 教學</b>、<b>forScore 新手</b>、<b>iPad 看譜怎麼開始</b>、<b>樂譜 iPad 入門</b>——講的都是同一件事。</p>
+      </div>
+      <blockquote class="lead-src">「點兩側（藍色區域）翻頁，點中央（黃色區域）顯示或隱藏控制項，<strong>在頁面上任意處長按即可標註</strong>。」<cite>forScore 15.0 官方使用手冊〈Basics〉，查核 2026 年 8 月</cite></blockquote>
+      <p class="lede">上面那句官方說明，就一口氣涵蓋了八件事裡的兩件——而「長按進標註」正是最多老用戶用了好幾年才發現的動作。</p>
+      <p class="lede">下面按照你打開 App 後的自然順序走：先把譜弄進去、讓它找得到，再學會在上面寫字和翻頁，最後是上台前會用到的曲單。每節結尾都有一道<strong>停損線</strong>。</p>
+    </div>
+
+    <div class="toc">
+      <a href="#what"><i>00</i>它做不到什麼（先講）</a>
+      <a href="#annotate"><i>04</i>最多人不知道的一招</a>
+      <a href="#rule"><i>08</i>唯一會出人命的一條</a>
+      <a href="#later"><i>09</i>現在還不用學的東西</a>
+    </div>
+
+    <section id="what">
+      <div class="sec-label" style="--c:var(--navy)">what_it_is</div>
+      <h2>00 · 先講清楚：它是曲庫系統，不是 PDF 閱讀器</h2>
+      <p>用一個生活比喻：如果 PDF 閱讀器是「一疊影印紙」，forScore 就是一位幫你把譜排好、翻頁、記筆記的譜務助理。助理很強，但<strong>他不識譜</strong>。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">它很擅長</div>大量 PDF 的整理與搜尋、手寫標註、演出曲單、免手翻頁、多台裝置同步翻頁。</div>
+        <div class="callout" style="--c:var(--red)"><div class="ct">它做不到</div>移調、把譜上的音符播出來。官方說明：因為它<strong>沒有辨識頁面上音符的能力</strong>。</div>
+      </div>
+
+      <p>這個界線先劃清楚，後面所有期待才不會落空。你餵給它的是掃描檔或別的軟體匯出的 PDF，它看到的是圖像、不是音高——想要「按一下降半音」的人，需要的是另一類 App。</p>
+
+      <h3>先回答兩個花錢的問題</h3>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>你可能在想</th><th>答案</th><th>官方依據</th></tr>
+          <tr><td>是不是改訂閱制了？</td><td class="good">沒有。本體一次買斷，含終身免費更新</td><td>官方購買說明：a one-time fee that includes free updates for life<small>2025 年 2 月官方標示為 24.99 美元，價格與地區有關且可能調整</small></td></tr>
+          <tr><td>不訂 Pro 會不會少很多？</td><td class="good">不會。這篇八件事全在買斷版裡</td><td>官方原文：It is not required for normal use.<small>Pro 是選配的年度訂閱，提供進階功能</small></td></tr>
+          <tr><td>買一次能裝幾台？</td><td>最多 10 台你自己的裝置</td><td>官方：Universal Purchase，iPad／iPhone／Mac 共用同一次購買</td></tr>
+        </table>
+      </div>
+
+      <div class="stop"><b>停損線</b>Pro 到底包含哪九項功能、退訂後畫在譜上的圖章會不會消失——那是另一個題目，<span class="go">今天不用管</span>。你現在只需要知道：不訂也能把這八件事全部做完。</div>
+    </section>
+
+    <section id="import">
+      <div class="sec-label" style="--c:var(--teal)">01_import</div>
+      <h2>01 · 把譜弄進去：只要學一條路</h2>
+      <p>官方文件列了六種匯入方式，但新手只要會一種就夠——<strong>主選單的匯入鈕</strong>。它可以瀏覽 iPad 本機、iCloud 雲碟，以及你設定過的雲端服務。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">01</div><div><h4>打開主選單，點匯入鈕</h4><p>就是那個「往下的箭頭進入方框」的圖示。用外接鍵盤的話，按 Command-I 也是同一個功能。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">02</div><div><h4>找到你的 PDF，點它</h4><p>要一次匯入很多份，用畫面上的「選取」按鈕多選。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">03</div><div><h4>回到曲目清單，它就在那裡了</h4><p>iPad 使用者還有更快的方法：直接把檔案從「檔案」App 拖進 forScore。</p></div></div>
+      </div>
+
+      <div class="callout" style="--c:var(--amber)"><div class="ct">先知道一件事就好：雲端服務是「下載」不是「同步」</div>接了 Dropbox、Google 雲端硬碟之後，forScore 是把檔案<strong>複製</strong>一份進來。你之後在電腦上改了那份譜，iPad 裡這一份不會自己跟著變。</div>
+
+      <div class="stop"><b>停損線</b>紙本掃描該用幾 dpi、哪些格式會自動轉成 PDF、六條匯入路徑各自的限制——<span class="go">等你真的要掃一整箱紙譜時再研究</span>。今天先把手邊現成的 PDF 弄進去就好。</div>
+    </section>
+
+    <section id="one-file">
+      <div class="sec-label" style="--c:var(--teal)">02_one_file</div>
+      <h2>02 · 一個檔案放一首完整曲子</h2>
+      <p>這是官方唯一給的檔案整理原則，也是之後所有功能能不能好用的前提。</p>
+
+      <blockquote class="lead-src">「forScore 是圍繞 PDF 格式設計的，<strong>當你曲庫裡的每一個檔案都包含一首完整樂曲的所有頁面時，它通常運作得最好</strong>。如果你的譜是每一頁一個 PDF 或圖片檔，你得先把它們合併成一份多頁的 PDF。」<cite>forScore 15.0 官方使用手冊〈Adding Files〉</cite></blockquote>
+
+      <p>要避免的是「一頁一個檔」。至於整本 Real Book、整本詩歌本要不要拆開？<strong>不用拆</strong>——那是第 07 節要處理的事。</p>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">今天就要記住的地雷：不要在「檔案」App 裡改 PDF 檔名</div>官方明講：透過檔案 App 更改 PDF 檔名<strong>不建議這麼做，因為它可能導致 metadata、標註以及其他 forScore 資訊的遺失</strong>。要改名字，請用下一節的資料面板改「標題」欄。</div>
+
+      <div class="stop"><b>停損線</b>為什麼改個檔名會弄丟標註（因為 forScore 的標註不是存在 PDF 裡）——<span class="go">原理留給備份那一篇</span>。你現在只要記住「改名走 App 裡面」這個習慣就好。</div>
+    </section>
+
+    <section id="metadata">
+      <div class="sec-label" style="--c:var(--teal)">03_metadata</div>
+      <h2>03 · 只填三個欄位：標題、作曲家、標籤</h2>
+      <p>forScore 的資料面板可以填十幾個欄位——標題、評分、難度、參照、時間、時長、速度、調性、作曲家、曲風、標籤、標記。第一天<strong>不要全填</strong>，會填到放棄。</p>
+
+      <div class="grid g3">
+        <div class="card" style="--c:var(--navy);--cbg:var(--navy-bg)"><div class="c-tag">必填 1</div><h4>標題</h4><p>就是你腦中叫這首曲子的名字。改名字改這裡，不要去改檔名。</p></div>
+        <div class="card" style="--c:var(--navy);--cbg:var(--navy-bg)"><div class="c-tag">必填 2</div><h4>作曲家</h4><p>它會自動變成一個可以瀏覽的分類，之後「找蕭邦的全部」一鍵就到。</p></div>
+        <div class="card" style="--c:var(--green);--cbg:var(--green-bg)"><div class="c-tag">必填 3</div><h4>標籤</h4><p>用來記「你跟這首的關係」：待練、已背譜、老師指定、這學期。多個用逗號分開。</p></div>
+      </div>
+
+      <p>作曲家、曲風、標籤這幾個欄位<strong>可以填多個值</strong>，用逗號分隔即可，每一個都會變成一個能瀏覽的分類。三個欄位填一次，之後靠瀏覽和搜尋叫譜，就不會再發生「我知道我有這份譜，但找不到」。</p>
+
+      <div class="stop"><b>停損線</b>從 PDF 內嵌資訊自動抓取（Fetch）、多選批次編輯時「打勾＝取代／加號＝附加」的差別——<span class="go">等你累積到上百份譜再學</span>，那時候才划算。</div>
+    </section>
+
+    <section id="annotate">
+      <div class="sec-label" style="--c:var(--purple)">04_annotate</div>
+      <h2>04 · 在頁面上長按，直接進標註模式</h2>
+      <p>這是全篇最值得記住的一個動作，也是很多人用了三年才發現的：<strong>不必去找任何按鈕</strong>，在譜面上任意處按住不放，標註工具列就會出現。</p>
+
+      <p>進去之後你只需要三件事：選一支筆、寫、擦掉。工具列上有筆型、橡皮擦、還有復原按鈕，其餘的先當作不存在。</p>
+
+      <div class="callout" style="--c:var(--green)"><div class="ct">用 Apple Pencil 的人多做一個設定就好</div>在設定裡打開「防止手指繪圖」之後，就只有筆能畫、手指仍然可以縮放和換工具——手掌壓在螢幕上不會再畫出一條鬼畫符。</div>
+
+      <div class="stop"><b>停損線</b>圖層（把自己的指法、老師的指示、這次演出的臨時修改分層放）、Pencil 的懸停與擠壓手勢、分享時標註會變成什麼樣——<span class="go">這些都很有用，但都不是第一天的事</span>，另有專文。</div>
+    </section>
+
+    <section id="turn">
+      <div class="sec-label" style="--c:var(--purple)">05_turn</div>
+      <h2>05 · 翻頁：先用免費的那一種</h2>
+      <p>還沒買任何配件之前，你已經有兩種翻頁方式：左右滑動，或<strong>點畫面兩側</strong>。官方把畫面分成三區，記住這張圖就夠了。</p>
+
+      <figure class="fig">
+        <div class="zones">
+          <div class="side">點左側<br>上一頁<small>或向右滑</small></div>
+          <div class="mid">點中央<br>顯示／隱藏控制列<small>雙點還能叫出顯示選項</small></div>
+          <div class="side">點右側<br>下一頁<small>或向左滑</small></div>
+        </div>
+        <figcaption>官方原文說的「藍色區域」與「黃色區域」就是這三塊。<b>而在任何一塊上長按，都是進標註模式</b>（第 04 節）。</figcaption>
+      </figure>
+
+      <p>用觸控板或滑鼠的人也一樣：點頁面兩側、或直接捲動，都能翻頁。</p>
+
+      <div class="stop"><b>停損線</b>兩隻手都在樂器上、根本騰不出手點螢幕的人，另外有四種免手翻頁的方法（藍牙踏板、把電子琴當踏板、AirPods 轉頭、臉部手勢）——<span class="go">等你確定會演出再研究</span>，其中兩種完全免費。</div>
+    </section>
+
+    <section id="setlist">
+      <div class="sec-label" style="--c:var(--amber)">06_setlist</div>
+      <h2>06 · 把這週要彈的做成一份曲單</h2>
+      <p>曲目清單是 App 自動生成的，曲單（Setlist）則<strong>完全手動</strong>——你排什麼順序就是什麼順序。這是它跟資料夾最大的差別。</p>
+
+      <div class="steps">
+        <div class="step" style="--c:var(--navy)"><div class="n">01</div><div><h4>在曲單選單點「＋」，打一個名字</h4><p>例如「這週練習」「10/12 婚禮」。</p></div></div>
+        <div class="step" style="--c:var(--navy)"><div class="n">02</div><div><h4>點進去，再按「＋」加曲子</h4><p>會出現全螢幕編輯器：左邊是這份曲單、右邊是你的曲庫，點右邊的曲子就加到左邊。</p></div></div>
+        <div class="step" style="--c:var(--green)"><div class="n">03</div><div><h4>要調順序就拖曳</h4><p>在手動排序模式下，直接拖，或點編輯後按住每一列右邊的三橫線往上下拖。</p></div></div>
+      </div>
+
+      <p>同一首譜可以同時出現在<strong>好幾份曲單裡</strong>，不會佔用額外空間，也不會產生副本。老師幫每個學生開一份、樂手每場演出開一份，都是這樣用的。</p>
+
+      <div class="stop"><b>停損線</b>曲單還能按「最久沒彈過」排序、隨機洗牌、分享給團員、上台前的檢查清單——<span class="go">那些是演出當天才需要的</span>，另有專文處理。今天會建、會拖就夠了。</div>
+    </section>
+
+    <section id="bookmark">
+      <div class="sec-label" style="--c:var(--amber)">07_bookmark</div>
+      <h2>07 · 整本曲集怎麼辦：建區間書籤，記得填結束頁</h2>
+      <p>如果你手上有 Real Book、詩歌本、整本教材這種「一個檔案裝了幾百首」的東西，別去切 PDF。forScore 可以用書籤做虛擬切分——底層檔案完全不動，選單裡卻能變成一首一首。</p>
+
+      <div class="callout" style="--c:var(--red)"><div class="ct">整篇文章最容易踩到的一個欄位</div>建立書籤時<strong>一定要填「結束頁」</strong>。填了它才會變成可以單獨叫出來、單獨加進曲單的虛擬曲目；沒填的話，它只是一個跳頁指標——你會發現「整本加進曲單、點下去卻是第 1 頁」。</div>
+
+      <p>官方對這件事的說明很直接：一份長 PDF 加上書籤之後，就能得到「每首各自一個檔案才有的所有好功能」。</p>
+
+      <div class="stop"><b>停損線</b>三百首當然不能一首一首手打——PDF 內建目錄一鍵匯入、CSV 索引批次生成、匯入後的頁碼校正，這些都在 <a class="inline" href="../forscore-bookmarks-split/">整本曲集怎麼拆成一首一首</a> 那篇裡。<span class="go">今天先手動建兩三個，感受一下它怎麼運作就好。</span></div>
+    </section>
+
+    <section id="rule">
+      <div class="sec-label" style="--c:var(--red)">08_rule</div>
+      <h2>08 · 一條保命規則：不要「刪掉重裝」</h2>
+      <p>前面七件都是怎麼把它用起來，這一件是怎麼不要弄丟。App 出怪事的時候，很多人第一個念頭是刪掉重裝——在 forScore 上，這是最貴的一個動作。</p>
+
+      <blockquote class="lead-src">「<strong>如果你把 forScore 從裝置上刪除，你所有的資訊都會跟著一起消失。</strong>如果有 Apple 員工告訴你刪除 App 來解決問題，請務必先做好完整備份。我們不會保存你檔案的副本，如果它們被清除了，我們也沒辦法幫你救回來。」<cite>forScore 官方知識庫〈Understanding Backups, Syncing, and iCloud〉</cite></blockquote>
+
+      <p>原因在於：你的 PDF 存在「文件」區，但標註、曲單、書籤、分類、設定<strong>全都存在 App 的私有區</strong>——那一區從檔案 App 看不到、也拿不出來，跟著 App 一起被刪掉。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--navy)"><div class="ct">看得到的（文件區）</div>PDF、CSV 索引、錄音、音檔、備份檔。</div>
+        <div class="callout" style="--c:var(--amber)"><div class="ct">看不到的（私有區）</div>標註、曲單、書籤、曲目資料、設定——你所有的心血都在這一區。</div>
+      </div>
+
+      <p>還有一句話值得現在就記住：開了 iCloud 同步<strong>不等於有備份</strong>。同步是讓多台裝置保持一致，所以你刪掉的東西也會一起同步刪掉。</p>
+
+      <div class="stop"><b>停損線</b>4SB 備份檔與 4SB 封存檔差在哪、換新 iPad 該走哪一條路、iCloud 同步第一次該從哪台開始設定——<span class="go">那是換機那天才要面對的事</span>，另有專文。今天只要記住「別刪掉重裝」這一句。</div>
+    </section>
+
+    <section id="later">
+      <div class="sec-label" style="--c:var(--green)">later</div>
+      <h2>09 · 現在還不用學的東西（以及什麼時候才需要）</h2>
+      <p>這一節是這篇文章存在的另一半理由。下面每一項都很有用，但它們都有各自的觸發時機——時機沒到就學，<strong>學了也記不住</strong>。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>功能</th><th>什麼時候你才真的需要它</th></tr>
+          <tr><td>藍牙踏板／MIDI 翻頁</td><td>你開始在<strong>演出或排練中</strong>需要翻頁，而兩隻手都在樂器上</td></tr>
+          <tr><td>標註圖層</td><td>同一份譜開始疊了兩種以上的筆記（自己的指法 vs 老師的指示），換場合要擦掉一部分</td></tr>
+          <tr><td>CSV 批次建書籤</td><td>你要處理的曲集超過 <strong>20 首</strong>，手動建到會想放棄</td></tr>
+          <tr><td>多台同步翻頁（Cue）</td><td>你的樂團有兩台以上的 iPad，需要一起翻頁</td></tr>
+          <tr><td>4SB 封存與換機流程</td><td>你買了新 iPad，或曲庫累積到「弄丟會很痛」的程度</td></tr>
+          <tr><td>節拍器、錄音、練習統計</td><td>你開始想量化練習時間，或老師要你交練習紀錄</td></tr>
+          <tr><td>訂閱 Pro</td><td>你確定要用臉部手勢翻頁、多組設定檔這類進階功能——<strong>而且先確認你的機型支援</strong></td></tr>
+        </table>
+      </div>
+
+      <h3>從果果的角度補一句：先別急著花錢</h3>
+      <p>我們同時在賣 2018 到 2026 年的各代 iPad，看譜的客人在買機當下最常問兩件事：要不要一併買翻頁踏板、<strong>要不要訂 Pro</strong>。我們的答案通常都是先不要。</p>
+
+      <div class="cgrid">
+        <div class="callout" style="--c:var(--green)"><div class="ct">先用免費的兩週</div>點兩側翻頁、左右滑動，這兩招不用花一毛錢。兩週後你才知道自己缺的是踏板、還是根本不缺。</div>
+        <div class="callout" style="--c:var(--amber)"><div class="ct">配件的錢可以晚點再花</div>踏板、譜架、保護貼隨時買得到，但買錯型號或買了用不到，是最常見的浪費。</div>
+      </div>
+
+      <p>真的要為讀譜加預算，該加的地方是<strong>螢幕尺寸</strong>——那是讀譜體驗裡唯一沒辦法靠軟體補救的規格。這件事我們另外寫一篇談。</p>
+
+      <p class="updated">本文查證：<b>2026 年 8 月</b>，對照 forScore 15.x 的官方使用手冊與知識庫，以官方最新為準。介面文字與選單位置會隨版本調整，價格以 App Store 當下標示為準。</p>
+    </section>
+
+    <section id="video">
+      <div class="sec-label" style="--c:var(--muted)">video</div>
+      <h2>延伸觀看（YouTube 參考）</h2>
+      <p>下面兩支是中文的實機操作，正好對應本文的第 01 到 03 節。第一次用的人搭配著看，會比只讀文字快很多。</p>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=ntw_ObsnC90" target="_blank" rel="noopener" data-yt="ntw_ObsnC90" aria-label="播放：ForScore分享1 基本介紹">
+          <img loading="lazy" src="https://i.ytimg.com/vi/ntw_ObsnC90/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/ntw_ObsnC90/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>ForScore分享1　基本介紹</b><small>頻道：陳世昌 · 推薦原因：中文講解的第一次開箱式導覽，可以先看到整個 App 的樣子，再回來對照本文第 00 節的「它是什麼」 · 中文</small></div>
+      </div>
+
+      <div class="vlite">
+        <a class="thumb" href="https://www.youtube.com/watch?v=8ALLX6Skaio" target="_blank" rel="noopener" data-yt="8ALLX6Skaio" aria-label="播放：Forscore使用方法分享8 建立每一個譜的基本資料 Meta data">
+          <img loading="lazy" src="https://i.ytimg.com/vi/8ALLX6Skaio/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/8ALLX6Skaio/hqdefault.jpg'" />
+          <span class="pbtn"></span><span class="yt">YouTube</span>
+        </a>
+        <div class="cap"><b>Forscore使用方法分享8～建立每一個譜的基本資料 Meta data</b><small>頻道：陳世昌 · 推薦原因：對應本文第 03 節，能看到資料面板實際長什麼樣、欄位填進去之後清單會怎麼變 · 中文</small></div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="sec-label">sources</div>
+      <h2>資料來源</h2>
+      <p class="sources">本文的操作方式、官方建議與價格說明，皆取自 forScore 官方使用手冊（15.0）與官方知識庫，查證日期 2026 年 8 月 9 日：</p>
+      <details class="src-fold">
+        <summary>參考資料來源<span class="n">7 筆</span></summary>
+        <ul class="sources">
+          <li><a href="https://forscore.co/documentation/basics/">forScore 官方使用手冊 · Basics</a>（第 04、05 節：點兩側翻頁／點中央顯示控制項／頁面上任意處長按進標註的原文，以及觸控板與滑鼠的操作）</li>
+          <li><a href="https://forscore.co/documentation/adding-files/">forScore 官方使用手冊 · Adding Files</a>（第 01、02 節：匯入方式，以及「每個檔案包含一首完整樂曲的所有頁面時運作最好」的官方建議原文）</li>
+          <li><a href="https://forscore.co/documentation/setlists/">forScore 官方使用手冊 · Setlists</a>（第 06 節：曲單完全手動、建立與加曲的全螢幕編輯器、手動排序的拖曳方式）</li>
+          <li><a href="https://forscore.co/kb/understanding-backups-syncing-and-icloud/">forScore 官方知識庫 · Understanding Backups, Syncing, and iCloud</a>（第 08 節：刪除 App 資料一併消失的原文、官方不保存副本、文件區與私有區各存什麼）</li>
+          <li><a href="https://forscore.co/kb/how-to-buy/">forScore 官方知識庫 · How to purchase forScore</a>（第 00 節：一次買斷含終身免費更新、Universal Purchase 最多 10 台裝置、Pro 為選配訂閱且「正常使用並不需要」、2025 年 2 月的價格標示）</li>
+          <li><a href="https://forscore.co/kb/files-app/">forScore 官方知識庫 · Working with the Files app</a>（第 02 節：不建議在檔案 App 更改 PDF 檔名，可能導致 metadata 與標註遺失）</li>
+          <li><a href="https://forscore.co/kb/transposing-playback/">forScore 官方知識庫 · Transposing and music playback</a>（第 00 節：無法辨識頁面上的音符，因此不能移調、不能播放）</li>
+        </ul>
+      </details>
+      <p class="sources" style="margin-top:14px">第 07 節的書籤機制另見 <a href="https://forscore.co/kb/why-do-bookmarks-stop-me-from-turning-the-page/">Why do bookmarks stop me from turning the page?</a> 與 <a href="https://forscore.co/kb/using-indexes-to-create-bookmarks/">Using Indexes to create bookmarks</a>；完整說明請看站內的〈整本曲集怎麼在 forScore 拆成一首一首〉。</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const bar=document.getElementById('progress'),
+      links=[...document.querySelectorAll('nav a')],
+      secs=[...document.querySelectorAll('main section[id]')];
+onscroll=()=>{
+  let h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=secs.find(s=>s.getBoundingClientRect().top>120)||secs.at(-1);
+  links.forEach(a=>a.classList.toggle('active',a.hash==='#'+(cur&&cur.id)));
+};
+document.querySelectorAll('.vlite .thumb').forEach(t=>{
+  t.addEventListener('click',e=>{
+    if(location.protocol==='file:')return;
+    e.preventDefault();
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+t.getAttribute('data-yt')+'?autoplay=1&rel=0';
+    f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
+</script>
+</body>
+</html>
