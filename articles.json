@@ -2307,7 +2307,8 @@
         "q": "上台前 10 分鐘最該檢查什麼？",
         "a": "五件事：關掉 forScore 的 Auto-lock、開勿擾模式避免通知蓋在譜上、確認電量或電源已就位、在今晚要用的那份譜上真的踩一次踏板、依場地光線先把亮度調好。合奏團體再多三項：全團螢幕方向一致、每個人的分譜都在自己的裝置裡、Wi-Fi 與藍牙都開著且區域網路權限已允許。"
       }
-    ]
+    ],
+    "ogImage": "assets/og/forscore-performance-checklist-cover.png"
   },
   {
     "slug": "which-ipad-for-procreate",
