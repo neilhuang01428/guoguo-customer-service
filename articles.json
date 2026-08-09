@@ -2005,7 +2005,8 @@
         "q": "forScore 可以幫我把歌降半音嗎？",
         "a": "不行。官方說明：因為 forScore 依賴使用者提供的 PDF，來源可能是掃描、其他軟體匯出甚至手抄，所以它沒有辨識頁面上音符的能力，因此無法移調、也不能把譜上的音符播出來。需要「按一下降半音」的和弦譜工作流，要找的是另一類支援語意樂譜或 ChordPro 的 App。"
       }
-    ]
+    ],
+    "ogImage": "assets/og/forscore-first-eight-things-cover.png"
   },
   {
     "slug": "forscore-annotation-layers",
