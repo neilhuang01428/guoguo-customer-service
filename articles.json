@@ -2257,7 +2257,8 @@
         "q": "什麼時候才該懷疑踏板真的壞了？",
         "a": "把「完整鍵盤操作」、按鍵是否被指派給別的動作、裝置模式與電量都排除之後，再換一台裝置測。做法是把踏板接到另一台 iPad 或 iPhone（那台也要確認完整鍵盤操作是關閉的），開一個文字輸入框踩踩看有沒有反應。兩台裝置都完全沒反應，這時才輪到找廠商。"
       }
-    ]
+    ],
+    "ogImage": "assets/og/forscore-pedal-not-working-cover.png"
   },
   {
     "slug": "forscore-performance-checklist",
