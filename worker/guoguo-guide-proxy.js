@@ -18,7 +18,7 @@ const ORIGIN = 'https://neilhuang01428.github.io/guoguo-customer-service'
 const GA4_ID = 'G-8R0EYJ91SJ'
 const ANALYTICS = `<script async src="https://www.googletagmanager.com/gtag/js?id=${GA4_ID}"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA4_ID}');
-document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(!a)return;var h=a.getAttribute('href')||'';if(a.classList.contains('gg-back')||a.classList.contains('gg-shop'))gtag('event','shop_click',{link_url:h});else if(a.classList.contains('gg-guidehome'))gtag('event','guide_home_click',{link_url:h});else if(h.indexOf('lin.ee')>-1)gtag('event','line_click',{link_url:h});else if(h.indexOf('tel:')===0)gtag('event','call_click',{link_url:h});else if(h.indexOf('mailto:')===0)gtag('event','mail_click',{link_url:h});else if(h.indexOf('maps.')>-1)gtag('event','map_click',{link_url:h})},true);</script>`
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(!a)return;var h=a.getAttribute('href')||'';var slot=a.getAttribute('data-slot')||'other';if(a.classList.contains('gg-back')||a.classList.contains('gg-shop'))gtag('event','shop_click',{link_url:h,slot:slot});else if(a.classList.contains('gg-guidehome'))gtag('event','guide_home_click',{link_url:h});else if(h.indexOf('lin.ee')>-1)gtag('event','line_click',{link_url:h});else if(h.indexOf('tel:')===0)gtag('event','call_click',{link_url:h});else if(h.indexOf('mailto:')===0)gtag('event','mail_click',{link_url:h});else if(h.indexOf('maps.')>-1)gtag('event','map_click',{link_url:h})},true);</script>`
 
 /* ── 官方聯絡資料（只出現在導外版）────────────────────────────── */
 const C = {
@@ -70,7 +70,12 @@ async function handle(request) {
   // 否則取第一段（相容其他情形）。slug 用來對應 guide-map.json／articles.json。
   const _segs = sub.split('/').filter(Boolean)
   const slug = (_segs[0] === 'articles' ? _segs[1] : _segs[0]) || ''
-  const promo = (isHome || isTag) ? '' : await buildPromo(slug)         // 導購版位 HTML（無對應則空字串）
+  const promo = (isHome || isTag) ? '' : await buildPromo(slug)         // 文末導購卡（無對應則空字串）
+  // 同一份商品的另外兩個版位：桌機側欄（≥1400px）與手機吸底列（≤860px）。
+  // 兩者都 append 進 body：.gg-rail 會成為 body flex 的第三欄（排在 main 右邊），
+  // .gg-mbar 是 fixed 不佔位。中間寬度（861–1399）兩者都不出現，只剩文末卡。
+  const rail = (isHome || isTag) ? '' : await buildRail(slug)
+  const mbar = (isHome || isTag) ? '' : await buildMobileBar(slug)
   // 首頁的 OG/canonical 已由 build-homepage.py 寫進 index.html；文章頁在這裡注入（無對應 slug 則空）；
   // 標籤頁只補 canonical（指向導外正式網址），不做文章 OG/breadcrumb。
   const headMeta = isTag ? buildTagHead(sub) : (isHome ? '' : await buildArticleHead(slug))
@@ -82,7 +87,7 @@ async function handle(request) {
   const newTitle = (_art && _art.seoTitle) ? _art.seoTitle : ''
   const rw = new HTMLRewriter()
     .on('head', { element(el) { el.prepend(ANALYTICS, { html: true }); el.append(CHROME_CSS + headMeta, { html: true }) } })
-    .on('body', { element(el) { el.append(FLOATING, { html: true }) } })        // 右下浮動鈕（fixed）
+    .on('body', { element(el) { el.append(rail + mbar + FLOATING + (mbar ? PROMO_JS : ''), { html: true }) } })   // 側欄（flex 第三欄）＋吸底列＋右下浮動鈕
   // 選擇器限定 head 底下，避免誤中 <svg><title>（頁面與注入的 chrome 都有大量內嵌 SVG）
   if (newTitle) rw.on('head title', { element(el) { el.setInnerContent(newTitle) } })
 
@@ -297,7 +302,7 @@ async function buildPromo(slug) {
   return `<section class="gg-promo" aria-label="果果精選商品">
   <div class="gg-promo-head"><span class="gg-promo-tag">果果嚴選</span><h3>${esc(entry.heading || '這篇的相關好物')}</h3></div>
   <div class="gg-promo-grid">${cards}</div>
-  <a class="gg-promo-more gg-shop" href="${C.shop}?utm_source=guide&utm_medium=promo&utm_campaign=${encodeURIComponent(slug)}" target="_blank" rel="noopener">看更多果果好物 →</a>
+  <a class="gg-promo-more gg-shop" data-slot="promo-more" href="${C.shop}?utm_source=guide&utm_medium=promo&utm_campaign=${encodeURIComponent(slug)}" target="_blank" rel="noopener">看更多果果好物 →</a>
 </section>`
 }
 function cardHTML(p) {
@@ -305,11 +310,90 @@ function cardHTML(p) {
   const price = p.price ? nt(p.price) : ''
   const was = (p.compare_at_price && p.compare_at_price > p.price) ? ` <span class="gg-was"><s>${nt(p.compare_at_price)}</s></span>` : ''
   const url = p.url + (p.url.includes('?') ? '&' : '?') + 'utm_source=guide&utm_medium=promo'
-  return `<a class="gg-pcard gg-shop" href="${url}" target="_blank" rel="noopener">
+  return `<a class="gg-pcard gg-shop" data-slot="promo-end" href="${url}" target="_blank" rel="noopener">
   <span class="gg-pcard-img"><img src="${p.image}" alt="${esc(p.title)}" loading="lazy"></span>
   <span class="gg-pcard-body"><span class="gg-pcard-title">${esc(p.title)}</span><span class="gg-pcard-price">${price}${was}</span><span class="gg-pcard-btn">進來逛逛</span></span>
 </a>`
 }
+/* ── 側欄與吸底列：與文末卡共用同一份 guide-map 商品，只是擺在不同版位。
+   每個連結都帶 data-slot，GA4 才分得出點擊來自哪一個版位（rail / mbar / msheet / promo-end）。── */
+function promoItems(entry, products) {
+  const byId = {}; products.forEach(p => { byId[p.id] = p })
+  return entry.products.map(id => byId[id]).filter(Boolean)
+}
+function slotUrl(p, slot) {
+  return p.url + (p.url.includes('?') ? '&' : '?') + 'utm_source=guide&utm_medium=' + slot
+}
+function money(n) { return 'NT$' + Number(n).toLocaleString('en-US') }
+
+async function buildRail(slug) {
+  const { products, map } = await getShopData()
+  if (!products || !map) return ''
+  const entry = map[slug]
+  if (!entry || !entry.products || !entry.products.length) return ''
+  const list = promoItems(entry, products)
+  if (!list.length) return ''
+  const rows = list.map(p => `<a class="gg-rail-item gg-shop" data-slot="rail" href="${slotUrl(p, 'rail')}" target="_blank" rel="noopener">
+  <img src="${p.image}" alt="" loading="lazy">
+  <span><span class="gg-rt">${esc(p.title)}</span><span class="gg-rp">${p.price ? money(p.price) : ''}</span></span>
+</a>`).join('')
+  return `<aside class="gg-rail" aria-label="果果精選商品">
+  <div class="gg-rail-card">
+    <div class="gg-rail-head"><b>${esc(entry.heading || '這篇的相關好物')}</b><span class="gg-rail-pin">果果嚴選</span></div>
+    <div class="gg-rail-list">${rows}</div>
+    ${list.length > 5 ? `<p class="gg-rail-count">共 ${list.length} 件，可往下捲</p>` : ''}
+    <a class="gg-rail-cta gg-shop" data-slot="rail-more" href="${C.shop}?utm_source=guide&utm_medium=rail&utm_campaign=${encodeURIComponent(slug)}" target="_blank" rel="noopener">回賣場看全部 →</a>
+  </div>
+</aside>`
+}
+
+async function buildMobileBar(slug) {
+  const { products, map } = await getShopData()
+  if (!products || !map) return ''
+  const entry = map[slug]
+  if (!entry || !entry.products || !entry.products.length) return ''
+  const list = promoItems(entry, products)
+  if (!list.length) return ''
+  const lead = list[0]
+  const rows = list.map(p => `<a class="gg-mrow gg-shop" data-slot="msheet" href="${slotUrl(p, 'msheet')}" target="_blank" rel="noopener">
+  <img src="${p.image}" alt="" loading="lazy">
+  <span><span class="gg-rt">${esc(p.title)}</span><span class="gg-rp">${p.price ? money(p.price) : ''}</span></span>
+</a>`).join('')
+  return `<div class="gg-mbar" id="ggMbar">
+  <img src="${lead.image}" alt="" loading="lazy">
+  <span class="gg-mbar-info"><span class="gg-mbar-t">${esc(lead.title)}</span><span class="gg-mbar-p">${lead.price ? money(lead.price) : ''}</span></span>
+  <button type="button" class="gg-mbar-exp" id="ggMbarExp" aria-label="展開全部商品" aria-expanded="false">⌃</button>
+  <a class="gg-mbar-go gg-shop" data-slot="mbar" href="${slotUrl(lead, 'mbar')}" target="_blank" rel="noopener">看商品</a>
+</div>
+<div class="gg-scrim" id="ggScrim"></div>
+<div class="gg-msheet" id="ggMsheet" role="dialog" aria-label="這篇的相關好物">
+  <div class="gg-msheet-h"><b>這篇的相關好物（${list.length}）</b><button type="button" id="ggMsheetX" aria-label="關閉">✕</button></div>
+  <div class="gg-msheet-l">${rows}</div>
+</div>`
+}
+
+/* 吸底列的行為：向下捲收起、向上捲冒出（展開清單時不收）；展開／關閉 bottom sheet。 */
+const PROMO_JS = `<script>
+(function(){
+  var bar=document.getElementById('ggMbar'); if(!bar) return;
+  var sheet=document.getElementById('ggMsheet'), scrim=document.getElementById('ggScrim'),
+      exp=document.getElementById('ggMbarExp'), x=document.getElementById('ggMsheetX'), last=0;
+  function open(){sheet.classList.add('gg-open');scrim.classList.add('gg-on');exp.setAttribute('aria-expanded','true')}
+  function close(){sheet.classList.remove('gg-open');scrim.classList.remove('gg-on');exp.setAttribute('aria-expanded','false')}
+  if(exp) exp.addEventListener('click',function(){sheet.classList.contains('gg-open')?close():open()});
+  if(x) x.addEventListener('click',close);
+  if(scrim) scrim.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
+  addEventListener('scroll',function(){
+    var y=window.scrollY||document.documentElement.scrollTop;
+    if(sheet && sheet.classList.contains('gg-open')){last=y;return}
+    if(y>last+4 && y>90) bar.classList.add('gg-hide');
+    else if(y<last-4) bar.classList.remove('gg-hide');
+    last=y;
+  },{passive:true});
+})();
+<\/script>`
+
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])) }
 
 /* ── .html 容錯：依序試多種可能路徑 ──────────────────────────── */
@@ -429,6 +513,63 @@ nav.gg-tags a.gg-tag:hover{border-color:var(--navy,#17345f);background:#f2f7fd;t
 .gg-promo-more{display:inline-block;margin-top:14px;font-size:.85rem;font-weight:700;color:var(--navy,#17345f);text-decoration:none;font-family:var(--mono)}
 .gg-promo-more:hover{color:var(--navy-deep,#0f2547);text-decoration:underline}
 @media(max-width:560px){.gg-promo{padding:20px 16px}.gg-promo-grid{grid-template-columns:1fr 1fr;gap:11px}.gg-pcard-body{padding:10px 11px 12px}.gg-pcard-title{font-size:.8rem}}
+
+/* ── 導購側欄（桌機常駐）──
+   body 是 flex 容器，這個 aside 由 Worker append 進 body → 自然成為 main 右邊的第三欄，
+   不需要 absolute 定位，也就不會有 CLS。
+   margin-top 是「起點」（對齊正文，不貼齊頁面頂端）、top 是「黏住點」。
+   top 取 78＝麵包屑實測高度 68 ＋ 10px 間距：黏住後停在麵包屑正下方，不會貼到視窗頂端、也不會被它蓋住。
+   寬度帳：nav 244 + main 820 + rail 300 + 間距 ≈ 1380 → 低於 1400 就藏起來，回到文末卡。 */
+.gg-rail{flex:none;width:300px;align-self:flex-start;position:sticky;top:78px;margin-top:320px;padding-right:20px;font-family:var(--sans)}
+.gg-rail-card{background:#fff;border:1px solid var(--line,#e2e8f0);border-radius:15px;padding:16px;box-shadow:0 6px 20px rgba(20,39,68,.06)}
+.gg-rail-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.gg-rail-head b{font-size:.92rem;color:var(--ink,#16223a);font-weight:800}
+.gg-rail-pin{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(--teal,#1c8a9a);background:var(--teal-bg,#e3f3f4);border-radius:999px;padding:3px 8px;font-weight:700;flex:none}
+/* 商品可能多達 20+ 件：清單限高、內部捲動（比照首頁側欄）。
+   若讓它整條長下去，側欄會比視窗還高，sticky 就永遠黏不住。 */
+.gg-rail-list{max-height:min(430px,48vh);overflow-y:auto;overscroll-behavior:contain;padding-right:4px;margin-right:-4px;scrollbar-width:thin;scrollbar-color:var(--line,#e2e8f0) transparent}
+.gg-rail-list::-webkit-scrollbar{width:6px}
+.gg-rail-list::-webkit-scrollbar-track{background:transparent}
+.gg-rail-list::-webkit-scrollbar-thumb{background:var(--line,#e2e8f0);border-radius:999px}
+.gg-rail-count{font-family:var(--mono);font-size:.62rem;color:var(--muted,#8590a6);margin:9px 0 0;text-align:center}
+.gg-rail-item{display:flex;gap:11px;align-items:center;padding:9px 0;border-bottom:1px solid var(--grid,#edf1f6);text-decoration:none}
+.gg-rail-item:last-of-type{border-bottom:0}
+.gg-rail-item img{width:46px;height:46px;border-radius:9px;object-fit:contain;background:var(--panel2,#f0f3f8);flex:none}
+.gg-rail-item .gg-rt{font-size:.76rem;color:var(--ink,#16223a);font-weight:700;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.gg-rail-item .gg-rp{font-size:.8rem;color:var(--red,#c0492f);font-weight:800;margin-top:3px}
+.gg-rail-item:hover .gg-rt{color:var(--navy,#17345f)}
+.gg-rail-cta{display:block;text-align:center;margin-top:12px;padding:10px;border-radius:10px;background:var(--navy,#17345f);color:#fff;font-size:.84rem;font-weight:700;text-decoration:none;transition:background .15s}
+.gg-rail-cta:hover{background:var(--navy-deep,#0f2547)}
+@media(max-width:1399px){.gg-rail{display:none}}
+
+/* ── 手機吸底列 ── 向下捲收起、向上捲冒出；展開清單時不收 */
+.gg-mbar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:62;background:#fff;border-top:1px solid var(--line,#e2e8f0);box-shadow:0 -4px 18px rgba(20,39,68,.1);padding:9px 12px;gap:11px;align-items:center;font-family:var(--sans);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.gg-mbar.gg-hide{transform:translateY(115%)}
+.gg-mbar img{width:42px;height:42px;border-radius:9px;object-fit:contain;background:var(--panel2,#f0f3f8);flex:none}
+.gg-mbar-info{min-width:0;flex:1;display:flex;flex-direction:column}
+.gg-mbar-t{font-size:.76rem;color:var(--ink,#16223a);font-weight:700;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.gg-mbar-p{font-size:.8rem;color:var(--red,#c0492f);font-weight:800}
+.gg-mbar-exp{flex:none;width:34px;height:34px;border-radius:9px;background:var(--panel2,#f0f3f8);border:1px solid var(--line,#e2e8f0);color:var(--body,#45506a);font-size:.9rem;cursor:pointer;line-height:1}
+.gg-mbar-go{flex:none;background:var(--navy,#17345f);color:#fff;font-size:.8rem;font-weight:700;padding:9px 14px;border-radius:9px;text-decoration:none}
+.gg-scrim{display:none;position:fixed;inset:0;background:rgba(16,24,40,.34);z-index:64;opacity:0;pointer-events:none;transition:opacity .25s}
+.gg-scrim.gg-on{opacity:1;pointer-events:auto}
+.gg-msheet{display:none;position:fixed;left:0;right:0;bottom:0;z-index:66;background:#fff;border-radius:16px 16px 0 0;transform:translateY(102%);transition:transform .3s cubic-bezier(.4,0,.2,1);max-height:74vh;flex-direction:column;box-shadow:0 -8px 26px rgba(20,39,68,.2);font-family:var(--sans)}
+.gg-msheet.gg-open{transform:translateY(0)}
+.gg-msheet-h{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid var(--grid,#edf1f6)}
+.gg-msheet-h b{font-size:.94rem;color:var(--ink,#16223a)}
+.gg-msheet-h button{border:0;background:transparent;font-size:1.2rem;cursor:pointer;color:var(--muted,#8590a6);line-height:1}
+.gg-msheet-l{flex:1;overflow-y:auto;padding:8px 16px 20px;-webkit-overflow-scrolling:touch}
+.gg-mrow{display:flex;gap:11px;align-items:center;padding:10px 0;border-bottom:1px solid var(--grid,#edf1f6);text-decoration:none}
+.gg-mrow:last-child{border-bottom:0}
+.gg-mrow img{width:46px;height:46px;border-radius:9px;object-fit:contain;background:var(--panel2,#f0f3f8);flex:none}
+.gg-mrow .gg-rt{font-size:.78rem;color:var(--ink,#16223a);font-weight:700;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.gg-mrow .gg-rp{font-size:.8rem;color:var(--red,#c0492f);font-weight:800;margin-top:2px}
+@media(max-width:860px){
+  .gg-mbar{display:flex}
+  .gg-scrim,.gg-msheet{display:flex}
+  .gg-scrim{display:block}
+  .gg-fab{bottom:80px}            /* 讓開吸底列，避免兩層疊在一起 */
+}
 </style>`
 
 /* ── 頂部麵包屑：果果賣場 › iPad 使用教學 › 本篇（購物袋圖示=賣場、書本圖示=教學首頁，靠圖示與層級區分）── */
