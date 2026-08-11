@@ -540,7 +540,11 @@ nav.gg-tags a.gg-tag:hover{border-color:var(--navy,#17345f);background:#f2f7fd;t
 .gg-rail-item:hover .gg-rt{color:var(--navy,#17345f)}
 .gg-rail-cta{display:block;text-align:center;margin-top:12px;padding:10px;border-radius:10px;background:var(--navy,#17345f);color:#fff;font-size:.84rem;font-weight:700;text-decoration:none;transition:background .15s}
 .gg-rail-cta:hover{background:var(--navy-deep,#0f2547)}
-@media(max-width:1399px){.gg-rail{display:none}}
+/* 寬度帳：nav 244 + main 820 + rail = 需要的最小視窗寬。
+   300px 版需 1364，260px 版只需 1324 → 分兩段，讓 1366×768 這類筆電也看得到側欄。
+   原本單一門檻 1400 只留 36px 餘裕，實際視窗扣掉捲軸就掉到門檻下，側欄整個消失。 */
+@media(max-width:1399px){.gg-rail{width:260px}.gg-rail-item img{width:42px;height:42px}}
+@media(max-width:1339px){.gg-rail{display:none}}
 
 /* ── 手機吸底列 ── 向下捲收起、向上捲冒出；展開清單時不收 */
 .gg-mbar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:62;background:#fff;border-top:1px solid var(--line,#e2e8f0);box-shadow:0 -4px 18px rgba(20,39,68,.1);padding:9px 12px;gap:11px;align-items:center;font-family:var(--sans);transition:transform .3s cubic-bezier(.4,0,.2,1)}
