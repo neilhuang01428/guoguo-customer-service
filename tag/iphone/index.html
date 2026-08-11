@@ -123,7 +123,7 @@ footer p { font-size: .9rem; color: var(--body); margin: 0; }
 
 @media (max-width: 900px) {
   .cols { grid-template-columns: 1fr; gap: 32px; }
-  .side { position: static; }
+  /* .side 在手機的擺法交給 CSS_SHOP（吸底列＋bottom sheet）；中性版沒有 .side，不受影響 */
 }
 @media (max-width: 640px) {
   .wrap { padding-left: 16px; padding-right: 16px; }
