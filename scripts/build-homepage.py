@@ -364,7 +364,7 @@ footer p { font-size: .9rem; color: var(--body); margin: 0; }
 
 @media (max-width: 900px) {
   .cols { grid-template-columns: 1fr; gap: 32px; }
-  .side { position: static; }
+  /* .side 在手機的擺法交給 CSS_SHOP（吸底列＋bottom sheet）；中性版沒有 .side，不受影響 */
 }
 @media (max-width: 640px) {
   .wrap { padding-left: 16px; padding-right: 16px; }
@@ -415,7 +415,36 @@ CSS_SHOP = r"""/* ── 側欄：果果精選商品 ── */
 .shop-item .off { font-size: .64rem; font-weight: 700; color: var(--red); background: var(--red-bg); padding: 1px 7px; border-radius: 999px; }
 
 .shop-cta { display: flex; align-items: center; justify-content: center; gap: 6px; background: var(--navy); color: #fff; text-decoration: none; font-size: .86rem; font-weight: 700; padding: 12px 16px; border-radius: 11px; transition: .15s; }
-.shop-cta:hover { background: var(--navy-deep); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(23,52,95,.22); }"""
+.shop-cta:hover { background: var(--navy-deep); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(23,52,95,.22); }
+/* ── 手機：把商品面板收成一條吸底列 ──
+   刻意不動 DOM——手機只是把同一個 .side 換個擺法（fixed bottom sheet），
+   所以搜尋、分類、清單那段 JS 一行都不用改，維護上只有一份。 */
+.shop-bar, .shop-scrim, .sheet-x { display: none; }
+@media (max-width: 900px) {
+  .shop-bar { display: flex; align-items: center; gap: 11px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 64;
+    width: 100%; border: 0; border-top: 1px solid var(--line); background: #fff; padding: 11px 16px; cursor: pointer;
+    box-shadow: 0 -4px 18px rgba(20,39,68,.1); font: inherit; text-align: left;
+    transition: transform .3s cubic-bezier(.4,0,.2,1); }
+  .shop-bar.bar-hide { transform: translateY(115%); }        /* 向下捲：收起來不擋閱讀 */
+  .shop-bar .sb-ico { font-size: 1.25rem; flex: none; }
+  .shop-bar .sb-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.35; }
+  .shop-bar .sb-txt b { font-size: .88rem; color: var(--ink); font-weight: 800; }
+  .shop-bar .sb-txt small { font-size: .75rem; color: var(--muted); }
+  .shop-bar .sb-go { flex: none; background: var(--navy); color: #fff; font-size: .82rem; font-weight: 700;
+    padding: 9px 15px; border-radius: 9px; }
+  .shop-scrim { display: block; position: fixed; inset: 0; background: rgba(16,24,40,.34); z-index: 66;
+    opacity: 0; pointer-events: none; transition: opacity .25s; }
+  .shop-scrim.on { opacity: 1; pointer-events: auto; }
+  .side { position: fixed; left: 0; right: 0; bottom: 0; top: auto; z-index: 68; display: flex;
+    transform: translateY(101%); transition: transform .3s cubic-bezier(.4,0,.2,1); max-height: 82vh; }
+  .side.sheet-open { transform: translateY(0); }
+  .side-card { width: 100%; max-height: 82vh; border-radius: 16px 16px 0 0; padding: 16px 16px 20px; }
+  .shop-list { max-height: min(46vh, 420px); }
+  .sheet-x { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; flex: none;
+    border: 1px solid var(--line); background: var(--panel2); color: var(--body); font-size: .9rem; cursor: pointer; line-height: 1; }
+}
+@media (prefers-reduced-motion: reduce) { .shop-bar, .side, .shop-scrim { transition: none; } }
+"""
 
 # ── JS（純字串，不做 Python 插值）─────────────────────────────────────
 JS = r"""
@@ -815,6 +844,8 @@ JS_SHOP = r"""
         });
         if (statusEl) statusEl.style.display = 'none';
         if (allCountEl) allCountEl.textContent = '(' + products.length + ')';
+        var barCount = document.getElementById('shopBarCount');
+        if (barCount) barCount.textContent = '共 ' + products.length + ' 件，點開來逛';
 
         var counts = {};
         products.forEach(function (p) {
@@ -829,6 +860,35 @@ JS_SHOP = r"""
           statusEl.innerHTML = '商品清單暫時載入不了，<a href="' + SHOP_CTA_URL + '" target="_blank" rel="noopener">直接回賣場逛逛</a>吧！';
         }
       });
+  })();
+
+  /* ---------- 手機：吸底列 ↔ bottom sheet（向下捲隱藏、向上捲出現） ---------- */
+  (function () {
+    var bar = document.getElementById('shopBar'),
+        panel = document.getElementById('shopPanel'),
+        scrim = document.getElementById('shopScrim'),
+        closeBtn = document.getElementById('shopSheetX'),
+        lastY = 0;
+    if (!bar || !panel) return;
+    function openSheet() {
+      panel.classList.add('sheet-open'); if (scrim) scrim.classList.add('on');
+      bar.setAttribute('aria-expanded', 'true');
+    }
+    function closeSheet() {
+      panel.classList.remove('sheet-open'); if (scrim) scrim.classList.remove('on');
+      bar.setAttribute('aria-expanded', 'false');
+    }
+    bar.addEventListener('click', openSheet);
+    if (closeBtn) closeBtn.addEventListener('click', closeSheet);
+    if (scrim) scrim.addEventListener('click', closeSheet);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSheet(); });
+    window.addEventListener('scroll', function () {
+      if (panel.classList.contains('sheet-open')) return;   // 面板開著時不收，免得清單看到一半跑掉
+      var y = window.scrollY || document.documentElement.scrollTop;
+      if (y > lastY + 4 && y > 90) bar.classList.add('bar-hide');
+      else if (y < lastY - 4) bar.classList.remove('bar-hide');
+      lastY = y;
+    }, { passive: true });
   })();
 """
 
@@ -850,10 +910,11 @@ GUIDES_SECTION = """      <section class="guides" id="guides">
       </section>"""
 
 # ── 右欄「果果精選商品」側欄（只在導外版；中性版不輸出，天生無導購連結）──
-ASIDE = """    <aside class="side" aria-label="果果精選商品">
+ASIDE = """    <aside class="side" id="shopPanel" aria-label="果果精選商品">
       <div class="side-card">
         <div class="stitle">
           <h2 class="glabel small">果果精選商品</h2>
+          <button type="button" class="sheet-x" id="shopSheetX" aria-label="關閉商品面板">✕</button>
         </div>
         <div class="shop-search" role="search">
           {search_icon}
@@ -867,7 +928,13 @@ ASIDE = """    <aside class="side" aria-label="果果精選商品">
         </div>
         <a class="shop-cta" id="shopCta" href="{shop_cta_url}" target="_blank" rel="noopener">回賣場看全部商品 →</a>
       </div>
-    </aside>"""
+    </aside>
+    <div class="shop-scrim" id="shopScrim"></div>
+    <button type="button" class="shop-bar" id="shopBar" aria-expanded="false" aria-controls="shopPanel">
+      <span class="sb-ico" aria-hidden="true">🛍</span>
+      <span class="sb-txt"><b>果果精選商品</b><small id="shopBarCount">載入中…</small></span>
+      <span class="sb-go">瀏覽</span>
+    </button>"""
 
 # ── 頁尾：導外版（保留「找客服」）／中性版（不涉聯繫，只講買機教你用）──
 FOOTER_FULL = """  <footer>
