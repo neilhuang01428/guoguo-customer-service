@@ -162,6 +162,42 @@ footer p { font-size: .9rem; color: var(--body); margin: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .grid2 { scroll-behavior: auto; } }
 
+
+/* ── 篩選後浮出的「查看主題頁」列（A）──
+   首頁的篩選晶片是 button（站內即時篩選、不換頁），所以整個首頁原本沒有任何主題頁連結。
+   這一條只在篩到具體主題時出現：客服按「複製」就拿到網址貼給顧客，讀者按「前往」就進主題頁。
+   刻意不把晶片改成連結——即時篩選（46 篇一秒縮到 11 篇）是首頁最好用的功能，不該為了連結犧牲。 */
+.tagbar { display: flex; align-items: center; gap: 11px; flex-wrap: wrap; margin: 12px 0 0;
+  padding: 10px 14px; background: var(--panel); border: 1px solid #cfdaec; border-radius: 11px;
+  font-size: .89rem; box-shadow: 0 2px 10px rgba(20,39,68,.05); }
+.tagbar[hidden] { display: none; }
+.tagbar .tb-txt b { color: var(--ink); }
+.tagbar .tb-copy { margin-left: auto; font: inherit; font-size: .82rem; padding: 7px 13px;
+  border-radius: 8px; border: 1px solid var(--line); background: var(--panel2); color: var(--body); cursor: pointer; }
+.tagbar .tb-copy:hover { border-color: var(--navy); color: var(--navy); }
+.tagbar .tb-copy.done { color: var(--green-deep); border-color: var(--green); background: var(--green-bg); }
+.tagbar .tb-go { flex: none; background: var(--navy); color: #fff; font-size: .82rem; font-weight: 700;
+  padding: 8px 15px; border-radius: 8px; text-decoration: none; }
+.tagbar .tb-go:hover { background: var(--navy-deep); }
+@media (max-width: 560px) { .tagbar .tb-copy { margin-left: 0; } }
+
+/* ── 所有主題（C）：文章區與頁尾之間 ──
+   格狀而不是標籤雲：26 個膠囊擠在一起難掃也難點，格狀每格都是大觸控目標、篇數對齊好比較。 */
+.topics { margin-top: 46px; }
+.topics-sub { font-size: .9rem; color: var(--muted); margin: 6px 0 14px; }
+.topics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 9px; }
+.topic { display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 9px 13px;
+  text-decoration: none; transition: .13s; }
+.topic:hover { border-color: var(--navy); background: var(--navy-bg); transform: translateY(-1px); }
+.topic .tp-n { font-size: .87rem; color: var(--ink); font-weight: 700; line-height: 1.4;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.topic .tp-n::before { content: '#'; color: var(--teal); margin-right: 4px; font-weight: 800; }
+.topic .tp-c { flex: none; font-family: var(--mono); font-size: .72rem; color: var(--muted);
+  font-variant-numeric: tabular-nums; }
+.topic .tp-c.thin { opacity: .55; }   /* 只有 1 篇的主題：不隱藏，但視覺上讓它退後 */
+@media (max-width: 560px) { .topics-grid { grid-template-columns: 1fr 1fr; } }
+
 @media (max-width: 900px) {
   .cols { grid-template-columns: 1fr; gap: 32px; }
   /* .side 在手機的擺法交給 CSS_SHOP（吸底列＋bottom sheet）；中性版沒有 .side，不受影響 */

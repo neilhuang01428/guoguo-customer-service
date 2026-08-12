@@ -48,12 +48,9 @@ bh = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(bh)
 
 
-def tag_slug(t):
-    """標籤 → 網址／資料夾用 slug：
-       strip → 小寫（只影響 ASCII）→ 空白換成 '-' → 中日文原樣保留。
-       例：'防詐騙'→'防詐騙'、'App 下載'→'app-下載'、'Windows 用戶'→'windows-用戶'、
-           'Apple Pencil'→'apple-pencil'。"""
-    return re.sub(r"\s+", "-", t.strip().lower())
+# slug 規則的單一來源在 build-homepage.py——首頁的「所有主題」連結與這裡產生的資料夾名
+# 必須用同一支，否則規則一改就會產生連到 404 的主題連結。
+tag_slug = bh.tag_slug
 
 
 # ── 標籤頁專用的補充 CSS（接在 build-homepage.py 的基底 CSS 之後，

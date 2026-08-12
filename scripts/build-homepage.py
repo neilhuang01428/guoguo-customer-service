@@ -12,6 +12,8 @@
 import json
 import os
 import html
+import re
+from urllib.parse import quote
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # scripts/ 的上一層＝repo 根
 ARTICLES_PATH = os.path.join(ROOT, "articles.json")
@@ -399,6 +401,42 @@ footer p { font-size: .9rem; color: var(--body); margin: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .grid2 { scroll-behavior: auto; } }
 
+
+/* ── 篩選後浮出的「查看主題頁」列（A）──
+   首頁的篩選晶片是 button（站內即時篩選、不換頁），所以整個首頁原本沒有任何主題頁連結。
+   這一條只在篩到具體主題時出現：客服按「複製」就拿到網址貼給顧客，讀者按「前往」就進主題頁。
+   刻意不把晶片改成連結——即時篩選（46 篇一秒縮到 11 篇）是首頁最好用的功能，不該為了連結犧牲。 */
+.tagbar { display: flex; align-items: center; gap: 11px; flex-wrap: wrap; margin: 12px 0 0;
+  padding: 10px 14px; background: var(--panel); border: 1px solid #cfdaec; border-radius: 11px;
+  font-size: .89rem; box-shadow: 0 2px 10px rgba(20,39,68,.05); }
+.tagbar[hidden] { display: none; }
+.tagbar .tb-txt b { color: var(--ink); }
+.tagbar .tb-copy { margin-left: auto; font: inherit; font-size: .82rem; padding: 7px 13px;
+  border-radius: 8px; border: 1px solid var(--line); background: var(--panel2); color: var(--body); cursor: pointer; }
+.tagbar .tb-copy:hover { border-color: var(--navy); color: var(--navy); }
+.tagbar .tb-copy.done { color: var(--green-deep); border-color: var(--green); background: var(--green-bg); }
+.tagbar .tb-go { flex: none; background: var(--navy); color: #fff; font-size: .82rem; font-weight: 700;
+  padding: 8px 15px; border-radius: 8px; text-decoration: none; }
+.tagbar .tb-go:hover { background: var(--navy-deep); }
+@media (max-width: 560px) { .tagbar .tb-copy { margin-left: 0; } }
+
+/* ── 所有主題（C）：文章區與頁尾之間 ──
+   格狀而不是標籤雲：26 個膠囊擠在一起難掃也難點，格狀每格都是大觸控目標、篇數對齊好比較。 */
+.topics { margin-top: 46px; }
+.topics-sub { font-size: .9rem; color: var(--muted); margin: 6px 0 14px; }
+.topics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 9px; }
+.topic { display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 9px 13px;
+  text-decoration: none; transition: .13s; }
+.topic:hover { border-color: var(--navy); background: var(--navy-bg); transform: translateY(-1px); }
+.topic .tp-n { font-size: .87rem; color: var(--ink); font-weight: 700; line-height: 1.4;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.topic .tp-n::before { content: '#'; color: var(--teal); margin-right: 4px; font-weight: 800; }
+.topic .tp-c { flex: none; font-family: var(--mono); font-size: .72rem; color: var(--muted);
+  font-variant-numeric: tabular-nums; }
+.topic .tp-c.thin { opacity: .55; }   /* 只有 1 篇的主題：不隱藏，但視覺上讓它退後 */
+@media (max-width: 560px) { .topics-grid { grid-template-columns: 1fr 1fr; } }
+
 @media (max-width: 900px) {
   .cols { grid-template-columns: 1fr; gap: 32px; }
   /* .side 在手機的擺法交給 CSS_SHOP（吸底列＋bottom sheet）；中性版沒有 .side，不受影響 */
@@ -561,6 +599,48 @@ JS = r"""
       }
       // 篩選後可見篇數變了 → 重算捲動框的剩餘數量與「是否到底」
       if (window.ggGridScroll) { grid.scrollTop = 0; window.ggGridScroll(); }
+      updateTagBar(visible);
+    }
+
+    /* 篩到具體主題時，浮出「查看主題頁」列。
+       主題頁網址不在這裡自己算 slug——直接查下方「所有主題」區塊那顆同名連結的 href，
+       規則就只有 build-homepage.py 的 tag_slug 一份，不會兩邊算出不一樣的網址。 */
+    var tagBar = document.getElementById('tagBar');
+    var tbName = document.getElementById('tbName');
+    var tbCount = document.getElementById('tbCount');
+    var tbGo = document.getElementById('tbGo');
+    var tbCopy = document.getElementById('tbCopy');
+    function hrefOfTag(tag) {
+      var links = document.querySelectorAll('.topic[data-tag]');
+      for (var i = 0; i < links.length; i++) {
+        if (links[i].getAttribute('data-tag') === tag) return links[i].getAttribute('href');
+      }
+      return '';                                  // 查不到就不顯示，不猜一個可能 404 的網址
+    }
+    function updateTagBar(visible) {
+      if (!tagBar) return;
+      var href = activeTag === '__all__' ? '' : hrefOfTag(activeTag);
+      if (!href) { tagBar.hidden = true; return; }
+      tagBar.hidden = false;
+      tbName.textContent = '#' + activeTag;
+      tbCount.textContent = visible;
+      tbGo.setAttribute('href', href);
+      if (tbCopy) tbCopy.classList.remove('done');
+    }
+    if (tbCopy) {
+      tbCopy.addEventListener('click', function () {
+        var href = tbGo.getAttribute('href');
+        if (!href || href === '#') return;
+        // 用當前網域組完整網址：導外版複製到正式網域、中性版複製到中性網域。
+        // 注意別在這段註解裡寫出實際網域字串——JS 註解會原樣輸出到中性版 HTML，
+        // 會被 build-neutral.sh 的洩漏檢查擋下（這行就是踩過才補的）。
+        var url = new URL(href, location.href).href;
+        function ok() { tbCopy.textContent = '已複製 ✓'; tbCopy.classList.add('done');
+          setTimeout(function () { tbCopy.textContent = '複製主題頁連結'; tbCopy.classList.remove('done'); }, 1600); }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(ok, function () { window.prompt('複製這個連結：', url); });
+        } else { window.prompt('複製這個連結：', url); }
+      });
     }
 
     wireChips(chipsWrap, 'tag', function (v) {
@@ -983,6 +1063,11 @@ GUIDES_SECTION = """      <section class="guides" id="guides">
           <button type="button" class="chip on" data-tag="__all__">全部<span class="cnt">({total})</span></button>
         </div>
         <button type="button" class="chip-toggle" id="filterToggle" aria-expanded="false" hidden>展開全部<span class="ct-caret" aria-hidden="true">▾</span></button>
+        <div class="tagbar" id="tagBar" hidden>
+          <span class="tb-txt">正在看 <b id="tbName"></b> 的 <b id="tbCount"></b> 篇</span>
+          <button type="button" class="tb-copy" id="tbCopy">複製主題頁連結</button>
+          <a class="tb-go" id="tbGo" href="#">前往主題頁 →</a>
+        </div>
         <div class="gridbox" id="gridBox">
           <div class="grid2" id="articleGrid">
 {cards}
@@ -992,6 +1077,50 @@ GUIDES_SECTION = """      <section class="guides" id="guides">
         </div>
         <p class="empty-note" id="articleEmpty" style="display:none" aria-live="polite"></p>
       </section>"""
+
+def tag_slug(t):
+    """標籤 → 網址／資料夾用 slug：strip → 小寫（只影響 ASCII）→ 空白換 '-' → 中日文原樣保留。
+       例：'防詐騙'→'防詐騙'、'App 下載'→'app-下載'、'Apple Pencil'→'apple-pencil'。
+       build-tags.py 產生資料夾名時也用這支——slug 規則只能有一份，
+       兩邊各寫一份的話，哪天改了規則就會產生連到 404 的主題連結。"""
+    return re.sub(r"\s+", "-", t.strip().lower())
+
+# ── 所有主題區塊（C）：文章區與頁尾之間的全寬區塊 ──
+#   主題頁原本只從文章頁尾的「相關主題」被連到，首頁完全沒有入口——
+#   客服要貼連結只能翻 sitemap，讀者則根本不知道有主題頁。
+#   這一區同時解決兩者，也是主題頁最重要的內部連結來源（SEO）。
+#   連結一律相對路徑 tag/<slug>/ → 導外版與中性版共用同一份。
+TOPICS_SECTION = """      <section class="topics" id="topics">
+        <h2 class="glabel">所有主題</h2>
+        <p class="topics-sub">{count} 個主題，點進去看該主題收錄的全部教學。</p>
+        <div class="topics-grid">
+{items}
+        </div>
+      </section>"""
+
+
+def render_topics(articles):
+    """依篇數多→少列出所有標籤；篇數少的排後面但不隱藏（客服有時就是要那幾個）。"""
+    counts = {}
+    for a in articles:
+        for t in (a.get("tags") or []):
+            t = (t or "").strip()
+            if t:
+                counts[t] = counts.get(t, 0) + 1
+    if not counts:
+        return ""
+    order = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
+    items = []
+    for name, n in order:
+        href = "tag/{0}/".format(quote(tag_slug(name)))
+        items.append(
+            '          <a class="topic" href="{href}" data-tag="{raw}">'
+            '<span class="tp-n">{name}</span>'
+            '<span class="tp-c{thin}">{n}</span></a>'.format(
+                href=esc(href), raw=esc(name), name=esc(name), n=n,
+                thin=" thin" if n < 2 else "")
+        )
+    return TOPICS_SECTION.format(count=len(order), items="\n".join(items))
 
 # ── 右欄「果果精選商品」側欄（只在導外版；中性版不輸出，天生無導購連結）──
 ASIDE = """    <aside class="side" id="shopPanel" aria-label="果果精選商品">
@@ -1101,6 +1230,7 @@ def build_html(articles, neutral=False, colors=None):
     total = len(articles)
 
     guides = GUIDES_SECTION.format(total=total, cards=cards_html)
+    topics = render_topics(articles)   # 所有主題區塊（雙版共用，連結為相對路徑）
 
     # Pagefind 搜尋面板要顯示的分類/標籤/色票（兩版共用同一段 JS，靠此 map 反查）
     pfm = pf_meta_map(articles, colors)
@@ -1110,8 +1240,8 @@ def build_html(articles, neutral=False, colors=None):
         middle = (
             '  <div class="cols cols-solo">\n'
             '    <div class="main">\n{0}\n    </div>\n'
-            '  </div>'
-        ).format(guides)
+            '  </div>\n{1}'
+        ).format(guides, topics)
         footer = FOOTER_NEUTRAL
         css_final = CSS.replace("__SHOP_CSS__", "")
         js_final = JS.replace("__SHOP_JS__", "").replace("__GRIDBOX_JS__", JS_GRIDBOX).replace("__PF_META__", pfm)
@@ -1123,8 +1253,8 @@ def build_html(articles, neutral=False, colors=None):
             '  <div class="cols">\n'
             '    <div class="main">\n{0}\n    </div>\n\n'
             '{1}\n'
-            '  </div>'
-        ).format(guides, aside)
+            '  </div>\n{2}'
+        ).format(guides, aside, topics)
         footer = FOOTER_FULL
         css_final = CSS.replace("__SHOP_CSS__", CSS_SHOP)
         js_final = JS.replace("__SHOP_JS__", JS_SHOP).replace(

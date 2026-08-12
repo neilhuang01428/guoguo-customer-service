@@ -240,6 +240,42 @@ footer p { font-size: .9rem; color: var(--body); margin: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .grid2 { scroll-behavior: auto; } }
 
+
+/* ── 篩選後浮出的「查看主題頁」列（A）──
+   首頁的篩選晶片是 button（站內即時篩選、不換頁），所以整個首頁原本沒有任何主題頁連結。
+   這一條只在篩到具體主題時出現：客服按「複製」就拿到網址貼給顧客，讀者按「前往」就進主題頁。
+   刻意不把晶片改成連結——即時篩選（46 篇一秒縮到 11 篇）是首頁最好用的功能，不該為了連結犧牲。 */
+.tagbar { display: flex; align-items: center; gap: 11px; flex-wrap: wrap; margin: 12px 0 0;
+  padding: 10px 14px; background: var(--panel); border: 1px solid #cfdaec; border-radius: 11px;
+  font-size: .89rem; box-shadow: 0 2px 10px rgba(20,39,68,.05); }
+.tagbar[hidden] { display: none; }
+.tagbar .tb-txt b { color: var(--ink); }
+.tagbar .tb-copy { margin-left: auto; font: inherit; font-size: .82rem; padding: 7px 13px;
+  border-radius: 8px; border: 1px solid var(--line); background: var(--panel2); color: var(--body); cursor: pointer; }
+.tagbar .tb-copy:hover { border-color: var(--navy); color: var(--navy); }
+.tagbar .tb-copy.done { color: var(--green-deep); border-color: var(--green); background: var(--green-bg); }
+.tagbar .tb-go { flex: none; background: var(--navy); color: #fff; font-size: .82rem; font-weight: 700;
+  padding: 8px 15px; border-radius: 8px; text-decoration: none; }
+.tagbar .tb-go:hover { background: var(--navy-deep); }
+@media (max-width: 560px) { .tagbar .tb-copy { margin-left: 0; } }
+
+/* ── 所有主題（C）：文章區與頁尾之間 ──
+   格狀而不是標籤雲：26 個膠囊擠在一起難掃也難點，格狀每格都是大觸控目標、篇數對齊好比較。 */
+.topics { margin-top: 46px; }
+.topics-sub { font-size: .9rem; color: var(--muted); margin: 6px 0 14px; }
+.topics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 9px; }
+.topic { display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 9px 13px;
+  text-decoration: none; transition: .13s; }
+.topic:hover { border-color: var(--navy); background: var(--navy-bg); transform: translateY(-1px); }
+.topic .tp-n { font-size: .87rem; color: var(--ink); font-weight: 700; line-height: 1.4;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.topic .tp-n::before { content: '#'; color: var(--teal); margin-right: 4px; font-weight: 800; }
+.topic .tp-c { flex: none; font-family: var(--mono); font-size: .72rem; color: var(--muted);
+  font-variant-numeric: tabular-nums; }
+.topic .tp-c.thin { opacity: .55; }   /* 只有 1 篇的主題：不隱藏，但視覺上讓它退後 */
+@media (max-width: 560px) { .topics-grid { grid-template-columns: 1fr 1fr; } }
+
 @media (max-width: 900px) {
   .cols { grid-template-columns: 1fr; gap: 32px; }
   /* .side 在手機的擺法交給 CSS_SHOP（吸底列＋bottom sheet）；中性版沒有 .side，不受影響 */
@@ -622,6 +658,11 @@ footer p { font-size: .9rem; color: var(--body); margin: 0; }
           <button type="button" class="chip on" data-tag="__all__">全部<span class="cnt">(46)</span></button>
         </div>
         <button type="button" class="chip-toggle" id="filterToggle" aria-expanded="false" hidden>展開全部<span class="ct-caret" aria-hidden="true">▾</span></button>
+        <div class="tagbar" id="tagBar" hidden>
+          <span class="tb-txt">正在看 <b id="tbName"></b> 的 <b id="tbCount"></b> 篇</span>
+          <button type="button" class="tb-copy" id="tbCopy">複製主題頁連結</button>
+          <a class="tb-go" id="tbGo" href="#">前往主題頁 →</a>
+        </div>
         <div class="gridbox" id="gridBox">
           <div class="grid2" id="articleGrid">
       <a class="g" style="--c:var(--teal);--cbg:var(--teal-bg)" href="articles/which-ipad-for-procreate/" data-tags="選購;Procreate;電繪;相容對照" data-search="procreate 電繪要買哪台 ipad？ 決定圖層上限的是記憶體和畫布尺寸，不是晶片新舊——所以買最新的不等於圖層最多：以 a4、300dpi 來算，2021 年的 ipad pro（16gb）有 211 層，2025 年的 pro 基本容量（12gb）只有 150 層。天花板只有兩檔，分水嶺在 8gb。附 2018–2026 全型號圖層對照表、四支 apple pencil 的壓感差異、哪些機型不是全平面貼合，以及做動畫最多能撐幾秒。 選購 選購 procreate 電繪 相容對照">
@@ -980,6 +1021,38 @@ footer p { font-size: .9rem; color: var(--body); margin: 0; }
       <span class="sb-go">瀏覽</span>
     </button>
   </div>
+      <section class="topics" id="topics">
+        <h2 class="glabel">所有主題</h2>
+        <p class="topics-sub">26 個主題，點進去看該主題收錄的全部教學。</p>
+        <div class="topics-grid">
+          <a class="topic" href="tag/%E8%A7%80%E5%BF%B5/" data-tag="觀念"><span class="tp-n">觀念</span><span class="tp-c">18</span></a>
+          <a class="topic" href="tag/%E6%8A%80%E5%B7%A7/" data-tag="技巧"><span class="tp-n">技巧</span><span class="tp-c">17</span></a>
+          <a class="topic" href="tag/%E6%95%85%E9%9A%9C%E6%8E%92%E9%99%A4/" data-tag="故障排除"><span class="tp-n">故障排除</span><span class="tp-c">16</span></a>
+          <a class="topic" href="tag/%E9%81%B8%E8%B3%BC/" data-tag="選購"><span class="tp-n">選購</span><span class="tp-c">12</span></a>
+          <a class="topic" href="tag/apple-pencil/" data-tag="Apple Pencil"><span class="tp-n">Apple Pencil</span><span class="tp-c">11</span></a>
+          <a class="topic" href="tag/%E5%B0%8B%E6%89%BE%E5%AE%9A%E4%BD%8D/" data-tag="尋找定位"><span class="tp-n">尋找定位</span><span class="tp-c">9</span></a>
+          <a class="topic" href="tag/%E7%9B%B8%E5%AE%B9%E5%B0%8D%E7%85%A7/" data-tag="相容對照"><span class="tp-n">相容對照</span><span class="tp-c">9</span></a>
+          <a class="topic" href="tag/forscore/" data-tag="forScore"><span class="tp-n">forScore</span><span class="tp-c">7</span></a>
+          <a class="topic" href="tag/%E9%9B%BB%E6%B1%A0%E8%88%87%E7%BA%8C%E8%88%AA/" data-tag="電池與續航"><span class="tp-n">電池與續航</span><span class="tp-c">6</span></a>
+          <a class="topic" href="tag/airtag/" data-tag="AirTag"><span class="tp-n">AirTag</span><span class="tp-c">4</span></a>
+          <a class="topic" href="tag/procreate/" data-tag="Procreate"><span class="tp-n">Procreate</span><span class="tp-c">4</span></a>
+          <a class="topic" href="tag/%E6%A8%82%E8%AD%9C/" data-tag="樂譜"><span class="tp-n">樂譜</span><span class="tp-c">4</span></a>
+          <a class="topic" href="tag/%E9%80%A3%E7%B6%B2%E8%88%87%E7%B6%B2%E9%80%9F/" data-tag="連網與網速"><span class="tp-n">連網與網速</span><span class="tp-c">4</span></a>
+          <a class="topic" href="tag/%E9%85%8D%E4%BB%B6%E6%8E%A8%E8%96%A6/" data-tag="配件推薦"><span class="tp-n">配件推薦</span><span class="tp-c">4</span></a>
+          <a class="topic" href="tag/%E9%8D%B5%E7%9B%A4%E9%85%8D%E4%BB%B6/" data-tag="鍵盤配件"><span class="tp-n">鍵盤配件</span><span class="tp-c">4</span></a>
+          <a class="topic" href="tag/%E9%9B%BB%E7%B9%AA/" data-tag="電繪"><span class="tp-n">電繪</span><span class="tp-c">4</span></a>
+          <a class="topic" href="tag/iphone/" data-tag="iPhone"><span class="tp-n">iPhone</span><span class="tp-c">3</span></a>
+          <a class="topic" href="tag/%E4%B8%8A%E6%89%8B/" data-tag="上手"><span class="tp-n">上手</span><span class="tp-c">2</span></a>
+          <a class="topic" href="tag/%E8%9E%A2%E5%B9%95%E8%A6%8F%E6%A0%BC/" data-tag="螢幕規格"><span class="tp-n">螢幕規格</span><span class="tp-c">2</span></a>
+          <a class="topic" href="tag/%E9%98%B2%E8%A9%90%E9%A8%99/" data-tag="防詐騙"><span class="tp-n">防詐騙</span><span class="tp-c">2</span></a>
+          <a class="topic" href="tag/app-%E4%B8%8B%E8%BC%89/" data-tag="App 下載"><span class="tp-n">App 下載</span><span class="tp-c thin">1</span></a>
+          <a class="topic" href="tag/windows-%E7%94%A8%E6%88%B6/" data-tag="Windows 用戶"><span class="tp-n">Windows 用戶</span><span class="tp-c thin">1</span></a>
+          <a class="topic" href="tag/%E5%89%AA%E6%98%A0%E6%8A%96%E9%9F%B3/" data-tag="剪映抖音"><span class="tp-n">剪映抖音</span><span class="tp-c thin">1</span></a>
+          <a class="topic" href="tag/%E5%BF%AB%E6%8D%B7%E9%8D%B5/" data-tag="快捷鍵"><span class="tp-n">快捷鍵</span><span class="tp-c thin">1</span></a>
+          <a class="topic" href="tag/%E8%B6%8A%E7%8D%84/" data-tag="越獄"><span class="tp-n">越獄</span><span class="tp-c thin">1</span></a>
+          <a class="topic" href="tag/%E9%81%8A%E6%88%B2/" data-tag="遊戲"><span class="tp-n">遊戲</span><span class="tp-c thin">1</span></a>
+        </div>
+      </section>
 
   <footer>
     <div class="ft">有 iPad 使用問題？隨時找果果客服</div>
@@ -1065,6 +1138,48 @@ footer p { font-size: .9rem; color: var(--body); margin: 0; }
       }
       // 篩選後可見篇數變了 → 重算捲動框的剩餘數量與「是否到底」
       if (window.ggGridScroll) { grid.scrollTop = 0; window.ggGridScroll(); }
+      updateTagBar(visible);
+    }
+
+    /* 篩到具體主題時，浮出「查看主題頁」列。
+       主題頁網址不在這裡自己算 slug——直接查下方「所有主題」區塊那顆同名連結的 href，
+       規則就只有 build-homepage.py 的 tag_slug 一份，不會兩邊算出不一樣的網址。 */
+    var tagBar = document.getElementById('tagBar');
+    var tbName = document.getElementById('tbName');
+    var tbCount = document.getElementById('tbCount');
+    var tbGo = document.getElementById('tbGo');
+    var tbCopy = document.getElementById('tbCopy');
+    function hrefOfTag(tag) {
+      var links = document.querySelectorAll('.topic[data-tag]');
+      for (var i = 0; i < links.length; i++) {
+        if (links[i].getAttribute('data-tag') === tag) return links[i].getAttribute('href');
+      }
+      return '';                                  // 查不到就不顯示，不猜一個可能 404 的網址
+    }
+    function updateTagBar(visible) {
+      if (!tagBar) return;
+      var href = activeTag === '__all__' ? '' : hrefOfTag(activeTag);
+      if (!href) { tagBar.hidden = true; return; }
+      tagBar.hidden = false;
+      tbName.textContent = '#' + activeTag;
+      tbCount.textContent = visible;
+      tbGo.setAttribute('href', href);
+      if (tbCopy) tbCopy.classList.remove('done');
+    }
+    if (tbCopy) {
+      tbCopy.addEventListener('click', function () {
+        var href = tbGo.getAttribute('href');
+        if (!href || href === '#') return;
+        // 用當前網域組完整網址：導外版複製到正式網域、中性版複製到中性網域。
+        // 注意別在這段註解裡寫出實際網域字串——JS 註解會原樣輸出到中性版 HTML，
+        // 會被 build-neutral.sh 的洩漏檢查擋下（這行就是踩過才補的）。
+        var url = new URL(href, location.href).href;
+        function ok() { tbCopy.textContent = '已複製 ✓'; tbCopy.classList.add('done');
+          setTimeout(function () { tbCopy.textContent = '複製主題頁連結'; tbCopy.classList.remove('done'); }, 1600); }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(ok, function () { window.prompt('複製這個連結：', url); });
+        } else { window.prompt('複製這個連結：', url); }
+      });
     }
 
     wireChips(chipsWrap, 'tag', function (v) {
