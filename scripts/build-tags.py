@@ -121,13 +121,20 @@ TAG_PAGE = """<!DOCTYPE html>
     </div>
 
     <h2 class="glabel">{tag_name} · 全部教學</h2>
-    <div class="grid2">
+    <div class="gridbox" id="gridBox">
+      <div class="grid2" id="articleGrid">
 {cards}
+      </div>
+      <div class="gb-mask" aria-hidden="true"></div>
+      <div class="gb-pill" id="gridPill" aria-hidden="true"></div>
     </div>
   </main>
 
   <div class="copy">© 果果國際 GUOGUO INTERNATIONAL</div>
 </div>
+<script>
+{gridbox_js}
+</script>
 </body>
 </html>
 """
@@ -190,6 +197,7 @@ def build_page(tag, articles, colors, related, counts, card_mode="image"):
         sub=bh.esc(sub),
         filters=build_filters(tag, related, counts),
         cards=cards,
+        gridbox_js=bh.JS_GRIDBOX,
     )
 
 

@@ -124,6 +124,43 @@ footer .ft { font-size: 1.02rem; font-weight: 800; color: var(--navy); margin-bo
 footer p { font-size: .9rem; color: var(--body); margin: 0; }
 .copy { text-align: center; font-family: var(--mono); font-size: .66rem; color: var(--muted); margin-top: 26px; }
 
+
+/* ── 文章列表捲動框（桌機）──
+   46 篇全列會讓首頁長到一萬多 px、頁尾永遠看不到。把列表放進固定高度的框，
+   頁面高度就固定在一屏多一點，頁尾永遠構得到；文章仍然全部在 HTML 裡，SEO 不受影響。
+   手機不啟用——巢狀捲動在觸控上體感很差，一根手指從頭滑到尾才是對的。
+   68vh 的理由：一行卡片約 484px，固定 px 在 900 高的螢幕會超出視窗，
+   變成「捲頁面才看得到框底、框內又能捲」的雙層捲動；用 vh 就永遠不超過一屏。 */
+.gb-mask, .gb-pill { display: none; }
+@media (min-width: 900px) {
+  .gridbox { position: relative; }
+  .grid2 {
+    height: 68vh; min-height: 480px; max-height: 900px;
+    overflow-y: auto; overscroll-behavior: contain;   /* 捲到底不把頁面一起帶走 */
+    padding: 14px; border: 1px solid var(--line); border-radius: 14px;
+    background: var(--panel); scroll-behavior: smooth;
+    /* 常駐捲軸：macOS 預設把捲軸藏起來，不強制顯示等於少一個「可以捲」的線索 */
+    scrollbar-gutter: stable; scrollbar-width: auto; scrollbar-color: #9aa9bd transparent;
+  }
+  .grid2:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+  .grid2::-webkit-scrollbar { width: 12px; }
+  .grid2::-webkit-scrollbar-track { background: var(--grid); border-radius: 99px; margin: 6px; }
+  .grid2::-webkit-scrollbar-thumb { background: #9aa9bd; border-radius: 99px; border: 3px solid var(--panel); }
+  .grid2::-webkit-scrollbar-thumb:hover { background: #7d8da3; }
+  /* 底部漸層：告訴使用者「這裡還沒結束」；捲到底就淡出，提示只在需要時出現 */
+  .gb-mask { display: block; position: absolute; left: 1px; right: 1px; bottom: 1px; height: 64px;
+    border-radius: 0 0 14px 14px; pointer-events: none; transition: opacity .22s;
+    background: linear-gradient(to bottom, rgba(255,255,255,0), var(--panel)); }
+  /* 剩餘數量：漸層說「還有」，數字說「還有多少」——後者讓「要不要捲」變成好判斷的事 */
+  .gb-pill { display: block; position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%);
+    font-family: var(--mono); font-size: .7rem; font-weight: 700; color: var(--navy);
+    background: var(--panel); border: 1px solid var(--line); border-radius: 999px;
+    padding: 4px 13px; box-shadow: 0 2px 10px rgba(20,39,68,.14); pointer-events: none;
+    transition: opacity .22s; white-space: nowrap; }
+  .gridbox.at-end .gb-mask, .gridbox.at-end .gb-pill { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .grid2 { scroll-behavior: auto; } }
+
 @media (max-width: 900px) {
   .cols { grid-template-columns: 1fr; gap: 32px; }
   /* .side 在手機的擺法交給 CSS_SHOP（吸底列＋bottom sheet）；中性版沒有 .side，不受影響 */
@@ -191,7 +228,8 @@ a.g .ic { width: auto; height: auto; aspect-ratio: 1.9/1; border-radius: 10px; b
     </div>
 
     <h2 class="glabel">AirTag · 全部教學</h2>
-    <div class="grid2">
+    <div class="gridbox" id="gridBox">
+      <div class="grid2" id="articleGrid">
       <a class="g" style="--c:var(--red);--cbg:var(--red-bg)" href="../../articles/find-my-device-tiers/" data-tags="觀念;尋找定位;AirTag;Apple Pencil" data-search="尋找 app 能追蹤哪些裝置？ 都在同一個「尋找」app 裡，掉了找得回來的機率卻差很多。喇叭、uwb、作業系統三個硬體切出五個等級——一張表看懂你手上那台屬哪一級。 觀念 觀念 尋找定位 airtag apple pencil">
         <div class="thumb"><img src="../../assets/og/find-my-device-tiers-cover.png" alt="尋找 App 能追蹤哪些裝置？" loading="lazy" decoding="async"></div>
         <div class="tag">觀念</div>
@@ -220,10 +258,52 @@ a.g .ic { width: auto; height: auto; aspect-ratio: 1.9/1; border-radius: 10px; b
         <p>行李沒跟你下飛機時，可以產生七天有效的連結讓地勤直接看到 AirTag 位置，中華航空已支援。七個沒人在用的「尋找」功能，逐項標出你那台吃不吃得到。</p>
         <div class="go">閱讀指南</div>
       </a>
+      </div>
+      <div class="gb-mask" aria-hidden="true"></div>
+      <div class="gb-pill" id="gridPill" aria-hidden="true"></div>
     </div>
   </main>
 
   <div class="copy">© 果果國際 GUOGUO INTERNATIONAL</div>
 </div>
+<script>
+/* ---------- 列表捲動框：底部漸層 ＋ 剩餘數量（桌機才有框，手機此段自動閒置） ---------- */
+  window.ggGridScroll = (function () {
+    var box = document.getElementById('gridBox');
+    var grid = document.getElementById('articleGrid');
+    var pill = document.getElementById('gridPill');
+    if (!box || !grid) return function () {};
+
+    // 目前可見（篩選後）的卡片數。用比例估剩餘，就不必知道欄數與卡片高度，
+    // 對高矮不一的卡片也合理。
+    function visibleCount() {
+      var n = 0;
+      Array.prototype.forEach.call(grid.querySelectorAll('.g'), function (c) {
+        if (c.style.display !== 'none') n++;
+      });
+      return n;
+    }
+    function update() {
+      var scrollable = grid.scrollHeight - grid.clientHeight;
+      if (scrollable <= 4) {              // 內容不足一框（例如篩選後只剩幾篇）→ 不需要任何提示
+        box.classList.add('at-end');
+        if (pill) pill.textContent = '';
+        return;
+      }
+      var atEnd = grid.scrollTop >= scrollable - 4;
+      box.classList.toggle('at-end', atEnd);
+      if (!pill) return;
+      var total = visibleCount();
+      var seenRatio = (grid.scrollTop + grid.clientHeight) / grid.scrollHeight;
+      var left = Math.max(0, Math.round(total * (1 - seenRatio)));
+      pill.textContent = left ? '還有 ' + left + ' 篇 ↓' : '';
+    }
+    grid.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    grid.setAttribute('tabindex', '0');   // 讓鍵盤也能捲這個框
+    update();
+    return update;                        // 交給篩選那段，篩完重算
+  })();
+</script>
 </body>
 </html>

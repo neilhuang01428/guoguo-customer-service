@@ -362,6 +362,43 @@ footer .ft { font-size: 1.02rem; font-weight: 800; color: var(--navy); margin-bo
 footer p { font-size: .9rem; color: var(--body); margin: 0; }
 .copy { text-align: center; font-family: var(--mono); font-size: .66rem; color: var(--muted); margin-top: 26px; }
 
+
+/* ── 文章列表捲動框（桌機）──
+   46 篇全列會讓首頁長到一萬多 px、頁尾永遠看不到。把列表放進固定高度的框，
+   頁面高度就固定在一屏多一點，頁尾永遠構得到；文章仍然全部在 HTML 裡，SEO 不受影響。
+   手機不啟用——巢狀捲動在觸控上體感很差，一根手指從頭滑到尾才是對的。
+   68vh 的理由：一行卡片約 484px，固定 px 在 900 高的螢幕會超出視窗，
+   變成「捲頁面才看得到框底、框內又能捲」的雙層捲動；用 vh 就永遠不超過一屏。 */
+.gb-mask, .gb-pill { display: none; }
+@media (min-width: 900px) {
+  .gridbox { position: relative; }
+  .grid2 {
+    height: 68vh; min-height: 480px; max-height: 900px;
+    overflow-y: auto; overscroll-behavior: contain;   /* 捲到底不把頁面一起帶走 */
+    padding: 14px; border: 1px solid var(--line); border-radius: 14px;
+    background: var(--panel); scroll-behavior: smooth;
+    /* 常駐捲軸：macOS 預設把捲軸藏起來，不強制顯示等於少一個「可以捲」的線索 */
+    scrollbar-gutter: stable; scrollbar-width: auto; scrollbar-color: #9aa9bd transparent;
+  }
+  .grid2:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+  .grid2::-webkit-scrollbar { width: 12px; }
+  .grid2::-webkit-scrollbar-track { background: var(--grid); border-radius: 99px; margin: 6px; }
+  .grid2::-webkit-scrollbar-thumb { background: #9aa9bd; border-radius: 99px; border: 3px solid var(--panel); }
+  .grid2::-webkit-scrollbar-thumb:hover { background: #7d8da3; }
+  /* 底部漸層：告訴使用者「這裡還沒結束」；捲到底就淡出，提示只在需要時出現 */
+  .gb-mask { display: block; position: absolute; left: 1px; right: 1px; bottom: 1px; height: 64px;
+    border-radius: 0 0 14px 14px; pointer-events: none; transition: opacity .22s;
+    background: linear-gradient(to bottom, rgba(255,255,255,0), var(--panel)); }
+  /* 剩餘數量：漸層說「還有」，數字說「還有多少」——後者讓「要不要捲」變成好判斷的事 */
+  .gb-pill { display: block; position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%);
+    font-family: var(--mono); font-size: .7rem; font-weight: 700; color: var(--navy);
+    background: var(--panel); border: 1px solid var(--line); border-radius: 999px;
+    padding: 4px 13px; box-shadow: 0 2px 10px rgba(20,39,68,.14); pointer-events: none;
+    transition: opacity .22s; white-space: nowrap; }
+  .gridbox.at-end .gb-mask, .gridbox.at-end .gb-pill { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .grid2 { scroll-behavior: auto; } }
+
 @media (max-width: 900px) {
   .cols { grid-template-columns: 1fr; gap: 32px; }
   /* .side 在手機的擺法交給 CSS_SHOP（吸底列＋bottom sheet）；中性版沒有 .side，不受影響 */
@@ -522,6 +559,8 @@ JS = r"""
       } else {
         emptyNote.style.display = 'none';
       }
+      // 篩選後可見篇數變了 → 重算捲動框的剩餘數量與「是否到底」
+      if (window.ggGridScroll) { grid.scrollTop = 0; window.ggGridScroll(); }
     }
 
     wireChips(chipsWrap, 'tag', function (v) {
@@ -758,7 +797,48 @@ JS = r"""
 
 __SHOP_JS__
 })();
+
+__GRIDBOX_JS__
 """
+
+# ── 列表捲動框 JS（首頁與標籤頁共用；純前端行為，無導外資訊，雙版都注入）──
+JS_GRIDBOX = r"""/* ---------- 列表捲動框：底部漸層 ＋ 剩餘數量（桌機才有框，手機此段自動閒置） ---------- */
+  window.ggGridScroll = (function () {
+    var box = document.getElementById('gridBox');
+    var grid = document.getElementById('articleGrid');
+    var pill = document.getElementById('gridPill');
+    if (!box || !grid) return function () {};
+
+    // 目前可見（篩選後）的卡片數。用比例估剩餘，就不必知道欄數與卡片高度，
+    // 對高矮不一的卡片也合理。
+    function visibleCount() {
+      var n = 0;
+      Array.prototype.forEach.call(grid.querySelectorAll('.g'), function (c) {
+        if (c.style.display !== 'none') n++;
+      });
+      return n;
+    }
+    function update() {
+      var scrollable = grid.scrollHeight - grid.clientHeight;
+      if (scrollable <= 4) {              // 內容不足一框（例如篩選後只剩幾篇）→ 不需要任何提示
+        box.classList.add('at-end');
+        if (pill) pill.textContent = '';
+        return;
+      }
+      var atEnd = grid.scrollTop >= scrollable - 4;
+      box.classList.toggle('at-end', atEnd);
+      if (!pill) return;
+      var total = visibleCount();
+      var seenRatio = (grid.scrollTop + grid.clientHeight) / grid.scrollHeight;
+      var left = Math.max(0, Math.round(total * (1 - seenRatio)));
+      pill.textContent = left ? '還有 ' + left + ' 篇 ↓' : '';
+    }
+    grid.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    grid.setAttribute('tabindex', '0');   // 讓鍵盤也能捲這個框
+    update();
+    return update;                        // 交給篩選那段，篩完重算
+  })();"""
 
 # ── 商品側欄 JS（只在導外版注入到 __SHOP_JS__；中性版以空字串取代，天生無導購連結）──
 JS_SHOP = r"""
@@ -903,8 +983,12 @@ GUIDES_SECTION = """      <section class="guides" id="guides">
           <button type="button" class="chip on" data-tag="__all__">全部<span class="cnt">({total})</span></button>
         </div>
         <button type="button" class="chip-toggle" id="filterToggle" aria-expanded="false" hidden>展開全部<span class="ct-caret" aria-hidden="true">▾</span></button>
-        <div class="grid2" id="articleGrid">
+        <div class="gridbox" id="gridBox">
+          <div class="grid2" id="articleGrid">
 {cards}
+          </div>
+          <div class="gb-mask" aria-hidden="true"></div>
+          <div class="gb-pill" id="gridPill" aria-hidden="true"></div>
         </div>
         <p class="empty-note" id="articleEmpty" style="display:none" aria-live="polite"></p>
       </section>"""
@@ -1030,7 +1114,7 @@ def build_html(articles, neutral=False, colors=None):
         ).format(guides)
         footer = FOOTER_NEUTRAL
         css_final = CSS.replace("__SHOP_CSS__", "")
-        js_final = JS.replace("__SHOP_JS__", "").replace("__PF_META__", pfm)
+        js_final = JS.replace("__SHOP_JS__", "").replace("__GRIDBOX_JS__", JS_GRIDBOX).replace("__PF_META__", pfm)
         oghead = ""  # 中性版不加 OG/canonical（noindex + 避免 guoguo.tw 洩漏）
     else:
         shop_cta_url = "{0}?{1}".format(SHOP_URL, UTM)
@@ -1045,7 +1129,7 @@ def build_html(articles, neutral=False, colors=None):
         css_final = CSS.replace("__SHOP_CSS__", CSS_SHOP)
         js_final = JS.replace("__SHOP_JS__", JS_SHOP).replace(
             '"__SHOP_CTA_URL__"', json.dumps(shop_cta_url)
-        ).replace("__PF_META__", pfm)
+        ).replace("__GRIDBOX_JS__", JS_GRIDBOX).replace("__PF_META__", pfm)
         oghead = HOME_OG  # 導外版首頁：加 OG/twitter/canonical
 
     return PAGE.format(
