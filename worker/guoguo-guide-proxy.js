@@ -79,6 +79,11 @@ async function handle(request) {
   // 首頁的 OG/canonical 已由 build-homepage.py 寫進 index.html；文章頁在這裡注入（無對應 slug 則空）；
   // 標籤頁只補 canonical（指向導外正式網址），不做文章 OG/breadcrumb。
   const headMeta = isTag ? buildTagHead(sub) : (isHome ? '' : await buildArticleHead(slug))
+  // 標籤頁的膠囊麵包屑（末段＝主題名；查不到名字就退回自帶那條，不硬塞空白）
+  const tagTopbar = isTag ? await (async () => {
+    const name = await tagNameFromSub(sub)
+    return name ? topbarTag(name) : ''
+  })() : ''
   const tags = (isHome || isTag) ? '' : await buildTags(slug) // 文章頁尾「相關主題」標籤（連到標籤頁；取代手動延伸閱讀）
   const faq = (isHome || isTag) ? '' : await buildFaq(slug)   // 文章頁尾「常見問題」（可見內容；schema 由 buildArticleHead 出）
   // seoTitle：有設才改寫 <title>，讓 articles.json 成為標題的單一真實來源
@@ -94,10 +99,20 @@ async function handle(request) {
   if (isHome) {
     // 首頁沒有 <main>、有自己的頁首頁尾 → 用 header tag（最穩）把「回賣場」麵包屑插在 masthead 之前
     rw.on('header', { element(el) { el.before('<span id="gg-top"></span>' + TOPBAR_HOME, { html: true }) } })
+    // 首頁自帶的頁尾只有一句「有 iPad 使用問題？隨時找果果客服」，沒有聯絡方式／門市／CTA。
+    // 保留那句話，把與文章頁、標籤頁同一份的完整頁尾接在它下面 → 三種頁面一致，且只維護這一份。
+    rw.on('footer', { element(el) { el.after(FOOTER, { html: true }) } })
   } else if (isTag) {
-    // 靜態標籤頁：已自帶麵包屑（相對連結，雙版共用），只在 <main> 尾端補上賣場頁尾。
-    // 不注入文章麵包屑 / 導購版位 / 文章延伸標籤 / 文章 OG。
-    rw.on('main', { element(el) { el.append(FOOTER, { html: true }) } })
+    // 靜態標籤頁：注入與文章頁同一套的膠囊麵包屑（末段換成主題名），並在 <main> 尾端補上賣場頁尾。
+    // 頁面自帶的 .crumb（純文字小字、不 sticky、無賣場入口）由 CHROME_CSS 隱藏；
+    // 中性版不經 Worker，會繼續用自帶那條，所以它不能刪。
+    // 不注入導購版位 / 文章延伸標籤 / 文章 OG。
+    rw.on('main', {
+      element(el) {
+        el.prepend('<span id="gg-top"></span>' + tagTopbar, { html: true })
+        el.append(FOOTER, { html: true })
+      }
+    })
   } else {
     // 一般文章：注入完整麵包屑（賣場 › 教學 › 本篇）＋頁尾
     rw.on('main', {
@@ -243,6 +258,22 @@ function tagSlug(t) { return String(t).trim().toLowerCase().replace(/\s+/g, '-')
 /* ── 標籤頁 <head>：只補 canonical，指向導外正式網址 /guide/tag/<slug>/。
    sub 形如 /tag/<slug>/（可能已 percent-encoded）；去掉尾端 index.html、補斜線。
    （OG title 需 slug→標籤名反查，靜態檔又已含 noindex，此處先只做 canonical。）── */
+/* 由 /tag/<slug>/ 反查原始標籤名：slug 是 tagSlug() 產的（小寫、空白換 -、中日文保留），
+   中文會是 URL-encoded，先 decode 再比對 articles.json 裡所有 tags。查不到就回空字串。 */
+async function tagNameFromSub(sub) {
+  const seg = sub.split('/').filter(Boolean)[1] || ''
+  let want = seg
+  try { want = decodeURIComponent(seg) } catch (e) { /* 壞編碼就用原字串比 */ }
+  const { articles } = await getShopData()
+  if (!articles) return ''
+  for (const a of articles) {
+    for (const t of (a.tags || [])) {
+      if (t && tagSlug(t) === want) return t
+    }
+  }
+  return ''
+}
+
 function buildTagHead(sub) {
   let path = sub.replace(/index\.html$/, '')
   if (!path.endsWith('/')) path += '/'
@@ -514,6 +545,11 @@ nav.gg-tags a.gg-tag:hover{border-color:var(--navy,#17345f);background:#f2f7fd;t
 .gg-promo-more:hover{color:var(--navy-deep,#0f2547);text-decoration:underline}
 @media(max-width:560px){.gg-promo{padding:20px 16px}.gg-promo-grid{grid-template-columns:1fr 1fr;gap:11px}.gg-pcard-body{padding:10px 11px 12px}.gg-pcard-title{font-size:.8rem}}
 
+/* 標籤頁自帶的舊麵包屑（純文字小字）：導外版改用上面注入的膠囊版，把它藏起來。
+   只有 /tag/ 頁面有 .crumb，首頁與文章頁沒有這個 class，寫在共用 CSS 無副作用。
+   中性版不經 Worker → 沒有這條規則 → 自帶麵包屑照常顯示。 */
+.crumb{display:none}
+
 /* ── 導購側欄（桌機常駐）──
    body 是 flex 容器，這個 aside 由 Worker append 進 body → 自然成為 main 右邊的第三欄，
    不需要 absolute 定位，也就不會有 CLS。
@@ -577,7 +613,9 @@ nav.gg-tags a.gg-tag:hover{border-color:var(--navy,#17345f);background:#f2f7fd;t
 </style>`
 
 /* ── 頂部麵包屑：果果賣場 › iPad 使用教學 › 本篇（購物袋圖示=賣場、書本圖示=教學首頁，靠圖示與層級區分）── */
-const TOPBAR = `<div class="gg-crumb" aria-label="麵包屑導覽">
+/* 麵包屑共用前段：果果賣場 › iPad 使用教學 ›。文章頁與標籤頁只差最後一段，
+   抽出來共用，兩處才不會各留一份 SVG 各自演化。 */
+const CRUMB_HEAD = `<div class="gg-crumb" aria-label="麵包屑導覽">
   <a class="gg-cr gg-shop" href="${C.shop}" target="_blank" rel="noopener" aria-label="前往果果賣場">
     <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>果果賣場
   </a>
@@ -586,8 +624,16 @@ const TOPBAR = `<div class="gg-crumb" aria-label="麵包屑導覽">
     <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>iPad 使用教學
   </a>
   <span class="gg-sep" aria-hidden="true">›</span>
-  <span class="gg-cur">本篇教學</span>
+`
+const TOPBAR = CRUMB_HEAD + `  <span class="gg-cur">本篇教學</span>
 </div>`
+/* 標籤頁麵包屑：末段換成主題名（例：果果賣場 › iPad 使用教學 › Apple Pencil）。
+   原本頁面自帶的 .crumb 是純文字小字、不 sticky、也沒有賣場入口，
+   由 CHROME_CSS 隱藏（只在導外版；中性版不經 Worker，繼續用自帶那條）。 */
+function topbarTag(name) {
+  return CRUMB_HEAD + `  <span class="gg-cur">${esc(name)}</span>
+</div>`
+}
 
 /* ── 首頁專用麵包屑：果果賣場 › iPad 使用教學（教學＝目前位置，只給「回賣場」入口）── */
 const TOPBAR_HOME = `<div class="gg-crumb" aria-label="麵包屑導覽">
