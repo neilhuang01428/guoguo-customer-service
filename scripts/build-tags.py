@@ -86,9 +86,9 @@ TAG_PAGE = """<!DOCTYPE html>
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="icon" type="image/x-icon" href="../../assets/favicon.ico" />
-<link rel="icon" type="image/png" sizes="48x48" href="../../assets/favicon.png" />
-<link rel="apple-touch-icon" href="../../assets/favicon.png" />
+<link rel="icon" type="image/x-icon" href="../../assets/favicon.ico?v=2" />
+<link rel="icon" type="image/png" sizes="48x48" href="../../assets/favicon.png?v=2" />
+<link rel="apple-touch-icon" href="../../assets/favicon.png?v=2" />
 <title>{title}</title>
 <meta name="description" content="{desc}" />
 {robots}<style>{css}</style>
