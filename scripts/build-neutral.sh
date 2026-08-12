@@ -48,12 +48,15 @@ for d in $ARTICLE_SLUGS; do
 done
 cp index.neutral.html "$OUT"/index.html   # 中性版首頁（step 0 剛重印的乾淨版；下方洩漏檢查會再守門一次）
 
-# 靜態標籤頁：step 0b 剛產出的 tag/（一份檔雙版共用、相對連結、零導外）整包搬進中性網域。
+# 靜態標籤頁：step 0b 會產兩份——tag/（導外版，卡片用首圖）與 tag-neutral/（中性版，emoji 卡）。
+# 這裡取 tag-neutral/ 並改名成 dist/tag/，網址仍是 /tag/<slug>/。
+# 為什麼要分兩份：下面第 1 步會 rm -rf dist/assets/og（首圖裡有 www.guoguo.tw/guide/ 字樣與果果 logo），
+# 若中性版沿用導外版的圖卡，每張卡都會 404。
 # 不需注入麵包屑（它自帶相對麵包屑）；下方洩漏檢查會一併掃它。
-if [ -d tag ]; then
-  cp -R tag "$OUT"/
+if [ -d tag-neutral ]; then
+  cp -R tag-neutral "$OUT"/tag
 else
-  echo "❌ 找不到 tag/ 資料夾（build-tags.py 應已在 step 0b 產出）→ 中止。"
+  echo "❌ 找不到 tag-neutral/ 資料夾（build-tags.py 應已在 step 0b 產出）→ 中止。"
   exit 1
 fi
 

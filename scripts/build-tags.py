@@ -32,6 +32,7 @@ from urllib.parse import quote
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # scripts/ 的上一層＝repo 根
 TAG_DIR = os.path.join(ROOT, "tag")
+TAG_NEUTRAL_DIR = TAG_DIR + "-neutral"   # 中性版標籤頁（emoji 卡）；由 build-neutral.sh 取用
 
 # 文章數 < THRESHOLD 的標籤頁：加 noindex（防薄內容）。
 THRESHOLD = 2
@@ -133,11 +134,15 @@ TAG_PAGE = """<!DOCTYPE html>
 
 
 def relink_article(a):
-    """回傳一份 article 副本，把 url 改成相對路徑 ../../articles/<slug>/
-       （a.url 已含 articles/ 前綴），讓 render_card 產出的連結在
-       /guide/tag/X/ 與 /tag/X/ 兩處都對（→ /guide/articles/Y/、/articles/Y/）。"""
+    """回傳一份 article 副本，把 url 與 ogImage 改成相對路徑（都補 ../../）。
+       url：a.url 已含 articles/ 前綴，讓 render_card 產出的連結在
+            /guide/tag/X/ 與 /tag/X/ 兩處都對（→ /guide/articles/Y/、/articles/Y/）。
+       ogImage：值是相對站根的 assets/og/xxx.png，在 tag/<slug>/ 底下要補 ../../ 才指得到。"""
     a2 = dict(a)
     a2["url"] = "../../" + (a.get("url", "") or "")
+    og = a.get("ogImage")
+    if og and not og.startswith(("http://", "https://", "/", "../")):
+        a2["ogImage"] = "../../" + og
     return a2
 
 
@@ -161,11 +166,13 @@ def build_filters(tag, related, counts):
     )
 
 
-def build_page(tag, articles, colors, related, counts):
+def build_page(tag, articles, colors, related, counts, card_mode="image"):
     count = len(articles)
-    # 卡片：沿用 render_card；一律 emoji（零外部資源，中性版也不 404）；連結相對 ../../<slug>/
+    # 卡片：沿用 render_card；連結與首圖都相對 ../../。
+    # card_mode 由呼叫端決定：導外版 tag/ 用 "image"（首圖），中性版 tag-neutral/ 用 "emoji"
+    #（中性版 build 會砍 assets/og，引用首圖會整排 404）。
     cards = "\n".join(
-        bh.render_card(relink_article(a), colors, card_mode="emoji") for a in articles
+        bh.render_card(relink_article(a), colors, card_mode=card_mode) for a in articles
     )
     sub = "跟「{0}」有關的教學都收在這裡，果果一篇篇整理好，你想看哪篇就點哪篇。".format(tag)
     robots = ""
@@ -211,27 +218,32 @@ def main():
                     rel.add(t)
         return sorted(rel, key=lambda t: (-counts[t], t))
 
-    # 砍掉重建 tag/（每次全量重生，idempotent）
-    if os.path.isdir(TAG_DIR):
-        shutil.rmtree(TAG_DIR)
-    os.makedirs(TAG_DIR, exist_ok=True)
-
+    # 砍掉重建（每次全量重生，idempotent）。產兩份：
+    #   tag/          導外版 → 圖卡（每篇 ogImage）
+    #   tag-neutral/  中性版 → emoji 卡（中性版 build 會砍 assets/og，引用首圖會整排 404）
+    # 兩份的目錄深度相同（tag*/<slug>/），所以卡片裡的相對連結 ../../ 兩邊通用。
+    # build-neutral.sh 複製 tag-neutral/ 並改名成 dist/tag/，網址仍是 /tag/<slug>/。
     total = 0
     noindexed = 0
-    for tag in sorted(tag_to_articles.keys()):
-        slug = tag_slug(tag)
-        arts = tag_to_articles[tag]
-        page = build_page(tag, arts, colors, related_of(tag), counts)
-        d = os.path.join(TAG_DIR, slug)
-        os.makedirs(d, exist_ok=True)
-        with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f:
-            f.write(page)
-        total += 1
-        if len(arts) < THRESHOLD:
-            noindexed += 1
+    for out_dir, mode in ((TAG_DIR, "image"), (TAG_NEUTRAL_DIR, "emoji")):
+        if os.path.isdir(out_dir):
+            shutil.rmtree(out_dir)
+        os.makedirs(out_dir, exist_ok=True)
+        for tag in sorted(tag_to_articles.keys()):
+            slug = tag_slug(tag)
+            arts = tag_to_articles[tag]
+            page = build_page(tag, arts, colors, related_of(tag), counts, card_mode=mode)
+            d = os.path.join(out_dir, slug)
+            os.makedirs(d, exist_ok=True)
+            with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f:
+                f.write(page)
+            if out_dir == TAG_DIR:
+                total += 1
+                if len(arts) < THRESHOLD:
+                    noindexed += 1
 
     print(
-        "✅ 產生 {0} 個標籤頁（tag/<slug>/index.html）；其中 {1} 個 < {2} 篇 → 加 noindex。".format(
+        "✅ 產生 {0} 個標籤頁 ×2 份（tag/ 圖卡、tag-neutral/ emoji）；其中 {1} 個 < {2} 篇 → 加 noindex。".format(
             total, noindexed, THRESHOLD
         )
     )

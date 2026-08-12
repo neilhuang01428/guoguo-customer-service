@@ -23,3 +23,6 @@ __pycache__/
 
 # 題目發想素材（彙整自 Notion／Google Sheet／官網，含內部營運洞察，不對外公開、不上 GitHub）
 context/
+
+# 中性版標籤頁：由 build-tags.py 現場產生，只給 build-neutral.sh 用，不進版控
+tag-neutral/
