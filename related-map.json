@@ -1,3 +1,21 @@
 {
- "_readme": "每篇文章的「延伸閱讀」對應表（後台『延伸閱讀』頁維護，Worker 讀）。格式：\"<slug>\": {\"items\": [\"slug-a\", \"slug-b\", \"slug-c\"], \"by\": \"manual|bulk\", \"updated\": \"YYYY-MM-DD\"}。items 的順序＝前台從左到右的顯示順序，最多三篇。這裡「只存 slug」——標題、首圖、分類、摘要一律由 Worker 當下去 articles.json 撈，所以改首圖或改標題不用回來動這個檔，前台會自己跟上（跟 guide-map.json 只存商品 id 是同一個道理）。沒有 entry 的文章＝未設定，前台走稀有度加權自動遞補；手動不滿三篇時也會自動補滿。items 裡的 slug 在 articles.json 找不到（改名或下架）時，前台靜默跳過那一格、絕不輸出壞連結，後台列表頁則會標成「⚠ 失效」等你來修。"
+ "_readme": "每篇文章的「延伸閱讀」對應表（後台『延伸閱讀』頁維護，Worker 讀）。格式：\"<slug>\": {\"items\": [\"slug-a\", \"slug-b\", \"slug-c\"], \"by\": \"manual|bulk\", \"updated\": \"YYYY-MM-DD\"}。items 的順序＝前台從左到右的顯示順序，最多三篇。這裡「只存 slug」——標題、首圖、分類、摘要一律由 Worker 當下去 articles.json 撈，所以改首圖或改標題不用回來動這個檔，前台會自己跟上（跟 guide-map.json 只存商品 id 是同一個道理）。沒有 entry 的文章＝未設定，前台走稀有度加權自動遞補；手動不滿三篇時也會自動補滿。items 裡的 slug 在 articles.json 找不到（改名或下架）時，前台靜默跳過那一格、絕不輸出壞連結，後台列表頁則會標成「⚠ 失效」等你來修。",
+ "which-ipad-for-gaming": {
+  "items": [
+   "promotion-120hz-who-feels-it",
+   "smart-vs-magic-keyboard",
+   "ipados-version-history"
+  ],
+  "by": "manual",
+  "updated": "2026-08-14"
+ },
+ "hotspot-slower-than-phone": {
+  "items": [
+   "internet-speed-how-much-is-enough",
+   "charging-stops-at-80",
+   "universal-clipboard-not-working"
+  ],
+  "by": "manual",
+  "updated": "2026-08-14"
+ }
 }
