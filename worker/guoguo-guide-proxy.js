@@ -14,11 +14,13 @@
 const ORIGIN = 'https://neilhuang01428.github.io/guoguo-customer-service'
 
 /* ── GA4 流量分析（只注入導外版；與賣場同一個資源 → 可追「看教學→回賣場→下單」導購全貌）
-   含事件：shop_click / line_click / call_click / mail_click / map_click ── */
+   含事件：shop_click / related_click / line_click / call_click / mail_click / map_click
+   related_click 的 slot 是 related-1／2／3（版位順序）＋ source=manual｜auto，
+   用來回答「手動設定的那些，點擊率有沒有真的比自動遞補高」。 ── */
 const GA4_ID = 'G-8R0EYJ91SJ'
 const ANALYTICS = `<script async src="https://www.googletagmanager.com/gtag/js?id=${GA4_ID}"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA4_ID}');
-document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(!a)return;var h=a.getAttribute('href')||'';var slot=a.getAttribute('data-slot')||'other';if(a.classList.contains('gg-back')||a.classList.contains('gg-shop'))gtag('event','shop_click',{link_url:h,slot:slot});else if(a.classList.contains('gg-guidehome'))gtag('event','guide_home_click',{link_url:h});else if(h.indexOf('lin.ee')>-1)gtag('event','line_click',{link_url:h});else if(h.indexOf('tel:')===0)gtag('event','call_click',{link_url:h});else if(h.indexOf('mailto:')===0)gtag('event','mail_click',{link_url:h});else if(h.indexOf('maps.')>-1)gtag('event','map_click',{link_url:h})},true);</script>`
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(!a)return;var h=a.getAttribute('href')||'';var slot=a.getAttribute('data-slot')||'other';if(a.classList.contains('gg-back')||a.classList.contains('gg-shop'))gtag('event','shop_click',{link_url:h,slot:slot});else if(a.classList.contains('gg-rr-card'))gtag('event','related_click',{link_url:h,slot:slot,source:a.getAttribute('data-source')||''});else if(a.classList.contains('gg-guidehome'))gtag('event','guide_home_click',{link_url:h});else if(h.indexOf('lin.ee')>-1)gtag('event','line_click',{link_url:h});else if(h.indexOf('tel:')===0)gtag('event','call_click',{link_url:h});else if(h.indexOf('mailto:')===0)gtag('event','mail_click',{link_url:h});else if(h.indexOf('maps.')>-1)gtag('event','map_click',{link_url:h})},true);</script>`
 
 /* ── 官方聯絡資料（只出現在導外版）────────────────────────────── */
 const C = {
@@ -84,7 +86,8 @@ async function handle(request) {
     const name = await tagNameFromSub(sub)
     return name ? topbarTag(name) : ''
   })() : ''
-  const tags = (isHome || isTag) ? '' : await buildTags(slug) // 文章頁尾「相關主題」標籤（連到標籤頁；取代手動延伸閱讀）
+  const tags = (isHome || isTag) ? '' : await buildTags(slug) // 文章頁尾「相關主題」標籤（連到標籤頁，逛得比較廣）
+  const rr = (isHome || isTag) ? '' : await buildRelated(slug) // 文章頁尾「延伸閱讀」三張圖卡（連到指定的其他文章）
   const faq = (isHome || isTag) ? '' : await buildFaq(slug)   // 文章頁尾「常見問題」（可見內容；schema 由 buildArticleHead 出）
   // seoTitle：有設才改寫 <title>，讓 articles.json 成為標題的單一真實來源
   //（＝與 JSON-LD headline 同一個字串，不會各寫各的）。沒設就完全不動 HTML 原本的 <title>。
@@ -118,7 +121,9 @@ async function handle(request) {
     rw.on('main', {
       element(el) {
         el.prepend('<span id="gg-top"></span>' + TOPBAR, { html: true })         // 頂部麵包屑
-        el.append(faq + tags + promo + FOOTER, { html: true })                   // 常見問題 › 相關主題標籤 › 導購 › 頁尾
+        // 常見問題 › 延伸閱讀 › 相關主題標籤 › 導購 › 頁尾
+        // 延伸閱讀排在標籤前面：先給三篇具體的「接下來看這個」，再給逛得比較廣的標籤，最後才導購。
+        el.append(faq + rr + tags + promo + FOOTER, { html: true })
       }
     })
   }
@@ -127,16 +132,18 @@ async function handle(request) {
 
 /* ── 導購版位：讀 products.json + guide-map.json 組商品卡（只在導外版；
    資料全在 JSON，破百篇 Worker 不用改；含 UTM 供 GA4 追蹤導購）── */
-let _shopCache = { at: 0, products: null, map: null, articles: null }
+let _shopCache = { at: 0, products: null, map: null, articles: null, related: null }
 async function getShopData() {
   if (_shopCache.products && Date.now() - _shopCache.at < 300000) return _shopCache   // 快取 5 分鐘
   try {
-    const [products, map, articles] = await Promise.all([
+    const [products, map, articles, related] = await Promise.all([
       fetch(ORIGIN + '/products.json').then(r => r.ok ? r.json() : null),
       fetch(ORIGIN + '/guide-map.json').then(r => r.ok ? r.json() : null),
       fetch(ORIGIN + '/articles.json').then(r => r.ok ? r.json() : null),
+      // 延伸閱讀對應表：還沒建檔（404）也不影響，buildRelated 會整篇走自動遞補
+      fetch(ORIGIN + '/related-map.json').then(r => r.ok ? r.json() : null).catch(() => null),
     ])
-    if (products && map) _shopCache = { at: Date.now(), products, map, articles }
+    if (products && map) _shopCache = { at: Date.now(), products, map, articles, related }
   } catch (e) { /* 抓失敗沿用舊快取 */ }
   return _shopCache
 }
@@ -300,6 +307,93 @@ async function buildTags(slug) {
   <div class="gg-tags-list">${chips}</div>
 </nav>`
 }
+/* ── 文章頁尾「延伸閱讀」：三張圖卡，連到站內其他文章（SEO 內鏈；只導外版）──────
+   資料來源分兩層，後台『延伸閱讀』頁維護的是第一層：
+     ① related-map.json 的 items（手動指定，最多三篇）——找不到的 slug 靜默跳過，
+        絕不輸出壞連結；後台會把它標成「⚠ 失效」等人來修。
+     ② 不足三篇就用「稀有度加權」自動遞補：共同標籤的權重＝log(總篇數/該標籤篇數)，
+        共同「Procreate」（4 篇）遠重於共同「觀念」（18 篇）。
+   卡片上的標題／首圖／分類／摘要一律當下從 articles.json 撈（map 只存 slug），
+   所以到後台改了首圖或標題，這裡下次載入就跟著換，不用回頭改 related-map.json。
+   一篇都配不出來就整區不顯示，不硬塞。── */
+const RR_N = 3                       // 版位數：桌機一行剛好三張卡
+
+/* 標籤稀有度權重 log(N/df)；跟著 _shopCache.at 失效，articles 換了才重算。 */
+let _idf = { at: -1, w: null }
+function idfMap(articles) {
+  if (_idf.w && _idf.at === _shopCache.at) return _idf.w
+  const df = {}
+  articles.forEach(a => new Set(a && a.tags || []).forEach(t => { df[t] = (df[t] || 0) + 1 }))
+  const n = articles.length || 1
+  const w = {}
+  for (const t in df) w[t] = Math.log(n / df[t])
+  _idf = { at: _shopCache.at, w }
+  return w
+}
+
+/* 自動遞補：回傳最多 need 篇（沒有任何共同標籤的不算候選）。
+   同分時用 slug 排序當決勝，讓同一篇文章每次算出來的結果都一樣（連結穩定，SEO 才有累積）。 */
+function autoRelated(a, articles, exclude, need) {
+  if (need <= 0) return []
+  const w = idfMap(articles)
+  const mine = new Set(a.tags || [])
+  if (!mine.size) return []
+  const scored = []
+  for (const b of articles) {
+    if (!b || !b.slug || b.slug === a.slug || exclude.has(b.slug)) continue
+    let s = 0, hit = 0
+    for (const t of new Set(b.tags || [])) if (mine.has(t)) { s += (w[t] || 0); hit++ }
+    if (!hit) continue
+    if (b.category && b.category === a.category) s += 0.3   // 同分類的小加權（與後台排序同一條公式）
+    scored.push({ b, s })
+  }
+  scored.sort((x, y) => (y.s - x.s) || (x.b.slug < y.b.slug ? -1 : 1))
+  return scored.slice(0, need).map(x => x.b)
+}
+
+function rrCard(b, i, source) {
+  const href = '../../' + b.url
+  const media = b.ogImage
+    ? `<span class="gg-rr-img"><img src="../../${esc(b.ogImage)}" alt="" loading="lazy"></span>`
+    : `<span class="gg-rr-img gg-rr-noimg">${esc(b.icon || '📄')}</span>`   // 還沒設首圖就用文章圖示頂著
+  return `<a class="gg-rr-card" data-slot="related-${i + 1}" data-source="${source}" href="${esc(href)}">
+  ${media}
+  <span class="gg-rr-body">
+    <span class="gg-rr-cat">${esc(b.category || 'iPad 教學')}</span>
+    <span class="gg-rr-title">${esc(b.title || '')}</span>
+    <span class="gg-rr-sum">${esc(b.summary || '')}</span>
+  </span>
+</a>`
+}
+
+async function buildRelated(slug) {
+  const { articles, related } = await getShopData()
+  if (!articles) return ''
+  const a = articles.find(x => x && x.slug === slug)
+  if (!a) return ''
+  const bySlug = {}
+  articles.forEach(x => { if (x && x.slug) bySlug[x.slug] = x })
+  const entry = (related && related[slug]) || null
+  const items = (entry && Array.isArray(entry.items)) ? entry.items : []
+  const picked = [], seen = new Set([slug])
+  for (const s of items) {
+    if (picked.length >= RR_N) break
+    const b = bySlug[s]
+    if (!b || seen.has(s)) continue          // 找不到＝已改名或下架 → 靜默跳過這一格
+    seen.add(s)
+    picked.push({ b, source: 'manual' })
+  }
+  autoRelated(a, articles, seen, RR_N - picked.length)
+    .forEach(b => { seen.add(b.slug); picked.push({ b, source: 'auto' }) })
+  if (!picked.length) return ''
+  const cards = picked.map((p, i) => rrCard(p.b, i, p.source)).join('')
+  return `<section class="gg-rr" aria-labelledby="gg-rr-h">
+  <h2 class="gg-rr-h" id="gg-rr-h">延伸閱讀</h2>
+  <p class="gg-rr-sub">同主題的其他教學，順著看下去</p>
+  <div class="gg-rr-grid">${cards}</div>
+</section>`
+}
+
 /* ── 文章頁尾「常見問題」：讀 articles.json 的 faq（[{q,a}]，由後台『FAQ 管理』維護）。
    ▸ 答案「全部展開、不用點」——AI 答案引擎是段落級擷取，收進 <details> 或 JS 展開會降低被引用機率。
    ▸ 每則 q/a 自成一段、語意自足 → 一篇文章＝多個可被單獨引用的片段。
@@ -504,6 +598,27 @@ const CHROME_CSS = `<style>
 .gg-foot .gg-col a:hover .gg-i{opacity:1}
 .gg-foot .gg-copy{margin-top:22px;padding-top:15px;border-top:1px solid #e6ecf5;font-size:.76rem;color:var(--muted,#8590a6);display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
 @media(max-width:860px){.gg-foot{padding:22px 18px}.gg-foot .gg-top{flex-direction:column;align-items:flex-start;gap:14px}.gg-fab a{width:46px;height:46px}}
+
+/* ── 文章頁尾「延伸閱讀」三張圖卡（站內內鏈；只導外版，中性版不經 Worker 就沒有）──
+   ．文章頁的 main 是窄欄，卡片用 grid 三等分；≤820px 自動變單欄堆疊。
+   ．圖用 1.9:1 裁切，與首頁／標籤頁的卡片語言一致。
+   ．標題最多兩行、摘要最多兩行，避免長短不一把卡片撐得參差不齊。 */
+.gg-rr{margin:52px 0 0;padding:24px 26px 26px;background:#fff;border:1px solid #e4ebf4;border-top:3px solid var(--teal,#1c8a9a);border-radius:18px;font-family:var(--sans);box-shadow:0 8px 30px rgba(20,39,68,.05)}
+.gg-rr h2.gg-rr-h{font-size:1.24rem;font-weight:800;color:var(--ink,#16223a);margin:0;padding:0;border:0;line-height:1.4}
+.gg-rr .gg-rr-sub{font-size:.9rem;color:var(--muted,#8590a6);margin:5px 0 18px;padding:0}
+.gg-rr .gg-rr-grid{display:grid!important;grid-template-columns:repeat(3,1fr);gap:14px}
+.gg-rr a.gg-rr-card{display:flex!important;flex-direction:column;width:auto!important;text-decoration:none;background:#fff;border:1px solid #e2e8f0;border-radius:14px;overflow:hidden;transition:.16s}
+.gg-rr a.gg-rr-card:hover{border-color:var(--navy,#17345f);transform:translateY(-2px);box-shadow:0 8px 22px rgba(20,39,68,.13)}
+.gg-rr .gg-rr-img{display:block;width:100%;aspect-ratio:1.9/1;background:#f0f3f8;overflow:hidden}
+.gg-rr .gg-rr-img img{width:100%;height:100%;object-fit:cover;display:block;margin:0;border-radius:0}
+.gg-rr .gg-rr-noimg{display:grid;place-items:center;font-size:1.9rem}
+.gg-rr .gg-rr-body{display:block;padding:12px 14px 14px}
+.gg-rr .gg-rr-cat{display:block;font-size:.74rem;font-weight:700;color:var(--teal,#1c8a9a)}
+.gg-rr .gg-rr-title{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:.94rem;font-weight:800;color:var(--ink,#16223a);line-height:1.5;margin-top:3px}
+.gg-rr .gg-rr-sum{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:.82rem;color:var(--body,#45506a);line-height:1.65;margin-top:6px}
+/* 手機改成橫式列（左圖右字）。gg-rr-body 一定要 min-width:0——
+   flex 子項預設不會縮到比內文的 min-content 還窄，少了這行長標題會把整張卡撐出畫面。 */
+@media(max-width:820px){.gg-rr{padding:20px 17px 18px}.gg-rr .gg-rr-grid{grid-template-columns:1fr;gap:12px}.gg-rr a.gg-rr-card{flex-direction:row;align-items:stretch}.gg-rr .gg-rr-img{width:118px;flex:none;aspect-ratio:1.35/1}.gg-rr .gg-rr-body{flex:1;min-width:0;padding:10px 12px}.gg-rr .gg-rr-title{-webkit-line-clamp:3;font-size:.9rem}.gg-rr .gg-rr-sum{display:none}}
 
 /* ── 文章頁尾「相關主題」標籤（連回首頁 #tag= 篩選）── */
 nav.gg-tags{display:block!important;width:auto!important;min-width:0!important;position:static!important;height:auto!important;overflow:visible;margin:52px 0 0;padding:22px 26px;background:linear-gradient(180deg,#ffffff,#f4f8fd);border:1px solid #e4ebf4;border-top:3px solid var(--teal,#1c8a9a);border-radius:18px;font-family:var(--sans);box-shadow:0 8px 30px rgba(20,39,68,.05)}

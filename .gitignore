@@ -26,3 +26,7 @@ context/
 
 # 中性版標籤頁：由 build-tags.py 現場產生，只給 build-neutral.sh 用，不進版控
 tag-neutral/
+
+# 延伸閱讀批量草案：AI 跑批量 prompt 產出，在後台確認後才寫進 related-map.json。
+# 是「還沒拍板的中間產物」，不進版控，也絕不能被 GitHub Pages 當靜態檔公開。
+related-draft.json
